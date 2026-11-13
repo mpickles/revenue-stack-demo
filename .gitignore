@@ -1,0 +1,29 @@
+# secrets
+.env
+.env.*
+!.env.example
+
+# node / next / vercel
+node_modules/
+.next/
+out/
+.vercel/
+
+# python
+__pycache__/
+.venv/
+*.pyc
+
+# dbt
+target/
+dbt_packages/
+logs/
+
+# any export that could hold email addresses
+exports/
+*.export.csv
+
+# editor / OS
+.DS_Store
+Thumbs.db
+.vscode/
