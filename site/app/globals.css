@@ -47,3 +47,5 @@ a { color: #0b5cad; }
 .lead-form button { justify-self: start; border: 0; cursor: pointer; font: inherit; }
 .lead-form button:disabled { opacity: 0.6; cursor: default; }
 .form-error { color: #a4161a; margin: 0; }
+.prose { max-width: 720px; }
+.prose li { margin-bottom: 8px; }
