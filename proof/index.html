@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Max Pickard: proof of work</title>
+  <style>
+    :root {
+      --bg: #ffffff;
+      --text: #1a1f24;
+      --muted: #5a636b;
+      --line: #e3e6e8;
+      --card: #fafbfc;
+      --link: #0b5cad;
+      --todo-bg: #fff4cc;
+      --todo-line: #e6d27a;
+      --progress-bg: #e3f0ff;
+      --progress-text: #0b4a8a;
+      --planned-bg: #eef0f2;
+      --planned-text: #4a535b;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #121518;
+        --text: #e6e9ec;
+        --muted: #9aa3ab;
+        --line: #2a3036;
+        --card: #181c20;
+        --link: #7ab8ff;
+        --todo-bg: #3a3214;
+        --todo-line: #6b5c1f;
+        --progress-bg: #13304f;
+        --progress-text: #a9d0ff;
+        --planned-bg: #22272c;
+        --planned-text: #b3bcc4;
+      }
+    }
+    *, *::before, *::after { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+      line-height: 1.55;
+    }
+    main { max-width: 760px; margin: 0 auto; padding: 48px 16px 64px; }
+    h1 { font-size: 2rem; margin: 0 0 12px; }
+    h2 { font-size: 1.1rem; margin: 40px 0 12px; }
+    a { color: var(--link); }
+    .intro { margin: 0 0 16px; max-width: 62ch; }
+    .numbers {
+      margin: 0;
+      padding: 10px 14px;
+      background: var(--todo-bg);
+      border: 1px dashed var(--todo-line);
+      border-radius: 6px;
+      font-weight: 600;
+    }
+    .slots { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; }
+    .slot {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 14px 16px;
+    }
+    .slot-head { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; }
+    .slot-num { color: var(--muted); font-variant-numeric: tabular-nums; }
+    .slot h3 { margin: 0; font-size: 1rem; }
+    .status {
+      margin-left: auto;
+      font-size: 0.8rem;
+      padding: 2px 8px;
+      border-radius: 999px;
+      white-space: nowrap;
+    }
+    .status-planned { background: var(--planned-bg); color: var(--planned-text); }
+    .status-progress { background: var(--progress-bg); color: var(--progress-text); }
+    .slot-links { margin: 8px 0 0; padding: 0; list-style: none; display: flex; gap: 16px; flex-wrap: wrap; font-size: 0.95rem; }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>Max Pickard</h1>
+    <p class="intro">
+      This is a public rebuild of work I do on live accounts for multiple B2B SaaS
+      clients. The company and data here are fictional so that all of it can be open.
+    </p>
+
+    <!-- TODO(numbers): replace this paragraph with one line of my three or four best real numbers. -->
+    <p class="numbers">TODO: numbers line goes here.</p>
+
+    <h2>Proof</h2>
+    <ol class="slots">
+      <li class="slot">
+        <div class="slot-head">
+          <span class="slot-num">1</span>
+          <h3>Collection</h3>
+          <span class="status status-progress">in progress</span>
+        </div>
+        <ul class="slot-links">
+          <li><a href="https://roadwren-demo.vercel.app">Live site</a></li>
+          <li><a href="https://github.com/mpickles/revenue-stack-demo">Repo</a></li>
+        </ul>
+      </li>
+      <li class="slot">
+        <div class="slot-head">
+          <span class="slot-num">2</span>
+          <h3>Lead classifier</h3>
+          <span class="status status-planned">planned</span>
+        </div>
+      </li>
+      <li class="slot">
+        <div class="slot-head">
+          <span class="slot-num">3</span>
+          <h3>Tracking checker</h3>
+          <span class="status status-planned">planned</span>
+        </div>
+      </li>
+      <li class="slot">
+        <div class="slot-head">
+          <span class="slot-num">4</span>
+          <h3>Server and offline</h3>
+          <span class="status status-planned">planned</span>
+        </div>
+      </li>
+      <li class="slot">
+        <div class="slot-head">
+          <span class="slot-num">5</span>
+          <h3>Warehouse</h3>
+          <span class="status status-planned">planned</span>
+        </div>
+      </li>
+      <li class="slot">
+        <div class="slot-head">
+          <span class="slot-num">6</span>
+          <h3>Analyst agent</h3>
+          <span class="status status-planned">planned</span>
+        </div>
+      </li>
+    </ol>
+
+    <!--
+      TODO(contact): LinkedIn URL and job-search email not set yet, so the
+      contact section is left out. When ready, add before </main>:
+      <h2>Contact</h2>
+      <p>LinkedIn: <a href="...">...</a><br>Email: <a href="mailto:...">...</a></p>
+    -->
+  </main>
+</body>
+</html>
