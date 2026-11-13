@@ -4,6 +4,7 @@ import { DemoBanner } from "@/components/DemoBanner";
 import { AttributionCapture } from "@/components/AttributionCapture";
 import { ConsentBanner } from "@/components/ConsentBanner";
 import { DemoFooter } from "@/components/DemoFooter";
+import { SiteHeader } from "@/components/SiteHeader";
 import { CONSENT_DEFAULT_SCRIPT, gtmId, gtmScript } from "@/lib/headScripts";
 import "./globals.css";
 
@@ -34,6 +35,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
           </noscript>
         )}
         <DemoBanner />
+        <SiteHeader />
         {children}
         <DemoFooter />
         <ConsentBanner />

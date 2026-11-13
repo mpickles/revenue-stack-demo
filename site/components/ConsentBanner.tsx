@@ -24,13 +24,19 @@ export function ConsentBanner() {
 
   return (
     <div className="consent-banner" role="dialog" aria-label="Cookie consent">
+      <p className="consent-title">Cookies on this demo</p>
       <p>
         This demo uses cookies to measure visits and to remember which ad or
         campaign brought you here. See the <a href="/privacy">privacy page</a>.
       </p>
+      {/* Same size and style: neither choice is nudged. */}
       <div className="consent-actions">
-        <button type="button" onClick={() => choose("denied")}>Reject all</button>
-        <button type="button" onClick={() => choose("granted")}>Accept all</button>
+        <button type="button" className="button button-secondary" onClick={() => choose("denied")}>
+          Reject all
+        </button>
+        <button type="button" className="button button-secondary" onClick={() => choose("granted")}>
+          Accept all
+        </button>
       </div>
     </div>
   );
