@@ -427,5 +427,20 @@ code { font-size: 0.92em; background: var(--surface); border: 1px solid var(--li
 .thanks-mark-bg { fill: var(--accent-soft); }
 .thanks-mark-check { fill: none; stroke: var(--accent); stroke-width: 3.5; stroke-linecap: round; stroke-linejoin: round; }
 
-.prose { max-width: 720px; }
-.prose li { margin-bottom: 8px; }
+/* ---------- Privacy (long-form text) ---------- */
+.prose { max-width: 68ch; font-size: var(--t-md); line-height: 1.7; }
+.prose h1 { margin-bottom: var(--s-5); }
+.prose .prose-lead { font-size: var(--t-lg); line-height: 1.55; color: var(--slate); margin-bottom: var(--s-7); }
+.prose h2 {
+  font-size: var(--t-lg);
+  margin: var(--s-7) 0 var(--s-4);
+  padding-top: var(--s-5);
+  border-top: 1px solid var(--line);
+}
+.prose p { margin-bottom: var(--s-5); }
+.prose ul { margin: 0 0 var(--s-5); padding-left: 1.25em; }
+.prose li { margin-bottom: var(--s-3); padding-left: var(--s-1); }
+.prose li::marker { color: var(--accent); }
+.prose strong { font-weight: 650; }
+.prose .link-button { color: var(--accent); }
+.prose .link-button:hover { color: var(--accent-hover); }
