@@ -29,3 +29,6 @@ exports/
 .DS_Store
 Thumbs.db
 .vscode/
+
+# browser automation output
+.playwright-mcp/
