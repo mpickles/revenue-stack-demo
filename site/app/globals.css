@@ -29,3 +29,14 @@ a { color: #0b5cad; }
 .plan { border: 1px solid #e3e6e8; border-radius: 8px; padding: 16px; display: flex; flex-direction: column; }
 .plan ul { flex: 1; }
 .plan-price { font-weight: 600; }
+.consent-banner {
+  position: fixed; left: 16px; right: 16px; bottom: 16px; z-index: 10;
+  max-width: 640px; margin: 0 auto; padding: 16px;
+  background: #fff; border: 1px solid #c9ced3; border-radius: 8px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+}
+.consent-banner p { margin-top: 0; }
+.consent-actions { display: flex; gap: 8px; justify-content: flex-end; }
+.consent-actions button { padding: 8px 14px; border-radius: 6px; border: 1px solid #0b5cad; background: #fff; color: #0b5cad; cursor: pointer; }
+.consent-actions button:last-child { background: #0b5cad; color: #fff; }
+.link-button { background: none; border: 0; padding: 0; color: #0b5cad; text-decoration: underline; cursor: pointer; font: inherit; }

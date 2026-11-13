@@ -10,6 +10,16 @@ gtag('consent', 'default', {
   ad_user_data: 'denied',
   ad_personalization: 'denied'
 });
+// Re-apply a choice remembered from an earlier visit, still before the container.
+var rwConsent = document.cookie.match(/(?:^|; )rw_consent=(granted|denied)(?:;|$)/);
+if (rwConsent && rwConsent[1] === 'granted') {
+  gtag('consent', 'update', {
+    ad_storage: 'granted',
+    analytics_storage: 'granted',
+    ad_user_data: 'granted',
+    ad_personalization: 'granted'
+  });
+}
 `;
 
 const GTM_ID_PATTERN = /^GTM-[A-Z0-9]+$/;
