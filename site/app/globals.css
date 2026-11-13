@@ -40,3 +40,10 @@ a { color: #0b5cad; }
 .consent-actions button { padding: 8px 14px; border-radius: 6px; border: 1px solid #0b5cad; background: #fff; color: #0b5cad; cursor: pointer; }
 .consent-actions button:last-child { background: #0b5cad; color: #fff; }
 .link-button { background: none; border: 0; padding: 0; color: #0b5cad; text-decoration: underline; cursor: pointer; font: inherit; }
+.lead-form { display: grid; gap: 14px; max-width: 440px; }
+.lead-form label { display: grid; gap: 4px; font-weight: 500; }
+.lead-form input, .lead-form select { font: inherit; padding: 8px 10px; border: 1px solid #c9ced3; border-radius: 6px; }
+.lead-form .hint { font-weight: 400; font-size: 13px; color: #5a636b; }
+.lead-form button { justify-self: start; border: 0; cursor: pointer; font: inherit; }
+.lead-form button:disabled { opacity: 0.6; cursor: default; }
+.form-error { color: #a4161a; margin: 0; }

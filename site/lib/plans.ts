@@ -43,3 +43,9 @@ export const PLANS: Plan[] = [
     ],
   },
 ];
+
+// Reads ?plan= and returns a valid plan ID or null.
+export function toPlanId(raw: string | string[] | undefined): PlanId | null {
+  const value = Array.isArray(raw) ? raw[0] : raw;
+  return (PLAN_IDS as readonly string[]).includes(value ?? "") ? (value as PlanId) : null;
+}
