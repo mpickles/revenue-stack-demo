@@ -211,9 +211,55 @@ code { font-size: 0.92em; background: var(--surface); border: 1px solid var(--li
 .consent-banner p:not(.consent-title) { margin: 0 0 var(--s-4); color: var(--slate); }
 .consent-actions { display: grid; grid-template-columns: 1fr 1fr; gap: var(--s-2); }
 
+/* ---------- Home ---------- */
+.home { padding-top: var(--s-8); }
+.hero {
+  display: grid;
+  gap: var(--s-7);
+  align-items: center;
+  padding-bottom: var(--s-8);
+}
+.hero-title {
+  font-size: var(--t-hero);
+  line-height: 1.08;
+  letter-spacing: -0.03em;
+  max-width: 16ch;
+  margin-bottom: var(--s-5);
+}
+.hero-sub { font-size: var(--t-md); color: var(--slate); max-width: 52ch; margin-bottom: var(--s-6); }
+.hero-actions { display: flex; flex-wrap: wrap; gap: var(--s-3); }
+.hero-route { display: none; width: 100%; height: auto; }
+.hero-route-grid { fill: none; stroke: var(--line); stroke-width: 1; }
+.hero-route-road { fill: none; stroke: var(--accent); stroke-width: 5; stroke-linecap: round; }
+.hero-route-stop { fill: var(--paper); stroke: var(--accent); stroke-width: 4; }
+.hero-route-vehicle-halo { fill: var(--accent-soft); }
+.hero-route-vehicle { fill: var(--ink); }
+@media (min-width: 860px) {
+  .hero { grid-template-columns: 1.25fr 1fr; }
+  .hero-route { display: block; }
+}
+.features { border-top: 1px solid var(--line); padding-top: var(--s-8); }
+.features-title { margin-bottom: var(--s-6); }
+.feature-grid {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: var(--s-4);
+}
+@media (min-width: 720px) {
+  .feature-grid { grid-template-columns: repeat(3, 1fr); }
+}
+.feature-card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--r-card);
+  padding: var(--s-6) var(--s-5);
+}
+.feature-card h3 { margin-bottom: var(--s-2); }
+.feature-card p { margin: 0; color: var(--slate); }
+
 /* ---------- Pages (restyled page by page) ---------- */
-.features { display: grid; gap: var(--s-4); grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); padding: 0; list-style: none; }
-.features li { border: 1px solid var(--line); border-radius: var(--r-card); padding: var(--s-4); }
 .plans { display: grid; gap: var(--s-4); grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); }
 .plan { border: 1px solid var(--line); border-radius: var(--r-card); padding: var(--s-4); display: flex; flex-direction: column; }
 .plan ul { flex: 1; }
