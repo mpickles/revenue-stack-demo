@@ -7,143 +7,215 @@
   <title>Max Pickard: proof of work</title>
   <style>
     :root {
-      --bg: #ffffff;
-      --text: #1a1f24;
-      --muted: #5a636b;
-      --line: #e3e6e8;
-      --card: #fafbfc;
-      --link: #0b5cad;
-      --todo-bg: #fff4cc;
-      --todo-line: #e6d27a;
-      --progress-bg: #e3f0ff;
-      --progress-text: #0b4a8a;
-      --planned-bg: #eef0f2;
-      --planned-text: #4a535b;
+      --paper: #f2eee6;
+      --ink: #1f1b16;
+      --muted: #6b645a;
+      --rule: #d9d2c5;
+      --moss: #4f5d32;
+      --serif: "Iowan Old Style", "Palatino Linotype", Palatino, "Book Antiqua", Georgia, serif;
+      --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      color-scheme: light;
     }
     @media (prefers-color-scheme: dark) {
       :root {
-        --bg: #121518;
-        --text: #e6e9ec;
-        --muted: #9aa3ab;
-        --line: #2a3036;
-        --card: #181c20;
-        --link: #7ab8ff;
-        --todo-bg: #3a3214;
-        --todo-line: #6b5c1f;
-        --progress-bg: #13304f;
-        --progress-text: #a9d0ff;
-        --planned-bg: #22272c;
-        --planned-text: #b3bcc4;
+        --paper: #1c1915;
+        --ink: #ece6da;
+        --muted: #a39b8e;
+        --rule: #3a342d;
+        --moss: #a9b77e;
+        color-scheme: dark;
       }
     }
+
     *, *::before, *::after { box-sizing: border-box; }
+    html { -webkit-text-size-adjust: 100%; }
     body {
       margin: 0;
-      background: var(--bg);
-      color: var(--text);
-      font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
-      line-height: 1.55;
+      background: var(--paper);
+      color: var(--ink);
+      font-family: var(--sans);
+      font-size: 1rem;
+      line-height: 1.65;
     }
-    main { max-width: 760px; margin: 0 auto; padding: 48px 16px 64px; }
-    h1 { font-size: 2rem; margin: 0 0 12px; }
-    h2 { font-size: 1.1rem; margin: 40px 0 12px; }
-    a { color: var(--link); }
-    .intro { margin: 0 0 16px; max-width: 62ch; }
-    .numbers {
+    main {
+      max-width: 60rem;
+      margin: 0 auto;
+      padding: 72px 16px 96px;
+    }
+    @media (min-width: 720px) {
+      main { padding: 120px 40px 144px; }
+    }
+
+    a { color: inherit; text-decoration-color: var(--moss); text-decoration-thickness: 1px; text-underline-offset: 0.22em; }
+    a:hover { color: var(--moss); }
+    a:focus-visible { outline: 1px solid var(--moss); outline-offset: 3px; }
+
+    /* ---------- Masthead ---------- */
+    .masthead { max-width: 38rem; }
+    h1 {
       margin: 0;
-      padding: 10px 14px;
-      background: var(--todo-bg);
-      border: 1px dashed var(--todo-line);
-      border-radius: 6px;
-      font-weight: 600;
+      font-family: var(--serif);
+      font-weight: 400;
+      font-size: clamp(2.75rem, 1.6rem + 5vw, 4.75rem);
+      line-height: 1.02;
+      letter-spacing: -0.015em;
     }
-    .slots { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; }
-    .slot {
-      background: var(--card);
-      border: 1px solid var(--line);
-      border-radius: 8px;
-      padding: 14px 16px;
+    .role {
+      margin: 16px 0 0;
+      color: var(--muted);
+      font-size: 1.0625rem;
     }
-    .slot-head { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; }
-    .slot-num { color: var(--muted); font-variant-numeric: tabular-nums; }
-    .slot h3 { margin: 0; font-size: 1rem; }
-    .status {
-      margin-left: auto;
-      font-size: 0.8rem;
-      padding: 2px 8px;
-      border-radius: 999px;
-      white-space: nowrap;
+    .lead {
+      margin: 48px 0 0;
+      padding-top: 24px;
+      border-top: 1px solid var(--rule);
+      font-family: var(--serif);
+      font-size: clamp(1.25rem, 1.1rem + 0.6vw, 1.5rem);
+      line-height: 1.5;
     }
-    .status-planned { background: var(--planned-bg); color: var(--planned-text); }
-    .status-progress { background: var(--progress-bg); color: var(--progress-text); }
-    .slot-links { margin: 8px 0 0; padding: 0; list-style: none; display: flex; gap: 16px; flex-wrap: wrap; font-size: 0.95rem; }
+
+    /* ---------- Proofs ---------- */
+    .proofs-head {
+      margin: 96px 0 0;
+      font-family: var(--serif);
+      font-weight: 400;
+      font-size: 1.5rem;
+      letter-spacing: -0.005em;
+    }
+    .proofs {
+      list-style: none;
+      margin: 24px 0 0;
+      padding: 0;
+      display: grid;
+      column-gap: 48px;
+    }
+    @media (min-width: 720px) {
+      .proofs { grid-template-columns: 1fr 1fr; }
+    }
+    .proof {
+      display: grid;
+      grid-template-columns: 3.25rem 1fr;
+      column-gap: 16px;
+      padding: 24px 0 32px;
+      border-top: 1px solid var(--rule);
+    }
+    .proof-num {
+      font-family: var(--serif);
+      font-size: 2.75rem;
+      line-height: 1;
+      font-variant-numeric: lining-nums;
+      color: var(--muted);
+    }
+    .proof-title {
+      margin: 4px 0 0;
+      font-family: var(--serif);
+      font-weight: 400;
+      font-size: 1.375rem;
+      line-height: 1.25;
+    }
+    .proof-status {
+      margin: 6px 0 0;
+      font-size: 0.9375rem;
+      color: var(--muted);
+    }
+    .proof-links {
+      margin: 12px 0 0;
+      padding: 0;
+      list-style: none;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px 24px;
+      font-size: 0.9375rem;
+    }
+
+    /* Active: moss numeral and status, with a small solid mark. */
+    .proof.is-active .proof-num,
+    .proof.is-active .proof-status { color: var(--moss); }
+    .proof.is-active .proof-status::before {
+      content: "";
+      display: inline-block;
+      width: 7px;
+      height: 7px;
+      margin-right: 8px;
+      background: var(--moss);
+      vertical-align: 0.08em;
+    }
+    /* Planned: titles drop to the muted ink, still well above 4.5:1. */
+    .proof.is-planned .proof-title { color: var(--muted); }
   </style>
 </head>
 <body>
   <main>
-    <h1>Max Pickard</h1>
-    <p class="intro">
-      This is a public rebuild of work I do on live accounts for multiple B2B SaaS
-      clients. The company and data here are fictional so that all of it can be open.
-    </p>
+    <header class="masthead">
+      <h1>Max Pickard</h1>
+      <p class="role">Marketing operations and measurement</p>
+      <p class="lead">
+        This is a public rebuild of work I do on live accounts for multiple B2B SaaS
+        clients. The company and data here are fictional so that all of it can be open.
+      </p>
 
-    <!-- TODO(numbers): replace this paragraph with one line of my three or four best real numbers. -->
-    <p class="numbers">TODO: numbers line goes here.</p>
+      <!--
+        TODO(numbers): one line of my three or four best real numbers.
+        Not rendered until filled in. When ready, add after the lead:
+        <p class="numbers">...</p>
+        and style .numbers in the <style> block.
+      -->
+    </header>
 
-    <h2>Proof</h2>
-    <ol class="slots">
-      <li class="slot">
-        <div class="slot-head">
-          <span class="slot-num">1</span>
-          <h3>Collection</h3>
-          <span class="status status-progress">in progress</span>
-        </div>
-        <ul class="slot-links">
-          <li><a href="https://roadwren-demo.vercel.app">Live site</a></li>
-          <li><a href="https://github.com/mpickles/revenue-stack-demo">Repo</a></li>
-        </ul>
-      </li>
-      <li class="slot">
-        <div class="slot-head">
-          <span class="slot-num">2</span>
-          <h3>Lead classifier</h3>
-          <span class="status status-planned">planned</span>
+    <h2 class="proofs-head">Proofs</h2>
+    <ol class="proofs">
+      <li class="proof is-active">
+        <span class="proof-num" aria-hidden="true">1</span>
+        <div>
+          <h3 class="proof-title">Collection</h3>
+          <p class="proof-status">in progress</p>
+          <ul class="proof-links">
+            <li><a href="https://roadwren-demo.vercel.app">Live site</a></li>
+            <li><a href="https://github.com/mpickles/revenue-stack-demo">Repo</a></li>
+          </ul>
         </div>
       </li>
-      <li class="slot">
-        <div class="slot-head">
-          <span class="slot-num">3</span>
-          <h3>Tracking checker</h3>
-          <span class="status status-planned">planned</span>
+      <li class="proof is-planned">
+        <span class="proof-num" aria-hidden="true">2</span>
+        <div>
+          <h3 class="proof-title">Lead classifier</h3>
+          <p class="proof-status">planned</p>
         </div>
       </li>
-      <li class="slot">
-        <div class="slot-head">
-          <span class="slot-num">4</span>
-          <h3>Server and offline</h3>
-          <span class="status status-planned">planned</span>
+      <li class="proof is-planned">
+        <span class="proof-num" aria-hidden="true">3</span>
+        <div>
+          <h3 class="proof-title">Tracking checker</h3>
+          <p class="proof-status">planned</p>
         </div>
       </li>
-      <li class="slot">
-        <div class="slot-head">
-          <span class="slot-num">5</span>
-          <h3>Warehouse</h3>
-          <span class="status status-planned">planned</span>
+      <li class="proof is-planned">
+        <span class="proof-num" aria-hidden="true">4</span>
+        <div>
+          <h3 class="proof-title">Server and offline</h3>
+          <p class="proof-status">planned</p>
         </div>
       </li>
-      <li class="slot">
-        <div class="slot-head">
-          <span class="slot-num">6</span>
-          <h3>Analyst agent</h3>
-          <span class="status status-planned">planned</span>
+      <li class="proof is-planned">
+        <span class="proof-num" aria-hidden="true">5</span>
+        <div>
+          <h3 class="proof-title">Warehouse</h3>
+          <p class="proof-status">planned</p>
+        </div>
+      </li>
+      <li class="proof is-planned">
+        <span class="proof-num" aria-hidden="true">6</span>
+        <div>
+          <h3 class="proof-title">Analyst agent</h3>
+          <p class="proof-status">planned</p>
         </div>
       </li>
     </ol>
 
     <!--
       TODO(contact): LinkedIn URL and job-search email not set yet, so the
-      contact section is left out. When ready, add before </main>:
-      <h2>Contact</h2>
+      contact section is not rendered. When ready, add before </main>:
+      <h2 class="proofs-head">Contact</h2>
       <p>LinkedIn: <a href="...">...</a><br>Email: <a href="mailto:...">...</a></p>
     -->
   </main>
