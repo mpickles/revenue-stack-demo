@@ -25,3 +25,7 @@ a { color: #0b5cad; }
 .features { display: grid; gap: 16px; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); padding: 0; list-style: none; }
 .features li { border: 1px solid #e3e6e8; border-radius: 8px; padding: 16px; }
 .cta { display: inline-block; background: #0b5cad; color: #fff; padding: 10px 18px; border-radius: 6px; text-decoration: none; }
+.plans { display: grid; gap: 16px; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); }
+.plan { border: 1px solid #e3e6e8; border-radius: 8px; padding: 16px; display: flex; flex-direction: column; }
+.plan ul { flex: 1; }
+.plan-price { font-weight: 600; }
