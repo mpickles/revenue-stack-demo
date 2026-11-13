@@ -323,11 +323,97 @@ code { font-size: 0.92em; background: var(--surface); border: 1px solid var(--li
   transform: translateY(-3px);
 }
 .plan .button { width: 100%; }
-.lead-form { display: grid; gap: 14px; max-width: 440px; }
-.lead-form label { display: grid; gap: 4px; font-weight: 500; }
-.lead-form input, .lead-form select { font: inherit; padding: 8px 10px; border: 1px solid var(--line); border-radius: var(--r-control); background: var(--paper); color: var(--ink); }
-.lead-form .hint { font-weight: 400; font-size: 13px; color: var(--slate); }
-.lead-form button { justify-self: start; }
-.form-error { color: var(--danger); margin: 0; }
+/* ---------- Demo ---------- */
+.demo-layout { display: grid; gap: var(--s-7); align-items: start; }
+@media (min-width: 900px) {
+  .demo-layout { grid-template-columns: 1fr 1.1fr; gap: var(--s-8); }
+  .demo-intro { position: sticky; top: var(--s-6); padding-top: var(--s-5); }
+}
+.demo-lead { font-size: var(--t-md); color: var(--slate); max-width: 40ch; }
+.demo-plan {
+  display: inline-block;
+  background: var(--accent-soft);
+  border-radius: var(--r-control);
+  padding: var(--s-2) var(--s-3);
+  font-size: var(--t-sm);
+}
+.demo-points { list-style: none; margin: var(--s-5) 0 0; padding: 0; display: grid; gap: var(--s-3); }
+.demo-points li { display: flex; gap: var(--s-3); align-items: baseline; }
+.demo-points li::before {
+  content: "";
+  flex: none;
+  width: 12px;
+  height: 4px;
+  border-radius: 2px;
+  background: var(--accent);
+  transform: translateY(-3px);
+}
+.form-card {
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: var(--r-card);
+  padding: var(--s-6) var(--s-5);
+}
+@media (min-width: 520px) {
+  .form-card { padding: var(--s-7) var(--s-6); }
+}
+
+.lead-form { display: grid; gap: var(--s-5); }
+.form-note { margin: 0; font-size: var(--t-sm); color: var(--slate); }
+.field-row { display: grid; gap: var(--s-5); }
+@media (min-width: 520px) {
+  .field-row { grid-template-columns: 1fr 1fr; }
+}
+.field { display: grid; gap: var(--s-2); }
+.field label { font-weight: 600; font-size: var(--t-sm); }
+.field input,
+.field select {
+  width: 100%;
+  min-height: 44px;
+  padding: 0 var(--s-3);
+  font: inherit;
+  color: var(--ink);
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: var(--r-control);
+  transition: border-color 120ms ease, box-shadow 120ms ease;
+}
+.field input:hover,
+.field select:hover { border-color: var(--slate); }
+.field input:focus-visible,
+.field select:focus-visible {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-soft);
+}
+.field .hint { font-size: var(--t-sm); color: var(--slate); }
+/* Error state: shown after the visitor has interacted or tried to submit. */
+.field-error-text { display: none; font-size: var(--t-sm); color: var(--danger); }
+.field input:user-invalid,
+.field select:user-invalid,
+.lead-form[data-attempted] .field :invalid { border-color: var(--danger); }
+.field input:user-invalid:focus-visible,
+.field select:user-invalid:focus-visible,
+.lead-form[data-attempted] .field :invalid:focus-visible { box-shadow: 0 0 0 3px color-mix(in srgb, var(--danger) 20%, transparent); }
+/* Message text only after a submit attempt: showing it on blur moves the
+   submit button under the pointer and swallows the click. */
+.lead-form[data-attempted] .field:has(:invalid) .field-error-text { display: block; }
+.form-error {
+  margin: 0;
+  padding: var(--s-3) var(--s-4);
+  border: 1px solid var(--danger);
+  border-left-width: 4px;
+  border-radius: var(--r-control);
+  color: var(--danger);
+  background: color-mix(in srgb, var(--danger) 8%, var(--paper));
+  font-size: var(--t-sm);
+}
+.lead-form .button { width: 100%; }
+@media (min-width: 520px) {
+  .lead-form .button { width: auto; justify-self: start; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .field input, .field select { transition: none; }
+}
 .prose { max-width: 720px; }
 .prose li { margin-bottom: 8px; }

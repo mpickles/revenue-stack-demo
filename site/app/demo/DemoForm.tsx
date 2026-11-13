@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useRef, useState, type FormEvent } from "react";
+import { useEffect, useRef, useState, type FormEvent } from "react";
 import { HiddenAttributionFields } from "@/components/HiddenAttributionFields";
 import { push } from "@/lib/dataLayer";
 import { EMPLOYEE_BANDS } from "@/lib/employees";
@@ -24,6 +24,18 @@ export function DemoForm({ plan }: { plan: PlanId | null }) {
   const router = useRouter();
   const started = useRef(false);
   const [status, setStatus] = useState<Status>({ kind: "idle" });
+  const [attempted, setAttempted] = useState(false);
+  const formRef = useRef<HTMLFormElement>(null);
+
+  // After a blocked submit, show every invalid field, not only touched ones.
+  // "invalid" does not bubble, so listen in the capture phase on the form.
+  useEffect(() => {
+    const form = formRef.current;
+    if (!form) return;
+    const mark = () => setAttempted(true);
+    form.addEventListener("invalid", mark, true);
+    return () => form.removeEventListener("invalid", mark, true);
+  }, []);
 
   const onFocus = () => {
     if (started.current) return;
@@ -73,27 +85,50 @@ export function DemoForm({ plan }: { plan: PlanId | null }) {
   };
 
   return (
-    <form className="lead-form" onFocus={onFocus} onSubmit={onSubmit}>
-      <label>
-        First name
-        <input name="first_name" autoComplete="given-name" required maxLength={100} />
-      </label>
-      <label>
-        Last name
-        <input name="last_name" autoComplete="family-name" required maxLength={100} />
-      </label>
-      <label>
-        Work email
-        <input name="email" type="email" autoComplete="email" required maxLength={254} />
-        <span className="hint">This is a demo. Please use a made-up address.</span>
-      </label>
-      <label>
-        Company
-        <input name="company" autoComplete="organization" required maxLength={200} />
-      </label>
-      <label>
-        Employees
-        <select name="employees" required defaultValue="">
+    <form
+      className="lead-form"
+      onFocus={onFocus}
+      onSubmit={onSubmit}
+      ref={formRef}
+      data-attempted={attempted || undefined}
+    >
+      <p className="form-note">All fields are required.</p>
+      <div className="field-row">
+        <div className="field">
+          <label htmlFor="first_name">First name</label>
+          <input id="first_name" name="first_name" autoComplete="given-name" required maxLength={100} />
+          <span className="field-error-text">Enter your first name.</span>
+        </div>
+        <div className="field">
+          <label htmlFor="last_name">Last name</label>
+          <input id="last_name" name="last_name" autoComplete="family-name" required maxLength={100} />
+          <span className="field-error-text">Enter your last name.</span>
+        </div>
+      </div>
+      <div className="field">
+        <label htmlFor="email">Work email</label>
+        <input
+          id="email"
+          name="email"
+          type="email"
+          autoComplete="email"
+          required
+          maxLength={254}
+          aria-describedby="email-hint"
+        />
+        <span id="email-hint" className="hint">
+          This is a demo. Please use a made-up address.
+        </span>
+        <span className="field-error-text">Enter an email address like name@company.com.</span>
+      </div>
+      <div className="field">
+        <label htmlFor="company">Company</label>
+        <input id="company" name="company" autoComplete="organization" required maxLength={200} />
+        <span className="field-error-text">Enter your company name.</span>
+      </div>
+      <div className="field">
+        <label htmlFor="employees">Employees</label>
+        <select id="employees" name="employees" required defaultValue="">
           <option value="" disabled>
             Choose a range
           </option>
@@ -103,14 +138,15 @@ export function DemoForm({ plan }: { plan: PlanId | null }) {
             </option>
           ))}
         </select>
-      </label>
+        <span className="field-error-text">Choose a range.</span>
+      </div>
       <HiddenAttributionFields />
       {status.kind === "error" && (
         <p className="form-error" role="alert">
           {status.message}
         </p>
       )}
-      <button type="submit" className="cta" disabled={status.kind === "sending"}>
+      <button type="submit" className="button button-primary" disabled={status.kind === "sending"}>
         {status.kind === "sending" ? "Sending…" : "Book my demo"}
       </button>
     </form>

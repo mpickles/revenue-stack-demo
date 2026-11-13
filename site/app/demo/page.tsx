@@ -16,12 +16,25 @@ export default async function DemoPage({
 
   return (
     <main>
-      <h1>Book a demo</h1>
-      <p>
-        See Roadwren on your own routes in 30 minutes.
-        {planName && <> You picked the <strong>{planName}</strong> plan.</>}
-      </p>
-      <DemoForm plan={plan} />
+      <div className="demo-layout">
+        <div className="demo-intro">
+          <h1>Book a demo</h1>
+          <p className="demo-lead">See Roadwren on your own routes in 30 minutes.</p>
+          {planName && (
+            <p className="demo-plan">
+              You picked the <strong>{planName}</strong> plan.
+            </p>
+          )}
+          <ul className="demo-points">
+            <li>Your vehicles on a live map</li>
+            <li>How driver safety scores are worked out</li>
+            <li>Maintenance alerts set up for your fleet</li>
+          </ul>
+        </div>
+        <div className="form-card">
+          <DemoForm plan={plan} />
+        </div>
+      </div>
     </main>
   );
 }
