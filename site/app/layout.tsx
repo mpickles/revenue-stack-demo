@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
 import { DemoBanner } from "@/components/DemoBanner";
+import { AttributionCapture } from "@/components/AttributionCapture";
 import { ConsentBanner } from "@/components/ConsentBanner";
 import { DemoFooter } from "@/components/DemoFooter";
 import { CONSENT_DEFAULT_SCRIPT, gtmId, gtmScript } from "@/lib/headScripts";
@@ -36,6 +37,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         {children}
         <DemoFooter />
         <ConsentBanner />
+        <AttributionCapture />
       </body>
     </html>
   );

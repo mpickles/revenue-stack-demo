@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { applyConsent } from "@/lib/attribution";
 import { CONSENT_OPEN_EVENT, readConsent, setConsent, type ConsentChoice } from "@/lib/consent";
 
 export function ConsentBanner() {
@@ -17,6 +18,7 @@ export function ConsentBanner() {
 
   const choose = (choice: ConsentChoice) => {
     setConsent(choice);
+    applyConsent(choice);
     setOpen(false);
   };
 
