@@ -1,0 +1,26 @@
+test_id,first_name,last_name,email,company,employees,utm_source,utm_medium,utm_campaign,gclid,consent_given,expected_result,expected_lifecycle_stage,expected_campaign,expected_owner_queue,expected_block_reason
+T01,Ava,Lindqvist,ava.lindqvist@northpost.example.com,Northpost Couriers,340,google,cpc,brand_search,TEST-G-001,TRUE,created,MQL,Paid Search,Enterprise Queue,
+T02,Marcus,Oyelaran,marcus.oyelaran@brightline.example.com,Brightline Plumbing,62,google,cpc,fleet_tracking,TEST-G-002,TRUE,created,MQL,Paid Search,Mid-market Queue,
+T03,Priya,Raman,priya.raman@harbor.example.com,Harbor Linen Service,18,google,cpc,fleet_tracking,TEST-G-003,TRUE,created,New,Paid Search,Small Business Queue,
+T04,Tomas,Vrabel,tomas.vrabel@cedar.example.com,Cedar Ridge HVAC,125,bing,cpc,competitor,TEST-M-004,TRUE,created,MQL,Paid Search,Mid-market Queue,
+T05,Elena,Sokolova,elena.sokolova@metro.example.com,Metro Parcel Group,1200,bing,cpc,brand_search,TEST-M-005,TRUE,created,MQL,Paid Search,Enterprise Queue,
+T06,Jordan,Achebe,jordan.achebe@sunfield.example.com,Sunfield Landscaping,35,linkedin,paid_social,ops_leaders,TEST-L-006,TRUE,created,New,Paid Social,Small Business Queue,
+T07,Hana,Kobayashi,hana.kobayashi@tidewater.example.com,Tidewater Delivery,210,linkedin,paid_social,ops_leaders,TEST-L-007,TRUE,created,MQL,Paid Social,Enterprise Queue,
+T08,Diego,Marchetti,diego.marchetti@pioneer.example.com,Pioneer Pest Control,88,linkedin,paid_social,safety_scores,TEST-L-008,TRUE,created,MQL,Paid Social,Mid-market Queue,
+T09,Nora,Fitzgerald,nora.fitzgerald@summit.example.com,Summit Courier Co,47,,,,,TRUE,created,New,Organic and Direct,Small Business Queue,
+T10,Samir,Haddad,samir.haddad@ironbridge.example.com,Ironbridge Logistics,560,,,,,TRUE,created,MQL,Organic and Direct,Enterprise Queue,
+T11,Lucy,Okafor,lucy.okafor@greenway.example.com,Greenway Waste Services,150,newsletter,email,october_issue,,TRUE,created,MQL,Organic and Direct,Mid-market Queue,
+T12,Caleb,Whitlock,caleb.whitlock@lakeshore.example.com,Lakeshore Electric,22,google,organic,,,TRUE,created,New,Organic and Direct,Small Business Queue,
+T13,Mei,Tanaka,mei.tanaka@atlas.example.com,Atlas Field Services,75,google,cpc,maintenance_alerts,TEST-G-013,TRUE,created,MQL,Paid Search,Mid-market Queue,
+T14,Rafael,Duarte,rafael.duarte@coastal.example.com,Coastal Catering Fleet,49,google,cpc,maintenance_alerts,TEST-G-014,TRUE,created,New,Paid Search,Small Business Queue,
+T15,Ingrid,Halvorsen,ingrid.halvorsen@polar.example.com,Polar Freight Lines,2000,google,ppc,enterprise,TEST-G-015,TRUE,created,MQL,Paid Search,Enterprise Queue,
+T16,Owen,Castellanos,owen.castellanos@riverbend.example.com,Riverbend Movers,50,bing,cpc,fleet_tracking,TEST-M-016,TRUE,created,MQL,Paid Search,Mid-market Queue,
+T17,Zara,Mbeki,zara.mbeki@crestline.example.com,Crestline Glass Repair,199,linkedin,paid_social,safety_scores,TEST-L-017,TRUE,created,MQL,Paid Social,Mid-market Queue,
+T18,Felix,Novak,felix.novak@union.example.com,Union Square Florists,20,,,,,TRUE,created,New,Organic and Direct,Small Business Queue,
+T19,Amara,Bello,amara.bello@trailhead.example.com,Trailhead Bus Charter,200,google,cpc,enterprise,TEST-G-019,TRUE,created,MQL,Paid Search,Enterprise Queue,
+T20,Leo,Barros,leo.barros@quickdrop.example.com,Quickdrop Grocery Vans,310,partner,referral,fleet_summit,,TRUE,created,MQL,Organic and Direct,Enterprise Queue,
+J01,Pat,Nolan,pat.nolan@northgate.example.com,Northgate Haulage,400,google,cpc,enterprise,TEST-G-J01,FALSE,blocked,,,,consent not given
+J02,Kim,Reyes,kim.reyes@gmail.com,Reyes Transport Group,650,google,cpc,enterprise,TEST-G-J02,TRUE,blocked,,,,free email on a 200+ employee company
+J03,Sam,Ortiz,sam.ortiz@yahoo.com,Ortiz Enterprises,250,bing,cpc,brand_search,TEST-M-J03,TRUE,blocked,,,,free email on a 200+ employee company
+J04,Alex,Brandt,alex.brandt@velofleet.example.com,Velo Fleet,90,linkedin,paid_social,ops_leaders,TEST-L-J04,FALSE,blocked,,,,consent not given
+J05,Dana,Ives,dana.ives@outlook.com,Ives Regional Freight,1500,,,,,FALSE,blocked,,,,consent not given and free email
