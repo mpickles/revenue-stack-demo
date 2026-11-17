@@ -1,0 +1,13 @@
+test_id,first_name,last_name,email,company,employees,utm_source,utm_medium,utm_campaign,gclid,consent_given,expected_result,expected_lifecycle_stage,expected_campaign,expected_owner_queue,expected_block_reason
+R01,Bea,Stanhope,bea.stanhope@marlowe.example.com,Marlowe Van Hire,,google,cpc,fleet_tracking,TEST-G-R01,TRUE,created,New,Paid Search,Needs Review Queue,
+R02,Ines,Calloway,ines.calloway@calloway.example.com,Calloway Couriers,,,,,,TRUE,created,New,Organic and Direct,Needs Review Queue,
+R03,Theo,Brandvold,theo.brandvold@brandvold.example.com,Brandvold Haulage,0,linkedin,paid_social,ops_leaders,TEST-L-R03,TRUE,created,New,Paid Social,Needs Review Queue,
+R04,Hugo,Lind,hugo.lind@yahoo.com,Lind Removals,,google,cpc,brand_search,TEST-G-R04,TRUE,created,New,Paid Search,Needs Review Queue,
+C01,Yuki,Anders,yuki.anders@andersfleet.example.com,Anders Fleet Wash,120,google,CPC,brand_search,TEST-G-C01,TRUE,created,MQL,Paid Search,Mid-market Queue,
+C02,Gus,Okonkwo,gus.okonkwo@okonkwo.example.com,Okonkwo Removals,260,linkedin,Paid_Social,ops_leaders,TEST-L-C02,TRUE,created,MQL,Paid Social,Enterprise Queue,
+C03,Lena,Petrov,lena.petrov@petrov.example.com,Petrov Cold Chain,80,linkedin,paidsocial,safety_scores,TEST-L-C03,TRUE,created,MQL,Organic and Direct,Mid-market Queue,
+B01,Rosa,Kline,rosa.kline@gmail.com,Kline Distribution,200,google,cpc,enterprise,TEST-G-B01,TRUE,blocked,,,,free email on a 200+ employee company
+B02,Omar,Vance,omar.vance@gmail.com,Vance Tree Care,199,google,cpc,fleet_tracking,TEST-G-B02,TRUE,created,MQL,Paid Search,Mid-market Queue,
+B03,Nell,Aziz,Nell.Aziz@GMAIL.COM,Aziz Freight Group,500,bing,cpc,brand_search,TEST-M-B03,TRUE,blocked,,,,free email on a 200+ employee company
+D01,Ava,Lindqvist,ava.lindqvist@northpost.example.com,Northpost Couriers,340,google,cpc,brand_search,TEST-G-D01,TRUE,blocked,,,,duplicate of T01
+D02,Joan,Pruitt,marcus.oyelaran@brightline.example.com,Brightline Plumbing,62,google,cpc,fleet_tracking,TEST-G-D02,TRUE,created,MQL,Paid Search,Mid-market Queue,
