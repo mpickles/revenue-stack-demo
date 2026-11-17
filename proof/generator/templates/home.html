@@ -11,22 +11,36 @@ $style
   </style>
 </head>
 <body>
+  <div class="progress" aria-hidden="true"><i></i></div>
   <nav class="nav" aria-label="Site">
     <a class="nav-name" href="#top">Max Pickard</a>
     <span class="nav-links"><a href="#about">About</a><a href="#work">Work</a><a href="#projects">Projects</a>$contact_nav</span>
   </nav>
   <main id="top">
-    <header class="masthead">
-      <h1>Max Pickard</h1>
-      <p class="role">Marketing Operations Specialist at Upgrow. Chicago.</p>
+    <header class="masthead hero">
+      <p class="eyebrow"><span class="live" aria-hidden="true"></span><span>Marketing Operations Specialist at Upgrow</span><span class="sep" aria-hidden="true">/</span><span>Chicago</span><span data-chicago-time></span></p>
+      <h1 data-split>Max Pickard</h1>
       <p class="lead">
         I set up the tracking, the CRM plumbing and the AI automation that marketing
         teams run on. I got here from paid search and SEO, so I know what the numbers
         are for.
       </p>
+      <p class="hero-cta"><a class="btn" href="#projects">See the projects <span class="arrow" aria-hidden="true">&darr;</span></a>$contact_cta</p>
+      <div class="signal" aria-hidden="true">
+        <svg viewBox="0 0 1000 46" preserveAspectRatio="xMidYMid meet">
+          <line class="signal-line" x1="0" y1="10" x2="1000" y2="10"/>
+          <line class="signal-trail" x1="0" y1="10" x2="1000" y2="10"/>
+          <circle class="signal-tick" cx="4" cy="10" r="4"/><text class="signal-text" x="0" y="38">Ad click</text>
+          <circle class="signal-tick" cx="200" cy="10" r="4"/><text class="signal-text minor" x="200" y="38" text-anchor="middle">Tracked site</text>
+          <circle class="signal-tick" cx="400" cy="10" r="4"/><text class="signal-text minor" x="400" y="38" text-anchor="middle">CRM</text>
+          <circle class="signal-tick" cx="600" cy="10" r="4"/><text class="signal-text minor" x="600" y="38" text-anchor="middle">Routing</text>
+          <circle class="signal-tick" cx="800" cy="10" r="4"/><text class="signal-text minor" x="800" y="38" text-anchor="middle">SQL</text>
+          <circle class="signal-tick" cx="996" cy="10" r="4"/><text class="signal-text" x="1000" y="38" text-anchor="end">Report</text>
+        </svg>
+      </div>
     </header>
 
-    <h2 class="section-head" id="about">About</h2>
+    <h2 class="section-head" id="about"><span class="idx">01</span>About</h2>
     <div class="about">
       <p>I did not start in marketing. I worked on an alpaca ranch, then cooked for a sorority house, then started as an SEO intern at Upgrow, a marketing agency for B2B software companies, with no marketing experience at all.</p>
       <p>I learned SEO and conversion tracking on the job, asked to learn paid search, and kept getting pulled toward the question behind every campaign: can we trust this number? That question is now my job.</p>
@@ -46,16 +60,24 @@ $style
       <div><dt>Certificates</dt><dd>Google Ads Display, Search Ads 360, LinkedIn Marketing Fundamentals, LinkedIn Measurement</dd></div>
     </dl>
 
-    <h2 class="section-head" id="work">What I do at work</h2>
+    <h2 class="section-head" id="work"><span class="idx">02</span>What I do at work</h2>
     <p class="section-note">Client work stays private, so this is the shape of it with no names and no numbers. The projects below rebuild the same kind of work in public.</p>
     <ul class="work">
-      <li><h3>Conversion tracking</h3><p>Tag Manager and GA4 setups, consent, and finding out why a conversion stopped firing.</p></li>
-      <li><h3>CRM to ad platforms</h3><p>Sending real pipeline stages from Salesforce and HubSpot back to Google Ads and LinkedIn, so bidding learns from more than form fills.</p></li>
+      <li><h3>Conversion tracking</h3><p>Tag Manager and GA4 setups, consent, and finding out why a conversion stopped firing. Looker Studio dashboards on top.</p></li>
+      <li><h3>CRM to ad platforms</h3><p>Mapping CRM stages from Salesforce and HubSpot back to Google Ads and LinkedIn as offline conversions, so bidding can learn from more than form fills.</p></li>
       <li><h3>Paid search and SEO</h3><p>Hands-on campaign work in Google Ads, Microsoft Ads and LinkedIn Ads, plus SEO. It is where I started and why I care about the data.</p></li>
-      <li><h3>AI automation</h3><p>Reporting and review workflows built with Claude Code, where code checks every number and a person approves before anything goes out.</p></li>
+      <li><h3>AI automation</h3><p>Internal tools built with Claude Code. Code does the math, the model writes the words, and a person approves before anything goes out.</p></li>
     </ul>
 
-    <h2 class="section-head" id="projects">Projects</h2>
+    <h2 class="section-head"><span class="idx">03</span>How I work</h2>
+    <ul class="principles">
+      <li><q>Code computes, the model narrates.</q><p>All the math lives in tested code. AI only writes the words around it.</p></li>
+      <li><q>Never guess at a cause.</q><p>Check the logs first.</p></li>
+      <li><q>Keep it simple.</q><p>A tool has to work for someone with no technical background, and anyone should be able to take it over.</p></li>
+      <li><q>Good enough is good enough.</q><p>Small, lean and shipped beats one big thing that does too much at once.</p></li>
+    </ul>
+
+    <h2 class="section-head" id="projects"><span class="idx">04</span>Projects</h2>
     <p class="section-note"><strong>Roadwren revenue stack.</strong> One made-up company and six builds that follow a lead from the ad click to the report. Each build is graded against an answer key, and each opens a write-up.</p>
     <ol class="proofs">
 $tiles
@@ -68,6 +90,10 @@ $diagram
     </div>
     <p class="section-note">The systems are real and running. Roadwren and every person, lead and record in it are made up. The code, the answer keys and the decisions are in <a href="$repo">the repo</a>. Claude Code writes most of the code from my specs. The tests and answer keys are how I check it.</p>
 $contact
+    <footer class="footer"><span>Max Pickard, Chicago</span><span>Built as plain HTML from the READMEs in <a href="$repo">the repo</a></span></footer>
   </main>
+  <script>
+$script
+  </script>
 </body>
 </html>

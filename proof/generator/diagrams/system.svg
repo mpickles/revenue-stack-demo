@@ -19,10 +19,12 @@
 <text x="510" y="376" class="dia-label" text-anchor="middle">score</text>
 <path d="M318 416 L318 439 L114 439 L114 462" class="dia-line" marker-end="url(#system-a)"/>
 <text x="122" y="455" class="dia-label" text-anchor="start">qualified leads</text>
-<path d="M408 416 L408 462" class="dia-line" marker-end="url(#system-a)"/>
-<text x="416" y="439" class="dia-label" text-anchor="start">leads</text>
+<path d="M378 416 L378 462" class="dia-line" marker-end="url(#system-a)"/>
+<text x="386" y="439" class="dia-label" text-anchor="start">leads</text>
 <path d="M478 495 L542 495" class="dia-line" marker-end="url(#system-a)"/>
 <text x="510" y="488" class="dia-label" text-anchor="middle">figures</text>
+<path id="system-route" class="dia-route" d="M378 47 V495 H642"/>
+<circle class="dia-pulse" r="5"><animateMotion dur="7s" repeatCount="indefinite" keyPoints="0;1;1" keyTimes="0;0.85;1" calcMode="linear"><mpath href="#system-route"/></animateMotion></circle>
 <rect x="278" y="14" width="200" height="66" rx="6" class="dia-box "/>
 <text x="378.0" y="51.5" class="dia-text" text-anchor="middle">Visitor clicks an ad</text>
 <rect x="14" y="126" width="200" height="66" rx="6" class="dia-box b"/>

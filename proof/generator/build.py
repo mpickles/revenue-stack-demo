@@ -126,7 +126,7 @@ def tile_html(number, build, status):
     if not build.get("headline"):
         lines.append(f'    <p class="proof-graded">Graded on: {e(build["graded_on"])}</p>')
     lines.append('    <ul class="proof-links">')
-    lines.append(f'      <li><a href="builds/{build["slug"]}.html">Read the write-up</a></li>')
+    lines.append(f'      <li><a class="go" href="builds/{build["slug"]}.html"><span>Read the write-up</span><span class="arrow" aria-hidden="true">&rarr;</span></a></li>')
     if build.get("recording"):
         lines.append(f'      <li><a href="{e(build["recording"])}">Two-minute recording</a></li>')
     lines += ["    </ul>", "  </div>", "</li>"]
@@ -142,7 +142,7 @@ def contact_html(contact):
         parts.append(f'<a href="{html.escape(contact["linkedin"])}">LinkedIn</a>')
     if not parts:
         return ""
-    return '\n    <h2 class="section-head" id="contact">Contact</h2>\n    <p class="contact">' + "".join(parts) + "</p>"
+    return '\n    <h2 class="section-head" id="contact"><span class="idx">05</span>Say hello</h2>\n    <p class="contact">' + "".join(parts) + "</p>"
 
 
 def build_pages():
@@ -151,6 +151,7 @@ def build_pages():
     repo = config["repo"]
     builds = config["builds"]
     style = indent((GENERATOR / "templates" / "style.css").read_text(encoding="utf-8").strip(), 4)
+    script = indent((GENERATOR / "templates" / "script.js").read_text(encoding="utf-8").strip(), 4)
     e = html.escape
 
     rendered = []
@@ -169,6 +170,8 @@ def build_pages():
         repo=repo,
         contact=contact,
         contact_nav='<a href="#contact">Contact</a>' if contact else "",
+        contact_cta='<a href="#contact">Get in touch</a>' if contact else "",
+        script=script,
     )
 
     for index, (build, page) in enumerate(zip(builds, rendered)):
@@ -201,6 +204,7 @@ def build_pages():
 
         pages[f'builds/{build["slug"]}.html'] = template("build.html").substitute(
             style=style,
+            script=script,
             title=e(page["title"]),
             readme=build["readme"],
             folder_url=github_url(repo, posixpath.dirname(build["readme"])),
