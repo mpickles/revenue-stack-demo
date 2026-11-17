@@ -2,8 +2,8 @@
   "repo": "https://github.com/mpickles/revenue-stack-demo",
   "demo": "https://roadwren-demo.vercel.app",
   "contact": {
-    "email": null,
-    "linkedin": null
+    "email": "maxapickard@gmail.com",
+    "linkedin": "https://www.linkedin.com/in/maxwellapickard/"
   },
   "builds": [
     {

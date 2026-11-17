@@ -4,37 +4,69 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="robots" content="noindex, nofollow">
-  <title>Max Pickard: proof of work</title>
-  <!-- Made by proof/generator/build.py. Do not edit by hand. -->
+  <title>Max Pickard</title>
+  <!-- Made by proof/generator/build.py. Do not edit by hand. Edit proof/generator/templates/home.html. -->
   <style>
 $style
   </style>
 </head>
 <body>
-  <main>
+  <nav class="nav" aria-label="Site">
+    <a class="nav-name" href="#top">Max Pickard</a>
+    <span class="nav-links"><a href="#about">About</a><a href="#work">Work</a><a href="#projects">Projects</a>$contact_nav</span>
+  </nav>
+  <main id="top">
     <header class="masthead">
       <h1>Max Pickard</h1>
-      <p class="role">Marketing operations and measurement</p>
+      <p class="role">Marketing Operations Specialist at Upgrow. Chicago.</p>
       <p class="lead">
-        This is a public rebuild of work I do on live accounts for multiple B2B SaaS
-        clients. The company and data here are fictional so that all of it can be open.
+        I set up the tracking, the CRM plumbing and the AI automation that marketing
+        teams run on. I got here from paid search and SEO, so I know what the numbers
+        are for.
       </p>
     </header>
 
-    <h2 class="section-head">Proofs</h2>
-    <p class="section-note">Six builds on one made-up company. Each one is graded against an answer key, and each opens a write-up.</p>
+    <h2 class="section-head" id="about">About</h2>
+    <div class="about">
+      <p>I did not start in marketing. I worked on an alpaca ranch, then cooked for a sorority house, then started as an SEO intern at Upgrow, a marketing agency for B2B software companies, with no marketing experience at all.</p>
+      <p>I learned SEO and conversion tracking on the job, asked to learn paid search, and kept getting pulled toward the question behind every campaign: can we trust this number? That question is now my job.</p>
+      <p>I studied applied mathematics at UC San Diego. Outside work I shoot photos and write screenplays.</p>
+    </div>
+    <ol class="path" aria-label="How I got here">
+      <li><span class="path-when">Before</span><span class="path-what">Alpaca rancher</span></li>
+      <li><span class="path-when">Before</span><span class="path-what">Sorority house chef</span></li>
+      <li><span class="path-when">Upgrow</span><span class="path-what">SEO Intern</span><span class="path-note">SEO writing, conversion tracking, dashboards</span></li>
+      <li><span class="path-when">May 2024</span><span class="path-what">SEO and PPC Specialist</span><span class="path-note">Google Ads, Microsoft Ads, LinkedIn Ads</span></li>
+      <li class="is-now"><span class="path-when">July 2026</span><span class="path-what">Marketing Operations Specialist</span><span class="path-note">Tracking, CRM connections, AI automation</span></li>
+    </ol>
+    <dl class="facts">
+      <div><dt>Based in</dt><dd>Chicago</dd></div>
+      <div><dt>Degree</dt><dd>B.S. Applied Mathematics, minor in Economics, UC San Diego</dd></div>
+      <div><dt>Tools</dt><dd>Google Tag Manager, GA4, Google Ads, Microsoft Ads, LinkedIn Ads, HubSpot, Salesforce, Zapier, Claude Code</dd></div>
+      <div><dt>Certificates</dt><dd>Google Ads Display, Search Ads 360, LinkedIn Marketing Fundamentals, LinkedIn Measurement</dd></div>
+    </dl>
+
+    <h2 class="section-head" id="work">What I do at work</h2>
+    <p class="section-note">Client work stays private, so this is the shape of it with no names and no numbers. The projects below rebuild the same kind of work in public.</p>
+    <ul class="work">
+      <li><h3>Conversion tracking</h3><p>Tag Manager and GA4 setups, consent, and finding out why a conversion stopped firing.</p></li>
+      <li><h3>CRM to ad platforms</h3><p>Sending real pipeline stages from Salesforce and HubSpot back to Google Ads and LinkedIn, so bidding learns from more than form fills.</p></li>
+      <li><h3>Paid search and SEO</h3><p>Hands-on campaign work in Google Ads, Microsoft Ads and LinkedIn Ads, plus SEO. It is where I started and why I care about the data.</p></li>
+      <li><h3>AI automation</h3><p>Reporting and review workflows built with Claude Code, where code checks every number and a person approves before anything goes out.</p></li>
+    </ul>
+
+    <h2 class="section-head" id="projects">Projects</h2>
+    <p class="section-note"><strong>Roadwren revenue stack.</strong> One made-up company and six builds that follow a lead from the ad click to the report. Each build is graded against an answer key, and each opens a write-up.</p>
     <ol class="proofs">
 $tiles
     </ol>
 
-    <h2 class="section-head">How they connect</h2>
-    <p class="section-note">One lead, from the ad click to the report. The shaded boxes are the six builds.</p>
+    <h3 class="sub-head">How the six connect</h3>
+    <p class="section-note">The shaded boxes are the six builds.</p>
     <div class="figure">
 $diagram
     </div>
-
-    <h2 class="section-head">About the data</h2>
-    <p class="section-note">The systems are real and running. Roadwren is a made-up company, and every person, lead and record is made up. All of the code, the answer keys and the decisions are in <a href="$repo">the repo</a>.</p>
+    <p class="section-note">The systems are real and running. Roadwren and every person, lead and record in it are made up. The code, the answer keys and the decisions are in <a href="$repo">the repo</a>. Claude Code writes most of the code from my specs. The tests and answer keys are how I check it.</p>
 $contact
   </main>
 </body>

@@ -142,7 +142,7 @@ def contact_html(contact):
         parts.append(f'<a href="{html.escape(contact["linkedin"])}">LinkedIn</a>')
     if not parts:
         return ""
-    return '\n    <h2 class="section-head">Contact</h2>\n    <p class="section-note">' + " &middot; ".join(parts) + "</p>"
+    return '\n    <h2 class="section-head" id="contact">Contact</h2>\n    <p class="contact">' + "".join(parts) + "</p>"
 
 
 def build_pages():
@@ -160,13 +160,15 @@ def build_pages():
         rendered.append({"title": title, "body": body, "status": read_status(readme_text)})
 
     pages = {}
+    contact = contact_html(config.get("contact") or {})
     tiles = [tile_html(n, b, r["status"]) for n, (b, r) in enumerate(zip(builds, rendered), start=1)]
     pages["index.html"] = template("home.html").substitute(
         style=style,
         tiles=indent("\n".join(tiles), 6),
         diagram=indent(diagram("system"), 6),
         repo=repo,
-        contact=contact_html(config.get("contact") or {}),
+        contact=contact,
+        contact_nav='<a href="#contact">Contact</a>' if contact else "",
     )
 
     for index, (build, page) in enumerate(zip(builds, rendered)):

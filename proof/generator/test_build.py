@@ -115,6 +115,13 @@ class CommittedPages(unittest.TestCase):
             if not item.get("recording"):
                 self.assertNotIn("<video", self.pages[f'builds/{item["slug"]}.html'])
 
+    def test_contact_shows_what_is_set_and_nothing_else(self):
+        home = self.pages["index.html"]
+        contact = self.config.get("contact") or {}
+        self.assertEqual("mailto:" in home, bool(contact.get("email")))
+        self.assertEqual("linkedin.com/in/" in home, bool(contact.get("linkedin")))
+        self.assertEqual('href="#contact"' in home, bool(contact.get("email") or contact.get("linkedin")))
+
     def test_no_em_dashes(self):
         for path, text in self.pages.items():
             self.assertNotIn(chr(0x2014), text, path)
