@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<!-- What to pull from the Salesforce account. Edit a name here if yours differs. -->
+<Package xmlns="http://soap.sforce.com/2006/04/metadata">
+    <types>
+        <members>Lead.UTM_Source__c</members>
+        <members>Lead.UTM_Medium__c</members>
+        <members>Lead.UTM_Campaign__c</members>
+        <members>Lead.GCLID__c</members>
+        <members>Lead.Consent_Given__c</members>
+        <members>Lead.Lifecycle_Stage__c</members>
+        <members>Lead.Lead_Email_Copy__c</members>
+        <members>Opportunity.UTM_Source__c</members>
+        <members>Opportunity.UTM_Medium__c</members>
+        <members>Opportunity.UTM_Campaign__c</members>
+        <members>Opportunity.GCLID__c</members>
+        <members>Opportunity.Lead_Email__c</members>
+        <name>CustomField</name>
+    </types>
+    <types>
+        <members>Lead.Consent_Required</members>
+        <members>Lead.Free_Email_Enterprise</members>
+        <name>ValidationRule</name>
+    </types>
+    <types>
+        <members>*</members>
+        <name>Flow</name>
+    </types>
+    <types>
+        <members>*</members>
+        <name>FlowTest</name>
+    </types>
+    <types>
+        <members>*</members>
+        <name>Queue</name>
+    </types>
+    <types>
+        <members>*</members>
+        <name>DuplicateRule</name>
+    </types>
+    <types>
+        <members>LeadConvertSettings</members>
+        <name>LeadConvertSettings</name>
+    </types>
+    <version>66.0</version>
+</Package>
