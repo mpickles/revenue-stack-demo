@@ -104,11 +104,33 @@ class CommittedPages(unittest.TestCase):
                     target = re.sub(r"[^/]+/\.\./", "", target, count=1)
                 self.assertIn(target, self.pages, f"{path} links to {href}")
 
-    def test_a_tile_without_a_result_says_how_it_will_be_graded(self):
+    def test_a_featured_build_without_a_result_says_how_it_will_be_graded(self):
+        home = self.pages["index.html"]
+        by_slug = {item["slug"]: item for item in self.config["builds"]}
+        for slug in self.config["featured_order"]:
+            item = by_slug[slug]
+            self.assertIn(html.escape(item["graded_on"]), home)
+            if not item.get("headline"):
+                self.assertIn("Not graded yet", home)
+
+    def test_every_build_is_listed_on_the_home_page(self):
         home = self.pages["index.html"]
         for item in self.config["builds"]:
-            if not item.get("headline"):
-                self.assertIn("Graded on: " + html.escape(item["graded_on"]), home)
+            self.assertIn(f'href="builds/{item["slug"]}.html"', home)
+
+    def test_no_proof_section_until_a_build_has_a_result(self):
+        home = self.pages["index.html"]
+        has_result = any(item.get("headline") for item in self.config["builds"])
+        self.assertEqual("Proof, in one line each" in home, has_result)
+
+    def test_gsap_is_loaded_at_one_pinned_version(self):
+        for path, text in self.pages.items():
+            versions = set(re.findall(r"/ajax/libs/gsap/([0-9.]+)/", text))
+            self.assertEqual(versions, {"3.13.0"}, path)
+
+    def test_no_placeholder_text_is_published(self):
+        for path, text in self.pages.items():
+            self.assertNotIn("placeholder", text.lower(), path)
 
     def test_no_page_shows_a_recording_that_does_not_exist(self):
         for item in self.config["builds"]:

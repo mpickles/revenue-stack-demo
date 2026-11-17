@@ -110,39 +110,80 @@ def link_url(link, repo):
     return link["url"] if "url" in link else github_url(repo, link["path"])
 
 
-def tile_html(number, build, status):
+def row_html(build, status):
+    """One line per build in the list on the home page."""
     text, css = STATUSES[status]
     e = html.escape
+    return (
+        f'<li class="{css}"><b><a href="builds/{build["slug"]}.html">{e(build["tile"])}</a></b>'
+        f'<p>{e(build["sentence"])}</p><span class="status {css}">{text}</span></li>'
+    )
+
+
+def featured_html(build, status):
+    """A featured build: the problem and what it does on the left, the facts on the right."""
+    text, css = STATUSES[status]
+    e = html.escape
+    page = f'builds/{build["slug"]}.html'
+    result = e(build["headline"]) if build.get("headline") else "Not graded yet"
     lines = [
-        f'<li class="proof {css}">',
-        f'  <span class="proof-num" aria-hidden="true">{number}</span>',
+        '<article class="sys">',
         "  <div>",
-        f'    <h3 class="proof-title"><a href="builds/{build["slug"]}.html">{e(build["tile"])}</a></h3>',
-        f'    <p class="status">{text}</p>',
+        f'    <h3><a href="{page}">{e(build["title"])}</a></h3>',
+        f'    <p class="q">{e(build["problem"])}</p>',
+        f'    <p>{e(build["sentence"])}</p>',
+        f'    <p><a href="{page}">Read the write-up</a></p>',
+        "  </div>",
+        '  <dl class="facts">',
+        f'    <div><dt>Status</dt><dd><span class="status {css}">{text}</span></dd></div>',
+        f'    <div><dt>Graded on</dt><dd>{e(build["graded_on"])}</dd></div>',
+        f'    <div><dt>Result</dt><dd>{result}</dd></div>',
+        f'    <div><dt>Built with</dt><dd>{e(build["built_with"])}</dd></div>',
     ]
-    if build.get("headline"):
-        lines.append(f'    <p class="proof-headline">{e(build["headline"])}</p>')
-    lines.append(f'    <p class="proof-sentence">{e(build["sentence"])}</p>')
-    if not build.get("headline"):
-        lines.append(f'    <p class="proof-graded">Graded on: {e(build["graded_on"])}</p>')
-    lines.append('    <ul class="proof-links">')
-    lines.append(f'      <li><a class="go" href="builds/{build["slug"]}.html"><span>Read the write-up</span><span class="arrow" aria-hidden="true">&rarr;</span></a></li>')
     if build.get("recording"):
-        lines.append(f'      <li><a href="{e(build["recording"])}">Two-minute recording</a></li>')
-    lines += ["    </ul>", "  </div>", "</li>"]
+        lines.append(f'    <div><dt>Watch</dt><dd><a href="{e(build["recording"])}">Two-minute recording</a></dd></div>')
+    lines += ["  </dl>", "</article>"]
     return "\n".join(lines)
+
+
+def proof_html(builds):
+    """Real results only. The section is left out until at least one build has a headline."""
+    items = [f'<li>{html.escape(b["tile"])}: {html.escape(b["headline"])}</li>' for b in builds if b.get("headline")]
+    if not items:
+        return ""
+    return (
+        '\n    <section class="sec"><div class="wrap">\n      <h2>Proof, in one line each</h2>\n      <ul class="proof">\n        '
+        + "\n        ".join(items) + "\n      </ul>\n    </div></section>\n"
+    )
 
 
 def contact_html(contact):
     """Shown only once an email or a LinkedIn address is set in builds.json."""
+    e = html.escape
+    if not (contact.get("email") or contact.get("linkedin")):
+        return ""
+    lines = ['', '    <section class="contact" id="contact"><div class="wrap">', "      <h2>Say hello</h2>"]
+    if contact.get("email"):
+        lines.append(f'      <a class="mail" href="mailto:{e(contact["email"])}">{e(contact["email"])}</a>')
+        lines.append(f'      <small><button type="button" class="copy" data-copy="{e(contact["email"])}">Copy the address</button> <span id="copied" aria-live="polite"></span></small>')
+    foot = []
+    if contact.get("linkedin"):
+        foot.append(f'<a href="{e(contact["linkedin"])}">LinkedIn</a>')
+    foot.append("<span>Chicago</span>")
+    lines.append('      <div class="foot">' + "".join(foot) + "</div>")
+    lines.append("    </div></section>")
+    return "\n".join(lines)
+
+
+def contact_links_html(contact):
+    """The short links under the name."""
+    e = html.escape
     parts = []
     if contact.get("email"):
-        parts.append(f'<a href="mailto:{html.escape(contact["email"])}">{html.escape(contact["email"])}</a>')
+        parts.append(f'<button type="button" class="copy" data-copy="{e(contact["email"])}">Copy email</button>')
     if contact.get("linkedin"):
-        parts.append(f'<a href="{html.escape(contact["linkedin"])}">LinkedIn</a>')
-    if not parts:
-        return ""
-    return '\n    <h2 class="section-head" id="contact"><span class="idx">05</span>Say hello</h2>\n    <p class="contact">' + "".join(parts) + "</p>"
+        parts.append(f'<a href="{e(contact["linkedin"])}">LinkedIn</a>')
+    return "".join(parts)
 
 
 def build_pages():
@@ -161,17 +202,22 @@ def build_pages():
         rendered.append({"title": title, "body": body, "status": read_status(readme_text)})
 
     pages = {}
-    contact = contact_html(config.get("contact") or {})
-    tiles = [tile_html(n, b, r["status"]) for n, (b, r) in enumerate(zip(builds, rendered), start=1)]
+    contact_config = config.get("contact") or {}
+    contact = contact_html(contact_config)
+    status_of = {b["slug"]: r["status"] for b, r in zip(builds, rendered)}
+    by_slug = {b["slug"]: b for b in builds}
+    featured = [featured_html(by_slug[slug], status_of[slug]) for slug in config["featured_order"]]
+    rows = [row_html(b, status_of[b["slug"]]) for b in builds]
     pages["index.html"] = template("home.html").substitute(
         style=style,
-        tiles=indent("\n".join(tiles), 6),
-        diagram=indent(diagram("system"), 6),
+        script=script,
         repo=repo,
+        proof=proof_html(builds),
+        featured=indent("\n".join(featured), 6),
+        rows=indent("\n".join(rows), 8),
         contact=contact,
         contact_nav='<a href="#contact">Contact</a>' if contact else "",
-        contact_cta='<a href="#contact">Get in touch</a>' if contact else "",
-        script=script,
+        contact_links=contact_links_html(contact_config),
     )
 
     for index, (build, page) in enumerate(zip(builds, rendered)):

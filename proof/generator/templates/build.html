@@ -6,19 +6,21 @@
   <meta name="robots" content="noindex, nofollow">
   <title>$title | Max Pickard</title>
   <!-- Made by proof/generator/build.py from $readme. Do not edit by hand. -->
+  <script>try{var t=localStorage.getItem("theme");if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
   <style>
 $style
   </style>
 </head>
 <body>
-  <div class="progress" aria-hidden="true"><i></i></div>
   <nav class="nav" aria-label="Site">
     <a class="nav-name" href="../index.html">Max Pickard</a>
-    <span class="nav-links"><a href="../index.html">All proofs</a><a href="$folder_url">This build on GitHub</a></span>
+    <div><a href="../index.html#work">All builds</a><a href="$folder_url">GitHub</a><button type="button" data-theme-toggle>Dark</button></div>
   </nav>
-  <main>
+  <main class="writeup"><div class="wrap">
     <header class="writeup-head">
-      <h1>$title</h1>
+      <h1 data-rise>$title</h1>
       <p class="status $status_class">$status_text</p>
     </header>
 $headline
@@ -35,10 +37,14 @@ $links
       </ul>
     </article>
 
-    <nav class="pager" aria-label="More proofs">
+    <nav class="pager" aria-label="More builds">
 $pager
     </nav>
-  </main>
+  </div></main>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/ScrollTrigger.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/SplitText.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/Flip.min.js"></script>
   <script>
 $script
   </script>

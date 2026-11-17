@@ -1,104 +1,130 @@
-// Motion for the portfolio pages. No library. Every page reads fine with this
-// script off: it only adds the "js" class, and the hidden-before-reveal styles
-// hang off that class. With "reduce motion" on, nothing is hidden or animated.
+// Behaviour and motion for every page. Pages read fine with this script off, and
+// with "reduce motion" on nothing is hidden or animated.
 (function () {
   var root = document.documentElement;
   var still = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var $$ = function (s, el) { return Array.prototype.slice.call((el || document).querySelectorAll(s)); };
 
-  // Chicago clock in the hero. Text only, safe with reduced motion.
-  var clock = document.querySelector("[data-chicago-time]");
-  if (clock) {
-    var format = new Intl.DateTimeFormat("en-US", { timeZone: "America/Chicago", hour: "numeric", minute: "2-digit" });
-    var tick = function () { clock.textContent = format.format(new Date()) + " local"; };
-    tick();
-    setInterval(tick, 30000);
-  }
-
-  // Scroll progress hairline and the nav link for the section in view.
-  var bar = document.querySelector(".progress i");
-  if (bar) {
-    var onScroll = function () {
-      var max = root.scrollHeight - window.innerHeight;
-      bar.style.transform = "scaleX(" + (max > 0 ? Math.min(1, window.scrollY / max) : 0) + ")";
-    };
-    window.addEventListener("scroll", onScroll, { passive: true });
-    onScroll();
-  }
-
-  if (still || !("IntersectionObserver" in window)) return;
-  root.classList.add("js");
-
-  // Hero name: split into words that rise in turn. The full name stays as the
-  // accessible label, and the split copies are hidden from screen readers.
-  var name = document.querySelector("[data-split]");
-  if (name) {
-    var words = name.textContent.trim().split(/\s+/);
-    name.setAttribute("aria-label", words.join(" "));
-    name.textContent = "";
-    words.forEach(function (word, i) {
-      var outer = document.createElement("span");
-      outer.className = "word";
-      outer.setAttribute("aria-hidden", "true");
-      var inner = document.createElement("span");
-      inner.textContent = word;
-      inner.style.animationDelay = 120 + i * 140 + "ms";
-      outer.appendChild(inner);
-      name.appendChild(outer);
-      if (i < words.length - 1) name.appendChild(document.createTextNode(" "));
-    });
-  }
-
-  // Reveal on scroll. Items that share a parent come in one after another.
-  var targets = document.querySelectorAll(
-    ".hero > :not(h1), .section-head, .sub-head, .section-note, .about p, .path li, .facts div, .work li, " +
-    ".principles li, .proof, .figure, .contact, .writeup-head > *, .headline, .prose > *, .pager"
-  );
-  var seen = new IntersectionObserver(function (entries) {
-    entries.forEach(function (entry) {
-      if (!entry.isIntersecting) return;
-      entry.target.classList.add("in");
-      seen.unobserve(entry.target);
-    });
-  }, { rootMargin: "0px 0px -8% 0px", threshold: 0.08 });
-  var order = new Map();
-  targets.forEach(function (el) {
-    var n = order.get(el.parentNode) || 0;
-    order.set(el.parentNode, n + 1);
-    el.classList.add("reveal");
-    el.style.transitionDelay = Math.min(n, 6) * 70 + "ms";
-    seen.observe(el);
+  // Light and dark. Follows the device until the visitor picks one.
+  var toggle = document.querySelector("[data-theme-toggle]");
+  function isDark() { return root.dataset.theme ? root.dataset.theme === "dark" : window.matchMedia("(prefers-color-scheme: dark)").matches; }
+  function paint() { toggle.textContent = isDark() ? "Light" : "Dark"; }
+  paint();
+  toggle.addEventListener("click", function () {
+    root.dataset.theme = isDark() ? "light" : "dark";
+    try { localStorage.setItem("theme", root.dataset.theme); } catch (e) {}
+    paint();
   });
 
-  // Diagrams draw themselves: boxes fade in, then each arrow is drawn in turn.
-  var drawn = new IntersectionObserver(function (entries) {
-    entries.forEach(function (entry) {
-      if (!entry.isIntersecting) return;
-      entry.target.classList.add("drawn");
-      drawn.unobserve(entry.target);
+  // Copy the email address, with a confirmation.
+  $$("[data-copy]").forEach(function (button) {
+    var label = button.textContent, note = document.getElementById("copied");
+    button.addEventListener("click", function () {
+      var done = function () { button.textContent = "Copied"; if (note) note.textContent = "Copied to your clipboard."; setTimeout(function () { button.textContent = label; }, 1600); };
+      try { navigator.clipboard.writeText(button.dataset.copy).then(done, function () {}); } catch (e) {}
     });
-  }, { threshold: 0.25 });
-  document.querySelectorAll("svg.dia").forEach(function (svg) {
-    svg.querySelectorAll(".dia-line").forEach(function (line, i) {
-      var length = line.getTotalLength();
-      line.style.setProperty("--len", length);
-      line.style.setProperty("--at", 300 + i * 110 + "ms");
-    });
-    svg.classList.add("will-draw");
-    drawn.observe(svg);
   });
 
-  // Nav: mark the section in view.
-  var links = document.querySelectorAll('.nav-links a[href^="#"]');
-  if (links.length) {
-    var current = new IntersectionObserver(function (entries) {
-      entries.forEach(function (entry) {
-        if (!entry.isIntersecting) return;
-        links.forEach(function (a) { a.classList.toggle("on", a.getAttribute("href") === "#" + entry.target.id); });
+  // The routing scene: the sentence under the diagram.
+  var steps = $$(".scene [data-step]"), says = document.querySelector(".says"), shown = -1;
+  function say(i) { if (says && i !== shown) { shown = i; says.textContent = steps[i].dataset.step; } }
+  if (steps.length) say(steps.length - 1);
+
+  var motion = window.gsap && window.ScrollTrigger && !still;
+  if (motion) gsap.registerPlugin.apply(gsap, [ScrollTrigger].concat(window.SplitText ? [SplitText] : [], window.Flip ? [Flip] : []));
+
+  // The build filter. Rows slide to their new places.
+  var chips = $$(".chips button"), rows = $$(".rows li");
+  chips.forEach(function (chip) {
+    chip.addEventListener("click", function () {
+      chips.forEach(function (c) { c.setAttribute("aria-pressed", String(c === chip)); });
+      var state = motion && window.Flip ? Flip.getState(rows) : null;
+      rows.forEach(function (row) { row.hidden = !(chip.dataset.f === "all" || row.classList.contains(chip.dataset.f)); });
+      if (state) Flip.from(state, { duration: 0.5, ease: "power2.inOut", absolute: true,
+        onEnter: function (els) { return gsap.fromTo(els, { opacity: 0 }, { opacity: 1, duration: 0.3 }); },
+        onLeave: function (els) { return gsap.to(els, { opacity: 0, duration: 0.2 }); } });
+      if (motion) ScrollTrigger.refresh();
+    });
+  });
+
+  if (!motion) return;
+
+  function start() {
+    // The page title rises line by line, once.
+    var title = document.querySelector("[data-rise]");
+    if (title) {
+      if (window.SplitText) {
+        var split = SplitText.create(title, { type: "lines", mask: "lines", aria: "auto" });
+        gsap.from(split.lines, { yPercent: 105, duration: 0.95, stagger: 0.08, ease: "expo.out", delay: 0.1 });
+      } else {
+        gsap.from(title, { opacity: 0, y: 24, duration: 0.9, ease: "expo.out", delay: 0.1 });
+      }
+      gsap.from(".under, .spec, .writeup-head .status, .headline", { opacity: 0, duration: 0.7, ease: "power2.out", delay: 0.65 });
+    }
+
+    // Section headings rise out of a mask as they arrive.
+    $$("main h2").forEach(function (h) {
+      if (h.closest(".prose")) return;
+      var text = h.textContent; h.setAttribute("aria-label", text); h.textContent = "";
+      var mask = document.createElement("span"); mask.className = "mask"; mask.setAttribute("aria-hidden", "true");
+      var inner = document.createElement("span"); inner.textContent = text; mask.appendChild(inner); h.appendChild(mask);
+      gsap.from(inner, { yPercent: 112, duration: 0.9, ease: "expo.out", scrollTrigger: { trigger: h, start: "top 88%" } });
+    });
+
+    // Lists and cards arrive one after another.
+    [".sys", ".proof li", "[data-stagger] > *"].forEach(function (group) {
+      if (!document.querySelector(group)) return;
+      ScrollTrigger.batch(group, { start: "top 90%", once: true, onEnter: function (batch) {
+        gsap.from(batch, { opacity: 0, y: 28, duration: 0.7, stagger: 0.07, ease: "power3.out", clearProps: "opacity,transform" });
+      } });
+    });
+
+    // Table rows wipe in from the left.
+    $$("table[data-wipe]").forEach(function (table) {
+      gsap.from(table.querySelectorAll("tr"), { clipPath: "inset(0 100% 0 0)", duration: 0.6, stagger: 0.08, ease: "power2.out", scrollTrigger: { trigger: table, start: "top 82%" } });
+    });
+
+    // The routing scene: the page holds while the diagram draws itself.
+    if (steps.length) {
+      var draw = gsap.timeline({ scrollTrigger: { trigger: ".scene .pin", start: "top top", end: "+=2000", pin: true, scrub: 0.4,
+        onUpdate: function (self) { say(Math.min(steps.length - 1, Math.floor(self.progress * steps.length))); } } });
+      steps.forEach(function (step) {
+        var wire = step.querySelector(".wire");
+        if (wire) { var len = wire.getTotalLength(); gsap.set(wire, { strokeDasharray: len, strokeDashoffset: len }); draw.to(wire, { strokeDashoffset: 0, duration: 0.5, ease: "none" }); }
+        draw.from(step.querySelectorAll("rect, text"), { opacity: 0, duration: 0.5, ease: "none" }, wire ? ">-0.1" : 0);
       });
-    }, { rootMargin: "-30% 0px -60% 0px" });
-    links.forEach(function (a) {
-      var section = document.getElementById(a.getAttribute("href").slice(1));
-      if (section) current.observe(section);
+      say(0);
+    }
+
+    // Write-up diagrams draw their arrows once, when they come into view.
+    $$("svg.dia").forEach(function (svg) {
+      var lines = $$(".dia-line:not(.dia-dash)", svg);
+      lines.forEach(function (line) { var len = line.getTotalLength(); gsap.set(line, { strokeDasharray: len, strokeDashoffset: len }); });
+      var tl = gsap.timeline({ scrollTrigger: { trigger: svg, start: "top 78%" } });
+      tl.from($$(".dia-box, .dia-text, .dia-sub", svg), { opacity: 0, duration: 0.5, stagger: 0.015 })
+        .to(lines, { strokeDashoffset: 0, duration: 0.5, stagger: 0.09, ease: "power2.out" }, 0.3)
+        .from($$(".dia-label, .dia-dash", svg), { opacity: 0, duration: 0.4 }, ">-0.2");
     });
+
+    // The big email draws in at the end.
+    if (document.querySelector(".mail")) gsap.from(".mail", { yPercent: 60, opacity: 0, duration: 0.9, ease: "expo.out", scrollTrigger: { trigger: ".mail", start: "top 94%" } });
+
+    // Cursor: a dot that follows the pointer and grows over anything clickable.
+    if (window.matchMedia("(pointer: fine)").matches) {
+      var dot = document.createElement("div"); dot.className = "cursor"; dot.setAttribute("aria-hidden", "true"); document.body.appendChild(dot);
+      root.classList.add("has-cursor");
+      var x = gsap.quickTo(dot, "x", { duration: 0.3, ease: "power3" }), y = gsap.quickTo(dot, "y", { duration: 0.3, ease: "power3" });
+      window.addEventListener("pointermove", function (e) { if (e.pointerType === "touch") return; gsap.to(dot, { opacity: 1, duration: 0.2, overwrite: "auto" }); x(e.clientX); y(e.clientY); });
+      document.addEventListener("pointerleave", function () { gsap.to(dot, { opacity: 0, duration: 0.2 }); });
+      document.addEventListener("pointerover", function (e) {
+        var hot = !!e.target.closest("a, button");
+        dot.classList.toggle("on-link", hot);
+        gsap.to(dot, { scale: hot ? 3.4 : 1, duration: 0.3, ease: "power3.out", overwrite: "auto" });
+      });
+      window.addEventListener("pointerdown", function () { gsap.to(dot, { scale: 0.7, duration: 0.12 }); });
+      window.addEventListener("pointerup", function (e) { gsap.to(dot, { scale: e.target.closest && e.target.closest("a, button") ? 3.4 : 1, duration: 0.25 }); });
+    }
+    ScrollTrigger.refresh();
   }
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(start); else start();
 })();
