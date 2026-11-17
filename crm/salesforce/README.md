@@ -98,6 +98,14 @@ Run them from the terminal:
 sf flow run test --target-org roadwren-dev --test-level RunLocalTests
 ```
 
+## Three choices
+
+- A Needs Review Queue for leads with no employee count, over letting them fall into Small Business. An unknown size is not a small company, and a wrong owner costs more than a short wait.
+- UTM medium is lowercased inside the Flow, not only on the site. Imports and other forms create leads too.
+- The Salesforce setup is saved as files with the Salesforce CLI, not as screenshots. A reviewer can read the Flow and the rules, and a change shows up as a diff.
+
+The full list, one line each, is in [`docs/decisions.md`](../../docs/decisions.md).
+
 ## Results
 
 Added once the runs are done: leads routed, how many matched each answer key, what happened to the duplicates, and what broke.
