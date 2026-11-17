@@ -15,6 +15,7 @@
       --rule: #d9d2c5;
       --moss: #4f5d32;
       --wash: #e4e6d4;
+      --rust: #a8481f;
       --serif: "Iowan Old Style", "Palatino Linotype", Palatino, "Book Antiqua", Georgia, serif;
       --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
       --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
@@ -29,6 +30,7 @@
         --rule: #3a342d;
         --moss: #a9b77e;
         --wash: #2e3323;
+        --rust: #e08a5b;
         color-scheme: dark;
       }
     }
@@ -251,9 +253,95 @@
     .work h3 { margin: 0; font-family: var(--serif); font-weight: 400; font-size: 1.25rem; }
     .work p { margin: 8px 0 0; }
     .contact { margin: 20px 0 0; font-family: var(--serif); font-size: clamp(1.25rem, 1.1rem + 0.6vw, 1.5rem); display: flex; flex-wrap: wrap; gap: 8px 40px; }
+
+    /* ---------- Flair: hero, index numbers, principles, hover states ---------- */
+    .progress { position: fixed; inset: 0 0 auto 0; height: 2px; z-index: 6; pointer-events: none; }
+    .progress i { display: block; height: 100%; background: var(--moss); transform: scaleX(0); transform-origin: left; }
+    .nav-links a { position: relative; padding: 2px 0; }
+    .nav-links a::after { content: ""; position: absolute; left: 0; right: 0; bottom: -2px; height: 1px; background: var(--moss); transform: scaleX(0); transform-origin: left; transition: transform .3s ease; }
+    .nav-links a:hover::after, .nav-links a.on::after { transform: scaleX(1); }
+    .nav-links a.on { color: var(--ink); }
+
+    .hero { max-width: none; }
+    .eyebrow { margin: 0 0 28px; display: flex; flex-wrap: wrap; gap: 6px 14px; align-items: center; font-size: 0.875rem; letter-spacing: 0.04em; color: var(--muted); }
+    .eyebrow .live { width: 8px; height: 8px; border-radius: 50%; background: var(--moss); box-shadow: 0 0 0 0 var(--moss); animation: live 2.4s ease-out infinite; }
+    .eyebrow .sep { color: var(--rule); }
+    @keyframes live { 0% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--moss) 55%, transparent); } 100% { box-shadow: 0 0 0 12px transparent; } }
+    .hero h1 { font-size: clamp(3.5rem, 1rem + 13vw, 10.5rem); line-height: 0.92; letter-spacing: -0.03em; }
+    .hero h1 .word { display: inline-block; overflow: hidden; vertical-align: bottom; padding-bottom: 0.12em; margin-bottom: -0.12em; }
+    .hero h1 .word > span { display: inline-block; transform: translateY(105%); animation: rise .9s cubic-bezier(.2,.8,.2,1) forwards; }
+    @keyframes rise { to { transform: none; } }
+    .hero .lead { max-width: 40rem; }
+    .hero-cta { margin: 36px 0 0; display: flex; flex-wrap: wrap; gap: 12px 28px; align-items: center; }
+    .btn { display: inline-flex; align-items: center; gap: 10px; padding: 12px 22px; border-radius: 999px; background: var(--ink); color: var(--paper); text-decoration: none; font-size: 0.9375rem; transition: background .25s ease, transform .25s ease; }
+    .btn:hover { background: var(--moss); color: var(--paper); transform: translateY(-2px); }
+    .btn .arrow, .go .arrow { display: inline-block; transition: transform .25s ease; }
+    .btn:hover .arrow { transform: translateY(3px); }
+
+    /* The hero signal: one lead moving from the ad click to the report. */
+    .signal { margin: 72px 0 0; }
+    .signal svg { display: block; width: 100%; height: auto; overflow: visible; }
+    .signal-line { stroke: var(--rule); stroke-width: 1; }
+    .signal-tick { fill: var(--paper); stroke: var(--muted); stroke-width: 1; }
+    .signal-text { fill: var(--muted); font-family: var(--sans); font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; }
+    .signal-dot { fill: var(--rust); }
+    .signal-trail { stroke: var(--rust); stroke-width: 1.5; stroke-dasharray: 60 940; stroke-dashoffset: 60; animation: trail 7s linear infinite; }
+    @keyframes trail { 0% { stroke-dashoffset: 60; } 85%, 100% { stroke-dashoffset: -940; } }
+    @media (max-width: 640px) { .signal-text.minor { display: none; } }
+
+    .section-head { display: flex; align-items: baseline; gap: 16px; font-size: clamp(1.75rem, 1.4rem + 1.4vw, 2.5rem); margin-top: 128px; }
+    .section-head .idx { font-family: var(--mono); font-size: 0.8125rem; letter-spacing: 0.08em; color: var(--moss); transform: translateY(-0.35em); }
+
+    .path li.is-now::before { background: var(--rust); border-color: var(--rust); }
+
+    .principles { list-style: none; margin: 28px 0 0; padding: 0; display: grid; gap: 0 48px; }
+    @media (min-width: 720px) { .principles { grid-template-columns: 1fr 1fr; } }
+    .principles li { padding: 26px 0 30px; border-top: 1px solid var(--rule); }
+    .principles q { display: block; quotes: none; font-family: var(--serif); font-size: clamp(1.5rem, 1.2rem + 1.2vw, 2.125rem); line-height: 1.15; letter-spacing: -0.01em; }
+    .principles p { margin: 12px 0 0; color: var(--muted); max-width: 26rem; }
+
+    .work li, .proof { transition: border-color .3s ease; }
+    .work li:hover, .proof:hover { border-top-color: var(--moss); }
+    .work h3 { transition: color .3s ease; }
+    .work li:hover h3 { color: var(--moss); }
+    .proof { position: relative; }
+    .proof-num { transition: color .3s ease, transform .4s cubic-bezier(.2,.8,.2,1); }
+    .proof:hover .proof-num { color: var(--rust); transform: translateY(-3px); }
+    .proof-title a::after { content: ""; position: absolute; inset: 0; }
+    .proof-links { position: relative; z-index: 1; }
+    .go { text-decoration: none; display: inline-flex; gap: 8px; align-items: center; }
+    .go span:first-child { text-decoration: underline; text-decoration-color: var(--moss); text-decoration-thickness: 1px; text-underline-offset: 0.22em; }
+    .proof:hover .go .arrow { transform: translateX(5px); color: var(--rust); }
+
+    .dia-route { fill: none; stroke: none; }
+    .dia-pulse { fill: var(--rust); display: none; }
+    .js .dia-pulse { display: inline; }
+
+    .contact { margin-top: 28px; font-size: clamp(1.75rem, 1.1rem + 3.4vw, 3.75rem); line-height: 1.1; letter-spacing: -0.02em; flex-direction: column; gap: 10px; align-items: flex-start; }
+    .contact a { text-decoration: none; background: linear-gradient(var(--moss), var(--moss)) no-repeat left 100% / 0 2px; transition: background-size .45s cubic-bezier(.2,.8,.2,1), color .3s ease; padding-bottom: 4px; overflow-wrap: anywhere; }
+    .contact a:hover { background-size: 100% 2px; }
+    .footer { margin: 128px 0 0; padding-top: 24px; border-top: 1px solid var(--rule); display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px 32px; font-size: 0.875rem; color: var(--muted); }
+
+    /* ---------- Motion that needs the script. Off without it, and off with reduced motion. ---------- */
+    .js .reveal { opacity: 0; transform: translateY(22px); transition: opacity .8s ease, transform .9s cubic-bezier(.2,.8,.2,1); }
+    .js .reveal.in { opacity: 1; transform: none; }
+    .js .dia.will-draw .dia-box, .js .dia.will-draw .dia-text, .js .dia.will-draw .dia-sub, .js .dia.will-draw .dia-label { opacity: 0; transition: opacity .7s ease; }
+    .js .dia.will-draw .dia-line { opacity: 0; stroke-dasharray: var(--len); stroke-dashoffset: var(--len); }
+    .js .dia.will-draw .dia-line.dia-dash { stroke-dasharray: 4 3; stroke-dashoffset: 0; }
+    .js .dia.drawn .dia-box, .js .dia.drawn .dia-text, .js .dia.drawn .dia-sub { opacity: 1; }
+    .js .dia.drawn .dia-label { opacity: 1; transition-delay: 1.2s; }
+    .js .dia.drawn .dia-line { opacity: 1; stroke-dashoffset: 0; transition: stroke-dashoffset .7s ease var(--at), opacity .01s linear var(--at); }
+    .js .dia.drawn .dia-line.dia-dash { transition: opacity .6s ease var(--at); }
+    @media (prefers-reduced-motion: reduce) {
+      .eyebrow .live, .signal-trail, .hero h1 .word > span { animation: none; }
+      .hero h1 .word > span { transform: none; }
+      .signal-trail, .signal-dot { display: none; }
+      * { transition: none !important; }
+    }
   </style>
 </head>
 <body>
+  <div class="progress" aria-hidden="true"><i></i></div>
   <nav class="nav" aria-label="Site">
     <a class="nav-name" href="../index.html">Max Pickard</a>
     <span class="nav-links"><a href="../index.html">All proofs</a><a href="https://github.com/mpickles/revenue-stack-demo/tree/main/crm/salesforce_dedupe">This build on GitHub</a></span>
@@ -389,5 +477,111 @@
       <a class="prev" href="funnel-and-reporting.html"><span>Before</span>Funnel in SQL and a reporting agent</a>
     </nav>
   </main>
+  <script>
+    // Motion for the portfolio pages. No library. Every page reads fine with this
+    // script off: it only adds the "js" class, and the hidden-before-reveal styles
+    // hang off that class. With "reduce motion" on, nothing is hidden or animated.
+    (function () {
+      var root = document.documentElement;
+      var still = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+      // Chicago clock in the hero. Text only, safe with reduced motion.
+      var clock = document.querySelector("[data-chicago-time]");
+      if (clock) {
+        var format = new Intl.DateTimeFormat("en-US", { timeZone: "America/Chicago", hour: "numeric", minute: "2-digit" });
+        var tick = function () { clock.textContent = format.format(new Date()) + " local"; };
+        tick();
+        setInterval(tick, 30000);
+      }
+
+      // Scroll progress hairline and the nav link for the section in view.
+      var bar = document.querySelector(".progress i");
+      if (bar) {
+        var onScroll = function () {
+          var max = root.scrollHeight - window.innerHeight;
+          bar.style.transform = "scaleX(" + (max > 0 ? Math.min(1, window.scrollY / max) : 0) + ")";
+        };
+        window.addEventListener("scroll", onScroll, { passive: true });
+        onScroll();
+      }
+
+      if (still || !("IntersectionObserver" in window)) return;
+      root.classList.add("js");
+
+      // Hero name: split into words that rise in turn. The full name stays as the
+      // accessible label, and the split copies are hidden from screen readers.
+      var name = document.querySelector("[data-split]");
+      if (name) {
+        var words = name.textContent.trim().split(/\s+/);
+        name.setAttribute("aria-label", words.join(" "));
+        name.textContent = "";
+        words.forEach(function (word, i) {
+          var outer = document.createElement("span");
+          outer.className = "word";
+          outer.setAttribute("aria-hidden", "true");
+          var inner = document.createElement("span");
+          inner.textContent = word;
+          inner.style.animationDelay = 120 + i * 140 + "ms";
+          outer.appendChild(inner);
+          name.appendChild(outer);
+          if (i < words.length - 1) name.appendChild(document.createTextNode(" "));
+        });
+      }
+
+      // Reveal on scroll. Items that share a parent come in one after another.
+      var targets = document.querySelectorAll(
+        ".hero > :not(h1), .section-head, .sub-head, .section-note, .about p, .path li, .facts div, .work li, " +
+        ".principles li, .proof, .figure, .contact, .writeup-head > *, .headline, .prose > *, .pager"
+      );
+      var seen = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (!entry.isIntersecting) return;
+          entry.target.classList.add("in");
+          seen.unobserve(entry.target);
+        });
+      }, { rootMargin: "0px 0px -8% 0px", threshold: 0.08 });
+      var order = new Map();
+      targets.forEach(function (el) {
+        var n = order.get(el.parentNode) || 0;
+        order.set(el.parentNode, n + 1);
+        el.classList.add("reveal");
+        el.style.transitionDelay = Math.min(n, 6) * 70 + "ms";
+        seen.observe(el);
+      });
+
+      // Diagrams draw themselves: boxes fade in, then each arrow is drawn in turn.
+      var drawn = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (!entry.isIntersecting) return;
+          entry.target.classList.add("drawn");
+          drawn.unobserve(entry.target);
+        });
+      }, { threshold: 0.25 });
+      document.querySelectorAll("svg.dia").forEach(function (svg) {
+        svg.querySelectorAll(".dia-line").forEach(function (line, i) {
+          var length = line.getTotalLength();
+          line.style.setProperty("--len", length);
+          line.style.setProperty("--at", 300 + i * 110 + "ms");
+        });
+        svg.classList.add("will-draw");
+        drawn.observe(svg);
+      });
+
+      // Nav: mark the section in view.
+      var links = document.querySelectorAll('.nav-links a[href^="#"]');
+      if (links.length) {
+        var current = new IntersectionObserver(function (entries) {
+          entries.forEach(function (entry) {
+            if (!entry.isIntersecting) return;
+            links.forEach(function (a) { a.classList.toggle("on", a.getAttribute("href") === "#" + entry.target.id); });
+          });
+        }, { rootMargin: "-30% 0px -60% 0px" });
+        links.forEach(function (a) {
+          var section = document.getElementById(a.getAttribute("href").slice(1));
+          if (section) current.observe(section);
+        });
+      }
+    })();
+  </script>
 </body>
 </html>

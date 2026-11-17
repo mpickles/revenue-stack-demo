@@ -15,6 +15,7 @@
       --rule: #d9d2c5;
       --moss: #4f5d32;
       --wash: #e4e6d4;
+      --rust: #a8481f;
       --serif: "Iowan Old Style", "Palatino Linotype", Palatino, "Book Antiqua", Georgia, serif;
       --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
       --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
@@ -29,6 +30,7 @@
         --rule: #3a342d;
         --moss: #a9b77e;
         --wash: #2e3323;
+        --rust: #e08a5b;
         color-scheme: dark;
       }
     }
@@ -251,25 +253,124 @@
     .work h3 { margin: 0; font-family: var(--serif); font-weight: 400; font-size: 1.25rem; }
     .work p { margin: 8px 0 0; }
     .contact { margin: 20px 0 0; font-family: var(--serif); font-size: clamp(1.25rem, 1.1rem + 0.6vw, 1.5rem); display: flex; flex-wrap: wrap; gap: 8px 40px; }
+
+    /* ---------- Flair: hero, index numbers, principles, hover states ---------- */
+    .progress { position: fixed; inset: 0 0 auto 0; height: 2px; z-index: 6; pointer-events: none; }
+    .progress i { display: block; height: 100%; background: var(--moss); transform: scaleX(0); transform-origin: left; }
+    .nav-links a { position: relative; padding: 2px 0; }
+    .nav-links a::after { content: ""; position: absolute; left: 0; right: 0; bottom: -2px; height: 1px; background: var(--moss); transform: scaleX(0); transform-origin: left; transition: transform .3s ease; }
+    .nav-links a:hover::after, .nav-links a.on::after { transform: scaleX(1); }
+    .nav-links a.on { color: var(--ink); }
+
+    .hero { max-width: none; }
+    .eyebrow { margin: 0 0 28px; display: flex; flex-wrap: wrap; gap: 6px 14px; align-items: center; font-size: 0.875rem; letter-spacing: 0.04em; color: var(--muted); }
+    .eyebrow .live { width: 8px; height: 8px; border-radius: 50%; background: var(--moss); box-shadow: 0 0 0 0 var(--moss); animation: live 2.4s ease-out infinite; }
+    .eyebrow .sep { color: var(--rule); }
+    @keyframes live { 0% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--moss) 55%, transparent); } 100% { box-shadow: 0 0 0 12px transparent; } }
+    .hero h1 { font-size: clamp(3.5rem, 1rem + 13vw, 10.5rem); line-height: 0.92; letter-spacing: -0.03em; }
+    .hero h1 .word { display: inline-block; overflow: hidden; vertical-align: bottom; padding-bottom: 0.12em; margin-bottom: -0.12em; }
+    .hero h1 .word > span { display: inline-block; transform: translateY(105%); animation: rise .9s cubic-bezier(.2,.8,.2,1) forwards; }
+    @keyframes rise { to { transform: none; } }
+    .hero .lead { max-width: 40rem; }
+    .hero-cta { margin: 36px 0 0; display: flex; flex-wrap: wrap; gap: 12px 28px; align-items: center; }
+    .btn { display: inline-flex; align-items: center; gap: 10px; padding: 12px 22px; border-radius: 999px; background: var(--ink); color: var(--paper); text-decoration: none; font-size: 0.9375rem; transition: background .25s ease, transform .25s ease; }
+    .btn:hover { background: var(--moss); color: var(--paper); transform: translateY(-2px); }
+    .btn .arrow, .go .arrow { display: inline-block; transition: transform .25s ease; }
+    .btn:hover .arrow { transform: translateY(3px); }
+
+    /* The hero signal: one lead moving from the ad click to the report. */
+    .signal { margin: 72px 0 0; }
+    .signal svg { display: block; width: 100%; height: auto; overflow: visible; }
+    .signal-line { stroke: var(--rule); stroke-width: 1; }
+    .signal-tick { fill: var(--paper); stroke: var(--muted); stroke-width: 1; }
+    .signal-text { fill: var(--muted); font-family: var(--sans); font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; }
+    .signal-dot { fill: var(--rust); }
+    .signal-trail { stroke: var(--rust); stroke-width: 1.5; stroke-dasharray: 60 940; stroke-dashoffset: 60; animation: trail 7s linear infinite; }
+    @keyframes trail { 0% { stroke-dashoffset: 60; } 85%, 100% { stroke-dashoffset: -940; } }
+    @media (max-width: 640px) { .signal-text.minor { display: none; } }
+
+    .section-head { display: flex; align-items: baseline; gap: 16px; font-size: clamp(1.75rem, 1.4rem + 1.4vw, 2.5rem); margin-top: 128px; }
+    .section-head .idx { font-family: var(--mono); font-size: 0.8125rem; letter-spacing: 0.08em; color: var(--moss); transform: translateY(-0.35em); }
+
+    .path li.is-now::before { background: var(--rust); border-color: var(--rust); }
+
+    .principles { list-style: none; margin: 28px 0 0; padding: 0; display: grid; gap: 0 48px; }
+    @media (min-width: 720px) { .principles { grid-template-columns: 1fr 1fr; } }
+    .principles li { padding: 26px 0 30px; border-top: 1px solid var(--rule); }
+    .principles q { display: block; quotes: none; font-family: var(--serif); font-size: clamp(1.5rem, 1.2rem + 1.2vw, 2.125rem); line-height: 1.15; letter-spacing: -0.01em; }
+    .principles p { margin: 12px 0 0; color: var(--muted); max-width: 26rem; }
+
+    .work li, .proof { transition: border-color .3s ease; }
+    .work li:hover, .proof:hover { border-top-color: var(--moss); }
+    .work h3 { transition: color .3s ease; }
+    .work li:hover h3 { color: var(--moss); }
+    .proof { position: relative; }
+    .proof-num { transition: color .3s ease, transform .4s cubic-bezier(.2,.8,.2,1); }
+    .proof:hover .proof-num { color: var(--rust); transform: translateY(-3px); }
+    .proof-title a::after { content: ""; position: absolute; inset: 0; }
+    .proof-links { position: relative; z-index: 1; }
+    .go { text-decoration: none; display: inline-flex; gap: 8px; align-items: center; }
+    .go span:first-child { text-decoration: underline; text-decoration-color: var(--moss); text-decoration-thickness: 1px; text-underline-offset: 0.22em; }
+    .proof:hover .go .arrow { transform: translateX(5px); color: var(--rust); }
+
+    .dia-route { fill: none; stroke: none; }
+    .dia-pulse { fill: var(--rust); display: none; }
+    .js .dia-pulse { display: inline; }
+
+    .contact { margin-top: 28px; font-size: clamp(1.75rem, 1.1rem + 3.4vw, 3.75rem); line-height: 1.1; letter-spacing: -0.02em; flex-direction: column; gap: 10px; align-items: flex-start; }
+    .contact a { text-decoration: none; background: linear-gradient(var(--moss), var(--moss)) no-repeat left 100% / 0 2px; transition: background-size .45s cubic-bezier(.2,.8,.2,1), color .3s ease; padding-bottom: 4px; overflow-wrap: anywhere; }
+    .contact a:hover { background-size: 100% 2px; }
+    .footer { margin: 128px 0 0; padding-top: 24px; border-top: 1px solid var(--rule); display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px 32px; font-size: 0.875rem; color: var(--muted); }
+
+    /* ---------- Motion that needs the script. Off without it, and off with reduced motion. ---------- */
+    .js .reveal { opacity: 0; transform: translateY(22px); transition: opacity .8s ease, transform .9s cubic-bezier(.2,.8,.2,1); }
+    .js .reveal.in { opacity: 1; transform: none; }
+    .js .dia.will-draw .dia-box, .js .dia.will-draw .dia-text, .js .dia.will-draw .dia-sub, .js .dia.will-draw .dia-label { opacity: 0; transition: opacity .7s ease; }
+    .js .dia.will-draw .dia-line { opacity: 0; stroke-dasharray: var(--len); stroke-dashoffset: var(--len); }
+    .js .dia.will-draw .dia-line.dia-dash { stroke-dasharray: 4 3; stroke-dashoffset: 0; }
+    .js .dia.drawn .dia-box, .js .dia.drawn .dia-text, .js .dia.drawn .dia-sub { opacity: 1; }
+    .js .dia.drawn .dia-label { opacity: 1; transition-delay: 1.2s; }
+    .js .dia.drawn .dia-line { opacity: 1; stroke-dashoffset: 0; transition: stroke-dashoffset .7s ease var(--at), opacity .01s linear var(--at); }
+    .js .dia.drawn .dia-line.dia-dash { transition: opacity .6s ease var(--at); }
+    @media (prefers-reduced-motion: reduce) {
+      .eyebrow .live, .signal-trail, .hero h1 .word > span { animation: none; }
+      .hero h1 .word > span { transform: none; }
+      .signal-trail, .signal-dot { display: none; }
+      * { transition: none !important; }
+    }
   </style>
 </head>
 <body>
+  <div class="progress" aria-hidden="true"><i></i></div>
   <nav class="nav" aria-label="Site">
     <a class="nav-name" href="#top">Max Pickard</a>
     <span class="nav-links"><a href="#about">About</a><a href="#work">Work</a><a href="#projects">Projects</a><a href="#contact">Contact</a></span>
   </nav>
   <main id="top">
-    <header class="masthead">
-      <h1>Max Pickard</h1>
-      <p class="role">Marketing Operations Specialist at Upgrow. Chicago.</p>
+    <header class="masthead hero">
+      <p class="eyebrow"><span class="live" aria-hidden="true"></span><span>Marketing Operations Specialist at Upgrow</span><span class="sep" aria-hidden="true">/</span><span>Chicago</span><span data-chicago-time></span></p>
+      <h1 data-split>Max Pickard</h1>
       <p class="lead">
         I set up the tracking, the CRM plumbing and the AI automation that marketing
         teams run on. I got here from paid search and SEO, so I know what the numbers
         are for.
       </p>
+      <p class="hero-cta"><a class="btn" href="#projects">See the projects <span class="arrow" aria-hidden="true">&darr;</span></a><a href="#contact">Get in touch</a></p>
+      <div class="signal" aria-hidden="true">
+        <svg viewBox="0 0 1000 46" preserveAspectRatio="xMidYMid meet">
+          <line class="signal-line" x1="0" y1="10" x2="1000" y2="10"/>
+          <line class="signal-trail" x1="0" y1="10" x2="1000" y2="10"/>
+          <circle class="signal-tick" cx="4" cy="10" r="4"/><text class="signal-text" x="0" y="38">Ad click</text>
+          <circle class="signal-tick" cx="200" cy="10" r="4"/><text class="signal-text minor" x="200" y="38" text-anchor="middle">Tracked site</text>
+          <circle class="signal-tick" cx="400" cy="10" r="4"/><text class="signal-text minor" x="400" y="38" text-anchor="middle">CRM</text>
+          <circle class="signal-tick" cx="600" cy="10" r="4"/><text class="signal-text minor" x="600" y="38" text-anchor="middle">Routing</text>
+          <circle class="signal-tick" cx="800" cy="10" r="4"/><text class="signal-text minor" x="800" y="38" text-anchor="middle">SQL</text>
+          <circle class="signal-tick" cx="996" cy="10" r="4"/><text class="signal-text" x="1000" y="38" text-anchor="end">Report</text>
+        </svg>
+      </div>
     </header>
 
-    <h2 class="section-head" id="about">About</h2>
+    <h2 class="section-head" id="about"><span class="idx">01</span>About</h2>
     <div class="about">
       <p>I did not start in marketing. I worked on an alpaca ranch, then cooked for a sorority house, then started as an SEO intern at Upgrow, a marketing agency for B2B software companies, with no marketing experience at all.</p>
       <p>I learned SEO and conversion tracking on the job, asked to learn paid search, and kept getting pulled toward the question behind every campaign: can we trust this number? That question is now my job.</p>
@@ -289,16 +390,24 @@
       <div><dt>Certificates</dt><dd>Google Ads Display, Search Ads 360, LinkedIn Marketing Fundamentals, LinkedIn Measurement</dd></div>
     </dl>
 
-    <h2 class="section-head" id="work">What I do at work</h2>
+    <h2 class="section-head" id="work"><span class="idx">02</span>What I do at work</h2>
     <p class="section-note">Client work stays private, so this is the shape of it with no names and no numbers. The projects below rebuild the same kind of work in public.</p>
     <ul class="work">
-      <li><h3>Conversion tracking</h3><p>Tag Manager and GA4 setups, consent, and finding out why a conversion stopped firing.</p></li>
-      <li><h3>CRM to ad platforms</h3><p>Sending real pipeline stages from Salesforce and HubSpot back to Google Ads and LinkedIn, so bidding learns from more than form fills.</p></li>
+      <li><h3>Conversion tracking</h3><p>Tag Manager and GA4 setups, consent, and finding out why a conversion stopped firing. Looker Studio dashboards on top.</p></li>
+      <li><h3>CRM to ad platforms</h3><p>Mapping CRM stages from Salesforce and HubSpot back to Google Ads and LinkedIn as offline conversions, so bidding can learn from more than form fills.</p></li>
       <li><h3>Paid search and SEO</h3><p>Hands-on campaign work in Google Ads, Microsoft Ads and LinkedIn Ads, plus SEO. It is where I started and why I care about the data.</p></li>
-      <li><h3>AI automation</h3><p>Reporting and review workflows built with Claude Code, where code checks every number and a person approves before anything goes out.</p></li>
+      <li><h3>AI automation</h3><p>Internal tools built with Claude Code. Code does the math, the model writes the words, and a person approves before anything goes out.</p></li>
     </ul>
 
-    <h2 class="section-head" id="projects">Projects</h2>
+    <h2 class="section-head"><span class="idx">03</span>How I work</h2>
+    <ul class="principles">
+      <li><q>Code computes, the model narrates.</q><p>All the math lives in tested code. AI only writes the words around it.</p></li>
+      <li><q>Never guess at a cause.</q><p>Check the logs first.</p></li>
+      <li><q>Keep it simple.</q><p>A tool has to work for someone with no technical background, and anyone should be able to take it over.</p></li>
+      <li><q>Good enough is good enough.</q><p>Small, lean and shipped beats one big thing that does too much at once.</p></li>
+    </ul>
+
+    <h2 class="section-head" id="projects"><span class="idx">04</span>Projects</h2>
     <p class="section-note"><strong>Roadwren revenue stack.</strong> One made-up company and six builds that follow a lead from the ad click to the report. Each build is graded against an answer key, and each opens a write-up.</p>
     <ol class="proofs">
       <li class="proof is-active">
@@ -309,7 +418,7 @@
           <p class="proof-sentence">A demo site that stores a click ID only after consent and carries it through the form into the CRM.</p>
           <p class="proof-graded">Graded on: With consent rejected: no cookie set, no click ID stored. With consent accepted: the click ID reaches the CRM.</p>
           <ul class="proof-links">
-            <li><a href="builds/tracked-site.html">Read the write-up</a></li>
+            <li><a class="go" href="builds/tracked-site.html"><span>Read the write-up</span><span class="arrow" aria-hidden="true">&rarr;</span></a></li>
           </ul>
         </div>
       </li>
@@ -321,7 +430,7 @@
           <p class="proof-sentence">Leads from the form get a stage, a campaign and an owner in Salesforce. Conversions go back to Google Ads.</p>
           <p class="proof-graded">Graded on: 37 test leads with an answer key: the right stage, campaign and owner for each, and every junk lead blocked.</p>
           <ul class="proof-links">
-            <li><a href="builds/salesforce-routing.html">Read the write-up</a></li>
+            <li><a class="go" href="builds/salesforce-routing.html"><span>Read the write-up</span><span class="arrow" aria-hidden="true">&rarr;</span></a></li>
           </ul>
         </div>
       </li>
@@ -333,7 +442,7 @@
           <p class="proof-sentence">A Python tool that checks landing pages for tags, consent, the conversion event and UTM values before launch.</p>
           <p class="proof-graded">Graded on: 14 pages with a planted bug and 8 clean pages: bugs caught, and false alarms raised.</p>
           <ul class="proof-links">
-            <li><a href="builds/campaign-qa-agent.html">Read the write-up</a></li>
+            <li><a class="go" href="builds/campaign-qa-agent.html"><span>Read the write-up</span><span class="arrow" aria-hidden="true">&rarr;</span></a></li>
           </ul>
         </div>
       </li>
@@ -345,7 +454,7 @@
           <p class="proof-sentence">Claude scores each new lead against a written rubric, routes the strong ones and asks a person when unsure.</p>
           <p class="proof-graded">Graded on: Agreement with 36 hand labels, and whether a person&#x27;s edit survives a second run.</p>
           <ul class="proof-links">
-            <li><a href="builds/lead-qualifier.html">Read the write-up</a></li>
+            <li><a class="go" href="builds/lead-qualifier.html"><span>Read the write-up</span><span class="arrow" aria-hidden="true">&rarr;</span></a></li>
           </ul>
         </div>
       </li>
@@ -357,7 +466,7 @@
           <p class="proof-sentence">The funnel and ad credit in SQL, and a weekly summary where code checks every number before it is published.</p>
           <p class="proof-graded">Graded on: Credit adds up to exactly 100 percent, and three planted wrong summaries are rejected.</p>
           <ul class="proof-links">
-            <li><a href="builds/funnel-and-reporting.html">Read the write-up</a></li>
+            <li><a class="go" href="builds/funnel-and-reporting.html"><span>Read the write-up</span><span class="arrow" aria-hidden="true">&rarr;</span></a></li>
           </ul>
         </div>
       </li>
@@ -369,7 +478,7 @@
           <p class="proof-sentence">Duplicate accounts and contacts in Salesforce found and merged by script, with every merge graded.</p>
           <p class="proof-graded">Graded on: Merges right and wrong against an answer key, with decoys that must be left alone.</p>
           <ul class="proof-links">
-            <li><a href="builds/crm-cleanup.html">Read the write-up</a></li>
+            <li><a class="go" href="builds/crm-cleanup.html"><span>Read the write-up</span><span class="arrow" aria-hidden="true">&rarr;</span></a></li>
           </ul>
         </div>
       </li>
@@ -399,10 +508,12 @@
       <text x="510" y="376" class="dia-label" text-anchor="middle">score</text>
       <path d="M318 416 L318 439 L114 439 L114 462" class="dia-line" marker-end="url(#system-a)"/>
       <text x="122" y="455" class="dia-label" text-anchor="start">qualified leads</text>
-      <path d="M408 416 L408 462" class="dia-line" marker-end="url(#system-a)"/>
-      <text x="416" y="439" class="dia-label" text-anchor="start">leads</text>
+      <path d="M378 416 L378 462" class="dia-line" marker-end="url(#system-a)"/>
+      <text x="386" y="439" class="dia-label" text-anchor="start">leads</text>
       <path d="M478 495 L542 495" class="dia-line" marker-end="url(#system-a)"/>
       <text x="510" y="488" class="dia-label" text-anchor="middle">figures</text>
+      <path id="system-route" class="dia-route" d="M378 47 V495 H642"/>
+      <circle class="dia-pulse" r="5"><animateMotion dur="7s" repeatCount="indefinite" keyPoints="0;1;1" keyTimes="0;0.85;1" calcMode="linear"><mpath href="#system-route"/></animateMotion></circle>
       <rect x="278" y="14" width="200" height="66" rx="6" class="dia-box "/>
       <text x="378.0" y="51.5" class="dia-text" text-anchor="middle">Visitor clicks an ad</text>
       <rect x="14" y="126" width="200" height="66" rx="6" class="dia-box b"/>
@@ -442,8 +553,115 @@
     </div>
     <p class="section-note">The systems are real and running. Roadwren and every person, lead and record in it are made up. The code, the answer keys and the decisions are in <a href="https://github.com/mpickles/revenue-stack-demo">the repo</a>. Claude Code writes most of the code from my specs. The tests and answer keys are how I check it.</p>
 
-    <h2 class="section-head" id="contact">Contact</h2>
+    <h2 class="section-head" id="contact"><span class="idx">05</span>Say hello</h2>
     <p class="contact"><a href="mailto:maxapickard@gmail.com">maxapickard@gmail.com</a><a href="https://www.linkedin.com/in/maxwellapickard/">LinkedIn</a></p>
+    <footer class="footer"><span>Max Pickard, Chicago</span><span>Built as plain HTML from the READMEs in <a href="https://github.com/mpickles/revenue-stack-demo">the repo</a></span></footer>
   </main>
+  <script>
+    // Motion for the portfolio pages. No library. Every page reads fine with this
+    // script off: it only adds the "js" class, and the hidden-before-reveal styles
+    // hang off that class. With "reduce motion" on, nothing is hidden or animated.
+    (function () {
+      var root = document.documentElement;
+      var still = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+      // Chicago clock in the hero. Text only, safe with reduced motion.
+      var clock = document.querySelector("[data-chicago-time]");
+      if (clock) {
+        var format = new Intl.DateTimeFormat("en-US", { timeZone: "America/Chicago", hour: "numeric", minute: "2-digit" });
+        var tick = function () { clock.textContent = format.format(new Date()) + " local"; };
+        tick();
+        setInterval(tick, 30000);
+      }
+
+      // Scroll progress hairline and the nav link for the section in view.
+      var bar = document.querySelector(".progress i");
+      if (bar) {
+        var onScroll = function () {
+          var max = root.scrollHeight - window.innerHeight;
+          bar.style.transform = "scaleX(" + (max > 0 ? Math.min(1, window.scrollY / max) : 0) + ")";
+        };
+        window.addEventListener("scroll", onScroll, { passive: true });
+        onScroll();
+      }
+
+      if (still || !("IntersectionObserver" in window)) return;
+      root.classList.add("js");
+
+      // Hero name: split into words that rise in turn. The full name stays as the
+      // accessible label, and the split copies are hidden from screen readers.
+      var name = document.querySelector("[data-split]");
+      if (name) {
+        var words = name.textContent.trim().split(/\s+/);
+        name.setAttribute("aria-label", words.join(" "));
+        name.textContent = "";
+        words.forEach(function (word, i) {
+          var outer = document.createElement("span");
+          outer.className = "word";
+          outer.setAttribute("aria-hidden", "true");
+          var inner = document.createElement("span");
+          inner.textContent = word;
+          inner.style.animationDelay = 120 + i * 140 + "ms";
+          outer.appendChild(inner);
+          name.appendChild(outer);
+          if (i < words.length - 1) name.appendChild(document.createTextNode(" "));
+        });
+      }
+
+      // Reveal on scroll. Items that share a parent come in one after another.
+      var targets = document.querySelectorAll(
+        ".hero > :not(h1), .section-head, .sub-head, .section-note, .about p, .path li, .facts div, .work li, " +
+        ".principles li, .proof, .figure, .contact, .writeup-head > *, .headline, .prose > *, .pager"
+      );
+      var seen = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (!entry.isIntersecting) return;
+          entry.target.classList.add("in");
+          seen.unobserve(entry.target);
+        });
+      }, { rootMargin: "0px 0px -8% 0px", threshold: 0.08 });
+      var order = new Map();
+      targets.forEach(function (el) {
+        var n = order.get(el.parentNode) || 0;
+        order.set(el.parentNode, n + 1);
+        el.classList.add("reveal");
+        el.style.transitionDelay = Math.min(n, 6) * 70 + "ms";
+        seen.observe(el);
+      });
+
+      // Diagrams draw themselves: boxes fade in, then each arrow is drawn in turn.
+      var drawn = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (!entry.isIntersecting) return;
+          entry.target.classList.add("drawn");
+          drawn.unobserve(entry.target);
+        });
+      }, { threshold: 0.25 });
+      document.querySelectorAll("svg.dia").forEach(function (svg) {
+        svg.querySelectorAll(".dia-line").forEach(function (line, i) {
+          var length = line.getTotalLength();
+          line.style.setProperty("--len", length);
+          line.style.setProperty("--at", 300 + i * 110 + "ms");
+        });
+        svg.classList.add("will-draw");
+        drawn.observe(svg);
+      });
+
+      // Nav: mark the section in view.
+      var links = document.querySelectorAll('.nav-links a[href^="#"]');
+      if (links.length) {
+        var current = new IntersectionObserver(function (entries) {
+          entries.forEach(function (entry) {
+            if (!entry.isIntersecting) return;
+            links.forEach(function (a) { a.classList.toggle("on", a.getAttribute("href") === "#" + entry.target.id); });
+          });
+        }, { rootMargin: "-30% 0px -60% 0px" });
+        links.forEach(function (a) {
+          var section = document.getElementById(a.getAttribute("href").slice(1));
+          if (section) current.observe(section);
+        });
+      }
+    })();
+  </script>
 </body>
 </html>
