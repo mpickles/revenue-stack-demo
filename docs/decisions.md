@@ -2,6 +2,7 @@
 One line each: chose X over Y because Z, accepting T.
 
 - Consent banner: chose two buttons (Accept all / Reject all) over per-signal toggles because the demo only needs on/off for all four signals, accepting no granular choice.
+- Consent mode: chose advanced (the container loads with all four signals denied, and Google tags send requests with no cookies) over basic (no Google tag loads until Accept) because Google can then model conversions from visitors who reject, accepting that a visitor who rejects still causes requests to Google, marked gcs=G100, with no cookies and no click IDs. A company whose legal team wants nothing sent before consent would use basic.
 - Consent cookie: chose a 180-day first-party cookie (rw_consent) over a session cookie so a returning visitor is not asked again, accepting a stale choice for up to six months unless they use Cookie settings.
 - Click IDs on a new landing: chose to replace the whole stored set (last touch) over keeping the first set because the most recent ad click is the one Google and Meta will match an offline conversion to, accepting that earlier touches are lost. A landing with no click IDs or UTMs leaves the stored set alone.
 - Click IDs before consent: chose to hold them in memory only over sessionStorage because web storage is storage too and needs the same consent, accepting that a full page reload before the visitor accepts loses them.
