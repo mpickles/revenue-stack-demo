@@ -1,0 +1,37 @@
+<svg class="dia" viewBox="0 0 756 542" role="img" aria-labelledby="campaign-qa-agent-t campaign-qa-agent-d" xmlns="http://www.w3.org/2000/svg">
+<title id="campaign-qa-agent-t">How the campaign QA agent reaches a go or no-go</title>
+<desc id="campaign-qa-agent-d">A campaign brief lists landing pages and the UTM values they should carry. Fixed checks run on each page in a real browser and write a findings file. An answer key of planted bugs and clean pages grades the findings. Claude writes a report from the findings only. Code compares the report to the findings, then the tool returns go or no-go.</desc>
+<defs><marker id="campaign-qa-agent-a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" class="dia-head"/></marker></defs>
+<path d="M214 47 L278 47" class="dia-line" marker-end="url(#campaign-qa-agent-a)"/>
+<path d="M378 80 L378 126" class="dia-line" marker-end="url(#campaign-qa-agent-a)"/>
+<path d="M642 80 L642 159 L478 159" class="dia-line" marker-end="url(#campaign-qa-agent-a)"/>
+<text x="650" y="129" class="dia-label" text-anchor="start">grades</text>
+<path d="M378 192 L378 238" class="dia-line" marker-end="url(#campaign-qa-agent-a)"/>
+<path d="M378 304 L378 350" class="dia-line" marker-end="url(#campaign-qa-agent-a)"/>
+<path d="M478 383 L542 383" class="dia-line" marker-end="url(#campaign-qa-agent-a)"/>
+<path d="M378 416 L378 462" class="dia-line" marker-end="url(#campaign-qa-agent-a)"/>
+<rect x="14" y="14" width="200" height="66" rx="6" class="dia-box "/>
+<text x="114.0" y="44" class="dia-text" text-anchor="middle">Campaign brief</text>
+<text x="114.0" y="61" class="dia-sub" text-anchor="middle">pages and their UTM values</text>
+<rect x="278" y="14" width="200" height="66" rx="6" class="dia-box b"/>
+<text x="378.0" y="44" class="dia-text" text-anchor="middle">Fixed checks in a browser</text>
+<text x="378.0" y="61" class="dia-sub" text-anchor="middle">plain code, no AI</text>
+<rect x="542" y="14" width="200" height="66" rx="6" class="dia-box "/>
+<text x="642.0" y="44" class="dia-text" text-anchor="middle">Answer key</text>
+<text x="642.0" y="61" class="dia-sub" text-anchor="middle">14 planted bugs, 8 clean pages</text>
+<rect x="278" y="126" width="200" height="66" rx="6" class="dia-box "/>
+<text x="378.0" y="156" class="dia-text" text-anchor="middle">Findings file</text>
+<text x="378.0" y="173" class="dia-sub" text-anchor="middle">pass, fail or could not check</text>
+<rect x="278" y="238" width="200" height="66" rx="6" class="dia-box b"/>
+<text x="378.0" y="268" class="dia-text" text-anchor="middle">Claude writes the report</text>
+<text x="378.0" y="285" class="dia-sub" text-anchor="middle">from the findings only</text>
+<rect x="278" y="350" width="200" height="66" rx="6" class="dia-box b"/>
+<text x="378.0" y="379" class="dia-text" text-anchor="middle">Code compares report</text>
+<text x="378.0" y="396" class="dia-text" text-anchor="middle">to findings</text>
+<rect x="542" y="350" width="200" height="66" rx="6" class="dia-box m"/>
+<text x="642.0" y="380" class="dia-text" text-anchor="middle">Report thrown away</text>
+<text x="642.0" y="397" class="dia-sub" text-anchor="middle">if it states anything else</text>
+<rect x="278" y="462" width="200" height="66" rx="6" class="dia-box "/>
+<text x="378.0" y="492" class="dia-text" text-anchor="middle">Go or no-go</text>
+<text x="378.0" y="509" class="dia-sub" text-anchor="middle">no-go exits with code 1</text>
+</svg>

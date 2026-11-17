@@ -1,0 +1,38 @@
+<svg class="dia" viewBox="0 0 756 542" role="img" aria-labelledby="lead-qualifier-t lead-qualifier-d" xmlns="http://www.w3.org/2000/svg">
+<title id="lead-qualifier-t">How the lead qualifier handles a new lead</title>
+<desc id="lead-qualifier-d">A new lead in Salesforce is enriched from three vendors, cheapest first. Claude scores it against a written rubric and returns a score, a reason and a confidence. A confident strong lead gets an owner and a Slack message. An unsure lead goes to an approval screen where a person approves or rejects. Every decision is logged with its cost.</desc>
+<defs><marker id="lead-qualifier-a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" class="dia-head"/></marker></defs>
+<path d="M378 80 L378 126" class="dia-line" marker-end="url(#lead-qualifier-a)"/>
+<path d="M378 192 L378 238" class="dia-line" marker-end="url(#lead-qualifier-a)"/>
+<path d="M214 271 L278 271" class="dia-line" marker-end="url(#lead-qualifier-a)"/>
+<path d="M478 271 L542 271" class="dia-line" marker-end="url(#lead-qualifier-a)"/>
+<path d="M328 304 L328 383 L214 383" class="dia-line" marker-end="url(#lead-qualifier-a)"/>
+<path d="M428 304 L428 383 L542 383" class="dia-line" marker-end="url(#lead-qualifier-a)"/>
+<path d="M114 416 L114 462" class="dia-line" marker-end="url(#lead-qualifier-a)"/>
+<path d="M642 416 L642 462" class="dia-line" marker-end="url(#lead-qualifier-a)"/>
+<rect x="278" y="14" width="200" height="66" rx="6" class="dia-box "/>
+<text x="378.0" y="51.5" class="dia-text" text-anchor="middle">New lead in Salesforce</text>
+<rect x="278" y="126" width="200" height="66" rx="6" class="dia-box b"/>
+<text x="378.0" y="156" class="dia-text" text-anchor="middle">Fill in missing facts</text>
+<text x="378.0" y="173" class="dia-sub" text-anchor="middle">three vendors, cheapest first</text>
+<rect x="14" y="238" width="200" height="66" rx="6" class="dia-box "/>
+<text x="114.0" y="268" class="dia-text" text-anchor="middle">Written rubric</text>
+<text x="114.0" y="285" class="dia-sub" text-anchor="middle">36 hand labels grade it</text>
+<rect x="278" y="238" width="200" height="66" rx="6" class="dia-box b"/>
+<text x="378.0" y="268" class="dia-text" text-anchor="middle">Claude scores the lead</text>
+<text x="378.0" y="285" class="dia-sub" text-anchor="middle">score, reason, confidence</text>
+<rect x="542" y="238" width="200" height="66" rx="6" class="dia-box "/>
+<text x="642.0" y="268" class="dia-text" text-anchor="middle">Log</text>
+<text x="642.0" y="285" class="dia-sub" text-anchor="middle">every decision, with cost</text>
+<rect x="14" y="350" width="200" height="66" rx="6" class="dia-box b"/>
+<text x="114.0" y="380" class="dia-text" text-anchor="middle">Owner set</text>
+<text x="114.0" y="397" class="dia-sub" text-anchor="middle">confident and strong</text>
+<rect x="542" y="350" width="200" height="66" rx="6" class="dia-box b"/>
+<text x="642.0" y="380" class="dia-text" text-anchor="middle">Approval screen</text>
+<text x="642.0" y="397" class="dia-sub" text-anchor="middle">unsure</text>
+<rect x="14" y="462" width="200" height="66" rx="6" class="dia-box "/>
+<text x="114.0" y="499.5" class="dia-text" text-anchor="middle">One Slack message</text>
+<rect x="542" y="462" width="200" height="66" rx="6" class="dia-box "/>
+<text x="642.0" y="491" class="dia-text" text-anchor="middle">A person approves</text>
+<text x="642.0" y="508" class="dia-text" text-anchor="middle">or rejects</text>
+</svg>
