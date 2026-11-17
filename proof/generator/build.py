@@ -212,6 +212,7 @@ def build_pages():
         style=style,
         script=script,
         repo=repo,
+        demo=config["demo"],
         proof=proof_html(builds),
         featured=indent("\n".join(featured), 6),
         rows=indent("\n".join(rows), 8),
@@ -238,6 +239,14 @@ def build_pages():
                 f'    <div class="recording">\n      <video controls preload="metadata" src="{e(build["recording"])}"></video>\n    </div>'
             )
 
+        image = ""
+        if build.get("image"):
+            shot = build["image"]
+            image = (
+                f'    <figure class="frame">\n      <img src="../{e(shot["src"])}" width="{shot["width"]}" height="{shot["height"]}" loading="lazy" alt="{e(shot["alt"])}">\n'
+                f'      <figcaption>{e(shot["caption"])}</figcaption>\n    </figure>'
+            )
+
         links = [f'<li><a href="{e(link_url(link, repo))}">{e(link["label"])}</a></li>' for link in build["links"]]
 
         pager = []
@@ -258,6 +267,7 @@ def build_pages():
             status_text=status_text,
             headline=headline,
             recording=recording,
+            image=image,
             diagram=indent(diagram(build["slug"]), 6),
             body=indent(page["body"].strip(), 6),
             links=indent("\n".join(links), 8),

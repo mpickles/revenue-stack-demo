@@ -128,6 +128,19 @@ class CommittedPages(unittest.TestCase):
             versions = set(re.findall(r"/ajax/libs/gsap/([0-9.]+)/", text))
             self.assertEqual(versions, {"3.13.0"}, path)
 
+    def test_every_image_on_a_page_exists(self):
+        for path, text in self.pages.items():
+            folder = Path(path).parent
+            for src in re.findall(r'<img src="([^"]+)"', text):
+                target = (build.PROOF / folder / src).resolve()
+                self.assertTrue(target.is_file(), f"{path} shows {src}")
+
+    def test_every_image_has_alt_text_and_a_size(self):
+        for path, text in self.pages.items():
+            for tag in re.findall(r"<img [^>]+>", text):
+                self.assertRegex(tag, r'alt="[^"]{10,}"', path)
+                self.assertRegex(tag, r'width="\d+" height="\d+"', path)
+
     def test_no_placeholder_text_is_published(self):
         for path, text in self.pages.items():
             self.assertNotIn("placeholder", text.lower(), path)

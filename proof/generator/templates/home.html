@@ -14,6 +14,7 @@ $style
   </style>
 </head>
 <body>
+  <div class="progress" aria-hidden="true"></div>
   <nav class="nav" aria-label="Site">
     <a class="nav-name" href="#top">Max Pickard</a>
     <div><a href="#work">Work</a><a href="#about">About</a>$contact_nav<button type="button" data-theme-toggle>Dark</button></div>
@@ -21,7 +22,7 @@ $style
   <main id="top">
     <header class="hero"><div class="wrap">
       <div class="hero-grid">
-        <h1 data-rise>Max Pickard</h1>
+        <h1 data-rise>Max Pickard<i aria-hidden="true">.</i></h1>
         <dl class="spec">
           <div><dt>Role</dt><dd>Marketing Operations Specialist</dd></div>
           <div><dt>Company</dt><dd>Upgrow</dd></div>
@@ -35,11 +36,24 @@ $style
         <nav aria-label="Links"><a href="#work">Work</a><a href="#about">About</a>$contact_links<a href="$repo">GitHub</a></nav>
       </div>
     </div></header>
+
+    <section class="statement" aria-label="In short"><div class="wrap">
+      <p data-words>I started as an SEO intern with no marketing experience. Now I build the systems marketing teams run on. Before that: a math degree, a sorority kitchen and an alpaca ranch.</p>
+    </div></section>
 $proof
     <section class="sec" id="work"><div class="wrap">
       <h2>Three systems, written up in full</h2>
       <p class="sub">One made-up company, Roadwren, so every part can be public. Each build is graded against an answer key.</p>
 $featured
+    </div></section>
+
+    <section class="sec shot"><div class="wrap">
+      <h2>It runs. This is the live demo.</h2>
+      <p class="sub">A real page on a made-up company. <a href="$demo/demo">Open the demo form</a> and watch what the banner does.</p>
+      <figure class="frame" data-grow>
+        <div class="frame-bar" aria-hidden="true"><i></i><i></i><i></i><span>roadwren-demo.vercel.app/demo</span></div>
+        <img src="img/tracked-site.webp" width="1440" height="900" loading="lazy" alt="The Roadwren demo form with the cookie banner open, offering Reject all and Accept all, before any click ID is stored.">
+      </figure>
     </div></section>
 
     <section class="scene" aria-label="How the routing build works">
@@ -97,8 +111,8 @@ $rows
     <section class="sec" id="about"><div class="wrap">
       <h2>About</h2>
       <div class="about">
-        <p>I did not start in marketing. I worked on an alpaca ranch, cooked for a sorority house, studied applied mathematics, and started at Upgrow as an SEO intern with no marketing experience.</p>
-        <p>Since then I have learned whatever the job needed next: SEO, paid search, tracking, CRMs, SQL, and now building tools with AI. I grade my own builds against answer keys because I was trained to prove things.</p>
+        <p>I learn whatever the job needs next. At Upgrow that has been SEO, then paid search, then tracking and CRMs, then SQL, and now building tools with AI.</p>
+        <p>I studied applied mathematics at UC San Diego, which is why I grade my own builds against answer keys. Before any of this I worked on an alpaca ranch and cooked for a sorority house.</p>
       </div>
     </div></section>
 $contact

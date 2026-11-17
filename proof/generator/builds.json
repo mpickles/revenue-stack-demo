@@ -43,7 +43,14 @@
       "featured": true,
       "title": "A tracked site that stores a click ID only after consent",
       "problem": "Most tracking either ignores consent or loses the click ID. This does neither.",
-      "built_with": "Next.js, Tag Manager, GA4, HubSpot"
+      "built_with": "Next.js, Tag Manager, GA4, HubSpot",
+      "image": {
+        "src": "img/tracked-site.webp",
+        "width": 1440,
+        "height": 900,
+        "alt": "The Roadwren demo form with the cookie banner open, offering Reject all and Accept all, before any click ID is stored.",
+        "caption": "The live demo form. The banner comes first: nothing is stored until Accept."
+      }
     },
     {
       "slug": "salesforce-routing",
