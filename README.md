@@ -19,24 +19,26 @@ flowchart LR
   SF --> F[Flow: stage, campaign, owner]
   F --> Q[Lead qualifier agent]
   F --> O[Conversion upload file<br/>back to Google Ads]
+  SF --> W[Funnel and credit in SQL]
+  W --> R[Reporting agent<br/>with a number check]
+  D[CRM cleanup] -.merges duplicates.-> SF
   S -.checked by.-> QA[Campaign QA agent]
 ```
 
-Solid arrows that end at HubSpot are live today. The Salesforce, agent and upload parts are in progress or planned, as the table below says.
+Solid arrows that end at HubSpot are live today. The Salesforce, agent, SQL and upload parts are in progress or planned, as the table below says.
 
 ## Status
 
-| Part | Folder | Status |
+Six builds, in the order a lead moves through them. Each has a write-up on the [proof page](https://maxpickard-revenue-stack.vercel.app), made from the README in its folder.
+
+| Build | Folders | Status |
 |---|---|---|
-| Tracked site: consent, click IDs, hidden fields, lead API | `site/` | Live |
-| Tag Manager and GA4 setup | `tagging/` | In progress |
-| Salesforce lead to campaign Flow, routing, validation rules | `crm/salesforce/` | In progress |
-| Conversion upload file for Google Ads, with a row checker | `pipelines/offline_conversions/` | Planned |
-| Campaign QA agent: checks pages for tags, events, UTMs and consent before launch | `agents/tracking_qa/` | Planned |
-| Lead qualifier agent: scores a lead, writes back to the CRM, routes it | `agents/lead_classifier/` | Planned |
-| Made-up data generators | `pipelines/synthetic/` | Planned |
-| Funnel and attribution models | `warehouse/` | Planned |
-| Reporting agent with a number check | `agents/analyst/` | Planned |
+| Tracked site: consent, click IDs, hidden fields, lead API, Tag Manager and GA4 | `site/`, [`tagging/`](tagging) | In progress. The site code is live |
+| Salesforce routing: lead to campaign Flow, queues, validation rules, and the conversion upload file for Google Ads | [`crm/salesforce/`](crm/salesforce), `pipelines/offline_conversions/` | In progress |
+| Campaign QA agent: checks pages for tags, events, UTMs and consent before launch | [`agents/tracking_qa/`](agents/tracking_qa) | Planned |
+| Lead qualifier agent: scores a lead, writes back to Salesforce, routes it | [`agents/lead_classifier/`](agents/lead_classifier) | Planned |
+| Funnel and attribution in SQL, and a reporting agent with a number check | `pipelines/synthetic/`, [`warehouse/`](warehouse), `agents/analyst/` | Planned |
+| CRM cleanup: duplicate accounts and contacts in Salesforce merged by script and graded | [`crm/salesforce_dedupe/`](crm/salesforce_dedupe) | Planned |
 
 ## What the site does today
 
@@ -58,6 +60,18 @@ npm install
 npm test
 npm run test:e2e
 ```
+
+## The proof page
+
+The proof page is plain HTML in `proof/`. A short Python script builds it: the home page from `proof/generator/builds.json`, and one write-up page per build from that build's README. After changing a README, run it and commit the pages.
+
+```
+pip install -r proof/generator/requirements.txt
+python proof/generator/build.py
+python -m unittest discover -s proof/generator -p "test_*.py"
+```
+
+GitHub runs the same tests on every pull request, and they fail if a page is out of date with its README.
 
 ## Decisions and limits
 
