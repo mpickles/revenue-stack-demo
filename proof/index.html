@@ -6,661 +6,446 @@
   <meta name="robots" content="noindex, nofollow">
   <title>Max Pickard</title>
   <!-- Made by proof/generator/build.py. Do not edit by hand. Edit proof/generator/templates/home.html. -->
+  <script>try{var t=localStorage.getItem("theme");if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
   <style>
-    :root {
-      --paper: #f2eee6;
-      --panel: #f8f5ef;
-      --ink: #1f1b16;
-      --muted: #6b645a;
-      --rule: #d9d2c5;
-      --moss: #4f5d32;
-      --wash: #e4e6d4;
-      --rust: #a8481f;
-      --serif: "Iowan Old Style", "Palatino Linotype", Palatino, "Book Antiqua", Georgia, serif;
-      --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-      --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-      color-scheme: light;
+    /* Technical direction. Named tokens, light and dark. IBM Plex Sans for reading,
+       IBM Plex Mono only where something is data: tables, statuses, diagram notes. */
+    :root{
+      --bg:#FAFAF9;--ink:#111417;--muted:#60666D;--line:#D9DBDD;--panel:#F0F1F0;--accent:#0F7B6C;
+      --sans:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;--mono:"IBM Plex Mono",ui-monospace,Menlo,Consolas,monospace;
+      --ease:cubic-bezier(.23,1,.32,1);
     }
-    @media (prefers-color-scheme: dark) {
-      :root {
-        --paper: #1c1915;
-        --panel: #24201b;
-        --ink: #ece6da;
-        --muted: #a39b8e;
-        --rule: #3a342d;
-        --moss: #a9b77e;
-        --wash: #2e3323;
-        --rust: #e08a5b;
-        color-scheme: dark;
-      }
-    }
+    @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#101214;--ink:#ECEDEE;--muted:#979DA4;--line:#272B2F;--panel:#171A1D;--accent:#3CC8B4;color-scheme:dark}}
+    :root[data-theme="dark"]{--bg:#101214;--ink:#ECEDEE;--muted:#979DA4;--line:#272B2F;--panel:#171A1D;--accent:#3CC8B4;color-scheme:dark}
+    *,*::before,*::after{box-sizing:border-box}
+    html{-webkit-text-size-adjust:100%;scroll-padding-top:96px}
+    body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:1.125rem;line-height:1.5;overflow-x:hidden}
+    ::selection{background:var(--accent);color:var(--bg)}
+    button{font:inherit;color:inherit;cursor:pointer}
+    a{color:inherit;text-decoration:none;background:linear-gradient(currentColor,currentColor) no-repeat left 100%/100% 1px;transition:background-size .2s var(--ease),color .2s var(--ease)}
+    a:hover{color:var(--accent);background-size:0 1px;background-position:right 100%}
+    a:focus-visible,button:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+    .wrap{width:100%;max-width:78rem;margin:0 auto;padding:0 clamp(20px,5vw,64px)}
+    h1,h2,h3{margin:0;font-weight:500;letter-spacing:-.04em}
+    h2{font-size:clamp(1.875rem,1.3rem + 2.4vw,3.25rem);line-height:1.02;max-width:22ch;text-wrap:balance}
+    h2 .mask{display:block;overflow:hidden;padding-bottom:.12em;margin-bottom:-.12em}
+    h2 .mask>span{display:block}
+    .sub{margin:14px 0 0;color:var(--muted);max-width:38rem}
+    .sec{padding:clamp(88px,12vw,168px) 0 0}
 
-    *, *::before, *::after { box-sizing: border-box; }
-    html { -webkit-text-size-adjust: 100%; scroll-padding-top: 96px; }
-    body {
-      margin: 0;
-      background: var(--paper);
-      color: var(--ink);
-      font-family: var(--sans);
-      font-size: 1rem;
-      line-height: 1.65;
-    }
-    main {
-      max-width: 60rem;
-      margin: 0 auto;
-      padding: 72px 20px 96px;
-    }
-    @media (min-width: 720px) {
-      main { padding: 104px 40px 144px; }
-    }
+    /* Nav: floats, stops short of the screen edges */
+    .nav{position:fixed;top:16px;left:50%;transform:translateX(-50%);z-index:20;width:min(calc(100% - 32px),42rem);display:flex;gap:8px 20px;align-items:center;justify-content:space-between;padding:8px 8px 8px 20px;background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(12px);border:1px solid var(--line);border-radius:14px;font-size:.9375rem}
+    .nav .nav-name{font-weight:600;background:none}
+    .nav div{display:flex;gap:6px 18px;align-items:center}
+    .nav div a{background:none;color:var(--muted)}
+    .nav div a:hover{color:var(--ink)}
+    .nav button{border:1px solid var(--line);background:none;border-radius:8px;padding:6px 12px;min-height:36px;font-size:.875rem}
+    @media (max-width:560px){.nav div a{display:none}}
 
-    a { color: inherit; text-decoration-color: var(--moss); text-decoration-thickness: 1px; text-underline-offset: 0.22em; }
-    a:hover { color: var(--moss); }
-    a:focus-visible { outline: 1px solid var(--moss); outline-offset: 3px; }
+    /* Hero */
+    .hero{min-height:100svh;display:flex;flex-direction:column;justify-content:flex-end;padding:132px 0 clamp(40px,6vw,80px)}
+    .hero h1{font-size:clamp(3.5rem,1rem + 10.5vw,10rem);line-height:.88;letter-spacing:-.055em;max-width:8ch}
+    .hero-grid{display:grid;gap:28px 64px;align-items:end}
+    @media (min-width:980px){.hero-grid{grid-template-columns:1fr 21rem}}
+    .spec{margin:0;border-top:1px solid var(--ink);font-size:.9375rem}
+    .spec div{display:grid;grid-template-columns:6.5rem 1fr;gap:12px;padding:9px 0;border-bottom:1px solid var(--line)}
+    .spec dt{color:var(--muted)}.spec dd{margin:0}
+    .under{display:flex;flex-wrap:wrap;gap:14px 40px;justify-content:space-between;align-items:baseline;margin-top:clamp(32px,5vw,64px);padding-top:22px;border-top:1px solid var(--line)}
+    .under p{margin:0;font-size:clamp(1.0625rem,1rem + .5vw,1.375rem);letter-spacing:-.01em}
+    .under nav{display:flex;flex-wrap:wrap;gap:6px 26px;font-size:1rem}
+    .copy{border:0;background:linear-gradient(currentColor,currentColor) no-repeat left 100%/100% 1px;padding:0}
+    .copy:hover{color:var(--accent)}
 
-    /* ---------- Nav: a floating bar that stops short of the screen edges ---------- */
-    .nav {
-      position: sticky;
-      top: 16px;
-      z-index: 5;
-      width: calc(100% - 40px);
-      max-width: 44rem;
-      margin: 16px auto 0;
-      padding: 10px 22px;
-      display: flex;
-      flex-wrap: wrap;
-      gap: 4px 20px;
-      align-items: center;
-      justify-content: space-between;
-      background: var(--panel);
-      border: 1px solid var(--rule);
-      border-radius: 999px;
-      font-size: 0.9375rem;
-    }
-    .nav a { text-decoration: none; }
-    .nav .nav-name { font-family: var(--serif); font-size: 1.0625rem; }
-    .nav .nav-links { display: flex; gap: 4px 20px; flex-wrap: wrap; color: var(--muted); }
-    .nav + main { padding-top: 64px; }
-    @media (min-width: 720px) { .nav + main { padding-top: 88px; } }
+    /* Proof lines */
+    .proof{margin:40px 0 0;padding:0;list-style:none;max-width:52rem}
+    .proof li{padding:16px 0;border-top:1px solid var(--line);font-size:clamp(1.125rem,1rem + .7vw,1.5rem);letter-spacing:-.015em}
+    .proof li:last-child{border-bottom:1px solid var(--line)}
 
-    /* ---------- Masthead ---------- */
-    .masthead { max-width: 38rem; }
-    h1 {
-      margin: 0;
-      font-family: var(--serif);
-      font-weight: 400;
-      font-size: clamp(2.75rem, 1.6rem + 5vw, 4.75rem);
-      line-height: 1.02;
-      letter-spacing: -0.015em;
-    }
-    .role { margin: 16px 0 0; color: var(--muted); font-size: 1.0625rem; }
-    .lead {
-      margin: 48px 0 0;
-      padding-top: 24px;
-      border-top: 1px solid var(--rule);
-      font-family: var(--serif);
-      font-size: clamp(1.25rem, 1.1rem + 0.6vw, 1.5rem);
-      line-height: 1.5;
-    }
+    /* Featured systems: text left, facts right */
+    .sys{display:grid;gap:10px 56px;padding:34px 0;border-top:1px solid var(--line)}
+    .sys:first-of-type{margin-top:44px;border-top-color:var(--ink)}
+    @media (min-width:900px){.sys{grid-template-columns:minmax(0,7fr) minmax(0,4fr)}}
+    .sys h3{margin:0 0 10px;font-size:clamp(1.5rem,1.2rem + 1.4vw,2.375rem);line-height:1.05}
+    .sys h3 a{background:none}
+    .sys p{margin:0 0 12px;max-width:36rem}
+    .sys p.q{color:var(--muted)}
+    .facts{margin:0;font-size:.9375rem}
+    .facts div{display:grid;grid-template-columns:5.5rem 1fr;gap:12px;padding:8px 0;border-bottom:1px solid var(--line)}
+    .facts dt{color:var(--muted)}.facts dd{margin:0}
+    .status{display:inline-flex;align-items:center;gap:8px;font-family:var(--mono);font-size:.8125rem}
+    .status::before{content:"";width:8px;height:8px;border-radius:50%;border:1.5px solid var(--muted)}
+    .status.is-active::before{background:var(--accent);border-color:var(--accent)}
 
-    /* ---------- Section heads ---------- */
-    .section-head {
-      margin: 96px 0 0;
-      font-family: var(--serif);
-      font-weight: 400;
-      font-size: 1.5rem;
-      letter-spacing: -0.005em;
-    }
-    .section-note { margin: 8px 0 0; color: var(--muted); max-width: 38rem; }
+    /* The scene: one system, drawn as you scroll */
+    .pin{min-height:100svh;display:flex;flex-direction:column;justify-content:center;padding:96px 0 40px}
+    .scene svg{display:block;width:100%;height:auto;overflow:visible;margin:40px 0 0}
+    .scene .box{fill:var(--bg);stroke:var(--ink);stroke-width:1.5}
+    .scene .box.end{fill:var(--panel)}
+    .scene .wire{fill:none;stroke:var(--accent);stroke-width:2}
+    .scene text{font-family:var(--sans);font-size:19px;fill:var(--ink);text-anchor:middle}
+    .scene text.s{font-family:var(--mono);font-size:12.5px;fill:var(--muted)}
+    .says{margin:28px 0 0;font-weight:500;font-size:clamp(1.25rem,1rem + 1.3vw,2.125rem);line-height:1.15;letter-spacing:-.025em;min-height:2.4em;max-width:44rem}
 
-    /* ---------- Tiles ---------- */
-    .proofs {
-      list-style: none;
-      margin: 24px 0 0;
-      padding: 0;
-      display: grid;
-      column-gap: 48px;
-    }
-    @media (min-width: 720px) {
-      .proofs { grid-template-columns: 1fr 1fr; }
-    }
-    .proof {
-      display: grid;
-      grid-template-columns: 3.25rem 1fr;
-      column-gap: 16px;
-      padding: 24px 0 36px;
-      border-top: 1px solid var(--rule);
-    }
-    .proof-num {
-      font-family: var(--serif);
-      font-size: 2.75rem;
-      line-height: 1;
-      font-variant-numeric: lining-nums;
-      color: var(--muted);
-    }
-    .proof-title {
-      margin: 4px 0 0;
-      font-family: var(--serif);
-      font-weight: 400;
-      font-size: 1.375rem;
-      line-height: 1.25;
-    }
-    .proof-title a { text-decoration: none; }
-    .proof-title a:hover { text-decoration: underline; text-decoration-color: var(--moss); text-decoration-thickness: 1px; }
-    .status { margin: 6px 0 0; font-size: 0.9375rem; color: var(--muted); }
-    .proof-headline { margin: 14px 0 0; font-family: var(--serif); font-size: 1.1875rem; line-height: 1.35; }
-    .proof-sentence { margin: 12px 0 0; }
-    .proof-graded { margin: 10px 0 0; font-size: 0.9375rem; color: var(--muted); }
-    .proof-links {
-      margin: 14px 0 0;
-      padding: 0;
-      list-style: none;
-      display: flex;
-      flex-wrap: wrap;
-      gap: 4px 24px;
-      font-size: 0.9375rem;
-    }
+    /* Tables: the grading table is the look of the site */
+    .tw{overflow-x:auto;margin-top:36px}
+    table{width:100%;border-collapse:collapse;font-family:var(--mono);font-size:.8125rem;border:1px solid var(--line);min-width:32rem}
+    th,td{text-align:left;padding:10px 14px;border-bottom:1px solid var(--line);border-right:1px solid var(--line);vertical-align:top}
+    th{font-weight:500;color:var(--muted);background:var(--panel)}
+    td.num{font-variant-numeric:tabular-nums}
 
-    /* In progress and live: moss numeral and status, with a small solid mark. */
-    .is-active .proof-num,
-    .is-active.status,
-    .is-active .status { color: var(--moss); }
-    .is-active.status::before,
-    .is-active .status::before {
-      content: "";
-      display: inline-block;
-      width: 7px;
-      height: 7px;
-      margin-right: 8px;
-      background: var(--moss);
-      vertical-align: 0.08em;
-    }
+    /* All builds: rows and a filter */
+    .chips{display:flex;flex-wrap:wrap;gap:8px;margin:36px 0 8px}
+    .chips button{border:1px solid var(--line);background:none;border-radius:8px;padding:8px 14px;min-height:40px;font-size:.9375rem}
+    .chips button[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+    .rows{list-style:none;margin:0;padding:0}
+    .rows li{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:4px 24px;align-items:baseline;padding:18px 0;border-bottom:1px solid var(--line)}
+    @media (min-width:860px){.rows li{grid-template-columns:minmax(0,1fr) minmax(0,1.5fr) 8.5rem}}
+    .rows b{font-weight:600;font-size:1.25rem;letter-spacing:-.02em}
+    .rows b a{background:none}
+    .rows p{margin:0;color:var(--muted);grid-column:1/-1}
+    @media (min-width:860px){.rows p{grid-column:auto}}
+    .rows .status{color:var(--muted);justify-self:end}
+    .rows li[hidden]{display:none}
 
-    /* ---------- Diagrams ---------- */
-    .figure { margin: 32px 0 0; padding: 28px 20px; background: var(--panel); border: 1px solid var(--rule); border-radius: 14px; overflow-x: auto; }
-    .dia { display: block; width: 100%; min-width: 600px; max-width: 760px; height: auto; margin: 0 auto; font-family: var(--sans); }
-    .dia-box { fill: var(--paper); stroke: var(--rule); stroke-width: 1; }
-    .dia-box.b { fill: var(--wash); stroke: var(--moss); }
-    .dia-box.m { stroke-dasharray: 4 3; stroke: var(--muted); }
-    .dia-text { fill: var(--ink); font-size: 13.5px; }
-    .dia-sub { fill: var(--muted); font-size: 11.5px; }
-    .dia-label { fill: var(--muted); font-size: 11.5px; }
-    .dia-line { fill: none; stroke: var(--muted); stroke-width: 1.2; }
-    .dia-dash { stroke-dasharray: 4 3; }
-    .dia-head { fill: var(--muted); }
-    .figure-key { margin: 16px auto 0; max-width: 760px; font-size: 0.875rem; color: var(--muted); }
+    .work{display:grid;gap:0 56px;margin-top:40px}
+    @media (min-width:760px){.work{grid-template-columns:1fr 1fr}}
+    .work div{padding:22px 0;border-top:1px solid var(--line)}
+    .work b{display:block;font-weight:600;font-size:1.25rem;letter-spacing:-.02em;margin-bottom:6px}
+    .work p{margin:0;color:var(--muted)}
 
-    /* ---------- Write-up pages ---------- */
-    .writeup-head { max-width: 44rem; }
-    .writeup-head h1 { font-size: clamp(2rem, 1.3rem + 3vw, 3.25rem); line-height: 1.08; }
-    .writeup-head .status { margin-top: 20px; }
-    .headline {
-      margin: 40px 0 0;
-      padding: 24px 0;
-      border-top: 1px solid var(--rule);
-      border-bottom: 1px solid var(--rule);
-      max-width: 44rem;
-    }
-    .headline-label { margin: 0; font-size: 0.8125rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); }
-    .headline-value { margin: 8px 0 0; font-family: var(--serif); font-size: clamp(1.25rem, 1.1rem + 0.8vw, 1.625rem); line-height: 1.35; }
-    .recording { margin: 32px 0 0; max-width: 44rem; }
-    .recording video { display: block; width: 100%; border: 1px solid var(--rule); border-radius: 10px; }
-    .prose { max-width: 44rem; margin-top: 56px; }
-    .prose h2 { margin: 56px 0 0; font-family: var(--serif); font-weight: 400; font-size: 1.5rem; line-height: 1.25; }
-    .prose h3 { margin: 36px 0 0; font-family: var(--serif); font-weight: 400; font-size: 1.1875rem; }
-    .prose p, .prose ul, .prose ol { margin: 16px 0 0; }
-    .prose ul, .prose ol { padding-left: 1.25rem; }
-    .prose li + li { margin-top: 6px; }
-    .prose code { font-family: var(--mono); font-size: 0.875em; background: var(--panel); border: 1px solid var(--rule); border-radius: 4px; padding: 1px 5px; }
-    .prose pre { margin: 16px 0 0; padding: 16px 18px; background: var(--panel); border: 1px solid var(--rule); border-radius: 10px; overflow-x: auto; line-height: 1.5; }
-    .prose pre code { background: none; border: 0; padding: 0; font-size: 0.8125rem; }
-    .tw { margin: 20px 0 0; overflow-x: auto; }
-    .prose table { border-collapse: collapse; width: 100%; min-width: 30rem; font-size: 0.9375rem; }
-    .prose th, .prose td { text-align: left; vertical-align: top; padding: 10px 14px 10px 0; border-bottom: 1px solid var(--rule); }
-    .prose th { font-weight: 600; font-size: 0.8125rem; letter-spacing: 0.04em; text-transform: uppercase; color: var(--muted); }
-    .repo-links { margin: 16px 0 0; padding: 0; list-style: none; display: flex; flex-wrap: wrap; gap: 8px 28px; }
-    .pager { margin: 96px 0 0; padding-top: 24px; border-top: 1px solid var(--rule); display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px 32px; }
-    .pager span { display: block; font-size: 0.8125rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); }
-    .pager a { font-family: var(--serif); font-size: 1.1875rem; text-decoration: none; }
-    .pager .next { text-align: right; margin-left: auto; }
+    .about{margin-top:44px;max-width:44rem}
+    .about p{margin:0 0 18px}
+    .about p:first-child{font-size:clamp(1.25rem,1.05rem + .9vw,1.75rem);line-height:1.3;letter-spacing:-.02em}
 
-    /* ---------- Home page: about, path, facts, work ---------- */
-    .sub-head { margin: 64px 0 0; font-family: var(--serif); font-weight: 400; font-size: 1.25rem; }
-    .about { max-width: 38rem; margin-top: 16px; }
-    .about p { margin: 16px 0 0; }
-    .path { list-style: none; margin: 40px 0 0; padding: 0; display: grid; gap: 0; }
-    .path li { position: relative; padding: 0 0 22px 28px; border-left: 1px solid var(--rule); margin-left: 5px; }
-    .path li:last-child { padding-bottom: 0; border-left-color: transparent; }
-    .path li::before { content: ""; position: absolute; left: -5px; top: 6px; width: 9px; height: 9px; border-radius: 50%; background: var(--paper); border: 1px solid var(--muted); }
-    .path li.is-now::before { background: var(--moss); border-color: var(--moss); }
-    .path-when { display: block; font-size: 0.8125rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); }
-    .path-what { display: block; font-family: var(--serif); font-size: 1.1875rem; line-height: 1.3; }
-    .path-note { display: block; font-size: 0.9375rem; color: var(--muted); }
-    @media (min-width: 860px) {
-      .path { grid-template-columns: repeat(5, 1fr); }
-      .path li { padding: 22px 16px 0 0; margin: 0; border-left: 0; border-top: 1px solid var(--rule); }
-      .path li:last-child { border-top-color: var(--rule); }
-      .path li::before { left: 0; top: -5px; }
-    }
-    .facts { margin: 48px 0 0; display: grid; gap: 0 48px; }
-    @media (min-width: 720px) { .facts { grid-template-columns: 1fr 1fr; } }
-    .facts div { padding: 14px 0; border-top: 1px solid var(--rule); }
-    .facts dt { font-size: 0.8125rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); }
-    .facts dd { margin: 4px 0 0; }
-    .work { list-style: none; margin: 24px 0 0; padding: 0; display: grid; gap: 0 48px; }
-    @media (min-width: 720px) { .work { grid-template-columns: 1fr 1fr; } }
-    .work li { padding: 20px 0 24px; border-top: 1px solid var(--rule); }
-    .work h3 { margin: 0; font-family: var(--serif); font-weight: 400; font-size: 1.25rem; }
-    .work p { margin: 8px 0 0; }
-    .contact { margin: 20px 0 0; font-family: var(--serif); font-size: clamp(1.25rem, 1.1rem + 0.6vw, 1.5rem); display: flex; flex-wrap: wrap; gap: 8px 40px; }
+    .contact{padding:clamp(88px,12vw,168px) 0 96px}
+    .contact .mail{display:inline-block;margin-top:22px;font-weight:500;font-size:clamp(1.5rem,.6rem + 4.6vw,4.75rem);letter-spacing:-.045em;line-height:1.05;overflow-wrap:anywhere;background:linear-gradient(var(--accent),var(--accent)) no-repeat left 100%/0 3px;padding-bottom:6px;transition:background-size .45s var(--ease)}
+    .contact .mail:hover{color:var(--ink);background-size:100% 3px}
+    .contact small{display:block;margin-top:14px;color:var(--muted);font-size:.9375rem;min-height:1.5em}
+    .foot{display:flex;flex-wrap:wrap;gap:8px 32px;margin-top:56px;padding-top:20px;border-top:1px solid var(--line);font-size:.9375rem}
+    .foot span{color:var(--muted)}
 
-    /* ---------- Flair: hero, index numbers, principles, hover states ---------- */
-    .progress { position: fixed; inset: 0 0 auto 0; height: 2px; z-index: 6; pointer-events: none; }
-    .progress i { display: block; height: 100%; background: var(--moss); transform: scaleX(0); transform-origin: left; }
-    .nav-links a { position: relative; padding: 2px 0; }
-    .nav-links a::after { content: ""; position: absolute; left: 0; right: 0; bottom: -2px; height: 1px; background: var(--moss); transform: scaleX(0); transform-origin: left; transition: transform .3s ease; }
-    .nav-links a:hover::after, .nav-links a.on::after { transform: scaleX(1); }
-    .nav-links a.on { color: var(--ink); }
+    /* Write-up pages */
+    .writeup{padding:132px 0 96px}
+    .writeup-head{max-width:52rem}
+    .writeup-head h1{font-size:clamp(2.25rem,1.3rem + 3.6vw,4.25rem);line-height:1}
+    .writeup-head .status{margin-top:22px}
+    .headline{margin:40px 0 0;padding:22px 0;border-top:1px solid var(--ink);border-bottom:1px solid var(--line);max-width:52rem}
+    .headline-label{margin:0;font-family:var(--mono);font-size:.8125rem;color:var(--muted)}
+    .headline-value{margin:8px 0 0;font-size:clamp(1.25rem,1.1rem + .8vw,1.75rem);line-height:1.3;letter-spacing:-.02em}
+    .recording{margin:32px 0 0;max-width:52rem}
+    .recording video{display:block;width:100%;border:1px solid var(--line);border-radius:6px}
+    .figure{margin:40px 0 0;padding:28px 20px;background:var(--panel);border:1px solid var(--line);border-radius:6px;overflow-x:auto}
+    .dia{display:block;width:100%;min-width:600px;max-width:780px;height:auto;margin:0 auto;font-family:var(--sans)}
+    .dia-box{fill:var(--bg);stroke:var(--line);stroke-width:1.2}
+    .dia-box.b{stroke:var(--ink)}
+    .dia-box.m{stroke-dasharray:4 3;stroke:var(--muted)}
+    .dia-text{fill:var(--ink);font-size:13.5px}
+    .dia-sub,.dia-label{fill:var(--muted);font-family:var(--mono);font-size:10.5px}
+    .dia-line{fill:none;stroke:var(--accent);stroke-width:1.5}
+    .dia-dash{stroke-dasharray:4 3}
+    .dia-head{fill:var(--accent)}
+    .dia-route{fill:none;stroke:none}.dia-pulse{display:none}
+    .prose{max-width:44rem;margin-top:56px}
+    .prose h2{margin:56px 0 0;font-size:clamp(1.5rem,1.3rem + .9vw,2rem);line-height:1.1;max-width:none}
+    .prose h3{margin:36px 0 0;font-size:1.25rem;letter-spacing:-.02em}
+    .prose p,.prose ul,.prose ol{margin:16px 0 0}
+    .prose ul,.prose ol{padding-left:1.25rem}
+    .prose li+li{margin-top:6px}
+    .prose code{font-family:var(--mono);font-size:.85em;background:var(--panel);border:1px solid var(--line);border-radius:4px;padding:1px 5px}
+    .prose pre{margin:16px 0 0;padding:16px 18px;background:var(--panel);border:1px solid var(--line);border-radius:6px;overflow-x:auto;line-height:1.5}
+    .prose pre code{background:none;border:0;padding:0;font-size:.8125rem}
+    .prose .tw{margin-top:20px}
+    .repo-links{margin:16px 0 0;padding:0;list-style:none;display:flex;flex-wrap:wrap;gap:8px 28px}
+    .pager{margin:96px 0 0;padding-top:24px;border-top:1px solid var(--line);display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px 32px}
+    .pager a{background:none;font-size:1.25rem;font-weight:500;letter-spacing:-.02em}
+    .pager span{display:block;font-family:var(--mono);font-size:.8125rem;font-weight:400;letter-spacing:0;color:var(--muted)}
+    .pager .next{text-align:right;margin-left:auto}
 
-    .hero { max-width: none; }
-    .eyebrow { margin: 0 0 28px; display: flex; flex-wrap: wrap; gap: 6px 14px; align-items: center; font-size: 0.875rem; letter-spacing: 0.04em; color: var(--muted); }
-    .eyebrow .live { width: 8px; height: 8px; border-radius: 50%; background: var(--moss); box-shadow: 0 0 0 0 var(--moss); animation: live 2.4s ease-out infinite; }
-    .eyebrow .sep { color: var(--rule); }
-    @keyframes live { 0% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--moss) 55%, transparent); } 100% { box-shadow: 0 0 0 12px transparent; } }
-    .hero h1 { font-size: clamp(3.5rem, 1rem + 13vw, 10.5rem); line-height: 0.92; letter-spacing: -0.03em; }
-    .hero h1 .word { display: inline-block; overflow: hidden; vertical-align: bottom; padding-bottom: 0.12em; margin-bottom: -0.12em; }
-    .hero h1 .word > span { display: inline-block; transform: translateY(105%); animation: rise .9s cubic-bezier(.2,.8,.2,1) forwards; }
-    @keyframes rise { to { transform: none; } }
-    .hero .lead { max-width: 40rem; }
-    .hero-cta { margin: 36px 0 0; display: flex; flex-wrap: wrap; gap: 12px 28px; align-items: center; }
-    .btn { display: inline-flex; align-items: center; gap: 10px; padding: 12px 22px; border-radius: 999px; background: var(--ink); color: var(--paper); text-decoration: none; font-size: 0.9375rem; transition: background .25s ease, transform .25s ease; }
-    .btn:hover { background: var(--moss); color: var(--paper); transform: translateY(-2px); }
-    .btn .arrow, .go .arrow { display: inline-block; transition: transform .25s ease; }
-    .btn:hover .arrow { transform: translateY(3px); }
-
-    /* The hero signal: one lead moving from the ad click to the report. */
-    .signal { margin: 72px 0 0; }
-    .signal svg { display: block; width: 100%; height: auto; overflow: visible; }
-    .signal-line { stroke: var(--rule); stroke-width: 1; }
-    .signal-tick { fill: var(--paper); stroke: var(--muted); stroke-width: 1; }
-    .signal-text { fill: var(--muted); font-family: var(--sans); font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; }
-    .signal-dot { fill: var(--rust); }
-    .signal-trail { stroke: var(--rust); stroke-width: 1.5; stroke-dasharray: 60 940; stroke-dashoffset: 60; animation: trail 7s linear infinite; }
-    @keyframes trail { 0% { stroke-dashoffset: 60; } 85%, 100% { stroke-dashoffset: -940; } }
-    @media (max-width: 640px) { .signal-text.minor { display: none; } }
-
-    .section-head { display: flex; align-items: baseline; gap: 16px; font-size: clamp(1.75rem, 1.4rem + 1.4vw, 2.5rem); margin-top: 128px; }
-    .section-head .idx { font-family: var(--mono); font-size: 0.8125rem; letter-spacing: 0.08em; color: var(--moss); transform: translateY(-0.35em); }
-
-    .path li.is-now::before { background: var(--rust); border-color: var(--rust); }
-
-    .principles { list-style: none; margin: 28px 0 0; padding: 0; display: grid; gap: 0 48px; }
-    @media (min-width: 720px) { .principles { grid-template-columns: 1fr 1fr; } }
-    .principles li { padding: 26px 0 30px; border-top: 1px solid var(--rule); }
-    .principles q { display: block; quotes: none; font-family: var(--serif); font-size: clamp(1.5rem, 1.2rem + 1.2vw, 2.125rem); line-height: 1.15; letter-spacing: -0.01em; }
-    .principles p { margin: 12px 0 0; color: var(--muted); max-width: 26rem; }
-
-    .work li, .proof { transition: border-color .3s ease; }
-    .work li:hover, .proof:hover { border-top-color: var(--moss); }
-    .work h3 { transition: color .3s ease; }
-    .work li:hover h3 { color: var(--moss); }
-    .proof { position: relative; }
-    .proof-num { transition: color .3s ease, transform .4s cubic-bezier(.2,.8,.2,1); }
-    .proof:hover .proof-num { color: var(--rust); transform: translateY(-3px); }
-    .proof-title a::after { content: ""; position: absolute; inset: 0; }
-    .proof-links { position: relative; z-index: 1; }
-    .go { text-decoration: none; display: inline-flex; gap: 8px; align-items: center; }
-    .go span:first-child { text-decoration: underline; text-decoration-color: var(--moss); text-decoration-thickness: 1px; text-underline-offset: 0.22em; }
-    .proof:hover .go .arrow { transform: translateX(5px); color: var(--rust); }
-
-    .dia-route { fill: none; stroke: none; }
-    .dia-pulse { fill: var(--rust); display: none; }
-    .js .dia-pulse { display: inline; }
-
-    .contact { margin-top: 28px; font-size: clamp(1.75rem, 1.1rem + 3.4vw, 3.75rem); line-height: 1.1; letter-spacing: -0.02em; flex-direction: column; gap: 10px; align-items: flex-start; }
-    .contact a { text-decoration: none; background: linear-gradient(var(--moss), var(--moss)) no-repeat left 100% / 0 2px; transition: background-size .45s cubic-bezier(.2,.8,.2,1), color .3s ease; padding-bottom: 4px; overflow-wrap: anywhere; }
-    .contact a:hover { background-size: 100% 2px; }
-    .footer { margin: 128px 0 0; padding-top: 24px; border-top: 1px solid var(--rule); display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px 32px; font-size: 0.875rem; color: var(--muted); }
-
-    /* ---------- Motion that needs the script. Off without it, and off with reduced motion. ---------- */
-    .js .reveal { opacity: 0; transform: translateY(22px); transition: opacity .8s ease, transform .9s cubic-bezier(.2,.8,.2,1); }
-    .js .reveal.in { opacity: 1; transform: none; }
-    .js .dia.will-draw .dia-box, .js .dia.will-draw .dia-text, .js .dia.will-draw .dia-sub, .js .dia.will-draw .dia-label { opacity: 0; transition: opacity .7s ease; }
-    .js .dia.will-draw .dia-line { opacity: 0; stroke-dasharray: var(--len); stroke-dashoffset: var(--len); }
-    .js .dia.will-draw .dia-line.dia-dash { stroke-dasharray: 4 3; stroke-dashoffset: 0; }
-    .js .dia.drawn .dia-box, .js .dia.drawn .dia-text, .js .dia.drawn .dia-sub { opacity: 1; }
-    .js .dia.drawn .dia-label { opacity: 1; transition-delay: 1.2s; }
-    .js .dia.drawn .dia-line { opacity: 1; stroke-dashoffset: 0; transition: stroke-dashoffset .7s ease var(--at), opacity .01s linear var(--at); }
-    .js .dia.drawn .dia-line.dia-dash { transition: opacity .6s ease var(--at); }
-    @media (prefers-reduced-motion: reduce) {
-      .eyebrow .live, .signal-trail, .hero h1 .word > span { animation: none; }
-      .hero h1 .word > span { transform: none; }
-      .signal-trail, .signal-dot { display: none; }
-      * { transition: none !important; }
-    }
+    /* Cursor: a small dot that follows the pointer and grows over links. Fine pointers only, added by the script. */
+    .cursor{position:fixed;left:0;top:0;width:12px;height:12px;margin:-6px 0 0 -6px;border-radius:50%;background:var(--accent);pointer-events:none;z-index:40;opacity:0;transition:background-color .2s var(--ease)}
+    .cursor.on-link{background:color-mix(in srgb,var(--accent) 22%,transparent);box-shadow:inset 0 0 0 .5px var(--accent)}
+    .has-cursor,.has-cursor a,.has-cursor button{cursor:none}
+    @media (prefers-reduced-motion:reduce){*{transition:none!important}.cursor{display:none}.has-cursor,.has-cursor a,.has-cursor button{cursor:auto}}
   </style>
 </head>
 <body>
-  <div class="progress" aria-hidden="true"><i></i></div>
   <nav class="nav" aria-label="Site">
     <a class="nav-name" href="#top">Max Pickard</a>
-    <span class="nav-links"><a href="#about">About</a><a href="#work">Work</a><a href="#projects">Projects</a><a href="#contact">Contact</a></span>
+    <div><a href="#work">Work</a><a href="#about">About</a><a href="#contact">Contact</a><button type="button" data-theme-toggle>Dark</button></div>
   </nav>
   <main id="top">
-    <header class="masthead hero">
-      <p class="eyebrow"><span class="live" aria-hidden="true"></span><span>Marketing Operations Specialist at Upgrow</span><span class="sep" aria-hidden="true">/</span><span>Chicago</span><span data-chicago-time></span></p>
-      <h1 data-split>Max Pickard</h1>
-      <p class="lead">
-        I set up the tracking, the CRM plumbing and the AI automation that marketing
-        teams run on. I got here from paid search and SEO, so I know what the numbers
-        are for.
-      </p>
-      <p class="hero-cta"><a class="btn" href="#projects">See the projects <span class="arrow" aria-hidden="true">&darr;</span></a><a href="#contact">Get in touch</a></p>
-      <div class="signal" aria-hidden="true">
-        <svg viewBox="0 0 1000 46" preserveAspectRatio="xMidYMid meet">
-          <line class="signal-line" x1="0" y1="10" x2="1000" y2="10"/>
-          <line class="signal-trail" x1="0" y1="10" x2="1000" y2="10"/>
-          <circle class="signal-tick" cx="4" cy="10" r="4"/><text class="signal-text" x="0" y="38">Ad click</text>
-          <circle class="signal-tick" cx="200" cy="10" r="4"/><text class="signal-text minor" x="200" y="38" text-anchor="middle">Tracked site</text>
-          <circle class="signal-tick" cx="400" cy="10" r="4"/><text class="signal-text minor" x="400" y="38" text-anchor="middle">CRM</text>
-          <circle class="signal-tick" cx="600" cy="10" r="4"/><text class="signal-text minor" x="600" y="38" text-anchor="middle">Routing</text>
-          <circle class="signal-tick" cx="800" cy="10" r="4"/><text class="signal-text minor" x="800" y="38" text-anchor="middle">SQL</text>
-          <circle class="signal-tick" cx="996" cy="10" r="4"/><text class="signal-text" x="1000" y="38" text-anchor="end">Report</text>
-        </svg>
+    <header class="hero"><div class="wrap">
+      <div class="hero-grid">
+        <h1 data-rise>Max Pickard</h1>
+        <dl class="spec">
+          <div><dt>Role</dt><dd>Marketing Operations Specialist</dd></div>
+          <div><dt>Company</dt><dd>Upgrow</dd></div>
+          <div><dt>Based</dt><dd>Chicago</dd></div>
+          <div><dt>Trained in</dt><dd>Applied mathematics</dd></div>
+          <div><dt>Builds with</dt><dd>Claude Code, SQL, Salesforce, Tag Manager</dd></div>
+        </dl>
       </div>
-    </header>
+      <div class="under">
+        <p>Tracking, CRM and AI systems for marketing teams.</p>
+        <nav aria-label="Links"><a href="#work">Work</a><a href="#about">About</a><button type="button" class="copy" data-copy="maxapickard@gmail.com">Copy email</button><a href="https://www.linkedin.com/in/maxwellapickard/">LinkedIn</a><a href="https://github.com/mpickles/revenue-stack-demo">GitHub</a></nav>
+      </div>
+    </div></header>
 
-    <h2 class="section-head" id="about"><span class="idx">01</span>About</h2>
-    <div class="about">
-      <p>I did not start in marketing. I worked on an alpaca ranch, then cooked for a sorority house, then started as an SEO intern at Upgrow, a marketing agency for B2B software companies, with no marketing experience at all.</p>
-      <p>I learned SEO and conversion tracking on the job, asked to learn paid search, and kept getting pulled toward the question behind every campaign: can we trust this number? That question is now my job.</p>
-      <p>I studied applied mathematics at UC San Diego. Outside work I shoot photos and write screenplays.</p>
-    </div>
-    <ol class="path" aria-label="How I got here">
-      <li><span class="path-when">Before</span><span class="path-what">Alpaca rancher</span></li>
-      <li><span class="path-when">Before</span><span class="path-what">Sorority house chef</span></li>
-      <li><span class="path-when">Upgrow</span><span class="path-what">SEO Intern</span><span class="path-note">SEO writing, conversion tracking, dashboards</span></li>
-      <li><span class="path-when">May 2024</span><span class="path-what">SEO and PPC Specialist</span><span class="path-note">Google Ads, Microsoft Ads, LinkedIn Ads</span></li>
-      <li class="is-now"><span class="path-when">July 2026</span><span class="path-what">Marketing Operations Specialist</span><span class="path-note">Tracking, CRM connections, AI automation</span></li>
-    </ol>
-    <dl class="facts">
-      <div><dt>Based in</dt><dd>Chicago</dd></div>
-      <div><dt>Degree</dt><dd>B.S. Applied Mathematics, minor in Economics, UC San Diego</dd></div>
-      <div><dt>Tools</dt><dd>Google Tag Manager, GA4, Google Ads, Microsoft Ads, LinkedIn Ads, HubSpot, Salesforce, Zapier, Claude Code</dd></div>
-      <div><dt>Certificates</dt><dd>Google Ads Display, Search Ads 360, LinkedIn Marketing Fundamentals, LinkedIn Measurement</dd></div>
-    </dl>
+    <section class="sec" id="work"><div class="wrap">
+      <h2>Three systems, written up in full</h2>
+      <p class="sub">One made-up company, Roadwren, so every part can be public. Each build is graded against an answer key.</p>
+      <article class="sys">
+        <div>
+          <h3><a href="builds/salesforce-routing.html">Salesforce lead routing, with conversions sent back to Google Ads</a></h3>
+          <p class="q">A lead that gets the wrong owner, or loses its click ID on the way to an opportunity, costs money twice.</p>
+          <p>Leads from the form get a stage, a campaign and an owner in Salesforce. Conversions go back to Google Ads.</p>
+          <p><a href="builds/salesforce-routing.html">Read the write-up</a></p>
+        </div>
+        <dl class="facts">
+          <div><dt>Status</dt><dd><span class="status is-active">In progress</span></dd></div>
+          <div><dt>Graded on</dt><dd>37 test leads with an answer key: the right stage, campaign and owner for each, and every junk lead blocked.</dd></div>
+          <div><dt>Result</dt><dd>Not graded yet</dd></div>
+          <div><dt>Built with</dt><dd>Salesforce Flow, Python</dd></div>
+        </dl>
+      </article>
+      <article class="sys">
+        <div>
+          <h3><a href="builds/tracked-site.html">A tracked site that stores a click ID only after consent</a></h3>
+          <p class="q">Most tracking either ignores consent or loses the click ID. This does neither.</p>
+          <p>A demo site that stores a click ID only after consent and carries it through the form into the CRM.</p>
+          <p><a href="builds/tracked-site.html">Read the write-up</a></p>
+        </div>
+        <dl class="facts">
+          <div><dt>Status</dt><dd><span class="status is-active">In progress</span></dd></div>
+          <div><dt>Graded on</dt><dd>With consent rejected: no cookie set, no click ID stored. With consent accepted: the click ID reaches the CRM.</dd></div>
+          <div><dt>Result</dt><dd>Not graded yet</dd></div>
+          <div><dt>Built with</dt><dd>Next.js, Tag Manager, GA4, HubSpot</dd></div>
+        </dl>
+      </article>
+      <article class="sys">
+        <div>
+          <h3><a href="builds/funnel-and-reporting.html">A reporting agent that cannot misquote a number</a></h3>
+          <p class="q">The worry with AI reports is a confident wrong figure.</p>
+          <p>The funnel and ad credit in SQL, and a weekly summary where code checks every number before it is published.</p>
+          <p><a href="builds/funnel-and-reporting.html">Read the write-up</a></p>
+        </div>
+        <dl class="facts">
+          <div><dt>Status</dt><dd><span class="status is-planned">Planned</span></dd></div>
+          <div><dt>Graded on</dt><dd>Credit adds up to exactly 100 percent, and three planted wrong summaries are rejected.</dd></div>
+          <div><dt>Result</dt><dd>Not graded yet</dd></div>
+          <div><dt>Built with</dt><dd>dbt, DuckDB, Claude</dd></div>
+        </dl>
+      </article>
+    </div></section>
 
-    <h2 class="section-head" id="work"><span class="idx">02</span>What I do at work</h2>
-    <p class="section-note">Client work stays private, so this is the shape of it with no names and no numbers. The projects below rebuild the same kind of work in public.</p>
-    <ul class="work">
-      <li><h3>Conversion tracking</h3><p>Tag Manager and GA4 setups, consent, and finding out why a conversion stopped firing. Looker Studio dashboards on top.</p></li>
-      <li><h3>CRM to ad platforms</h3><p>Mapping CRM stages from Salesforce and HubSpot back to Google Ads and LinkedIn as offline conversions, so bidding can learn from more than form fills.</p></li>
-      <li><h3>Paid search and SEO</h3><p>Hands-on campaign work in Google Ads, Microsoft Ads and LinkedIn Ads, plus SEO. It is where I started and why I care about the data.</p></li>
-      <li><h3>AI automation</h3><p>Internal tools built with Claude Code. Code does the math, the model writes the words, and a person approves before anything goes out.</p></li>
-    </ul>
+    <section class="scene" aria-label="How the routing build works">
+      <div class="pin"><div class="wrap">
+        <h2>How the routing build works</h2>
+        <p class="sub">One lead, from the form to Google Ads.</p>
+        <svg viewBox="0 0 1200 330" role="img" aria-label="A form submit passes two rules that block junk, becomes a Salesforce lead, is routed by a Flow, converts with its click ID kept, is written to a checked upload file, and reaches Google Ads.">
+          <g data-step="A visitor submits the form, with a click ID from the ad."><rect class="box" x="20" y="30" width="230" height="78" rx="4"/><text x="135" y="64">Form submit</text><text class="s" x="135" y="88">click ID, UTMs, consent</text></g>
+          <g data-step="Two rules block junk: no consent, or a free email at a big company."><path class="wire" d="M250 69 H320"/><rect class="box" x="320" y="30" width="230" height="78" rx="4"/><text x="435" y="64">Rules block junk</text><text class="s" x="435" y="88">2 validation rules</text></g>
+          <g data-step="The lead lands in Salesforce with its click ID attached."><path class="wire" d="M550 69 H620"/><rect class="box" x="620" y="30" width="230" height="78" rx="4"/><text x="735" y="64">Salesforce lead</text><text class="s" x="735" y="88">7 custom fields</text></g>
+          <g data-step="One Flow sets the stage, adds the campaign and assigns the owner."><path class="wire" d="M850 69 H920"/><rect class="box" x="920" y="30" width="260" height="78" rx="4"/><text x="1050" y="64">Flow routes the lead</text><text class="s" x="1050" y="88">stage, campaign, owner</text></g>
+          <g data-step="When the lead converts, the click ID carries over to the opportunity."><path class="wire" d="M1050 108 V222"/><rect class="box" x="920" y="222" width="260" height="78" rx="4"/><text x="1050" y="256">Lead converts</text><text class="s" x="1050" y="280">click ID kept on the opportunity</text></g>
+          <g data-step="A script writes the conversion upload file and rejects every bad row."><path class="wire" d="M920 261 H850"/><rect class="box" x="620" y="222" width="230" height="78" rx="4"/><text x="735" y="256">Upload file, checked</text><text class="s" x="735" y="280">bad rows rejected</text></g>
+          <g data-step="Google Ads learns which clicks became pipeline."><path class="wire" d="M620 261 H550"/><rect class="box end" x="320" y="222" width="230" height="78" rx="4"/><text x="435" y="256">Google Ads</text><text class="s" x="435" y="280">bidding learns from pipeline</text></g>
+        </svg>
+        <p class="says" aria-hidden="true"></p>
+      </div></div>
+    </section>
 
-    <h2 class="section-head"><span class="idx">03</span>How I work</h2>
-    <ul class="principles">
-      <li><q>Code computes, the model narrates.</q><p>All the math lives in tested code. AI only writes the words around it.</p></li>
-      <li><q>Never guess at a cause.</q><p>Check the logs first.</p></li>
-      <li><q>Keep it simple.</q><p>A tool has to work for someone with no technical background, and anyone should be able to take it over.</p></li>
-      <li><q>Good enough is good enough.</q><p>Small, lean and shipped beats one big thing that does too much at once.</p></li>
-    </ul>
+    <section class="sec"><div class="wrap">
+      <h2>How it is graded</h2>
+      <p class="sub">Every build has an answer key written before the build. The result column stays empty until the run is done. This is the key for the routing build.</p>
+      <div class="tw"><table data-wipe>
+        <tr><th>Check</th><th>Cases</th><th>Pass bar</th><th>Result</th></tr>
+        <tr><td>Test leads routed to the right stage, campaign and owner</td><td class="num">20</td><td class="num">20 of 20</td><td>not run</td></tr>
+        <tr><td>Junk leads blocked</td><td class="num">5</td><td class="num">5 of 5</td><td>not run</td></tr>
+        <tr><td>Edge case leads match the key</td><td class="num">12</td><td class="num">reported as is</td><td>not run</td></tr>
+        <tr><td>Planted bad upload rows rejected</td><td class="num">6</td><td class="num">6 of 6</td><td>not run</td></tr>
+      </table></div>
+    </div></section>
 
-    <h2 class="section-head" id="projects"><span class="idx">04</span>Projects</h2>
-    <p class="section-note"><strong>Roadwren revenue stack.</strong> One made-up company and six builds that follow a lead from the ad click to the report. Each build is graded against an answer key, and each opens a write-up.</p>
-    <ol class="proofs">
-      <li class="proof is-active">
-        <span class="proof-num" aria-hidden="true">1</span>
-        <div>
-          <h3 class="proof-title"><a href="builds/tracked-site.html">Tracked site</a></h3>
-          <p class="status">In progress</p>
-          <p class="proof-sentence">A demo site that stores a click ID only after consent and carries it through the form into the CRM.</p>
-          <p class="proof-graded">Graded on: With consent rejected: no cookie set, no click ID stored. With consent accepted: the click ID reaches the CRM.</p>
-          <ul class="proof-links">
-            <li><a class="go" href="builds/tracked-site.html"><span>Read the write-up</span><span class="arrow" aria-hidden="true">&rarr;</span></a></li>
-          </ul>
-        </div>
-      </li>
-      <li class="proof is-active">
-        <span class="proof-num" aria-hidden="true">2</span>
-        <div>
-          <h3 class="proof-title"><a href="builds/salesforce-routing.html">Salesforce routing and conversions</a></h3>
-          <p class="status">In progress</p>
-          <p class="proof-sentence">Leads from the form get a stage, a campaign and an owner in Salesforce. Conversions go back to Google Ads.</p>
-          <p class="proof-graded">Graded on: 37 test leads with an answer key: the right stage, campaign and owner for each, and every junk lead blocked.</p>
-          <ul class="proof-links">
-            <li><a class="go" href="builds/salesforce-routing.html"><span>Read the write-up</span><span class="arrow" aria-hidden="true">&rarr;</span></a></li>
-          </ul>
-        </div>
-      </li>
-      <li class="proof is-planned">
-        <span class="proof-num" aria-hidden="true">3</span>
-        <div>
-          <h3 class="proof-title"><a href="builds/campaign-qa-agent.html">Campaign QA agent</a></h3>
-          <p class="status">Planned</p>
-          <p class="proof-sentence">A Python tool that checks landing pages for tags, consent, the conversion event and UTM values before launch.</p>
-          <p class="proof-graded">Graded on: 14 pages with a planted bug and 8 clean pages: bugs caught, and false alarms raised.</p>
-          <ul class="proof-links">
-            <li><a class="go" href="builds/campaign-qa-agent.html"><span>Read the write-up</span><span class="arrow" aria-hidden="true">&rarr;</span></a></li>
-          </ul>
-        </div>
-      </li>
-      <li class="proof is-planned">
-        <span class="proof-num" aria-hidden="true">4</span>
-        <div>
-          <h3 class="proof-title"><a href="builds/lead-qualifier.html">Lead qualifier agent</a></h3>
-          <p class="status">Planned</p>
-          <p class="proof-sentence">Claude scores each new lead against a written rubric, routes the strong ones and asks a person when unsure.</p>
-          <p class="proof-graded">Graded on: Agreement with 36 hand labels, and whether a person&#x27;s edit survives a second run.</p>
-          <ul class="proof-links">
-            <li><a class="go" href="builds/lead-qualifier.html"><span>Read the write-up</span><span class="arrow" aria-hidden="true">&rarr;</span></a></li>
-          </ul>
-        </div>
-      </li>
-      <li class="proof is-planned">
-        <span class="proof-num" aria-hidden="true">5</span>
-        <div>
-          <h3 class="proof-title"><a href="builds/funnel-and-reporting.html">Funnel in SQL and a reporting agent</a></h3>
-          <p class="status">Planned</p>
-          <p class="proof-sentence">The funnel and ad credit in SQL, and a weekly summary where code checks every number before it is published.</p>
-          <p class="proof-graded">Graded on: Credit adds up to exactly 100 percent, and three planted wrong summaries are rejected.</p>
-          <ul class="proof-links">
-            <li><a class="go" href="builds/funnel-and-reporting.html"><span>Read the write-up</span><span class="arrow" aria-hidden="true">&rarr;</span></a></li>
-          </ul>
-        </div>
-      </li>
-      <li class="proof is-planned">
-        <span class="proof-num" aria-hidden="true">6</span>
-        <div>
-          <h3 class="proof-title"><a href="builds/crm-cleanup.html">CRM cleanup</a></h3>
-          <p class="status">Planned</p>
-          <p class="proof-sentence">Duplicate accounts and contacts in Salesforce found and merged by script, with every merge graded.</p>
-          <p class="proof-graded">Graded on: Merges right and wrong against an answer key, with decoys that must be left alone.</p>
-          <ul class="proof-links">
-            <li><a class="go" href="builds/crm-cleanup.html"><span>Read the write-up</span><span class="arrow" aria-hidden="true">&rarr;</span></a></li>
-          </ul>
-        </div>
-      </li>
-    </ol>
+    <section class="sec"><div class="wrap">
+      <h2>All six builds</h2>
+      <div class="chips" role="group" aria-label="Filter builds">
+        <button type="button" data-f="all" aria-pressed="true">All</button>
+        <button type="button" data-f="is-active" aria-pressed="false">In progress</button>
+        <button type="button" data-f="is-planned" aria-pressed="false">Planned</button>
+      </div>
+      <ul class="rows" data-stagger>
+        <li class="is-active"><b><a href="builds/tracked-site.html">Tracked site</a></b><p>A demo site that stores a click ID only after consent and carries it through the form into the CRM.</p><span class="status is-active">In progress</span></li>
+        <li class="is-active"><b><a href="builds/salesforce-routing.html">Salesforce routing and conversions</a></b><p>Leads from the form get a stage, a campaign and an owner in Salesforce. Conversions go back to Google Ads.</p><span class="status is-active">In progress</span></li>
+        <li class="is-planned"><b><a href="builds/campaign-qa-agent.html">Campaign QA agent</a></b><p>A Python tool that checks landing pages for tags, consent, the conversion event and UTM values before launch.</p><span class="status is-planned">Planned</span></li>
+        <li class="is-planned"><b><a href="builds/lead-qualifier.html">Lead qualifier agent</a></b><p>Claude scores each new lead against a written rubric, routes the strong ones and asks a person when unsure.</p><span class="status is-planned">Planned</span></li>
+        <li class="is-planned"><b><a href="builds/funnel-and-reporting.html">Funnel in SQL and a reporting agent</a></b><p>The funnel and ad credit in SQL, and a weekly summary where code checks every number before it is published.</p><span class="status is-planned">Planned</span></li>
+        <li class="is-planned"><b><a href="builds/crm-cleanup.html">CRM cleanup</a></b><p>Duplicate accounts and contacts in Salesforce found and merged by script, with every merge graded.</p><span class="status is-planned">Planned</span></li>
+      </ul>
+    </div></section>
 
-    <h3 class="sub-head">How the six connect</h3>
-    <p class="section-note">The shaded boxes are the six builds.</p>
-    <div class="figure">
-      <svg class="dia" viewBox="0 0 756 542" role="img" aria-labelledby="system-t system-d" xmlns="http://www.w3.org/2000/svg">
-      <title id="system-t">How the six builds connect</title>
-      <desc id="system-d">A visitor clicks an ad and lands on the tracked site. The campaign QA agent checks the site before launch. A form submit goes through the lead API to HubSpot and Salesforce. In Salesforce a Flow sets the stage, campaign and owner. The lead qualifier scores the lead and proposes an owner. The CRM cleanup merges duplicates. Qualified leads go back to Google Ads as a conversion upload file. Salesforce data feeds the SQL funnel, and a reporting agent writes a summary whose numbers are checked by code.</desc>
-      <defs><marker id="system-a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" class="dia-head"/></marker></defs>
-      <path d="M378 80 L378 126" class="dia-line" marker-end="url(#system-a)"/>
-      <text x="386" y="103" class="dia-label" text-anchor="start">click ID and UTMs</text>
-      <path d="M214 159 L278 159" class="dia-line" marker-end="url(#system-a)"/>
-      <text x="246" y="152" class="dia-label" text-anchor="middle">checks</text>
-      <path d="M478 159 L542 159" class="dia-line" marker-end="url(#system-a)"/>
-      <text x="510" y="152" class="dia-label" text-anchor="middle">one event</text>
-      <path d="M378 192 L378 238" class="dia-line" marker-end="url(#system-a)"/>
-      <text x="386" y="215" class="dia-label" text-anchor="start">form submit</text>
-      <path d="M478 271 L542 271" class="dia-line" marker-end="url(#system-a)"/>
-      <path d="M378 304 L378 350" class="dia-line" marker-end="url(#system-a)"/>
-      <text x="386" y="327" class="dia-label" text-anchor="start">lead</text>
-      <path d="M214 383 L278 383" class="dia-line" marker-end="url(#system-a)"/>
-      <text x="246" y="376" class="dia-label" text-anchor="middle">merges</text>
-      <path d="M478 383 L542 383" class="dia-line" marker-end="url(#system-a)" marker-start="url(#system-a)"/>
-      <text x="510" y="376" class="dia-label" text-anchor="middle">score</text>
-      <path d="M318 416 L318 439 L114 439 L114 462" class="dia-line" marker-end="url(#system-a)"/>
-      <text x="122" y="455" class="dia-label" text-anchor="start">qualified leads</text>
-      <path d="M378 416 L378 462" class="dia-line" marker-end="url(#system-a)"/>
-      <text x="386" y="439" class="dia-label" text-anchor="start">leads</text>
-      <path d="M478 495 L542 495" class="dia-line" marker-end="url(#system-a)"/>
-      <text x="510" y="488" class="dia-label" text-anchor="middle">figures</text>
-      <path id="system-route" class="dia-route" d="M378 47 V495 H642"/>
-      <circle class="dia-pulse" r="5"><animateMotion dur="7s" repeatCount="indefinite" keyPoints="0;1;1" keyTimes="0;0.85;1" calcMode="linear"><mpath href="#system-route"/></animateMotion></circle>
-      <rect x="278" y="14" width="200" height="66" rx="6" class="dia-box "/>
-      <text x="378.0" y="51.5" class="dia-text" text-anchor="middle">Visitor clicks an ad</text>
-      <rect x="14" y="126" width="200" height="66" rx="6" class="dia-box b"/>
-      <text x="114.0" y="156" class="dia-text" text-anchor="middle">Campaign QA agent</text>
-      <text x="114.0" y="173" class="dia-sub" text-anchor="middle">Proof 3</text>
-      <rect x="278" y="126" width="200" height="66" rx="6" class="dia-box b"/>
-      <text x="378.0" y="156" class="dia-text" text-anchor="middle">Tracked site</text>
-      <text x="378.0" y="173" class="dia-sub" text-anchor="middle">Proof 1</text>
-      <rect x="542" y="126" width="200" height="66" rx="6" class="dia-box "/>
-      <text x="642.0" y="163.5" class="dia-text" text-anchor="middle">Tag Manager and GA4</text>
-      <rect x="278" y="238" width="200" height="66" rx="6" class="dia-box "/>
-      <text x="378.0" y="275.5" class="dia-text" text-anchor="middle">Lead API</text>
-      <rect x="542" y="238" width="200" height="66" rx="6" class="dia-box "/>
-      <text x="642.0" y="275.5" class="dia-text" text-anchor="middle">HubSpot contact</text>
-      <rect x="14" y="350" width="200" height="66" rx="6" class="dia-box b"/>
-      <text x="114.0" y="380" class="dia-text" text-anchor="middle">CRM cleanup</text>
-      <text x="114.0" y="397" class="dia-sub" text-anchor="middle">Proof 6</text>
-      <rect x="278" y="350" width="200" height="66" rx="6" class="dia-box b"/>
-      <text x="378.0" y="371.5" class="dia-text" text-anchor="middle">Salesforce: stage,</text>
-      <text x="378.0" y="388.5" class="dia-text" text-anchor="middle">campaign and owner</text>
-      <text x="378.0" y="405.5" class="dia-sub" text-anchor="middle">Proof 2</text>
-      <rect x="542" y="350" width="200" height="66" rx="6" class="dia-box b"/>
-      <text x="642.0" y="380" class="dia-text" text-anchor="middle">Lead qualifier agent</text>
-      <text x="642.0" y="397" class="dia-sub" text-anchor="middle">Proof 4</text>
-      <rect x="14" y="462" width="200" height="66" rx="6" class="dia-box b"/>
-      <text x="114.0" y="483.5" class="dia-text" text-anchor="middle">Conversion upload</text>
-      <text x="114.0" y="500.5" class="dia-text" text-anchor="middle">file for Google Ads</text>
-      <text x="114.0" y="517.5" class="dia-sub" text-anchor="middle">Proof 2</text>
-      <rect x="278" y="462" width="200" height="66" rx="6" class="dia-box b"/>
-      <text x="378.0" y="492" class="dia-text" text-anchor="middle">Funnel and credit in SQL</text>
-      <text x="378.0" y="509" class="dia-sub" text-anchor="middle">Proof 5</text>
-      <rect x="542" y="462" width="200" height="66" rx="6" class="dia-box b"/>
-      <text x="642.0" y="483.5" class="dia-text" text-anchor="middle">Reporting agent with</text>
-      <text x="642.0" y="500.5" class="dia-text" text-anchor="middle">a number check</text>
-      <text x="642.0" y="517.5" class="dia-sub" text-anchor="middle">Proof 5</text>
-      </svg>
-    </div>
-    <p class="section-note">The systems are real and running. Roadwren and every person, lead and record in it are made up. The code, the answer keys and the decisions are in <a href="https://github.com/mpickles/revenue-stack-demo">the repo</a>. Claude Code writes most of the code from my specs. The tests and answer keys are how I check it.</p>
+    <section class="sec"><div class="wrap">
+      <h2>What I do at work</h2>
+      <p class="sub">Client work stays private, so no names and no numbers. The builds above rebuild the same kind of work in public.</p>
+      <div class="work" data-stagger>
+        <div><b>Conversion tracking</b><p>Tag Manager and GA4 setups, consent, and finding out why a conversion stopped firing.</p></div>
+        <div><b>CRM to ad platforms</b><p>Mapping CRM stages from Salesforce and HubSpot back to Google Ads and LinkedIn as offline conversions.</p></div>
+        <div><b>Paid search and SEO</b><p>Hands-on campaign work in Google Ads, Microsoft Ads and LinkedIn Ads. Where I started.</p></div>
+        <div><b>How I build</b><p>With Claude Code. I write the spec, the test set and the answer key. Claude writes most of the code. The tests are how I check it.</p></div>
+      </div>
+    </div></section>
 
-    <h2 class="section-head" id="contact"><span class="idx">05</span>Say hello</h2>
-    <p class="contact"><a href="mailto:maxapickard@gmail.com">maxapickard@gmail.com</a><a href="https://www.linkedin.com/in/maxwellapickard/">LinkedIn</a></p>
-    <footer class="footer"><span>Max Pickard, Chicago</span><span>Built as plain HTML from the READMEs in <a href="https://github.com/mpickles/revenue-stack-demo">the repo</a></span></footer>
+    <section class="sec" id="about"><div class="wrap">
+      <h2>About</h2>
+      <div class="about">
+        <p>I did not start in marketing. I worked on an alpaca ranch, cooked for a sorority house, studied applied mathematics, and started at Upgrow as an SEO intern with no marketing experience.</p>
+        <p>Since then I have learned whatever the job needed next: SEO, paid search, tracking, CRMs, SQL, and now building tools with AI. I grade my own builds against answer keys because I was trained to prove things.</p>
+      </div>
+    </div></section>
+
+    <section class="contact" id="contact"><div class="wrap">
+      <h2>Say hello</h2>
+      <a class="mail" href="mailto:maxapickard@gmail.com">maxapickard@gmail.com</a>
+      <small><button type="button" class="copy" data-copy="maxapickard@gmail.com">Copy the address</button> <span id="copied" aria-live="polite"></span></small>
+      <div class="foot"><a href="https://www.linkedin.com/in/maxwellapickard/">LinkedIn</a><span>Chicago</span></div>
+    </div></section>
   </main>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/ScrollTrigger.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/SplitText.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/Flip.min.js"></script>
   <script>
-    // Motion for the portfolio pages. No library. Every page reads fine with this
-    // script off: it only adds the "js" class, and the hidden-before-reveal styles
-    // hang off that class. With "reduce motion" on, nothing is hidden or animated.
+    // Behaviour and motion for every page. Pages read fine with this script off, and
+    // with "reduce motion" on nothing is hidden or animated.
     (function () {
       var root = document.documentElement;
       var still = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      var $$ = function (s, el) { return Array.prototype.slice.call((el || document).querySelectorAll(s)); };
 
-      // Chicago clock in the hero. Text only, safe with reduced motion.
-      var clock = document.querySelector("[data-chicago-time]");
-      if (clock) {
-        var format = new Intl.DateTimeFormat("en-US", { timeZone: "America/Chicago", hour: "numeric", minute: "2-digit" });
-        var tick = function () { clock.textContent = format.format(new Date()) + " local"; };
-        tick();
-        setInterval(tick, 30000);
-      }
-
-      // Scroll progress hairline and the nav link for the section in view.
-      var bar = document.querySelector(".progress i");
-      if (bar) {
-        var onScroll = function () {
-          var max = root.scrollHeight - window.innerHeight;
-          bar.style.transform = "scaleX(" + (max > 0 ? Math.min(1, window.scrollY / max) : 0) + ")";
-        };
-        window.addEventListener("scroll", onScroll, { passive: true });
-        onScroll();
-      }
-
-      if (still || !("IntersectionObserver" in window)) return;
-      root.classList.add("js");
-
-      // Hero name: split into words that rise in turn. The full name stays as the
-      // accessible label, and the split copies are hidden from screen readers.
-      var name = document.querySelector("[data-split]");
-      if (name) {
-        var words = name.textContent.trim().split(/\s+/);
-        name.setAttribute("aria-label", words.join(" "));
-        name.textContent = "";
-        words.forEach(function (word, i) {
-          var outer = document.createElement("span");
-          outer.className = "word";
-          outer.setAttribute("aria-hidden", "true");
-          var inner = document.createElement("span");
-          inner.textContent = word;
-          inner.style.animationDelay = 120 + i * 140 + "ms";
-          outer.appendChild(inner);
-          name.appendChild(outer);
-          if (i < words.length - 1) name.appendChild(document.createTextNode(" "));
-        });
-      }
-
-      // Reveal on scroll. Items that share a parent come in one after another.
-      var targets = document.querySelectorAll(
-        ".hero > :not(h1), .section-head, .sub-head, .section-note, .about p, .path li, .facts div, .work li, " +
-        ".principles li, .proof, .figure, .contact, .writeup-head > *, .headline, .prose > *, .pager"
-      );
-      var seen = new IntersectionObserver(function (entries) {
-        entries.forEach(function (entry) {
-          if (!entry.isIntersecting) return;
-          entry.target.classList.add("in");
-          seen.unobserve(entry.target);
-        });
-      }, { rootMargin: "0px 0px -8% 0px", threshold: 0.08 });
-      var order = new Map();
-      targets.forEach(function (el) {
-        var n = order.get(el.parentNode) || 0;
-        order.set(el.parentNode, n + 1);
-        el.classList.add("reveal");
-        el.style.transitionDelay = Math.min(n, 6) * 70 + "ms";
-        seen.observe(el);
+      // Light and dark. Follows the device until the visitor picks one.
+      var toggle = document.querySelector("[data-theme-toggle]");
+      function isDark() { return root.dataset.theme ? root.dataset.theme === "dark" : window.matchMedia("(prefers-color-scheme: dark)").matches; }
+      function paint() { toggle.textContent = isDark() ? "Light" : "Dark"; }
+      paint();
+      toggle.addEventListener("click", function () {
+        root.dataset.theme = isDark() ? "light" : "dark";
+        try { localStorage.setItem("theme", root.dataset.theme); } catch (e) {}
+        paint();
       });
 
-      // Diagrams draw themselves: boxes fade in, then each arrow is drawn in turn.
-      var drawn = new IntersectionObserver(function (entries) {
-        entries.forEach(function (entry) {
-          if (!entry.isIntersecting) return;
-          entry.target.classList.add("drawn");
-          drawn.unobserve(entry.target);
+      // Copy the email address, with a confirmation.
+      $$("[data-copy]").forEach(function (button) {
+        var label = button.textContent, note = document.getElementById("copied");
+        button.addEventListener("click", function () {
+          var done = function () { button.textContent = "Copied"; if (note) note.textContent = "Copied to your clipboard."; setTimeout(function () { button.textContent = label; }, 1600); };
+          try { navigator.clipboard.writeText(button.dataset.copy).then(done, function () {}); } catch (e) {}
         });
-      }, { threshold: 0.25 });
-      document.querySelectorAll("svg.dia").forEach(function (svg) {
-        svg.querySelectorAll(".dia-line").forEach(function (line, i) {
-          var length = line.getTotalLength();
-          line.style.setProperty("--len", length);
-          line.style.setProperty("--at", 300 + i * 110 + "ms");
-        });
-        svg.classList.add("will-draw");
-        drawn.observe(svg);
       });
 
-      // Nav: mark the section in view.
-      var links = document.querySelectorAll('.nav-links a[href^="#"]');
-      if (links.length) {
-        var current = new IntersectionObserver(function (entries) {
-          entries.forEach(function (entry) {
-            if (!entry.isIntersecting) return;
-            links.forEach(function (a) { a.classList.toggle("on", a.getAttribute("href") === "#" + entry.target.id); });
+      // The routing scene: the sentence under the diagram.
+      var steps = $$(".scene [data-step]"), says = document.querySelector(".says"), shown = -1;
+      function say(i) { if (says && i !== shown) { shown = i; says.textContent = steps[i].dataset.step; } }
+      if (steps.length) say(steps.length - 1);
+
+      var motion = window.gsap && window.ScrollTrigger && !still;
+      if (motion) gsap.registerPlugin.apply(gsap, [ScrollTrigger].concat(window.SplitText ? [SplitText] : [], window.Flip ? [Flip] : []));
+
+      // The build filter. Rows slide to their new places.
+      var chips = $$(".chips button"), rows = $$(".rows li");
+      chips.forEach(function (chip) {
+        chip.addEventListener("click", function () {
+          chips.forEach(function (c) { c.setAttribute("aria-pressed", String(c === chip)); });
+          var state = motion && window.Flip ? Flip.getState(rows) : null;
+          rows.forEach(function (row) { row.hidden = !(chip.dataset.f === "all" || row.classList.contains(chip.dataset.f)); });
+          if (state) Flip.from(state, { duration: 0.5, ease: "power2.inOut", absolute: true,
+            onEnter: function (els) { return gsap.fromTo(els, { opacity: 0 }, { opacity: 1, duration: 0.3 }); },
+            onLeave: function (els) { return gsap.to(els, { opacity: 0, duration: 0.2 }); } });
+          if (motion) ScrollTrigger.refresh();
+        });
+      });
+
+      if (!motion) return;
+
+      function start() {
+        // The page title rises line by line, once.
+        var title = document.querySelector("[data-rise]");
+        if (title) {
+          if (window.SplitText) {
+            var split = SplitText.create(title, { type: "lines", mask: "lines", aria: "auto" });
+            gsap.from(split.lines, { yPercent: 105, duration: 0.95, stagger: 0.08, ease: "expo.out", delay: 0.1 });
+          } else {
+            gsap.from(title, { opacity: 0, y: 24, duration: 0.9, ease: "expo.out", delay: 0.1 });
+          }
+          gsap.from(".under, .spec, .writeup-head .status, .headline", { opacity: 0, duration: 0.7, ease: "power2.out", delay: 0.65 });
+        }
+
+        // Section headings rise out of a mask as they arrive.
+        $$("main h2").forEach(function (h) {
+          if (h.closest(".prose")) return;
+          var text = h.textContent; h.setAttribute("aria-label", text); h.textContent = "";
+          var mask = document.createElement("span"); mask.className = "mask"; mask.setAttribute("aria-hidden", "true");
+          var inner = document.createElement("span"); inner.textContent = text; mask.appendChild(inner); h.appendChild(mask);
+          gsap.from(inner, { yPercent: 112, duration: 0.9, ease: "expo.out", scrollTrigger: { trigger: h, start: "top 88%" } });
+        });
+
+        // Lists and cards arrive one after another.
+        [".sys", ".proof li", "[data-stagger] > *"].forEach(function (group) {
+          if (!document.querySelector(group)) return;
+          ScrollTrigger.batch(group, { start: "top 90%", once: true, onEnter: function (batch) {
+            gsap.from(batch, { opacity: 0, y: 28, duration: 0.7, stagger: 0.07, ease: "power3.out", clearProps: "opacity,transform" });
+          } });
+        });
+
+        // Table rows wipe in from the left.
+        $$("table[data-wipe]").forEach(function (table) {
+          gsap.from(table.querySelectorAll("tr"), { clipPath: "inset(0 100% 0 0)", duration: 0.6, stagger: 0.08, ease: "power2.out", scrollTrigger: { trigger: table, start: "top 82%" } });
+        });
+
+        // The routing scene: the page holds while the diagram draws itself.
+        if (steps.length) {
+          var draw = gsap.timeline({ scrollTrigger: { trigger: ".scene .pin", start: "top top", end: "+=2000", pin: true, scrub: 0.4,
+            onUpdate: function (self) { say(Math.min(steps.length - 1, Math.floor(self.progress * steps.length))); } } });
+          steps.forEach(function (step) {
+            var wire = step.querySelector(".wire");
+            if (wire) { var len = wire.getTotalLength(); gsap.set(wire, { strokeDasharray: len, strokeDashoffset: len }); draw.to(wire, { strokeDashoffset: 0, duration: 0.5, ease: "none" }); }
+            draw.from(step.querySelectorAll("rect, text"), { opacity: 0, duration: 0.5, ease: "none" }, wire ? ">-0.1" : 0);
           });
-        }, { rootMargin: "-30% 0px -60% 0px" });
-        links.forEach(function (a) {
-          var section = document.getElementById(a.getAttribute("href").slice(1));
-          if (section) current.observe(section);
+          say(0);
+        }
+
+        // Write-up diagrams draw their arrows once, when they come into view.
+        $$("svg.dia").forEach(function (svg) {
+          var lines = $$(".dia-line:not(.dia-dash)", svg);
+          lines.forEach(function (line) { var len = line.getTotalLength(); gsap.set(line, { strokeDasharray: len, strokeDashoffset: len }); });
+          var tl = gsap.timeline({ scrollTrigger: { trigger: svg, start: "top 78%" } });
+          tl.from($$(".dia-box, .dia-text, .dia-sub", svg), { opacity: 0, duration: 0.5, stagger: 0.015 })
+            .to(lines, { strokeDashoffset: 0, duration: 0.5, stagger: 0.09, ease: "power2.out" }, 0.3)
+            .from($$(".dia-label, .dia-dash", svg), { opacity: 0, duration: 0.4 }, ">-0.2");
         });
+
+        // The big email draws in at the end.
+        if (document.querySelector(".mail")) gsap.from(".mail", { yPercent: 60, opacity: 0, duration: 0.9, ease: "expo.out", scrollTrigger: { trigger: ".mail", start: "top 94%" } });
+
+        // Cursor: a dot that follows the pointer and grows over anything clickable.
+        if (window.matchMedia("(pointer: fine)").matches) {
+          var dot = document.createElement("div"); dot.className = "cursor"; dot.setAttribute("aria-hidden", "true"); document.body.appendChild(dot);
+          root.classList.add("has-cursor");
+          var x = gsap.quickTo(dot, "x", { duration: 0.3, ease: "power3" }), y = gsap.quickTo(dot, "y", { duration: 0.3, ease: "power3" });
+          window.addEventListener("pointermove", function (e) { if (e.pointerType === "touch") return; gsap.to(dot, { opacity: 1, duration: 0.2, overwrite: "auto" }); x(e.clientX); y(e.clientY); });
+          document.addEventListener("pointerleave", function () { gsap.to(dot, { opacity: 0, duration: 0.2 }); });
+          document.addEventListener("pointerover", function (e) {
+            var hot = !!e.target.closest("a, button");
+            dot.classList.toggle("on-link", hot);
+            gsap.to(dot, { scale: hot ? 3.4 : 1, duration: 0.3, ease: "power3.out", overwrite: "auto" });
+          });
+          window.addEventListener("pointerdown", function () { gsap.to(dot, { scale: 0.7, duration: 0.12 }); });
+          window.addEventListener("pointerup", function (e) { gsap.to(dot, { scale: e.target.closest && e.target.closest("a, button") ? 3.4 : 1, duration: 0.25 }); });
+        }
+        ScrollTrigger.refresh();
       }
+      if (document.fonts && document.fonts.ready) document.fonts.ready.then(start); else start();
     })();
   </script>
 </body>
