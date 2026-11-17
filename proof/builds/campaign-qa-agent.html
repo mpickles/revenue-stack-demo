@@ -13,12 +13,12 @@
     /* Technical direction. Named tokens, light and dark. IBM Plex Sans for reading,
        IBM Plex Mono only where something is data: tables, statuses, diagram notes. */
     :root{
-      --bg:#FAFAF9;--ink:#111417;--muted:#60666D;--line:#D9DBDD;--panel:#F0F1F0;--accent:#0F7B6C;
+      --bg:#FAFAF9;--ink:#111417;--muted:#60666D;--line:#D9DBDD;--panel:#F0F1F0;--accent:#0F7B6C;--on-accent:#FAFAF9;
       --sans:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;--mono:"IBM Plex Mono",ui-monospace,Menlo,Consolas,monospace;
       --ease:cubic-bezier(.23,1,.32,1);
     }
-    @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#101214;--ink:#ECEDEE;--muted:#979DA4;--line:#272B2F;--panel:#171A1D;--accent:#3CC8B4;color-scheme:dark}}
-    :root[data-theme="dark"]{--bg:#101214;--ink:#ECEDEE;--muted:#979DA4;--line:#272B2F;--panel:#171A1D;--accent:#3CC8B4;color-scheme:dark}
+    @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#101214;--ink:#ECEDEE;--muted:#979DA4;--line:#272B2F;--panel:#171A1D;--accent:#3CC8B4;--on-accent:#101214;color-scheme:dark}}
+    :root[data-theme="dark"]{--bg:#101214;--ink:#ECEDEE;--muted:#979DA4;--line:#272B2F;--panel:#171A1D;--accent:#3CC8B4;--on-accent:#101214;color-scheme:dark}
     *,*::before,*::after{box-sizing:border-box}
     html{-webkit-text-size-adjust:100%;scroll-padding-top:96px}
     body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:1.125rem;line-height:1.5;overflow-x:hidden}
@@ -47,9 +47,11 @@
     /* Hero */
     .hero{min-height:100svh;display:flex;flex-direction:column;justify-content:flex-end;padding:132px 0 clamp(40px,6vw,80px)}
     .hero h1{font-size:clamp(3.5rem,1rem + 10.5vw,10rem);line-height:.88;letter-spacing:-.055em;max-width:8ch}
+    .hero h1 i{font-style:normal;color:var(--accent)}
+    .progress{position:fixed;inset:0 0 auto 0;height:3px;z-index:30;background:var(--accent);transform:scaleX(0);transform-origin:left}
     .hero-grid{display:grid;gap:28px 64px;align-items:end}
     @media (min-width:980px){.hero-grid{grid-template-columns:1fr 21rem}}
-    .spec{margin:0;border-top:1px solid var(--ink);font-size:.9375rem}
+    .spec{margin:0;border-top:2px solid var(--accent);font-size:.9375rem}
     .spec div{display:grid;grid-template-columns:6.5rem 1fr;gap:12px;padding:9px 0;border-bottom:1px solid var(--line)}
     .spec dt{color:var(--muted)}.spec dd{margin:0}
     .under{display:flex;flex-wrap:wrap;gap:14px 40px;justify-content:space-between;align-items:baseline;margin-top:clamp(32px,5vw,64px);padding-top:22px;border-top:1px solid var(--line)}
@@ -58,6 +60,21 @@
     .copy{border:0;background:linear-gradient(currentColor,currentColor) no-repeat left 100%/100% 1px;padding:0}
     .copy:hover{color:var(--accent)}
 
+    /* Statement: the story in three sentences. Words light up as you scroll. */
+    .statement{padding:clamp(72px,10vw,150px) 0 0}
+    .statement p{margin:0;font-weight:500;font-size:clamp(1.75rem,1.1rem + 3.3vw,4rem);line-height:1.08;letter-spacing:-.04em;max-width:22ch}
+    .statement .w{display:inline-block;margin-right:.24em}
+
+    /* A real screenshot in a plain browser frame */
+    .frame{margin:44px 0 0;border:1px solid var(--line);border-radius:10px;overflow:hidden;background:var(--panel);transform-origin:50% 0}
+    .frame-bar{display:flex;align-items:center;gap:7px;padding:10px 14px;border-bottom:1px solid var(--line);font-family:var(--mono);font-size:.75rem;color:var(--muted)}
+    .frame-bar i{width:9px;height:9px;border-radius:50%;border:1px solid var(--muted)}
+    .frame-bar i:first-child{background:var(--accent);border-color:var(--accent)}
+    .frame-bar span{margin-left:10px}
+    .frame img{display:block;width:100%;height:auto}
+    .frame figcaption{padding:12px 14px;border-top:1px solid var(--line);font-size:.9375rem;color:var(--muted)}
+    .writeup .frame{max-width:52rem}
+
     /* Proof lines */
     .proof{margin:40px 0 0;padding:0;list-style:none;max-width:52rem}
     .proof li{padding:16px 0;border-top:1px solid var(--line);font-size:clamp(1.125rem,1rem + .7vw,1.5rem);letter-spacing:-.015em}
@@ -65,7 +82,7 @@
 
     /* Featured systems: text left, facts right */
     .sys{display:grid;gap:10px 56px;padding:34px 0;border-top:1px solid var(--line)}
-    .sys:first-of-type{margin-top:44px;border-top-color:var(--ink)}
+    .sys:first-of-type{margin-top:44px;border-top:2px solid var(--accent)}
     @media (min-width:900px){.sys{grid-template-columns:minmax(0,7fr) minmax(0,4fr)}}
     .sys h3{margin:0 0 10px;font-size:clamp(1.5rem,1.2rem + 1.4vw,2.375rem);line-height:1.05}
     .sys h3 a{background:none}
@@ -77,6 +94,7 @@
     .status{display:inline-flex;align-items:center;gap:8px;font-family:var(--mono);font-size:.8125rem}
     .status::before{content:"";width:8px;height:8px;border-radius:50%;border:1.5px solid var(--muted)}
     .status.is-active::before{background:var(--accent);border-color:var(--accent)}
+    .status.is-active,.rows .status.is-active{color:var(--accent)}
 
     /* The scene: one system, drawn as you scroll */
     .pin{min-height:100svh;display:flex;flex-direction:column;justify-content:center;padding:96px 0 40px}
@@ -86,7 +104,7 @@
     .scene .wire{fill:none;stroke:var(--accent);stroke-width:2}
     .scene text{font-family:var(--sans);font-size:19px;fill:var(--ink);text-anchor:middle}
     .scene text.s{font-family:var(--mono);font-size:12.5px;fill:var(--muted)}
-    .says{margin:28px 0 0;font-weight:500;font-size:clamp(1.25rem,1rem + 1.3vw,2.125rem);line-height:1.15;letter-spacing:-.025em;min-height:2.4em;max-width:44rem}
+    .says{color:var(--accent);margin:28px 0 0;font-weight:500;font-size:clamp(1.25rem,1rem + 1.3vw,2.125rem);line-height:1.15;letter-spacing:-.025em;min-height:2.4em;max-width:44rem}
 
     /* Tables: the grading table is the look of the site */
     .tw{overflow-x:auto;margin-top:36px}
@@ -98,7 +116,7 @@
     /* All builds: rows and a filter */
     .chips{display:flex;flex-wrap:wrap;gap:8px;margin:36px 0 8px}
     .chips button{border:1px solid var(--line);background:none;border-radius:8px;padding:8px 14px;min-height:40px;font-size:.9375rem}
-    .chips button[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+    .chips button[aria-pressed="true"]{background:var(--accent);color:var(--on-accent);border-color:var(--accent)}
     .rows{list-style:none;margin:0;padding:0}
     .rows li{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:4px 24px;align-items:baseline;padding:18px 0;border-bottom:1px solid var(--line)}
     @media (min-width:860px){.rows li{grid-template-columns:minmax(0,1fr) minmax(0,1.5fr) 8.5rem}}
@@ -119,12 +137,14 @@
     .about p{margin:0 0 18px}
     .about p:first-child{font-size:clamp(1.25rem,1.05rem + .9vw,1.75rem);line-height:1.3;letter-spacing:-.02em}
 
-    .contact{padding:clamp(88px,12vw,168px) 0 96px}
-    .contact .mail{display:inline-block;margin-top:22px;font-weight:500;font-size:clamp(1.5rem,.6rem + 4.6vw,4.75rem);letter-spacing:-.045em;line-height:1.05;overflow-wrap:anywhere;background:linear-gradient(var(--accent),var(--accent)) no-repeat left 100%/0 3px;padding-bottom:6px;transition:background-size .45s var(--ease)}
-    .contact .mail:hover{color:var(--ink);background-size:100% 3px}
-    .contact small{display:block;margin-top:14px;color:var(--muted);font-size:.9375rem;min-height:1.5em}
-    .foot{display:flex;flex-wrap:wrap;gap:8px 32px;margin-top:56px;padding-top:20px;border-top:1px solid var(--line);font-size:.9375rem}
-    .foot span{color:var(--muted)}
+    .contact{margin-top:clamp(88px,12vw,168px);padding:clamp(72px,10vw,140px) 0 72px;background:var(--accent);color:var(--on-accent)}
+    .contact ::selection{background:var(--on-accent);color:var(--accent)}
+    .contact a:hover,.contact .copy:hover{color:var(--on-accent);opacity:.75}
+    .contact a:focus-visible,.contact button:focus-visible{outline-color:var(--on-accent)}
+    .contact .mail{display:inline-block;margin-top:22px;font-weight:500;font-size:clamp(1.5rem,.6rem + 4.6vw,4.75rem);letter-spacing:-.045em;line-height:1.05;overflow-wrap:anywhere;background:linear-gradient(currentColor,currentColor) no-repeat left 100%/0 3px;padding-bottom:6px;transition:background-size .45s var(--ease)}
+    .contact .mail:hover{opacity:1;background-size:100% 3px}
+    .contact small{display:block;margin-top:14px;font-size:.9375rem;min-height:1.5em}
+    .foot{display:flex;flex-wrap:wrap;gap:8px 32px;margin-top:56px;padding-top:20px;border-top:1px solid color-mix(in srgb,var(--on-accent) 35%,transparent);font-size:.9375rem}
 
     /* Write-up pages */
     .writeup{padding:132px 0 96px}
@@ -171,6 +191,7 @@
   </style>
 </head>
 <body>
+  <div class="progress" aria-hidden="true"></div>
   <nav class="nav" aria-label="Site">
     <a class="nav-name" href="../index.html">Max Pickard</a>
     <div><a href="../index.html#work">All builds</a><a href="https://github.com/mpickles/revenue-stack-demo/tree/main/agents/tracking_qa">GitHub</a><button type="button" data-theme-toggle>Dark</button></div>
@@ -322,6 +343,13 @@
         paint();
       });
 
+      // A thin bar at the top shows how far down the page you are.
+      var bar = document.querySelector(".progress");
+      if (bar) window.addEventListener("scroll", function () {
+        var max = root.scrollHeight - window.innerHeight;
+        bar.style.transform = "scaleX(" + (max > 0 ? Math.min(1, window.scrollY / max) : 0) + ")";
+      }, { passive: true });
+
       // Copy the email address, with a confirmation.
       $$("[data-copy]").forEach(function (button) {
         var label = button.textContent, note = document.getElementById("copied");
@@ -367,6 +395,22 @@
           }
           gsap.from(".under, .spec, .writeup-head .status, .headline", { opacity: 0, duration: 0.7, ease: "power2.out", delay: 0.65 });
         }
+
+        // The name eases back as you scroll away from it.
+        if (document.querySelector(".hero h1")) gsap.to(".hero h1", { yPercent: -12, opacity: 0.25, ease: "none", scrollTrigger: { trigger: ".hero", start: "top top", end: "bottom 15%", scrub: true } });
+
+        // The statement lights up word by word as you read down.
+        $$("[data-words]").forEach(function (p) {
+          var words = p.textContent.trim().split(/\s+/);
+          p.setAttribute("aria-label", words.join(" ")); p.textContent = "";
+          words.forEach(function (w) { var s = document.createElement("span"); s.className = "w"; s.setAttribute("aria-hidden", "true"); s.textContent = w; p.appendChild(s); });
+          gsap.fromTo(p.querySelectorAll(".w"), { opacity: 0.14 }, { opacity: 1, stagger: 0.1, ease: "none", scrollTrigger: { trigger: p, start: "top 82%", end: "bottom 45%", scrub: true } });
+        });
+
+        // The screenshot grows to full width as it comes up the screen.
+        $$("[data-grow]").forEach(function (frame) {
+          gsap.fromTo(frame, { scale: 0.86, borderRadius: 22 }, { scale: 1, borderRadius: 10, ease: "none", scrollTrigger: { trigger: frame, start: "top 95%", end: "top 30%", scrub: true } });
+        });
 
         // Section headings rise out of a mask as they arrive.
         $$("main h2").forEach(function (h) {
