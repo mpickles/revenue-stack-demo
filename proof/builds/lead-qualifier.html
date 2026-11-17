@@ -1,0 +1,381 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Lead qualifier: scores a new lead, routes it, and asks a person when unsure | Max Pickard</title>
+  <!-- Made by proof/generator/build.py from agents/lead_classifier/README.md. Do not edit by hand. -->
+  <style>
+    :root {
+      --paper: #f2eee6;
+      --panel: #f8f5ef;
+      --ink: #1f1b16;
+      --muted: #6b645a;
+      --rule: #d9d2c5;
+      --moss: #4f5d32;
+      --wash: #e4e6d4;
+      --serif: "Iowan Old Style", "Palatino Linotype", Palatino, "Book Antiqua", Georgia, serif;
+      --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      color-scheme: light;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --paper: #1c1915;
+        --panel: #24201b;
+        --ink: #ece6da;
+        --muted: #a39b8e;
+        --rule: #3a342d;
+        --moss: #a9b77e;
+        --wash: #2e3323;
+        color-scheme: dark;
+      }
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+    html { -webkit-text-size-adjust: 100%; scroll-padding-top: 96px; }
+    body {
+      margin: 0;
+      background: var(--paper);
+      color: var(--ink);
+      font-family: var(--sans);
+      font-size: 1rem;
+      line-height: 1.65;
+    }
+    main {
+      max-width: 60rem;
+      margin: 0 auto;
+      padding: 72px 20px 96px;
+    }
+    @media (min-width: 720px) {
+      main { padding: 104px 40px 144px; }
+    }
+
+    a { color: inherit; text-decoration-color: var(--moss); text-decoration-thickness: 1px; text-underline-offset: 0.22em; }
+    a:hover { color: var(--moss); }
+    a:focus-visible { outline: 1px solid var(--moss); outline-offset: 3px; }
+
+    /* ---------- Nav: a floating bar that stops short of the screen edges ---------- */
+    .nav {
+      position: sticky;
+      top: 16px;
+      z-index: 5;
+      width: calc(100% - 40px);
+      max-width: 44rem;
+      margin: 16px auto 0;
+      padding: 10px 22px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px 20px;
+      align-items: center;
+      justify-content: space-between;
+      background: var(--panel);
+      border: 1px solid var(--rule);
+      border-radius: 999px;
+      font-size: 0.9375rem;
+    }
+    .nav a { text-decoration: none; }
+    .nav .nav-name { font-family: var(--serif); font-size: 1.0625rem; }
+    .nav .nav-links { display: flex; gap: 4px 20px; flex-wrap: wrap; color: var(--muted); }
+    .nav + main { padding-top: 64px; }
+    @media (min-width: 720px) { .nav + main { padding-top: 88px; } }
+
+    /* ---------- Masthead ---------- */
+    .masthead { max-width: 38rem; }
+    h1 {
+      margin: 0;
+      font-family: var(--serif);
+      font-weight: 400;
+      font-size: clamp(2.75rem, 1.6rem + 5vw, 4.75rem);
+      line-height: 1.02;
+      letter-spacing: -0.015em;
+    }
+    .role { margin: 16px 0 0; color: var(--muted); font-size: 1.0625rem; }
+    .lead {
+      margin: 48px 0 0;
+      padding-top: 24px;
+      border-top: 1px solid var(--rule);
+      font-family: var(--serif);
+      font-size: clamp(1.25rem, 1.1rem + 0.6vw, 1.5rem);
+      line-height: 1.5;
+    }
+
+    /* ---------- Section heads ---------- */
+    .section-head {
+      margin: 96px 0 0;
+      font-family: var(--serif);
+      font-weight: 400;
+      font-size: 1.5rem;
+      letter-spacing: -0.005em;
+    }
+    .section-note { margin: 8px 0 0; color: var(--muted); max-width: 38rem; }
+
+    /* ---------- Tiles ---------- */
+    .proofs {
+      list-style: none;
+      margin: 24px 0 0;
+      padding: 0;
+      display: grid;
+      column-gap: 48px;
+    }
+    @media (min-width: 720px) {
+      .proofs { grid-template-columns: 1fr 1fr; }
+    }
+    .proof {
+      display: grid;
+      grid-template-columns: 3.25rem 1fr;
+      column-gap: 16px;
+      padding: 24px 0 36px;
+      border-top: 1px solid var(--rule);
+    }
+    .proof-num {
+      font-family: var(--serif);
+      font-size: 2.75rem;
+      line-height: 1;
+      font-variant-numeric: lining-nums;
+      color: var(--muted);
+    }
+    .proof-title {
+      margin: 4px 0 0;
+      font-family: var(--serif);
+      font-weight: 400;
+      font-size: 1.375rem;
+      line-height: 1.25;
+    }
+    .proof-title a { text-decoration: none; }
+    .proof-title a:hover { text-decoration: underline; text-decoration-color: var(--moss); text-decoration-thickness: 1px; }
+    .status { margin: 6px 0 0; font-size: 0.9375rem; color: var(--muted); }
+    .proof-headline { margin: 14px 0 0; font-family: var(--serif); font-size: 1.1875rem; line-height: 1.35; }
+    .proof-sentence { margin: 12px 0 0; }
+    .proof-graded { margin: 10px 0 0; font-size: 0.9375rem; color: var(--muted); }
+    .proof-links {
+      margin: 14px 0 0;
+      padding: 0;
+      list-style: none;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px 24px;
+      font-size: 0.9375rem;
+    }
+
+    /* In progress and live: moss numeral and status, with a small solid mark. */
+    .is-active .proof-num,
+    .is-active.status,
+    .is-active .status { color: var(--moss); }
+    .is-active.status::before,
+    .is-active .status::before {
+      content: "";
+      display: inline-block;
+      width: 7px;
+      height: 7px;
+      margin-right: 8px;
+      background: var(--moss);
+      vertical-align: 0.08em;
+    }
+
+    /* ---------- Diagrams ---------- */
+    .figure { margin: 32px 0 0; padding: 28px 20px; background: var(--panel); border: 1px solid var(--rule); border-radius: 14px; overflow-x: auto; }
+    .dia { display: block; width: 100%; min-width: 600px; max-width: 760px; height: auto; margin: 0 auto; font-family: var(--sans); }
+    .dia-box { fill: var(--paper); stroke: var(--rule); stroke-width: 1; }
+    .dia-box.b { fill: var(--wash); stroke: var(--moss); }
+    .dia-box.m { stroke-dasharray: 4 3; stroke: var(--muted); }
+    .dia-text { fill: var(--ink); font-size: 13.5px; }
+    .dia-sub { fill: var(--muted); font-size: 11.5px; }
+    .dia-label { fill: var(--muted); font-size: 11.5px; }
+    .dia-line { fill: none; stroke: var(--muted); stroke-width: 1.2; }
+    .dia-dash { stroke-dasharray: 4 3; }
+    .dia-head { fill: var(--muted); }
+    .figure-key { margin: 16px auto 0; max-width: 760px; font-size: 0.875rem; color: var(--muted); }
+
+    /* ---------- Write-up pages ---------- */
+    .writeup-head { max-width: 44rem; }
+    .writeup-head h1 { font-size: clamp(2rem, 1.3rem + 3vw, 3.25rem); line-height: 1.08; }
+    .writeup-head .status { margin-top: 20px; }
+    .headline {
+      margin: 40px 0 0;
+      padding: 24px 0;
+      border-top: 1px solid var(--rule);
+      border-bottom: 1px solid var(--rule);
+      max-width: 44rem;
+    }
+    .headline-label { margin: 0; font-size: 0.8125rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); }
+    .headline-value { margin: 8px 0 0; font-family: var(--serif); font-size: clamp(1.25rem, 1.1rem + 0.8vw, 1.625rem); line-height: 1.35; }
+    .recording { margin: 32px 0 0; max-width: 44rem; }
+    .recording video { display: block; width: 100%; border: 1px solid var(--rule); border-radius: 10px; }
+    .prose { max-width: 44rem; margin-top: 56px; }
+    .prose h2 { margin: 56px 0 0; font-family: var(--serif); font-weight: 400; font-size: 1.5rem; line-height: 1.25; }
+    .prose h3 { margin: 36px 0 0; font-family: var(--serif); font-weight: 400; font-size: 1.1875rem; }
+    .prose p, .prose ul, .prose ol { margin: 16px 0 0; }
+    .prose ul, .prose ol { padding-left: 1.25rem; }
+    .prose li + li { margin-top: 6px; }
+    .prose code { font-family: var(--mono); font-size: 0.875em; background: var(--panel); border: 1px solid var(--rule); border-radius: 4px; padding: 1px 5px; }
+    .prose pre { margin: 16px 0 0; padding: 16px 18px; background: var(--panel); border: 1px solid var(--rule); border-radius: 10px; overflow-x: auto; line-height: 1.5; }
+    .prose pre code { background: none; border: 0; padding: 0; font-size: 0.8125rem; }
+    .tw { margin: 20px 0 0; overflow-x: auto; }
+    .prose table { border-collapse: collapse; width: 100%; min-width: 30rem; font-size: 0.9375rem; }
+    .prose th, .prose td { text-align: left; vertical-align: top; padding: 10px 14px 10px 0; border-bottom: 1px solid var(--rule); }
+    .prose th { font-weight: 600; font-size: 0.8125rem; letter-spacing: 0.04em; text-transform: uppercase; color: var(--muted); }
+    .repo-links { margin: 16px 0 0; padding: 0; list-style: none; display: flex; flex-wrap: wrap; gap: 8px 28px; }
+    .pager { margin: 96px 0 0; padding-top: 24px; border-top: 1px solid var(--rule); display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px 32px; }
+    .pager span { display: block; font-size: 0.8125rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); }
+    .pager a { font-family: var(--serif); font-size: 1.1875rem; text-decoration: none; }
+    .pager .next { text-align: right; margin-left: auto; }
+  </style>
+</head>
+<body>
+  <nav class="nav" aria-label="Site">
+    <a class="nav-name" href="../index.html">Max Pickard</a>
+    <span class="nav-links"><a href="../index.html">All proofs</a><a href="https://github.com/mpickles/revenue-stack-demo/tree/main/agents/lead_classifier">This build on GitHub</a></span>
+  </nav>
+  <main>
+    <header class="writeup-head">
+      <h1>Lead qualifier: scores a new lead, routes it, and asks a person when unsure</h1>
+      <p class="status is-planned">Planned</p>
+    </header>
+    <div class="headline">
+      <p class="headline-label">Not graded yet. It will be graded on</p>
+      <p class="headline-value">Agreement with 36 hand labels, and whether a person&#x27;s edit survives a second run.</p>
+    </div>
+
+    <div class="figure">
+      <svg class="dia" viewBox="0 0 756 542" role="img" aria-labelledby="lead-qualifier-t lead-qualifier-d" xmlns="http://www.w3.org/2000/svg">
+      <title id="lead-qualifier-t">How the lead qualifier handles a new lead</title>
+      <desc id="lead-qualifier-d">A new lead in Salesforce is enriched from three vendors, cheapest first. Claude scores it against a written rubric and returns a score, a reason and a confidence. A confident strong lead gets an owner and a Slack message. An unsure lead goes to an approval screen where a person approves or rejects. Every decision is logged with its cost.</desc>
+      <defs><marker id="lead-qualifier-a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" class="dia-head"/></marker></defs>
+      <path d="M378 80 L378 126" class="dia-line" marker-end="url(#lead-qualifier-a)"/>
+      <path d="M378 192 L378 238" class="dia-line" marker-end="url(#lead-qualifier-a)"/>
+      <path d="M214 271 L278 271" class="dia-line" marker-end="url(#lead-qualifier-a)"/>
+      <path d="M478 271 L542 271" class="dia-line" marker-end="url(#lead-qualifier-a)"/>
+      <path d="M328 304 L328 383 L214 383" class="dia-line" marker-end="url(#lead-qualifier-a)"/>
+      <path d="M428 304 L428 383 L542 383" class="dia-line" marker-end="url(#lead-qualifier-a)"/>
+      <path d="M114 416 L114 462" class="dia-line" marker-end="url(#lead-qualifier-a)"/>
+      <path d="M642 416 L642 462" class="dia-line" marker-end="url(#lead-qualifier-a)"/>
+      <rect x="278" y="14" width="200" height="66" rx="6" class="dia-box "/>
+      <text x="378.0" y="51.5" class="dia-text" text-anchor="middle">New lead in Salesforce</text>
+      <rect x="278" y="126" width="200" height="66" rx="6" class="dia-box b"/>
+      <text x="378.0" y="156" class="dia-text" text-anchor="middle">Fill in missing facts</text>
+      <text x="378.0" y="173" class="dia-sub" text-anchor="middle">three vendors, cheapest first</text>
+      <rect x="14" y="238" width="200" height="66" rx="6" class="dia-box "/>
+      <text x="114.0" y="268" class="dia-text" text-anchor="middle">Written rubric</text>
+      <text x="114.0" y="285" class="dia-sub" text-anchor="middle">36 hand labels grade it</text>
+      <rect x="278" y="238" width="200" height="66" rx="6" class="dia-box b"/>
+      <text x="378.0" y="268" class="dia-text" text-anchor="middle">Claude scores the lead</text>
+      <text x="378.0" y="285" class="dia-sub" text-anchor="middle">score, reason, confidence</text>
+      <rect x="542" y="238" width="200" height="66" rx="6" class="dia-box "/>
+      <text x="642.0" y="268" class="dia-text" text-anchor="middle">Log</text>
+      <text x="642.0" y="285" class="dia-sub" text-anchor="middle">every decision, with cost</text>
+      <rect x="14" y="350" width="200" height="66" rx="6" class="dia-box b"/>
+      <text x="114.0" y="380" class="dia-text" text-anchor="middle">Owner set</text>
+      <text x="114.0" y="397" class="dia-sub" text-anchor="middle">confident and strong</text>
+      <rect x="542" y="350" width="200" height="66" rx="6" class="dia-box b"/>
+      <text x="642.0" y="380" class="dia-text" text-anchor="middle">Approval screen</text>
+      <text x="642.0" y="397" class="dia-sub" text-anchor="middle">unsure</text>
+      <rect x="14" y="462" width="200" height="66" rx="6" class="dia-box "/>
+      <text x="114.0" y="499.5" class="dia-text" text-anchor="middle">One Slack message</text>
+      <rect x="542" y="462" width="200" height="66" rx="6" class="dia-box "/>
+      <text x="642.0" y="491" class="dia-text" text-anchor="middle">A person approves</text>
+      <text x="642.0" y="508" class="dia-text" text-anchor="middle">or rejects</text>
+      </svg>
+    </div>
+
+    <article class="prose">
+      <p>Status: planned. Nothing in this folder is built yet. This page says what it will do and how it will be graded.</p>
+      <p>A small Python service that picks up each new lead in Salesforce, fills in missing company facts, has Claude score it against a written rubric and gives strong leads an owner. It is for a sales team that wants fast routing without an AI writing to the CRM unchecked.</p>
+      <h2>What it will do</h2>
+      <ol>
+      <li>Notice a new lead in the Salesforce account from the <a href="https://github.com/mpickles/revenue-stack-demo/tree/main/crm/salesforce">routing build</a>.</li>
+      <li>Fill in missing company facts from three made-up data vendors, cheapest first, under a cost cap per lead.</li>
+      <li>Read the company website and have Claude score fit against a written rubric. The reply always has a score, a reason and a confidence.</li>
+      <li>Write the score and reason back to the lead. It writes only to its own fields.</li>
+      <li>Give a confident strong lead an owner and post one message to Slack.</li>
+      <li>Put an unsure lead on an approval screen, where a person approves or rejects the proposed owner.</li>
+      <li>Log every decision with its cost.</li>
+      </ol>
+      <p>A small MCP server lets a person look up a lead, read why it got its score, or re-route it from Claude.</p>
+      <h2>How it will be graded</h2>
+      <div class="tw"><table>
+      <thead>
+      <tr>
+      <th>Check</th>
+      <th>Pass bar</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr>
+      <td>36 leads labeled by hand</td>
+      <td>Agreement of 80 percent or more, shown by label</td>
+      </tr>
+      <tr>
+      <td>The same set, run three times</td>
+      <td>The number of leads that got the same band all three times is reported</td>
+      </tr>
+      <tr>
+      <td>Six leads with no website, a dead site or a thin site</td>
+      <td>All six go to a person. None is routed</td>
+      </tr>
+      <tr>
+      <td>Three pages with planted text that tries to give the agent orders</td>
+      <td>Each gets the same score band as its clean copy</td>
+      </tr>
+      <tr>
+      <td>A field changed by hand, then a second run</td>
+      <td>The hand edit is kept</td>
+      </tr>
+      <tr>
+      <td>A second run on the same leads</td>
+      <td>Nothing is written</td>
+      </tr>
+      <tr>
+      <td>A run stopped halfway and restarted</td>
+      <td>Every lead is scored exactly once</td>
+      </tr>
+      <tr>
+      <td>A re-route call without a confirm</td>
+      <td>Nothing changes in Salesforce</td>
+      </tr>
+      <tr>
+      <td>Enrichment</td>
+      <td>Average cost under 4 cents a lead</td>
+      </tr>
+      </tbody>
+      </table></div>
+      <h2>Planned files</h2>
+      <ul>
+      <li><code>rubric.md</code>: the written rubric</li>
+      <li><code>score.py</code>, <code>enrich.py</code>, <code>vendors.py</code></li>
+      <li><code>salesforce.py</code>: read and write. It never overwrites a field a person edited</li>
+      <li><code>mcp_server.py</code>: look up, explain, re-route</li>
+      <li><code>eval/golden.csv</code>: the hand labels</li>
+      <li><code>eval/impact.sql</code>: the system's own results, from its log</li>
+      <li>A runbook: how to run it and what to do when it fails</li>
+      </ul>
+      <h2>Choices already made</h2>
+      <ul>
+      <li>A person's edit always wins. The agent logs every value it writes. Before it writes again it compares the field to the last value it logged. If they differ, a person changed it, and the agent leaves that field alone.</li>
+      <li>The agent may only change the owner while the owner is still one of the routing queues. If a person owns the lead, it stays theirs.</li>
+      <li>Website text reaches the model as untrusted data, and the fixed output format limits what can come back.</li>
+      <li>An off switch, a dry run and a daily spend cap exist before the first live write.</li>
+      </ul>
+      <h2>Limits</h2>
+      <ul>
+      <li>The data vendors are made up, because real ones return nothing for made-up companies. The order of sources and the cost cap are real. The data is not.</li>
+      <li>It asks Salesforce for new leads every 15 seconds. At real volume Salesforce would push changes instead.</li>
+      <li>36 labels from one person is a small test set.</li>
+      </ul>
+      <h2>About the data</h2>
+      <p>The systems are real. Every lead and company is made up.</p>
+      <h2>In the repo</h2>
+      <ul class="repo-links">
+        <li><a href="https://github.com/mpickles/revenue-stack-demo/tree/main/agents/lead_classifier">Build folder</a></li>
+        <li><a href="https://github.com/mpickles/revenue-stack-demo/blob/main/docs/decisions.md">Decisions</a></li>
+      </ul>
+    </article>
+
+    <nav class="pager" aria-label="More proofs">
+      <a class="prev" href="campaign-qa-agent.html"><span>Before</span>Campaign QA agent</a>
+      <a class="next" href="funnel-and-reporting.html"><span>Next</span>Funnel in SQL and a reporting agent</a>
+    </nav>
+  </main>
+</body>
+</html>

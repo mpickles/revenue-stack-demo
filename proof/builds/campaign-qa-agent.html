@@ -1,0 +1,356 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Campaign QA agent: checks landing pages before a campaign goes live | Max Pickard</title>
+  <!-- Made by proof/generator/build.py from agents/tracking_qa/README.md. Do not edit by hand. -->
+  <style>
+    :root {
+      --paper: #f2eee6;
+      --panel: #f8f5ef;
+      --ink: #1f1b16;
+      --muted: #6b645a;
+      --rule: #d9d2c5;
+      --moss: #4f5d32;
+      --wash: #e4e6d4;
+      --serif: "Iowan Old Style", "Palatino Linotype", Palatino, "Book Antiqua", Georgia, serif;
+      --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      color-scheme: light;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --paper: #1c1915;
+        --panel: #24201b;
+        --ink: #ece6da;
+        --muted: #a39b8e;
+        --rule: #3a342d;
+        --moss: #a9b77e;
+        --wash: #2e3323;
+        color-scheme: dark;
+      }
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+    html { -webkit-text-size-adjust: 100%; scroll-padding-top: 96px; }
+    body {
+      margin: 0;
+      background: var(--paper);
+      color: var(--ink);
+      font-family: var(--sans);
+      font-size: 1rem;
+      line-height: 1.65;
+    }
+    main {
+      max-width: 60rem;
+      margin: 0 auto;
+      padding: 72px 20px 96px;
+    }
+    @media (min-width: 720px) {
+      main { padding: 104px 40px 144px; }
+    }
+
+    a { color: inherit; text-decoration-color: var(--moss); text-decoration-thickness: 1px; text-underline-offset: 0.22em; }
+    a:hover { color: var(--moss); }
+    a:focus-visible { outline: 1px solid var(--moss); outline-offset: 3px; }
+
+    /* ---------- Nav: a floating bar that stops short of the screen edges ---------- */
+    .nav {
+      position: sticky;
+      top: 16px;
+      z-index: 5;
+      width: calc(100% - 40px);
+      max-width: 44rem;
+      margin: 16px auto 0;
+      padding: 10px 22px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px 20px;
+      align-items: center;
+      justify-content: space-between;
+      background: var(--panel);
+      border: 1px solid var(--rule);
+      border-radius: 999px;
+      font-size: 0.9375rem;
+    }
+    .nav a { text-decoration: none; }
+    .nav .nav-name { font-family: var(--serif); font-size: 1.0625rem; }
+    .nav .nav-links { display: flex; gap: 4px 20px; flex-wrap: wrap; color: var(--muted); }
+    .nav + main { padding-top: 64px; }
+    @media (min-width: 720px) { .nav + main { padding-top: 88px; } }
+
+    /* ---------- Masthead ---------- */
+    .masthead { max-width: 38rem; }
+    h1 {
+      margin: 0;
+      font-family: var(--serif);
+      font-weight: 400;
+      font-size: clamp(2.75rem, 1.6rem + 5vw, 4.75rem);
+      line-height: 1.02;
+      letter-spacing: -0.015em;
+    }
+    .role { margin: 16px 0 0; color: var(--muted); font-size: 1.0625rem; }
+    .lead {
+      margin: 48px 0 0;
+      padding-top: 24px;
+      border-top: 1px solid var(--rule);
+      font-family: var(--serif);
+      font-size: clamp(1.25rem, 1.1rem + 0.6vw, 1.5rem);
+      line-height: 1.5;
+    }
+
+    /* ---------- Section heads ---------- */
+    .section-head {
+      margin: 96px 0 0;
+      font-family: var(--serif);
+      font-weight: 400;
+      font-size: 1.5rem;
+      letter-spacing: -0.005em;
+    }
+    .section-note { margin: 8px 0 0; color: var(--muted); max-width: 38rem; }
+
+    /* ---------- Tiles ---------- */
+    .proofs {
+      list-style: none;
+      margin: 24px 0 0;
+      padding: 0;
+      display: grid;
+      column-gap: 48px;
+    }
+    @media (min-width: 720px) {
+      .proofs { grid-template-columns: 1fr 1fr; }
+    }
+    .proof {
+      display: grid;
+      grid-template-columns: 3.25rem 1fr;
+      column-gap: 16px;
+      padding: 24px 0 36px;
+      border-top: 1px solid var(--rule);
+    }
+    .proof-num {
+      font-family: var(--serif);
+      font-size: 2.75rem;
+      line-height: 1;
+      font-variant-numeric: lining-nums;
+      color: var(--muted);
+    }
+    .proof-title {
+      margin: 4px 0 0;
+      font-family: var(--serif);
+      font-weight: 400;
+      font-size: 1.375rem;
+      line-height: 1.25;
+    }
+    .proof-title a { text-decoration: none; }
+    .proof-title a:hover { text-decoration: underline; text-decoration-color: var(--moss); text-decoration-thickness: 1px; }
+    .status { margin: 6px 0 0; font-size: 0.9375rem; color: var(--muted); }
+    .proof-headline { margin: 14px 0 0; font-family: var(--serif); font-size: 1.1875rem; line-height: 1.35; }
+    .proof-sentence { margin: 12px 0 0; }
+    .proof-graded { margin: 10px 0 0; font-size: 0.9375rem; color: var(--muted); }
+    .proof-links {
+      margin: 14px 0 0;
+      padding: 0;
+      list-style: none;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px 24px;
+      font-size: 0.9375rem;
+    }
+
+    /* In progress and live: moss numeral and status, with a small solid mark. */
+    .is-active .proof-num,
+    .is-active.status,
+    .is-active .status { color: var(--moss); }
+    .is-active.status::before,
+    .is-active .status::before {
+      content: "";
+      display: inline-block;
+      width: 7px;
+      height: 7px;
+      margin-right: 8px;
+      background: var(--moss);
+      vertical-align: 0.08em;
+    }
+
+    /* ---------- Diagrams ---------- */
+    .figure { margin: 32px 0 0; padding: 28px 20px; background: var(--panel); border: 1px solid var(--rule); border-radius: 14px; overflow-x: auto; }
+    .dia { display: block; width: 100%; min-width: 600px; max-width: 760px; height: auto; margin: 0 auto; font-family: var(--sans); }
+    .dia-box { fill: var(--paper); stroke: var(--rule); stroke-width: 1; }
+    .dia-box.b { fill: var(--wash); stroke: var(--moss); }
+    .dia-box.m { stroke-dasharray: 4 3; stroke: var(--muted); }
+    .dia-text { fill: var(--ink); font-size: 13.5px; }
+    .dia-sub { fill: var(--muted); font-size: 11.5px; }
+    .dia-label { fill: var(--muted); font-size: 11.5px; }
+    .dia-line { fill: none; stroke: var(--muted); stroke-width: 1.2; }
+    .dia-dash { stroke-dasharray: 4 3; }
+    .dia-head { fill: var(--muted); }
+    .figure-key { margin: 16px auto 0; max-width: 760px; font-size: 0.875rem; color: var(--muted); }
+
+    /* ---------- Write-up pages ---------- */
+    .writeup-head { max-width: 44rem; }
+    .writeup-head h1 { font-size: clamp(2rem, 1.3rem + 3vw, 3.25rem); line-height: 1.08; }
+    .writeup-head .status { margin-top: 20px; }
+    .headline {
+      margin: 40px 0 0;
+      padding: 24px 0;
+      border-top: 1px solid var(--rule);
+      border-bottom: 1px solid var(--rule);
+      max-width: 44rem;
+    }
+    .headline-label { margin: 0; font-size: 0.8125rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); }
+    .headline-value { margin: 8px 0 0; font-family: var(--serif); font-size: clamp(1.25rem, 1.1rem + 0.8vw, 1.625rem); line-height: 1.35; }
+    .recording { margin: 32px 0 0; max-width: 44rem; }
+    .recording video { display: block; width: 100%; border: 1px solid var(--rule); border-radius: 10px; }
+    .prose { max-width: 44rem; margin-top: 56px; }
+    .prose h2 { margin: 56px 0 0; font-family: var(--serif); font-weight: 400; font-size: 1.5rem; line-height: 1.25; }
+    .prose h3 { margin: 36px 0 0; font-family: var(--serif); font-weight: 400; font-size: 1.1875rem; }
+    .prose p, .prose ul, .prose ol { margin: 16px 0 0; }
+    .prose ul, .prose ol { padding-left: 1.25rem; }
+    .prose li + li { margin-top: 6px; }
+    .prose code { font-family: var(--mono); font-size: 0.875em; background: var(--panel); border: 1px solid var(--rule); border-radius: 4px; padding: 1px 5px; }
+    .prose pre { margin: 16px 0 0; padding: 16px 18px; background: var(--panel); border: 1px solid var(--rule); border-radius: 10px; overflow-x: auto; line-height: 1.5; }
+    .prose pre code { background: none; border: 0; padding: 0; font-size: 0.8125rem; }
+    .tw { margin: 20px 0 0; overflow-x: auto; }
+    .prose table { border-collapse: collapse; width: 100%; min-width: 30rem; font-size: 0.9375rem; }
+    .prose th, .prose td { text-align: left; vertical-align: top; padding: 10px 14px 10px 0; border-bottom: 1px solid var(--rule); }
+    .prose th { font-weight: 600; font-size: 0.8125rem; letter-spacing: 0.04em; text-transform: uppercase; color: var(--muted); }
+    .repo-links { margin: 16px 0 0; padding: 0; list-style: none; display: flex; flex-wrap: wrap; gap: 8px 28px; }
+    .pager { margin: 96px 0 0; padding-top: 24px; border-top: 1px solid var(--rule); display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px 32px; }
+    .pager span { display: block; font-size: 0.8125rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); }
+    .pager a { font-family: var(--serif); font-size: 1.1875rem; text-decoration: none; }
+    .pager .next { text-align: right; margin-left: auto; }
+  </style>
+</head>
+<body>
+  <nav class="nav" aria-label="Site">
+    <a class="nav-name" href="../index.html">Max Pickard</a>
+    <span class="nav-links"><a href="../index.html">All proofs</a><a href="https://github.com/mpickles/revenue-stack-demo/tree/main/agents/tracking_qa">This build on GitHub</a></span>
+  </nav>
+  <main>
+    <header class="writeup-head">
+      <h1>Campaign QA agent: checks landing pages before a campaign goes live</h1>
+      <p class="status is-planned">Planned</p>
+    </header>
+    <div class="headline">
+      <p class="headline-label">Not graded yet. It will be graded on</p>
+      <p class="headline-value">14 pages with a planted bug and 8 clean pages: bugs caught, and false alarms raised.</p>
+    </div>
+
+    <div class="figure">
+      <svg class="dia" viewBox="0 0 756 542" role="img" aria-labelledby="campaign-qa-agent-t campaign-qa-agent-d" xmlns="http://www.w3.org/2000/svg">
+      <title id="campaign-qa-agent-t">How the campaign QA agent reaches a go or no-go</title>
+      <desc id="campaign-qa-agent-d">A campaign brief lists landing pages and the UTM values they should carry. Fixed checks run on each page in a real browser and write a findings file. An answer key of planted bugs and clean pages grades the findings. Claude writes a report from the findings only. Code compares the report to the findings, then the tool returns go or no-go.</desc>
+      <defs><marker id="campaign-qa-agent-a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" class="dia-head"/></marker></defs>
+      <path d="M214 47 L278 47" class="dia-line" marker-end="url(#campaign-qa-agent-a)"/>
+      <path d="M378 80 L378 126" class="dia-line" marker-end="url(#campaign-qa-agent-a)"/>
+      <path d="M642 80 L642 159 L478 159" class="dia-line" marker-end="url(#campaign-qa-agent-a)"/>
+      <text x="650" y="129" class="dia-label" text-anchor="start">grades</text>
+      <path d="M378 192 L378 238" class="dia-line" marker-end="url(#campaign-qa-agent-a)"/>
+      <path d="M378 304 L378 350" class="dia-line" marker-end="url(#campaign-qa-agent-a)"/>
+      <path d="M478 383 L542 383" class="dia-line" marker-end="url(#campaign-qa-agent-a)"/>
+      <path d="M378 416 L378 462" class="dia-line" marker-end="url(#campaign-qa-agent-a)"/>
+      <rect x="14" y="14" width="200" height="66" rx="6" class="dia-box "/>
+      <text x="114.0" y="44" class="dia-text" text-anchor="middle">Campaign brief</text>
+      <text x="114.0" y="61" class="dia-sub" text-anchor="middle">pages and their UTM values</text>
+      <rect x="278" y="14" width="200" height="66" rx="6" class="dia-box b"/>
+      <text x="378.0" y="44" class="dia-text" text-anchor="middle">Fixed checks in a browser</text>
+      <text x="378.0" y="61" class="dia-sub" text-anchor="middle">plain code, no AI</text>
+      <rect x="542" y="14" width="200" height="66" rx="6" class="dia-box "/>
+      <text x="642.0" y="44" class="dia-text" text-anchor="middle">Answer key</text>
+      <text x="642.0" y="61" class="dia-sub" text-anchor="middle">14 planted bugs, 8 clean pages</text>
+      <rect x="278" y="126" width="200" height="66" rx="6" class="dia-box "/>
+      <text x="378.0" y="156" class="dia-text" text-anchor="middle">Findings file</text>
+      <text x="378.0" y="173" class="dia-sub" text-anchor="middle">pass, fail or could not check</text>
+      <rect x="278" y="238" width="200" height="66" rx="6" class="dia-box b"/>
+      <text x="378.0" y="268" class="dia-text" text-anchor="middle">Claude writes the report</text>
+      <text x="378.0" y="285" class="dia-sub" text-anchor="middle">from the findings only</text>
+      <rect x="278" y="350" width="200" height="66" rx="6" class="dia-box b"/>
+      <text x="378.0" y="379" class="dia-text" text-anchor="middle">Code compares report</text>
+      <text x="378.0" y="396" class="dia-text" text-anchor="middle">to findings</text>
+      <rect x="542" y="350" width="200" height="66" rx="6" class="dia-box m"/>
+      <text x="642.0" y="380" class="dia-text" text-anchor="middle">Report thrown away</text>
+      <text x="642.0" y="397" class="dia-sub" text-anchor="middle">if it states anything else</text>
+      <rect x="278" y="462" width="200" height="66" rx="6" class="dia-box "/>
+      <text x="378.0" y="492" class="dia-text" text-anchor="middle">Go or no-go</text>
+      <text x="378.0" y="509" class="dia-sub" text-anchor="middle">no-go exits with code 1</text>
+      </svg>
+    </div>
+
+    <article class="prose">
+      <p>Status: planned. Nothing in this folder is built yet. This page says what it will do and how it will be graded.</p>
+      <p>A Python tool that takes a campaign brief and checks every landing page in it for tags, consent, the conversion event and UTM values. It is for a marketing team that wants a go or no-go answer before spend starts.</p>
+      <h2>What it will do</h2>
+      <ol>
+      <li>Read a brief: one row per landing page, with the UTM values the page should carry.</li>
+      <li>Open each page in a real browser and run fixed checks. The container is present. Consent defaults are set before the container loads. The hidden fields hold the click ID after Accept. The UTM values match the naming rule. A redirect does not drop the click ID.</li>
+      <li>Watch the network requests. After a form submit, exactly one request carries <code>generate_lead</code>, with the right consent code.</li>
+      <li>Write a findings file: one row per page per check, with pass, fail or could not check, and the evidence.</li>
+      <li>Have Claude write the go or no-go report from the findings file only.</li>
+      <li>Compare every finding in the report to the findings file. A report that states anything else is thrown away.</li>
+      </ol>
+      <h2>How it will be graded</h2>
+      <div class="tw"><table>
+      <thead>
+      <tr>
+      <th>Check</th>
+      <th>Pass bar</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr>
+      <td>14 pages with one planted bug each</td>
+      <td>13 or more caught</td>
+      </tr>
+      <tr>
+      <td>8 clean pages</td>
+      <td>0 false alarms</td>
+      </tr>
+      <tr>
+      <td>Report step, run three times on each findings file</td>
+      <td>3 of 3 runs state nothing that is not in the file</td>
+      </tr>
+      <tr>
+      <td>A page that will not load</td>
+      <td>Reported as could not check. Never counted as a pass</td>
+      </tr>
+      <tr>
+      <td>A no-go run</td>
+      <td>The command exits with code 1</td>
+      </tr>
+      </tbody>
+      </table></div>
+      <p>Both numbers will be shown: of the bugs planted, how many were caught, and of the alarms raised, how many were real. A miss stays in the table.</p>
+      <h2>Planned files</h2>
+      <ul>
+      <li><code>check_pages.py</code>: the page checks</li>
+      <li><code>utm_rules.py</code>: the UTM naming check, written by hand</li>
+      <li><code>report.py</code>: the Claude call, with a fixed output format</li>
+      <li><code>eval/broken_pages.csv</code>: the planted bugs and the expected finding for each</li>
+      <li><code>runs.csv</code>: one row per run with model, prompt version, tokens, cost and seconds</li>
+      <li><code>tests/</code></li>
+      </ul>
+      <h2>One choice already made</h2>
+      <p>The checks are plain code. Only the wording of the report is Claude. A check must give the same answer every time. Page text is never sent to the model, so a page cannot give it orders.</p>
+      <h2>Limits</h2>
+      <ul>
+      <li>It checks pages on the Roadwren demo site. Real sites have more tags, more consent tools and more ways to break.</li>
+      <li>The planted bugs are ones I chose. It is not proof against bugs nobody planted.</li>
+      </ul>
+      <h2>About the data</h2>
+      <p>The pages are real pages on a made-up company's site. Every bug is planted on purpose and listed in the answer key.</p>
+      <h2>In the repo</h2>
+      <ul class="repo-links">
+        <li><a href="https://github.com/mpickles/revenue-stack-demo/tree/main/agents/tracking_qa">Build folder</a></li>
+        <li><a href="https://github.com/mpickles/revenue-stack-demo/blob/main/docs/decisions.md">Decisions</a></li>
+      </ul>
+    </article>
+
+    <nav class="pager" aria-label="More proofs">
+      <a class="prev" href="salesforce-routing.html"><span>Before</span>Salesforce routing and conversions</a>
+      <a class="next" href="lead-qualifier.html"><span>Next</span>Lead qualifier agent</a>
+    </nav>
+  </main>
+</body>
+</html>
