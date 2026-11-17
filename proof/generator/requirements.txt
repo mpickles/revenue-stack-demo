@@ -1,0 +1,3 @@
+# Used only by build.py, to turn each build's README into a page.
+markdown-it-py==4.3.0
+mdurl==0.1.2

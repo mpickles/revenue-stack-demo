@@ -1,0 +1,35 @@
+<svg class="dia" viewBox="0 0 756 542" role="img" aria-labelledby="crm-cleanup-t crm-cleanup-d" xmlns="http://www.w3.org/2000/svg">
+<title id="crm-cleanup-t">How the CRM cleanup merges and is graded</title>
+<desc id="crm-cleanup-d">A seed script plants a known mess in Salesforce and writes an answer key. Duplicate groups are found with SQL on an export. A plan file lists every merge first, then a backup is written. Accounts with an open opportunity go to a list for a person. The rest are merged, and an audit grades every merge against the answer key.</desc>
+<defs><marker id="crm-cleanup-a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" class="dia-head"/></marker></defs>
+<path d="M214 47 L278 47" class="dia-line" marker-end="url(#crm-cleanup-a)"/>
+<path d="M114 80 L114 126" class="dia-line" marker-end="url(#crm-cleanup-a)"/>
+<path d="M378 80 L378 126" class="dia-line" marker-end="url(#crm-cleanup-a)"/>
+<path d="M478 159 L542 159" class="dia-line" marker-end="url(#crm-cleanup-a)"/>
+<path d="M378 192 L378 238" class="dia-line" marker-end="url(#crm-cleanup-a)"/>
+<path d="M378 304 L378 350" class="dia-line" marker-end="url(#crm-cleanup-a)"/>
+<path d="M378 416 L378 462" class="dia-line" marker-end="url(#crm-cleanup-a)"/>
+<path d="M114 192 L114 495 L278 495" class="dia-line" marker-end="url(#crm-cleanup-a)"/>
+<text x="122" y="383" class="dia-label" text-anchor="start">grades</text>
+<rect x="14" y="14" width="200" height="66" rx="6" class="dia-box "/>
+<text x="114.0" y="44" class="dia-text" text-anchor="middle">Seed script</text>
+<text x="114.0" y="61" class="dia-sub" text-anchor="middle">80 accounts, 300 contacts</text>
+<rect x="278" y="14" width="200" height="66" rx="6" class="dia-box b"/>
+<text x="378.0" y="44" class="dia-text" text-anchor="middle">Find duplicate groups</text>
+<text x="378.0" y="61" class="dia-sub" text-anchor="middle">SQL on an export</text>
+<rect x="14" y="126" width="200" height="66" rx="6" class="dia-box "/>
+<text x="114.0" y="163.5" class="dia-text" text-anchor="middle">Answer key</text>
+<rect x="278" y="126" width="200" height="66" rx="6" class="dia-box b"/>
+<text x="378.0" y="156" class="dia-text" text-anchor="middle">Plan file</text>
+<text x="378.0" y="173" class="dia-sub" text-anchor="middle">every merge listed first</text>
+<rect x="542" y="126" width="200" height="66" rx="6" class="dia-box m"/>
+<text x="642.0" y="156" class="dia-text" text-anchor="middle">List for a person</text>
+<text x="642.0" y="173" class="dia-sub" text-anchor="middle">account has open pipeline</text>
+<rect x="278" y="238" width="200" height="66" rx="6" class="dia-box b"/>
+<text x="378.0" y="275.5" class="dia-text" text-anchor="middle">Backup written</text>
+<rect x="278" y="350" width="200" height="66" rx="6" class="dia-box b"/>
+<text x="378.0" y="387.5" class="dia-text" text-anchor="middle">Merge into one survivor</text>
+<rect x="278" y="462" width="200" height="66" rx="6" class="dia-box b"/>
+<text x="378.0" y="492" class="dia-text" text-anchor="middle">Audit</text>
+<text x="378.0" y="509" class="dia-sub" text-anchor="middle">right, wrong, found, missed</text>
+</svg>

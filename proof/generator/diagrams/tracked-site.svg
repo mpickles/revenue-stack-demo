@@ -1,0 +1,35 @@
+<svg class="dia" viewBox="0 0 756 542" role="img" aria-labelledby="tracked-site-t tracked-site-d" xmlns="http://www.w3.org/2000/svg">
+<title id="tracked-site-t">What the site does with a click ID</title>
+<desc id="tracked-site-d">A visitor lands with a click ID and UTM values. The consent banner offers Reject or Accept. On Reject nothing is stored and requests to Google are marked denied. On Accept the click ID is stored. On form submit the hidden fields are filled, one generate_lead event goes to GA4, and the lead API writes the contact to HubSpot with the click ID.</desc>
+<defs><marker id="tracked-site-a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" class="dia-head"/></marker></defs>
+<path d="M378 80 L378 126" class="dia-line" marker-end="url(#tracked-site-a)"/>
+<path d="M278 159 L114 159 L114 238" class="dia-line" marker-end="url(#tracked-site-a)"/>
+<text x="122" y="209" class="dia-label" text-anchor="start">Reject</text>
+<path d="M478 159 L642 159 L642 238" class="dia-line" marker-end="url(#tracked-site-a)"/>
+<text x="650" y="209" class="dia-label" text-anchor="start">Accept</text>
+<path d="M642 304 L642 383 L478 383" class="dia-line" marker-end="url(#tracked-site-a)"/>
+<path d="M114 304 L114 383 L278 383" class="dia-line dia-dash" marker-end="url(#tracked-site-a)"/>
+<path d="M328 416 L328 495 L214 495" class="dia-line" marker-end="url(#tracked-site-a)"/>
+<path d="M428 416 L428 495 L542 495" class="dia-line" marker-end="url(#tracked-site-a)"/>
+<rect x="278" y="14" width="200" height="66" rx="6" class="dia-box "/>
+<text x="378.0" y="43" class="dia-text" text-anchor="middle">Landing with a click ID</text>
+<text x="378.0" y="60" class="dia-text" text-anchor="middle">and UTM values</text>
+<rect x="278" y="126" width="200" height="66" rx="6" class="dia-box "/>
+<text x="378.0" y="156" class="dia-text" text-anchor="middle">Consent banner</text>
+<text x="378.0" y="173" class="dia-sub" text-anchor="middle">all signals start denied</text>
+<rect x="14" y="238" width="200" height="66" rx="6" class="dia-box m"/>
+<text x="114.0" y="268" class="dia-text" text-anchor="middle">Nothing stored</text>
+<text x="114.0" y="285" class="dia-sub" text-anchor="middle">requests marked denied</text>
+<rect x="542" y="238" width="200" height="66" rx="6" class="dia-box b"/>
+<text x="642.0" y="268" class="dia-text" text-anchor="middle">Click ID stored</text>
+<text x="642.0" y="285" class="dia-sub" text-anchor="middle">first-party cookie</text>
+<rect x="278" y="350" width="200" height="66" rx="6" class="dia-box b"/>
+<text x="378.0" y="380" class="dia-text" text-anchor="middle">Form submit</text>
+<text x="378.0" y="397" class="dia-sub" text-anchor="middle">click ID sent only with consent</text>
+<rect x="14" y="462" width="200" height="66" rx="6" class="dia-box "/>
+<text x="114.0" y="491" class="dia-text" text-anchor="middle">One generate_lead</text>
+<text x="114.0" y="508" class="dia-text" text-anchor="middle">event to GA4</text>
+<rect x="542" y="462" width="200" height="66" rx="6" class="dia-box "/>
+<text x="642.0" y="492" class="dia-text" text-anchor="middle">Lead API to HubSpot</text>
+<text x="642.0" y="509" class="dia-sub" text-anchor="middle">click ID on the contact</text>
+</svg>

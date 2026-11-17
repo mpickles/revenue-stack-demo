@@ -1,0 +1,156 @@
+{
+  "repo": "https://github.com/mpickles/revenue-stack-demo",
+  "demo": "https://roadwren-demo.vercel.app",
+  "contact": {
+    "email": null,
+    "linkedin": null
+  },
+  "builds": [
+    {
+      "slug": "tracked-site",
+      "tile": "Tracked site",
+      "readme": "tagging/README.md",
+      "sentence": "A demo site that stores a click ID only after consent and carries it through the form into the CRM.",
+      "graded_on": "With consent rejected: no cookie set, no click ID stored. With consent accepted: the click ID reaches the CRM.",
+      "headline": null,
+      "recording": null,
+      "links": [
+        {
+          "label": "Live demo site",
+          "url": "https://roadwren-demo.vercel.app"
+        },
+        {
+          "label": "Site code",
+          "path": "site"
+        },
+        {
+          "label": "Tag setup",
+          "path": "tagging"
+        },
+        {
+          "label": "Tests",
+          "path": "site/tests"
+        },
+        {
+          "label": "Spec",
+          "path": "docs/spec-site.md"
+        },
+        {
+          "label": "Decisions",
+          "path": "docs/decisions.md"
+        }
+      ]
+    },
+    {
+      "slug": "salesforce-routing",
+      "tile": "Salesforce routing and conversions",
+      "readme": "crm/salesforce/README.md",
+      "sentence": "Leads from the form get a stage, a campaign and an owner in Salesforce. Conversions go back to Google Ads.",
+      "graded_on": "37 test leads with an answer key: the right stage, campaign and owner for each, and every junk lead blocked.",
+      "headline": null,
+      "recording": null,
+      "links": [
+        {
+          "label": "Build folder",
+          "path": "crm/salesforce"
+        },
+        {
+          "label": "Answer key",
+          "path": "crm/salesforce/test_leads.csv"
+        },
+        {
+          "label": "Edge case answer key",
+          "path": "crm/salesforce/test_leads_edge_cases.csv"
+        },
+        {
+          "label": "Decisions",
+          "path": "docs/decisions.md"
+        }
+      ]
+    },
+    {
+      "slug": "campaign-qa-agent",
+      "tile": "Campaign QA agent",
+      "readme": "agents/tracking_qa/README.md",
+      "sentence": "A Python tool that checks landing pages for tags, consent, the conversion event and UTM values before launch.",
+      "graded_on": "14 pages with a planted bug and 8 clean pages: bugs caught, and false alarms raised.",
+      "headline": null,
+      "recording": null,
+      "links": [
+        {
+          "label": "Build folder",
+          "path": "agents/tracking_qa"
+        },
+        {
+          "label": "Decisions",
+          "path": "docs/decisions.md"
+        }
+      ]
+    },
+    {
+      "slug": "lead-qualifier",
+      "tile": "Lead qualifier agent",
+      "readme": "agents/lead_classifier/README.md",
+      "sentence": "Claude scores each new lead against a written rubric, routes the strong ones and asks a person when unsure.",
+      "graded_on": "Agreement with 36 hand labels, and whether a person's edit survives a second run.",
+      "headline": null,
+      "recording": null,
+      "links": [
+        {
+          "label": "Build folder",
+          "path": "agents/lead_classifier"
+        },
+        {
+          "label": "Decisions",
+          "path": "docs/decisions.md"
+        }
+      ]
+    },
+    {
+      "slug": "funnel-and-reporting",
+      "tile": "Funnel in SQL and a reporting agent",
+      "readme": "warehouse/README.md",
+      "sentence": "The funnel and ad credit in SQL, and a weekly summary where code checks every number before it is published.",
+      "graded_on": "Credit adds up to exactly 100 percent, and three planted wrong summaries are rejected.",
+      "headline": null,
+      "recording": null,
+      "links": [
+        {
+          "label": "SQL models",
+          "path": "warehouse"
+        },
+        {
+          "label": "Made-up data",
+          "path": "pipelines/synthetic"
+        },
+        {
+          "label": "Reporting agent",
+          "path": "agents/analyst"
+        },
+        {
+          "label": "Decisions",
+          "path": "docs/decisions.md"
+        }
+      ]
+    },
+    {
+      "slug": "crm-cleanup",
+      "tile": "CRM cleanup",
+      "readme": "crm/salesforce_dedupe/README.md",
+      "sentence": "Duplicate accounts and contacts in Salesforce found and merged by script, with every merge graded.",
+      "graded_on": "Merges right and wrong against an answer key, with decoys that must be left alone.",
+      "headline": null,
+      "recording": null,
+      "links": [
+        {
+          "label": "Build folder",
+          "path": "crm/salesforce_dedupe"
+        },
+        {
+          "label": "Decisions",
+          "path": "docs/decisions.md"
+        }
+      ]
+    }
+  ]
+}

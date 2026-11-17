@@ -16,6 +16,7 @@ site/ tagging/ pipelines/ warehouse/ agents/ docs/ proof/
 - site: npm run dev, npm test, npm run build
 - pipelines: pytest
 - warehouse: dbt build
+- proof: python proof/generator/build.py, python -m unittest discover -s proof/generator -p "test_*.py"
 
 ## Done means
 - The spec's acceptance checks pass and I have run them myself.

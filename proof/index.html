@@ -5,30 +5,36 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="robots" content="noindex, nofollow">
   <title>Max Pickard: proof of work</title>
+  <!-- Made by proof/generator/build.py. Do not edit by hand. -->
   <style>
     :root {
       --paper: #f2eee6;
+      --panel: #f8f5ef;
       --ink: #1f1b16;
       --muted: #6b645a;
       --rule: #d9d2c5;
       --moss: #4f5d32;
+      --wash: #e4e6d4;
       --serif: "Iowan Old Style", "Palatino Linotype", Palatino, "Book Antiqua", Georgia, serif;
       --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
       color-scheme: light;
     }
     @media (prefers-color-scheme: dark) {
       :root {
         --paper: #1c1915;
+        --panel: #24201b;
         --ink: #ece6da;
         --muted: #a39b8e;
         --rule: #3a342d;
         --moss: #a9b77e;
+        --wash: #2e3323;
         color-scheme: dark;
       }
     }
 
     *, *::before, *::after { box-sizing: border-box; }
-    html { -webkit-text-size-adjust: 100%; }
+    html { -webkit-text-size-adjust: 100%; scroll-padding-top: 96px; }
     body {
       margin: 0;
       background: var(--paper);
@@ -40,15 +46,40 @@
     main {
       max-width: 60rem;
       margin: 0 auto;
-      padding: 72px 16px 96px;
+      padding: 72px 20px 96px;
     }
     @media (min-width: 720px) {
-      main { padding: 120px 40px 144px; }
+      main { padding: 104px 40px 144px; }
     }
 
     a { color: inherit; text-decoration-color: var(--moss); text-decoration-thickness: 1px; text-underline-offset: 0.22em; }
     a:hover { color: var(--moss); }
     a:focus-visible { outline: 1px solid var(--moss); outline-offset: 3px; }
+
+    /* ---------- Nav: a floating bar that stops short of the screen edges ---------- */
+    .nav {
+      position: sticky;
+      top: 16px;
+      z-index: 5;
+      width: calc(100% - 40px);
+      max-width: 44rem;
+      margin: 16px auto 0;
+      padding: 10px 22px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px 20px;
+      align-items: center;
+      justify-content: space-between;
+      background: var(--panel);
+      border: 1px solid var(--rule);
+      border-radius: 999px;
+      font-size: 0.9375rem;
+    }
+    .nav a { text-decoration: none; }
+    .nav .nav-name { font-family: var(--serif); font-size: 1.0625rem; }
+    .nav .nav-links { display: flex; gap: 4px 20px; flex-wrap: wrap; color: var(--muted); }
+    .nav + main { padding-top: 64px; }
+    @media (min-width: 720px) { .nav + main { padding-top: 88px; } }
 
     /* ---------- Masthead ---------- */
     .masthead { max-width: 38rem; }
@@ -60,11 +91,7 @@
       line-height: 1.02;
       letter-spacing: -0.015em;
     }
-    .role {
-      margin: 16px 0 0;
-      color: var(--muted);
-      font-size: 1.0625rem;
-    }
+    .role { margin: 16px 0 0; color: var(--muted); font-size: 1.0625rem; }
     .lead {
       margin: 48px 0 0;
       padding-top: 24px;
@@ -74,14 +101,17 @@
       line-height: 1.5;
     }
 
-    /* ---------- Proofs ---------- */
-    .proofs-head {
+    /* ---------- Section heads ---------- */
+    .section-head {
       margin: 96px 0 0;
       font-family: var(--serif);
       font-weight: 400;
       font-size: 1.5rem;
       letter-spacing: -0.005em;
     }
+    .section-note { margin: 8px 0 0; color: var(--muted); max-width: 38rem; }
+
+    /* ---------- Tiles ---------- */
     .proofs {
       list-style: none;
       margin: 24px 0 0;
@@ -96,7 +126,7 @@
       display: grid;
       grid-template-columns: 3.25rem 1fr;
       column-gap: 16px;
-      padding: 24px 0 32px;
+      padding: 24px 0 36px;
       border-top: 1px solid var(--rule);
     }
     .proof-num {
@@ -113,13 +143,14 @@
       font-size: 1.375rem;
       line-height: 1.25;
     }
-    .proof-status {
-      margin: 6px 0 0;
-      font-size: 0.9375rem;
-      color: var(--muted);
-    }
+    .proof-title a { text-decoration: none; }
+    .proof-title a:hover { text-decoration: underline; text-decoration-color: var(--moss); text-decoration-thickness: 1px; }
+    .status { margin: 6px 0 0; font-size: 0.9375rem; color: var(--muted); }
+    .proof-headline { margin: 14px 0 0; font-family: var(--serif); font-size: 1.1875rem; line-height: 1.35; }
+    .proof-sentence { margin: 12px 0 0; }
+    .proof-graded { margin: 10px 0 0; font-size: 0.9375rem; color: var(--muted); }
     .proof-links {
-      margin: 12px 0 0;
+      margin: 14px 0 0;
       padding: 0;
       list-style: none;
       display: flex;
@@ -128,10 +159,12 @@
       font-size: 0.9375rem;
     }
 
-    /* Active: moss numeral and status, with a small solid mark. */
-    .proof.is-active .proof-num,
-    .proof.is-active .proof-status { color: var(--moss); }
-    .proof.is-active .proof-status::before {
+    /* In progress and live: moss numeral and status, with a small solid mark. */
+    .is-active .proof-num,
+    .is-active.status,
+    .is-active .status { color: var(--moss); }
+    .is-active.status::before,
+    .is-active .status::before {
       content: "";
       display: inline-block;
       width: 7px;
@@ -140,8 +173,54 @@
       background: var(--moss);
       vertical-align: 0.08em;
     }
-    /* Planned: titles drop to the muted ink, still well above 4.5:1. */
-    .proof.is-planned .proof-title { color: var(--muted); }
+
+    /* ---------- Diagrams ---------- */
+    .figure { margin: 32px 0 0; padding: 28px 20px; background: var(--panel); border: 1px solid var(--rule); border-radius: 14px; overflow-x: auto; }
+    .dia { display: block; width: 100%; min-width: 600px; max-width: 760px; height: auto; margin: 0 auto; font-family: var(--sans); }
+    .dia-box { fill: var(--paper); stroke: var(--rule); stroke-width: 1; }
+    .dia-box.b { fill: var(--wash); stroke: var(--moss); }
+    .dia-box.m { stroke-dasharray: 4 3; stroke: var(--muted); }
+    .dia-text { fill: var(--ink); font-size: 13.5px; }
+    .dia-sub { fill: var(--muted); font-size: 11.5px; }
+    .dia-label { fill: var(--muted); font-size: 11.5px; }
+    .dia-line { fill: none; stroke: var(--muted); stroke-width: 1.2; }
+    .dia-dash { stroke-dasharray: 4 3; }
+    .dia-head { fill: var(--muted); }
+    .figure-key { margin: 16px auto 0; max-width: 760px; font-size: 0.875rem; color: var(--muted); }
+
+    /* ---------- Write-up pages ---------- */
+    .writeup-head { max-width: 44rem; }
+    .writeup-head h1 { font-size: clamp(2rem, 1.3rem + 3vw, 3.25rem); line-height: 1.08; }
+    .writeup-head .status { margin-top: 20px; }
+    .headline {
+      margin: 40px 0 0;
+      padding: 24px 0;
+      border-top: 1px solid var(--rule);
+      border-bottom: 1px solid var(--rule);
+      max-width: 44rem;
+    }
+    .headline-label { margin: 0; font-size: 0.8125rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); }
+    .headline-value { margin: 8px 0 0; font-family: var(--serif); font-size: clamp(1.25rem, 1.1rem + 0.8vw, 1.625rem); line-height: 1.35; }
+    .recording { margin: 32px 0 0; max-width: 44rem; }
+    .recording video { display: block; width: 100%; border: 1px solid var(--rule); border-radius: 10px; }
+    .prose { max-width: 44rem; margin-top: 56px; }
+    .prose h2 { margin: 56px 0 0; font-family: var(--serif); font-weight: 400; font-size: 1.5rem; line-height: 1.25; }
+    .prose h3 { margin: 36px 0 0; font-family: var(--serif); font-weight: 400; font-size: 1.1875rem; }
+    .prose p, .prose ul, .prose ol { margin: 16px 0 0; }
+    .prose ul, .prose ol { padding-left: 1.25rem; }
+    .prose li + li { margin-top: 6px; }
+    .prose code { font-family: var(--mono); font-size: 0.875em; background: var(--panel); border: 1px solid var(--rule); border-radius: 4px; padding: 1px 5px; }
+    .prose pre { margin: 16px 0 0; padding: 16px 18px; background: var(--panel); border: 1px solid var(--rule); border-radius: 10px; overflow-x: auto; line-height: 1.5; }
+    .prose pre code { background: none; border: 0; padding: 0; font-size: 0.8125rem; }
+    .tw { margin: 20px 0 0; overflow-x: auto; }
+    .prose table { border-collapse: collapse; width: 100%; min-width: 30rem; font-size: 0.9375rem; }
+    .prose th, .prose td { text-align: left; vertical-align: top; padding: 10px 14px 10px 0; border-bottom: 1px solid var(--rule); }
+    .prose th { font-weight: 600; font-size: 0.8125rem; letter-spacing: 0.04em; text-transform: uppercase; color: var(--muted); }
+    .repo-links { margin: 16px 0 0; padding: 0; list-style: none; display: flex; flex-wrap: wrap; gap: 8px 28px; }
+    .pager { margin: 96px 0 0; padding-top: 24px; border-top: 1px solid var(--rule); display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px 32px; }
+    .pager span { display: block; font-size: 0.8125rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); }
+    .pager a { font-family: var(--serif); font-size: 1.1875rem; text-decoration: none; }
+    .pager .next { text-align: right; margin-left: auto; }
   </style>
 </head>
 <body>
@@ -153,71 +232,154 @@
         This is a public rebuild of work I do on live accounts for multiple B2B SaaS
         clients. The company and data here are fictional so that all of it can be open.
       </p>
-
-      <!--
-        TODO(numbers): one line of my three or four best real numbers.
-        Not rendered until filled in. When ready, add after the lead:
-        <p class="numbers">...</p>
-        and style .numbers in the <style> block.
-      -->
     </header>
 
-    <h2 class="proofs-head">Proofs</h2>
+    <h2 class="section-head">Proofs</h2>
+    <p class="section-note">Six builds on one made-up company. Each one is graded against an answer key, and each opens a write-up.</p>
     <ol class="proofs">
       <li class="proof is-active">
         <span class="proof-num" aria-hidden="true">1</span>
         <div>
-          <h3 class="proof-title">Collection</h3>
-          <p class="proof-status">in progress</p>
+          <h3 class="proof-title"><a href="builds/tracked-site.html">Tracked site</a></h3>
+          <p class="status">In progress</p>
+          <p class="proof-sentence">A demo site that stores a click ID only after consent and carries it through the form into the CRM.</p>
+          <p class="proof-graded">Graded on: With consent rejected: no cookie set, no click ID stored. With consent accepted: the click ID reaches the CRM.</p>
           <ul class="proof-links">
-            <li><a href="https://roadwren-demo.vercel.app">Live site</a></li>
-            <li><a href="https://github.com/mpickles/revenue-stack-demo">Repo</a></li>
+            <li><a href="builds/tracked-site.html">Read the write-up</a></li>
           </ul>
         </div>
       </li>
-      <li class="proof is-planned">
+      <li class="proof is-active">
         <span class="proof-num" aria-hidden="true">2</span>
         <div>
-          <h3 class="proof-title">Lead classifier</h3>
-          <p class="proof-status">planned</p>
+          <h3 class="proof-title"><a href="builds/salesforce-routing.html">Salesforce routing and conversions</a></h3>
+          <p class="status">In progress</p>
+          <p class="proof-sentence">Leads from the form get a stage, a campaign and an owner in Salesforce. Conversions go back to Google Ads.</p>
+          <p class="proof-graded">Graded on: 37 test leads with an answer key: the right stage, campaign and owner for each, and every junk lead blocked.</p>
+          <ul class="proof-links">
+            <li><a href="builds/salesforce-routing.html">Read the write-up</a></li>
+          </ul>
         </div>
       </li>
       <li class="proof is-planned">
         <span class="proof-num" aria-hidden="true">3</span>
         <div>
-          <h3 class="proof-title">Tracking checker</h3>
-          <p class="proof-status">planned</p>
+          <h3 class="proof-title"><a href="builds/campaign-qa-agent.html">Campaign QA agent</a></h3>
+          <p class="status">Planned</p>
+          <p class="proof-sentence">A Python tool that checks landing pages for tags, consent, the conversion event and UTM values before launch.</p>
+          <p class="proof-graded">Graded on: 14 pages with a planted bug and 8 clean pages: bugs caught, and false alarms raised.</p>
+          <ul class="proof-links">
+            <li><a href="builds/campaign-qa-agent.html">Read the write-up</a></li>
+          </ul>
         </div>
       </li>
       <li class="proof is-planned">
         <span class="proof-num" aria-hidden="true">4</span>
         <div>
-          <h3 class="proof-title">Server and offline</h3>
-          <p class="proof-status">planned</p>
+          <h3 class="proof-title"><a href="builds/lead-qualifier.html">Lead qualifier agent</a></h3>
+          <p class="status">Planned</p>
+          <p class="proof-sentence">Claude scores each new lead against a written rubric, routes the strong ones and asks a person when unsure.</p>
+          <p class="proof-graded">Graded on: Agreement with 36 hand labels, and whether a person&#x27;s edit survives a second run.</p>
+          <ul class="proof-links">
+            <li><a href="builds/lead-qualifier.html">Read the write-up</a></li>
+          </ul>
         </div>
       </li>
       <li class="proof is-planned">
         <span class="proof-num" aria-hidden="true">5</span>
         <div>
-          <h3 class="proof-title">Warehouse</h3>
-          <p class="proof-status">planned</p>
+          <h3 class="proof-title"><a href="builds/funnel-and-reporting.html">Funnel in SQL and a reporting agent</a></h3>
+          <p class="status">Planned</p>
+          <p class="proof-sentence">The funnel and ad credit in SQL, and a weekly summary where code checks every number before it is published.</p>
+          <p class="proof-graded">Graded on: Credit adds up to exactly 100 percent, and three planted wrong summaries are rejected.</p>
+          <ul class="proof-links">
+            <li><a href="builds/funnel-and-reporting.html">Read the write-up</a></li>
+          </ul>
         </div>
       </li>
       <li class="proof is-planned">
         <span class="proof-num" aria-hidden="true">6</span>
         <div>
-          <h3 class="proof-title">Analyst agent</h3>
-          <p class="proof-status">planned</p>
+          <h3 class="proof-title"><a href="builds/crm-cleanup.html">CRM cleanup</a></h3>
+          <p class="status">Planned</p>
+          <p class="proof-sentence">Duplicate accounts and contacts in Salesforce found and merged by script, with every merge graded.</p>
+          <p class="proof-graded">Graded on: Merges right and wrong against an answer key, with decoys that must be left alone.</p>
+          <ul class="proof-links">
+            <li><a href="builds/crm-cleanup.html">Read the write-up</a></li>
+          </ul>
         </div>
       </li>
     </ol>
 
-    <!--
-      TODO(contact): LinkedIn URL and job-search email not set yet, so the
-      contact section is not rendered. When ready, add before </main>:
-      <h2 class="proofs-head">Contact</h2>
-      <p>LinkedIn: <a href="...">...</a><br>Email: <a href="mailto:...">...</a></p>
-    -->
+    <h2 class="section-head">How they connect</h2>
+    <p class="section-note">One lead, from the ad click to the report. The shaded boxes are the six builds.</p>
+    <div class="figure">
+      <svg class="dia" viewBox="0 0 756 542" role="img" aria-labelledby="system-t system-d" xmlns="http://www.w3.org/2000/svg">
+      <title id="system-t">How the six builds connect</title>
+      <desc id="system-d">A visitor clicks an ad and lands on the tracked site. The campaign QA agent checks the site before launch. A form submit goes through the lead API to HubSpot and Salesforce. In Salesforce a Flow sets the stage, campaign and owner. The lead qualifier scores the lead and proposes an owner. The CRM cleanup merges duplicates. Qualified leads go back to Google Ads as a conversion upload file. Salesforce data feeds the SQL funnel, and a reporting agent writes a summary whose numbers are checked by code.</desc>
+      <defs><marker id="system-a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" class="dia-head"/></marker></defs>
+      <path d="M378 80 L378 126" class="dia-line" marker-end="url(#system-a)"/>
+      <text x="386" y="103" class="dia-label" text-anchor="start">click ID and UTMs</text>
+      <path d="M214 159 L278 159" class="dia-line" marker-end="url(#system-a)"/>
+      <text x="246" y="152" class="dia-label" text-anchor="middle">checks</text>
+      <path d="M478 159 L542 159" class="dia-line" marker-end="url(#system-a)"/>
+      <text x="510" y="152" class="dia-label" text-anchor="middle">one event</text>
+      <path d="M378 192 L378 238" class="dia-line" marker-end="url(#system-a)"/>
+      <text x="386" y="215" class="dia-label" text-anchor="start">form submit</text>
+      <path d="M478 271 L542 271" class="dia-line" marker-end="url(#system-a)"/>
+      <path d="M378 304 L378 350" class="dia-line" marker-end="url(#system-a)"/>
+      <text x="386" y="327" class="dia-label" text-anchor="start">lead</text>
+      <path d="M214 383 L278 383" class="dia-line" marker-end="url(#system-a)"/>
+      <text x="246" y="376" class="dia-label" text-anchor="middle">merges</text>
+      <path d="M478 383 L542 383" class="dia-line" marker-end="url(#system-a)" marker-start="url(#system-a)"/>
+      <text x="510" y="376" class="dia-label" text-anchor="middle">score</text>
+      <path d="M318 416 L318 439 L114 439 L114 462" class="dia-line" marker-end="url(#system-a)"/>
+      <text x="122" y="455" class="dia-label" text-anchor="start">qualified leads</text>
+      <path d="M408 416 L408 462" class="dia-line" marker-end="url(#system-a)"/>
+      <text x="416" y="439" class="dia-label" text-anchor="start">leads</text>
+      <path d="M478 495 L542 495" class="dia-line" marker-end="url(#system-a)"/>
+      <text x="510" y="488" class="dia-label" text-anchor="middle">figures</text>
+      <rect x="278" y="14" width="200" height="66" rx="6" class="dia-box "/>
+      <text x="378.0" y="51.5" class="dia-text" text-anchor="middle">Visitor clicks an ad</text>
+      <rect x="14" y="126" width="200" height="66" rx="6" class="dia-box b"/>
+      <text x="114.0" y="156" class="dia-text" text-anchor="middle">Campaign QA agent</text>
+      <text x="114.0" y="173" class="dia-sub" text-anchor="middle">Proof 3</text>
+      <rect x="278" y="126" width="200" height="66" rx="6" class="dia-box b"/>
+      <text x="378.0" y="156" class="dia-text" text-anchor="middle">Tracked site</text>
+      <text x="378.0" y="173" class="dia-sub" text-anchor="middle">Proof 1</text>
+      <rect x="542" y="126" width="200" height="66" rx="6" class="dia-box "/>
+      <text x="642.0" y="163.5" class="dia-text" text-anchor="middle">Tag Manager and GA4</text>
+      <rect x="278" y="238" width="200" height="66" rx="6" class="dia-box "/>
+      <text x="378.0" y="275.5" class="dia-text" text-anchor="middle">Lead API</text>
+      <rect x="542" y="238" width="200" height="66" rx="6" class="dia-box "/>
+      <text x="642.0" y="275.5" class="dia-text" text-anchor="middle">HubSpot contact</text>
+      <rect x="14" y="350" width="200" height="66" rx="6" class="dia-box b"/>
+      <text x="114.0" y="380" class="dia-text" text-anchor="middle">CRM cleanup</text>
+      <text x="114.0" y="397" class="dia-sub" text-anchor="middle">Proof 6</text>
+      <rect x="278" y="350" width="200" height="66" rx="6" class="dia-box b"/>
+      <text x="378.0" y="371.5" class="dia-text" text-anchor="middle">Salesforce: stage,</text>
+      <text x="378.0" y="388.5" class="dia-text" text-anchor="middle">campaign and owner</text>
+      <text x="378.0" y="405.5" class="dia-sub" text-anchor="middle">Proof 2</text>
+      <rect x="542" y="350" width="200" height="66" rx="6" class="dia-box b"/>
+      <text x="642.0" y="380" class="dia-text" text-anchor="middle">Lead qualifier agent</text>
+      <text x="642.0" y="397" class="dia-sub" text-anchor="middle">Proof 4</text>
+      <rect x="14" y="462" width="200" height="66" rx="6" class="dia-box b"/>
+      <text x="114.0" y="483.5" class="dia-text" text-anchor="middle">Conversion upload</text>
+      <text x="114.0" y="500.5" class="dia-text" text-anchor="middle">file for Google Ads</text>
+      <text x="114.0" y="517.5" class="dia-sub" text-anchor="middle">Proof 2</text>
+      <rect x="278" y="462" width="200" height="66" rx="6" class="dia-box b"/>
+      <text x="378.0" y="492" class="dia-text" text-anchor="middle">Funnel and credit in SQL</text>
+      <text x="378.0" y="509" class="dia-sub" text-anchor="middle">Proof 5</text>
+      <rect x="542" y="462" width="200" height="66" rx="6" class="dia-box b"/>
+      <text x="642.0" y="483.5" class="dia-text" text-anchor="middle">Reporting agent with</text>
+      <text x="642.0" y="500.5" class="dia-text" text-anchor="middle">a number check</text>
+      <text x="642.0" y="517.5" class="dia-sub" text-anchor="middle">Proof 5</text>
+      </svg>
+    </div>
+
+    <h2 class="section-head">About the data</h2>
+    <p class="section-note">The systems are real and running. Roadwren is a made-up company, and every person, lead and record is made up. All of the code, the answer keys and the decisions are in <a href="https://github.com/mpickles/revenue-stack-demo">the repo</a>.</p>
+
   </main>
 </body>
 </html>

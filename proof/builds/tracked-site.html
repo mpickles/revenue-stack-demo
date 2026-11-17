@@ -1,0 +1,366 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Tracked site: consent, click IDs and one conversion event | Max Pickard</title>
+  <!-- Made by proof/generator/build.py from tagging/README.md. Do not edit by hand. -->
+  <style>
+    :root {
+      --paper: #f2eee6;
+      --panel: #f8f5ef;
+      --ink: #1f1b16;
+      --muted: #6b645a;
+      --rule: #d9d2c5;
+      --moss: #4f5d32;
+      --wash: #e4e6d4;
+      --serif: "Iowan Old Style", "Palatino Linotype", Palatino, "Book Antiqua", Georgia, serif;
+      --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      color-scheme: light;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --paper: #1c1915;
+        --panel: #24201b;
+        --ink: #ece6da;
+        --muted: #a39b8e;
+        --rule: #3a342d;
+        --moss: #a9b77e;
+        --wash: #2e3323;
+        color-scheme: dark;
+      }
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+    html { -webkit-text-size-adjust: 100%; scroll-padding-top: 96px; }
+    body {
+      margin: 0;
+      background: var(--paper);
+      color: var(--ink);
+      font-family: var(--sans);
+      font-size: 1rem;
+      line-height: 1.65;
+    }
+    main {
+      max-width: 60rem;
+      margin: 0 auto;
+      padding: 72px 20px 96px;
+    }
+    @media (min-width: 720px) {
+      main { padding: 104px 40px 144px; }
+    }
+
+    a { color: inherit; text-decoration-color: var(--moss); text-decoration-thickness: 1px; text-underline-offset: 0.22em; }
+    a:hover { color: var(--moss); }
+    a:focus-visible { outline: 1px solid var(--moss); outline-offset: 3px; }
+
+    /* ---------- Nav: a floating bar that stops short of the screen edges ---------- */
+    .nav {
+      position: sticky;
+      top: 16px;
+      z-index: 5;
+      width: calc(100% - 40px);
+      max-width: 44rem;
+      margin: 16px auto 0;
+      padding: 10px 22px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px 20px;
+      align-items: center;
+      justify-content: space-between;
+      background: var(--panel);
+      border: 1px solid var(--rule);
+      border-radius: 999px;
+      font-size: 0.9375rem;
+    }
+    .nav a { text-decoration: none; }
+    .nav .nav-name { font-family: var(--serif); font-size: 1.0625rem; }
+    .nav .nav-links { display: flex; gap: 4px 20px; flex-wrap: wrap; color: var(--muted); }
+    .nav + main { padding-top: 64px; }
+    @media (min-width: 720px) { .nav + main { padding-top: 88px; } }
+
+    /* ---------- Masthead ---------- */
+    .masthead { max-width: 38rem; }
+    h1 {
+      margin: 0;
+      font-family: var(--serif);
+      font-weight: 400;
+      font-size: clamp(2.75rem, 1.6rem + 5vw, 4.75rem);
+      line-height: 1.02;
+      letter-spacing: -0.015em;
+    }
+    .role { margin: 16px 0 0; color: var(--muted); font-size: 1.0625rem; }
+    .lead {
+      margin: 48px 0 0;
+      padding-top: 24px;
+      border-top: 1px solid var(--rule);
+      font-family: var(--serif);
+      font-size: clamp(1.25rem, 1.1rem + 0.6vw, 1.5rem);
+      line-height: 1.5;
+    }
+
+    /* ---------- Section heads ---------- */
+    .section-head {
+      margin: 96px 0 0;
+      font-family: var(--serif);
+      font-weight: 400;
+      font-size: 1.5rem;
+      letter-spacing: -0.005em;
+    }
+    .section-note { margin: 8px 0 0; color: var(--muted); max-width: 38rem; }
+
+    /* ---------- Tiles ---------- */
+    .proofs {
+      list-style: none;
+      margin: 24px 0 0;
+      padding: 0;
+      display: grid;
+      column-gap: 48px;
+    }
+    @media (min-width: 720px) {
+      .proofs { grid-template-columns: 1fr 1fr; }
+    }
+    .proof {
+      display: grid;
+      grid-template-columns: 3.25rem 1fr;
+      column-gap: 16px;
+      padding: 24px 0 36px;
+      border-top: 1px solid var(--rule);
+    }
+    .proof-num {
+      font-family: var(--serif);
+      font-size: 2.75rem;
+      line-height: 1;
+      font-variant-numeric: lining-nums;
+      color: var(--muted);
+    }
+    .proof-title {
+      margin: 4px 0 0;
+      font-family: var(--serif);
+      font-weight: 400;
+      font-size: 1.375rem;
+      line-height: 1.25;
+    }
+    .proof-title a { text-decoration: none; }
+    .proof-title a:hover { text-decoration: underline; text-decoration-color: var(--moss); text-decoration-thickness: 1px; }
+    .status { margin: 6px 0 0; font-size: 0.9375rem; color: var(--muted); }
+    .proof-headline { margin: 14px 0 0; font-family: var(--serif); font-size: 1.1875rem; line-height: 1.35; }
+    .proof-sentence { margin: 12px 0 0; }
+    .proof-graded { margin: 10px 0 0; font-size: 0.9375rem; color: var(--muted); }
+    .proof-links {
+      margin: 14px 0 0;
+      padding: 0;
+      list-style: none;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px 24px;
+      font-size: 0.9375rem;
+    }
+
+    /* In progress and live: moss numeral and status, with a small solid mark. */
+    .is-active .proof-num,
+    .is-active.status,
+    .is-active .status { color: var(--moss); }
+    .is-active.status::before,
+    .is-active .status::before {
+      content: "";
+      display: inline-block;
+      width: 7px;
+      height: 7px;
+      margin-right: 8px;
+      background: var(--moss);
+      vertical-align: 0.08em;
+    }
+
+    /* ---------- Diagrams ---------- */
+    .figure { margin: 32px 0 0; padding: 28px 20px; background: var(--panel); border: 1px solid var(--rule); border-radius: 14px; overflow-x: auto; }
+    .dia { display: block; width: 100%; min-width: 600px; max-width: 760px; height: auto; margin: 0 auto; font-family: var(--sans); }
+    .dia-box { fill: var(--paper); stroke: var(--rule); stroke-width: 1; }
+    .dia-box.b { fill: var(--wash); stroke: var(--moss); }
+    .dia-box.m { stroke-dasharray: 4 3; stroke: var(--muted); }
+    .dia-text { fill: var(--ink); font-size: 13.5px; }
+    .dia-sub { fill: var(--muted); font-size: 11.5px; }
+    .dia-label { fill: var(--muted); font-size: 11.5px; }
+    .dia-line { fill: none; stroke: var(--muted); stroke-width: 1.2; }
+    .dia-dash { stroke-dasharray: 4 3; }
+    .dia-head { fill: var(--muted); }
+    .figure-key { margin: 16px auto 0; max-width: 760px; font-size: 0.875rem; color: var(--muted); }
+
+    /* ---------- Write-up pages ---------- */
+    .writeup-head { max-width: 44rem; }
+    .writeup-head h1 { font-size: clamp(2rem, 1.3rem + 3vw, 3.25rem); line-height: 1.08; }
+    .writeup-head .status { margin-top: 20px; }
+    .headline {
+      margin: 40px 0 0;
+      padding: 24px 0;
+      border-top: 1px solid var(--rule);
+      border-bottom: 1px solid var(--rule);
+      max-width: 44rem;
+    }
+    .headline-label { margin: 0; font-size: 0.8125rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); }
+    .headline-value { margin: 8px 0 0; font-family: var(--serif); font-size: clamp(1.25rem, 1.1rem + 0.8vw, 1.625rem); line-height: 1.35; }
+    .recording { margin: 32px 0 0; max-width: 44rem; }
+    .recording video { display: block; width: 100%; border: 1px solid var(--rule); border-radius: 10px; }
+    .prose { max-width: 44rem; margin-top: 56px; }
+    .prose h2 { margin: 56px 0 0; font-family: var(--serif); font-weight: 400; font-size: 1.5rem; line-height: 1.25; }
+    .prose h3 { margin: 36px 0 0; font-family: var(--serif); font-weight: 400; font-size: 1.1875rem; }
+    .prose p, .prose ul, .prose ol { margin: 16px 0 0; }
+    .prose ul, .prose ol { padding-left: 1.25rem; }
+    .prose li + li { margin-top: 6px; }
+    .prose code { font-family: var(--mono); font-size: 0.875em; background: var(--panel); border: 1px solid var(--rule); border-radius: 4px; padding: 1px 5px; }
+    .prose pre { margin: 16px 0 0; padding: 16px 18px; background: var(--panel); border: 1px solid var(--rule); border-radius: 10px; overflow-x: auto; line-height: 1.5; }
+    .prose pre code { background: none; border: 0; padding: 0; font-size: 0.8125rem; }
+    .tw { margin: 20px 0 0; overflow-x: auto; }
+    .prose table { border-collapse: collapse; width: 100%; min-width: 30rem; font-size: 0.9375rem; }
+    .prose th, .prose td { text-align: left; vertical-align: top; padding: 10px 14px 10px 0; border-bottom: 1px solid var(--rule); }
+    .prose th { font-weight: 600; font-size: 0.8125rem; letter-spacing: 0.04em; text-transform: uppercase; color: var(--muted); }
+    .repo-links { margin: 16px 0 0; padding: 0; list-style: none; display: flex; flex-wrap: wrap; gap: 8px 28px; }
+    .pager { margin: 96px 0 0; padding-top: 24px; border-top: 1px solid var(--rule); display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px 32px; }
+    .pager span { display: block; font-size: 0.8125rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); }
+    .pager a { font-family: var(--serif); font-size: 1.1875rem; text-decoration: none; }
+    .pager .next { text-align: right; margin-left: auto; }
+  </style>
+</head>
+<body>
+  <nav class="nav" aria-label="Site">
+    <a class="nav-name" href="../index.html">Max Pickard</a>
+    <span class="nav-links"><a href="../index.html">All proofs</a><a href="https://github.com/mpickles/revenue-stack-demo/tree/main/tagging">This build on GitHub</a></span>
+  </nav>
+  <main>
+    <header class="writeup-head">
+      <h1>Tracked site: consent, click IDs and one conversion event</h1>
+      <p class="status is-active">In progress</p>
+    </header>
+    <div class="headline">
+      <p class="headline-label">Not graded yet. It will be graded on</p>
+      <p class="headline-value">With consent rejected: no cookie set, no click ID stored. With consent accepted: the click ID reaches the CRM.</p>
+    </div>
+
+    <div class="figure">
+      <svg class="dia" viewBox="0 0 756 542" role="img" aria-labelledby="tracked-site-t tracked-site-d" xmlns="http://www.w3.org/2000/svg">
+      <title id="tracked-site-t">What the site does with a click ID</title>
+      <desc id="tracked-site-d">A visitor lands with a click ID and UTM values. The consent banner offers Reject or Accept. On Reject nothing is stored and requests to Google are marked denied. On Accept the click ID is stored. On form submit the hidden fields are filled, one generate_lead event goes to GA4, and the lead API writes the contact to HubSpot with the click ID.</desc>
+      <defs><marker id="tracked-site-a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" class="dia-head"/></marker></defs>
+      <path d="M378 80 L378 126" class="dia-line" marker-end="url(#tracked-site-a)"/>
+      <path d="M278 159 L114 159 L114 238" class="dia-line" marker-end="url(#tracked-site-a)"/>
+      <text x="122" y="209" class="dia-label" text-anchor="start">Reject</text>
+      <path d="M478 159 L642 159 L642 238" class="dia-line" marker-end="url(#tracked-site-a)"/>
+      <text x="650" y="209" class="dia-label" text-anchor="start">Accept</text>
+      <path d="M642 304 L642 383 L478 383" class="dia-line" marker-end="url(#tracked-site-a)"/>
+      <path d="M114 304 L114 383 L278 383" class="dia-line dia-dash" marker-end="url(#tracked-site-a)"/>
+      <path d="M328 416 L328 495 L214 495" class="dia-line" marker-end="url(#tracked-site-a)"/>
+      <path d="M428 416 L428 495 L542 495" class="dia-line" marker-end="url(#tracked-site-a)"/>
+      <rect x="278" y="14" width="200" height="66" rx="6" class="dia-box "/>
+      <text x="378.0" y="43" class="dia-text" text-anchor="middle">Landing with a click ID</text>
+      <text x="378.0" y="60" class="dia-text" text-anchor="middle">and UTM values</text>
+      <rect x="278" y="126" width="200" height="66" rx="6" class="dia-box "/>
+      <text x="378.0" y="156" class="dia-text" text-anchor="middle">Consent banner</text>
+      <text x="378.0" y="173" class="dia-sub" text-anchor="middle">all signals start denied</text>
+      <rect x="14" y="238" width="200" height="66" rx="6" class="dia-box m"/>
+      <text x="114.0" y="268" class="dia-text" text-anchor="middle">Nothing stored</text>
+      <text x="114.0" y="285" class="dia-sub" text-anchor="middle">requests marked denied</text>
+      <rect x="542" y="238" width="200" height="66" rx="6" class="dia-box b"/>
+      <text x="642.0" y="268" class="dia-text" text-anchor="middle">Click ID stored</text>
+      <text x="642.0" y="285" class="dia-sub" text-anchor="middle">first-party cookie</text>
+      <rect x="278" y="350" width="200" height="66" rx="6" class="dia-box b"/>
+      <text x="378.0" y="380" class="dia-text" text-anchor="middle">Form submit</text>
+      <text x="378.0" y="397" class="dia-sub" text-anchor="middle">click ID sent only with consent</text>
+      <rect x="14" y="462" width="200" height="66" rx="6" class="dia-box "/>
+      <text x="114.0" y="491" class="dia-text" text-anchor="middle">One generate_lead</text>
+      <text x="114.0" y="508" class="dia-text" text-anchor="middle">event to GA4</text>
+      <rect x="542" y="462" width="200" height="66" rx="6" class="dia-box "/>
+      <text x="642.0" y="492" class="dia-text" text-anchor="middle">Lead API to HubSpot</text>
+      <text x="642.0" y="509" class="dia-sub" text-anchor="middle">click ID on the contact</text>
+      </svg>
+    </div>
+
+    <article class="prose">
+      <p>Status: in progress. The site code is live at https://roadwren-demo.vercel.app. The Tag Manager setup, the HubSpot account and the test runs are not done yet.</p>
+      <p>A B2B demo site that only stores a click ID after the visitor accepts, and carries it through the form into the CRM. It is for a marketing team that needs to prove its tracking respects consent and still closes the loop.</p>
+      <h2>What works today</h2>
+      <ol>
+      <li>All four consent signals are set to denied before the Tag Manager container loads.</li>
+      <li>On landing, the site reads gclid, gbraid, wbraid, fbclid, li_fat_id, msclkid and the five UTM values. Before consent they are held in memory only. After Accept they are stored in a first-party cookie.</li>
+      <li>Every form carries hidden fields for the click IDs, the UTM values and the GA client ID. They are filled at submit time and stay empty unless consent was given.</li>
+      <li>A successful submit pushes one <code>generate_lead</code> event.</li>
+      <li>The lead API checks the input and creates or updates a HubSpot contact. It never logs an email address.</li>
+      </ol>
+      <p>The site code is in <a href="https://github.com/mpickles/revenue-stack-demo/tree/main/site"><code>site/</code></a>. The spec it was built from is <a href="https://github.com/mpickles/revenue-stack-demo/blob/main/docs/spec-site.md"><code>docs/spec-site.md</code></a>.</p>
+      <h2>What is left</h2>
+      <ul>
+      <li>Tag Manager: a Google tag, three data layer variables, the <code>generate_lead</code> trigger and a GA4 event tag. Then the container is exported into this folder as <code>container.json</code>.</li>
+      <li>GA4: <code>generate_lead</code> marked as a key event.</li>
+      <li>HubSpot: a free account, the contact properties in <a href="https://github.com/mpickles/revenue-stack-demo/blob/main/docs/hubspot-properties.md"><code>docs/hubspot-properties.md</code></a> and a service key.</li>
+      <li>The test runs in the table below, written down with what did not match.</li>
+      </ul>
+      <h2>How it will be graded</h2>
+      <div class="tw"><table>
+      <thead>
+      <tr>
+      <th>Run</th>
+      <th>Passes when</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr>
+      <td>Reject</td>
+      <td>No <code>_ga</code> cookie and no stored click ID. Requests to Google carry <code>gcs=G100</code></td>
+      </tr>
+      <tr>
+      <td>Accept</td>
+      <td><code>generate_lead</code> shows in GA4. The HubSpot contact has the click ID and both UTM values. Requests carry <code>gcs=G111</code></td>
+      </tr>
+      <tr>
+      <td>Withdraw</td>
+      <td>After accepting and then rejecting, the stored click ID is gone</td>
+      </tr>
+      <tr>
+      <td>Returning visitor</td>
+      <td>A saved Accept is applied before the container loads</td>
+      </tr>
+      <tr>
+      <td>iPhone click</td>
+      <td>A landing with gbraid and no gclid stores the gbraid</td>
+      </tr>
+      <tr>
+      <td>Repeat submit</td>
+      <td>The same email sent twice is one contact, and the first click ID is still on it</td>
+      </tr>
+      </tbody>
+      </table></div>
+      <h2>Three choices</h2>
+      <ul>
+      <li>Advanced consent mode over basic. Google tags load with every signal denied and send requests with no cookies, so Google can model conversions from visitors who reject. A company whose legal team wants nothing sent before consent would pick basic.</li>
+      <li>Last touch over first touch for click IDs. The most recent ad click is the one an ad platform will match an offline conversion to.</li>
+      <li>Click IDs are held in memory before consent, not in browser storage. Browser storage is storage too and needs the same consent.</li>
+      </ul>
+      <p>The full list, one line each, is in <a href="https://github.com/mpickles/revenue-stack-demo/blob/main/docs/decisions.md"><code>docs/decisions.md</code></a>.</p>
+      <h2>Tests</h2>
+      <p>Six unit test files and one browser test are in <a href="https://github.com/mpickles/revenue-stack-demo/tree/main/site/tests"><code>site/tests/</code></a>. GitHub runs the type check and the unit tests on every pull request that touches the site.</p>
+      <h2>Limits</h2>
+      <ul>
+      <li>No ad account is connected. Nothing here proves a live import into Google Ads.</li>
+      <li>The <code>gcs</code> codes come from consent tool guides, not from a Google page.</li>
+      <li>One made-up company. A real site has more forms, more tags and older code.</li>
+      </ul>
+      <h2>About the data</h2>
+      <p>The systems are real and running. Every person, company and lead is made up.</p>
+      <h2>In the repo</h2>
+      <ul class="repo-links">
+        <li><a href="https://roadwren-demo.vercel.app">Live demo site</a></li>
+        <li><a href="https://github.com/mpickles/revenue-stack-demo/tree/main/site">Site code</a></li>
+        <li><a href="https://github.com/mpickles/revenue-stack-demo/tree/main/tagging">Tag setup</a></li>
+        <li><a href="https://github.com/mpickles/revenue-stack-demo/tree/main/site/tests">Tests</a></li>
+        <li><a href="https://github.com/mpickles/revenue-stack-demo/blob/main/docs/spec-site.md">Spec</a></li>
+        <li><a href="https://github.com/mpickles/revenue-stack-demo/blob/main/docs/decisions.md">Decisions</a></li>
+      </ul>
+    </article>
+
+    <nav class="pager" aria-label="More proofs">
+      <a class="next" href="salesforce-routing.html"><span>Next</span>Salesforce routing and conversions</a>
+    </nav>
+  </main>
+</body>
+</html>

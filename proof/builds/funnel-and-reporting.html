@@ -1,0 +1,376 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Funnel in SQL, and a reporting agent that cannot misquote | Max Pickard</title>
+  <!-- Made by proof/generator/build.py from warehouse/README.md. Do not edit by hand. -->
+  <style>
+    :root {
+      --paper: #f2eee6;
+      --panel: #f8f5ef;
+      --ink: #1f1b16;
+      --muted: #6b645a;
+      --rule: #d9d2c5;
+      --moss: #4f5d32;
+      --wash: #e4e6d4;
+      --serif: "Iowan Old Style", "Palatino Linotype", Palatino, "Book Antiqua", Georgia, serif;
+      --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      color-scheme: light;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --paper: #1c1915;
+        --panel: #24201b;
+        --ink: #ece6da;
+        --muted: #a39b8e;
+        --rule: #3a342d;
+        --moss: #a9b77e;
+        --wash: #2e3323;
+        color-scheme: dark;
+      }
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+    html { -webkit-text-size-adjust: 100%; scroll-padding-top: 96px; }
+    body {
+      margin: 0;
+      background: var(--paper);
+      color: var(--ink);
+      font-family: var(--sans);
+      font-size: 1rem;
+      line-height: 1.65;
+    }
+    main {
+      max-width: 60rem;
+      margin: 0 auto;
+      padding: 72px 20px 96px;
+    }
+    @media (min-width: 720px) {
+      main { padding: 104px 40px 144px; }
+    }
+
+    a { color: inherit; text-decoration-color: var(--moss); text-decoration-thickness: 1px; text-underline-offset: 0.22em; }
+    a:hover { color: var(--moss); }
+    a:focus-visible { outline: 1px solid var(--moss); outline-offset: 3px; }
+
+    /* ---------- Nav: a floating bar that stops short of the screen edges ---------- */
+    .nav {
+      position: sticky;
+      top: 16px;
+      z-index: 5;
+      width: calc(100% - 40px);
+      max-width: 44rem;
+      margin: 16px auto 0;
+      padding: 10px 22px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px 20px;
+      align-items: center;
+      justify-content: space-between;
+      background: var(--panel);
+      border: 1px solid var(--rule);
+      border-radius: 999px;
+      font-size: 0.9375rem;
+    }
+    .nav a { text-decoration: none; }
+    .nav .nav-name { font-family: var(--serif); font-size: 1.0625rem; }
+    .nav .nav-links { display: flex; gap: 4px 20px; flex-wrap: wrap; color: var(--muted); }
+    .nav + main { padding-top: 64px; }
+    @media (min-width: 720px) { .nav + main { padding-top: 88px; } }
+
+    /* ---------- Masthead ---------- */
+    .masthead { max-width: 38rem; }
+    h1 {
+      margin: 0;
+      font-family: var(--serif);
+      font-weight: 400;
+      font-size: clamp(2.75rem, 1.6rem + 5vw, 4.75rem);
+      line-height: 1.02;
+      letter-spacing: -0.015em;
+    }
+    .role { margin: 16px 0 0; color: var(--muted); font-size: 1.0625rem; }
+    .lead {
+      margin: 48px 0 0;
+      padding-top: 24px;
+      border-top: 1px solid var(--rule);
+      font-family: var(--serif);
+      font-size: clamp(1.25rem, 1.1rem + 0.6vw, 1.5rem);
+      line-height: 1.5;
+    }
+
+    /* ---------- Section heads ---------- */
+    .section-head {
+      margin: 96px 0 0;
+      font-family: var(--serif);
+      font-weight: 400;
+      font-size: 1.5rem;
+      letter-spacing: -0.005em;
+    }
+    .section-note { margin: 8px 0 0; color: var(--muted); max-width: 38rem; }
+
+    /* ---------- Tiles ---------- */
+    .proofs {
+      list-style: none;
+      margin: 24px 0 0;
+      padding: 0;
+      display: grid;
+      column-gap: 48px;
+    }
+    @media (min-width: 720px) {
+      .proofs { grid-template-columns: 1fr 1fr; }
+    }
+    .proof {
+      display: grid;
+      grid-template-columns: 3.25rem 1fr;
+      column-gap: 16px;
+      padding: 24px 0 36px;
+      border-top: 1px solid var(--rule);
+    }
+    .proof-num {
+      font-family: var(--serif);
+      font-size: 2.75rem;
+      line-height: 1;
+      font-variant-numeric: lining-nums;
+      color: var(--muted);
+    }
+    .proof-title {
+      margin: 4px 0 0;
+      font-family: var(--serif);
+      font-weight: 400;
+      font-size: 1.375rem;
+      line-height: 1.25;
+    }
+    .proof-title a { text-decoration: none; }
+    .proof-title a:hover { text-decoration: underline; text-decoration-color: var(--moss); text-decoration-thickness: 1px; }
+    .status { margin: 6px 0 0; font-size: 0.9375rem; color: var(--muted); }
+    .proof-headline { margin: 14px 0 0; font-family: var(--serif); font-size: 1.1875rem; line-height: 1.35; }
+    .proof-sentence { margin: 12px 0 0; }
+    .proof-graded { margin: 10px 0 0; font-size: 0.9375rem; color: var(--muted); }
+    .proof-links {
+      margin: 14px 0 0;
+      padding: 0;
+      list-style: none;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px 24px;
+      font-size: 0.9375rem;
+    }
+
+    /* In progress and live: moss numeral and status, with a small solid mark. */
+    .is-active .proof-num,
+    .is-active.status,
+    .is-active .status { color: var(--moss); }
+    .is-active.status::before,
+    .is-active .status::before {
+      content: "";
+      display: inline-block;
+      width: 7px;
+      height: 7px;
+      margin-right: 8px;
+      background: var(--moss);
+      vertical-align: 0.08em;
+    }
+
+    /* ---------- Diagrams ---------- */
+    .figure { margin: 32px 0 0; padding: 28px 20px; background: var(--panel); border: 1px solid var(--rule); border-radius: 14px; overflow-x: auto; }
+    .dia { display: block; width: 100%; min-width: 600px; max-width: 760px; height: auto; margin: 0 auto; font-family: var(--sans); }
+    .dia-box { fill: var(--paper); stroke: var(--rule); stroke-width: 1; }
+    .dia-box.b { fill: var(--wash); stroke: var(--moss); }
+    .dia-box.m { stroke-dasharray: 4 3; stroke: var(--muted); }
+    .dia-text { fill: var(--ink); font-size: 13.5px; }
+    .dia-sub { fill: var(--muted); font-size: 11.5px; }
+    .dia-label { fill: var(--muted); font-size: 11.5px; }
+    .dia-line { fill: none; stroke: var(--muted); stroke-width: 1.2; }
+    .dia-dash { stroke-dasharray: 4 3; }
+    .dia-head { fill: var(--muted); }
+    .figure-key { margin: 16px auto 0; max-width: 760px; font-size: 0.875rem; color: var(--muted); }
+
+    /* ---------- Write-up pages ---------- */
+    .writeup-head { max-width: 44rem; }
+    .writeup-head h1 { font-size: clamp(2rem, 1.3rem + 3vw, 3.25rem); line-height: 1.08; }
+    .writeup-head .status { margin-top: 20px; }
+    .headline {
+      margin: 40px 0 0;
+      padding: 24px 0;
+      border-top: 1px solid var(--rule);
+      border-bottom: 1px solid var(--rule);
+      max-width: 44rem;
+    }
+    .headline-label { margin: 0; font-size: 0.8125rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); }
+    .headline-value { margin: 8px 0 0; font-family: var(--serif); font-size: clamp(1.25rem, 1.1rem + 0.8vw, 1.625rem); line-height: 1.35; }
+    .recording { margin: 32px 0 0; max-width: 44rem; }
+    .recording video { display: block; width: 100%; border: 1px solid var(--rule); border-radius: 10px; }
+    .prose { max-width: 44rem; margin-top: 56px; }
+    .prose h2 { margin: 56px 0 0; font-family: var(--serif); font-weight: 400; font-size: 1.5rem; line-height: 1.25; }
+    .prose h3 { margin: 36px 0 0; font-family: var(--serif); font-weight: 400; font-size: 1.1875rem; }
+    .prose p, .prose ul, .prose ol { margin: 16px 0 0; }
+    .prose ul, .prose ol { padding-left: 1.25rem; }
+    .prose li + li { margin-top: 6px; }
+    .prose code { font-family: var(--mono); font-size: 0.875em; background: var(--panel); border: 1px solid var(--rule); border-radius: 4px; padding: 1px 5px; }
+    .prose pre { margin: 16px 0 0; padding: 16px 18px; background: var(--panel); border: 1px solid var(--rule); border-radius: 10px; overflow-x: auto; line-height: 1.5; }
+    .prose pre code { background: none; border: 0; padding: 0; font-size: 0.8125rem; }
+    .tw { margin: 20px 0 0; overflow-x: auto; }
+    .prose table { border-collapse: collapse; width: 100%; min-width: 30rem; font-size: 0.9375rem; }
+    .prose th, .prose td { text-align: left; vertical-align: top; padding: 10px 14px 10px 0; border-bottom: 1px solid var(--rule); }
+    .prose th { font-weight: 600; font-size: 0.8125rem; letter-spacing: 0.04em; text-transform: uppercase; color: var(--muted); }
+    .repo-links { margin: 16px 0 0; padding: 0; list-style: none; display: flex; flex-wrap: wrap; gap: 8px 28px; }
+    .pager { margin: 96px 0 0; padding-top: 24px; border-top: 1px solid var(--rule); display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px 32px; }
+    .pager span { display: block; font-size: 0.8125rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); }
+    .pager a { font-family: var(--serif); font-size: 1.1875rem; text-decoration: none; }
+    .pager .next { text-align: right; margin-left: auto; }
+  </style>
+</head>
+<body>
+  <nav class="nav" aria-label="Site">
+    <a class="nav-name" href="../index.html">Max Pickard</a>
+    <span class="nav-links"><a href="../index.html">All proofs</a><a href="https://github.com/mpickles/revenue-stack-demo/tree/main/warehouse">This build on GitHub</a></span>
+  </nav>
+  <main>
+    <header class="writeup-head">
+      <h1>Funnel in SQL, and a reporting agent that cannot misquote</h1>
+      <p class="status is-planned">Planned</p>
+    </header>
+    <div class="headline">
+      <p class="headline-label">Not graded yet. It will be graded on</p>
+      <p class="headline-value">Credit adds up to exactly 100 percent, and three planted wrong summaries are rejected.</p>
+    </div>
+
+    <div class="figure">
+      <svg class="dia" viewBox="0 0 756 542" role="img" aria-labelledby="funnel-and-reporting-t funnel-and-reporting-d" xmlns="http://www.w3.org/2000/svg">
+      <title id="funnel-and-reporting-t">How a number gets from SQL into the weekly summary</title>
+      <desc id="funnel-and-reporting-d">Made-up data and a Salesforce export load into staging models. SQL models build the funnel by source and credit by channel. A figures block is taken from the SQL output. Claude writes the summary from the figures block. Code checks every number in the summary against the block. If every number matches it is published, otherwise it is rejected. One field, a segment, goes back to Salesforce.</desc>
+      <defs><marker id="funnel-and-reporting-a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" class="dia-head"/></marker></defs>
+      <path d="M214 47 L278 47" class="dia-line" marker-end="url(#funnel-and-reporting-a)"/>
+      <path d="M542 47 L478 47" class="dia-line" marker-end="url(#funnel-and-reporting-a)"/>
+      <path d="M378 80 L378 126" class="dia-line" marker-end="url(#funnel-and-reporting-a)"/>
+      <path d="M478 159 L542 159" class="dia-line" marker-end="url(#funnel-and-reporting-a)"/>
+      <path d="M378 192 L378 238" class="dia-line" marker-end="url(#funnel-and-reporting-a)"/>
+      <path d="M378 304 L378 350" class="dia-line" marker-end="url(#funnel-and-reporting-a)"/>
+      <path d="M378 416 L378 462" class="dia-line" marker-end="url(#funnel-and-reporting-a)"/>
+      <path d="M278 495 L214 495" class="dia-line" marker-end="url(#funnel-and-reporting-a)"/>
+      <path d="M478 495 L542 495" class="dia-line" marker-end="url(#funnel-and-reporting-a)"/>
+      <rect x="14" y="14" width="200" height="66" rx="6" class="dia-box "/>
+      <text x="114.0" y="44" class="dia-text" text-anchor="middle">Made-up data</text>
+      <text x="114.0" y="61" class="dia-sub" text-anchor="middle">fixed seed</text>
+      <rect x="278" y="14" width="200" height="66" rx="6" class="dia-box b"/>
+      <text x="378.0" y="44" class="dia-text" text-anchor="middle">Staging models</text>
+      <text x="378.0" y="61" class="dia-sub" text-anchor="middle">dbt on DuckDB</text>
+      <rect x="542" y="14" width="200" height="66" rx="6" class="dia-box "/>
+      <text x="642.0" y="44" class="dia-text" text-anchor="middle">Salesforce export</text>
+      <text x="642.0" y="61" class="dia-sub" text-anchor="middle">the real test leads</text>
+      <rect x="278" y="126" width="200" height="66" rx="6" class="dia-box b"/>
+      <text x="378.0" y="156" class="dia-text" text-anchor="middle">Funnel and credit models</text>
+      <text x="378.0" y="173" class="dia-sub" text-anchor="middle">tested to add up to 100%</text>
+      <rect x="542" y="126" width="200" height="66" rx="6" class="dia-box "/>
+      <text x="642.0" y="163.5" class="dia-text" text-anchor="middle">Segment back to Salesforce</text>
+      <rect x="278" y="238" width="200" height="66" rx="6" class="dia-box "/>
+      <text x="378.0" y="268" class="dia-text" text-anchor="middle">Figures block</text>
+      <text x="378.0" y="285" class="dia-sub" text-anchor="middle">numbers from the SQL output</text>
+      <rect x="278" y="350" width="200" height="66" rx="6" class="dia-box b"/>
+      <text x="378.0" y="387.5" class="dia-text" text-anchor="middle">Claude writes the summary</text>
+      <rect x="278" y="462" width="200" height="66" rx="6" class="dia-box b"/>
+      <text x="378.0" y="499.5" class="dia-text" text-anchor="middle">Code checks every number</text>
+      <rect x="14" y="462" width="200" height="66" rx="6" class="dia-box "/>
+      <text x="114.0" y="492" class="dia-text" text-anchor="middle">Published</text>
+      <text x="114.0" y="509" class="dia-sub" text-anchor="middle">every number matched</text>
+      <rect x="542" y="462" width="200" height="66" rx="6" class="dia-box m"/>
+      <text x="642.0" y="492" class="dia-text" text-anchor="middle">Rejected</text>
+      <text x="642.0" y="509" class="dia-sub" text-anchor="middle">one number not in the block</text>
+      </svg>
+    </div>
+
+    <article class="prose">
+      <p>Status: planned. Nothing in this folder is built yet. This page says what it will do and how it will be graded.</p>
+      <p>Roadwren's leads, opportunities and ad spend modeled in SQL, plus a weekly summary written by Claude where code checks every number before anything is published. It is for a marketing lead who needs to trust a report they did not write.</p>
+      <h2>What it will do</h2>
+      <ol>
+      <li>Generate made-up leads, opportunities and daily ad spend from a fixed seed, so every run gives the same data.</li>
+      <li>Pull the real test leads out of Salesforce as files and load them next to the made-up data.</li>
+      <li>Model the funnel by source, and credit by channel under first touch and last touch, in dbt on DuckDB.</li>
+      <li>Hand Claude a block of figures taken from the SQL output and ask for a weekly summary.</li>
+      <li>Check every number in the summary against the figures block. One number that is not there and nothing is published.</li>
+      <li>Push one field, a segment worked out in SQL, back onto the lead in Salesforce.</li>
+      </ol>
+      <h2>How it will be graded</h2>
+      <div class="tw"><table>
+      <thead>
+      <tr>
+      <th>Check</th>
+      <th>Pass bar</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr>
+      <td>Funnel</td>
+      <td>Every lead is counted once</td>
+      </tr>
+      <tr>
+      <td>Attribution</td>
+      <td>Each model hands out exactly 100 percent of opportunities</td>
+      </tr>
+      <tr>
+      <td>Five funnel edge cases, as unit tests</td>
+      <td>All pass. Each is three to six rows that can be read aloud</td>
+      </tr>
+      <tr>
+      <td>Three planted failures: a wrong number, a number only in the notes, no figures block</td>
+      <td>All three are rejected</td>
+      </tr>
+      <tr>
+      <td>Number check on rounding, formats and numbers that are not metrics</td>
+      <td>Each case has a test and a written rule</td>
+      </tr>
+      <tr>
+      <td>Score check</td>
+      <td>One query shows conversion by score band and names the group where the score misleads</td>
+      </tr>
+      <tr>
+      <td>Salesforce in</td>
+      <td>The lead count in the warehouse matches Salesforce</td>
+      </tr>
+      <tr>
+      <td>Salesforce out</td>
+      <td>The segment shows on the lead. A second run changes nothing</td>
+      </tr>
+      <tr>
+      <td>Two made-up A/B tests</td>
+      <td>The first is called a real win. The second is called cannot tell yet</td>
+      </tr>
+      </tbody>
+      </table></div>
+      <h2>Planned files</h2>
+      <ul>
+      <li><a href="https://github.com/mpickles/revenue-stack-demo/tree/main/pipelines/synthetic"><code>pipelines/synthetic/</code></a>: <code>make_data.py</code></li>
+      <li><code>models/</code>: staging, funnel, attribution. The funnel model is written by hand</li>
+      <li><code>tests/assert_attribution_reconciles.sql</code></li>
+      <li><a href="https://github.com/mpickles/revenue-stack-demo/tree/main/agents/analyst"><code>agents/analyst/</code></a>: <code>summary.py</code>, <code>verify_numbers.py</code> and their tests</li>
+      </ul>
+      <h2>One choice already made</h2>
+      <p>dbt Core with DuckDB on my own machine, not a hosted warehouse. It is free, it runs in CI, and a reviewer can run the whole build in one command.</p>
+      <h2>Limits</h2>
+      <ul>
+      <li>Most of the data is made up, so the funnel shape is one I chose. The 37 real test leads are too few for a funnel. They prove the pipe works end to end.</li>
+      <li>Two attribution models only. Nothing here settles which model is right.</li>
+      <li>The number check proves each number is in the data. It does not prove the sentence around the number is fair.</li>
+      </ul>
+      <h2>About the data</h2>
+      <p>The systems are real. The records are made up from a fixed seed.</p>
+      <h2>In the repo</h2>
+      <ul class="repo-links">
+        <li><a href="https://github.com/mpickles/revenue-stack-demo/tree/main/warehouse">SQL models</a></li>
+        <li><a href="https://github.com/mpickles/revenue-stack-demo/tree/main/pipelines/synthetic">Made-up data</a></li>
+        <li><a href="https://github.com/mpickles/revenue-stack-demo/tree/main/agents/analyst">Reporting agent</a></li>
+        <li><a href="https://github.com/mpickles/revenue-stack-demo/blob/main/docs/decisions.md">Decisions</a></li>
+      </ul>
+    </article>
+
+    <nav class="pager" aria-label="More proofs">
+      <a class="prev" href="lead-qualifier.html"><span>Before</span>Lead qualifier agent</a>
+      <a class="next" href="crm-cleanup.html"><span>Next</span>CRM cleanup</a>
+    </nav>
+  </main>
+</body>
+</html>

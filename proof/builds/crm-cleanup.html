@@ -1,0 +1,363 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <title>CRM cleanup: duplicates merged by script and graded against an answer key | Max Pickard</title>
+  <!-- Made by proof/generator/build.py from crm/salesforce_dedupe/README.md. Do not edit by hand. -->
+  <style>
+    :root {
+      --paper: #f2eee6;
+      --panel: #f8f5ef;
+      --ink: #1f1b16;
+      --muted: #6b645a;
+      --rule: #d9d2c5;
+      --moss: #4f5d32;
+      --wash: #e4e6d4;
+      --serif: "Iowan Old Style", "Palatino Linotype", Palatino, "Book Antiqua", Georgia, serif;
+      --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      color-scheme: light;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --paper: #1c1915;
+        --panel: #24201b;
+        --ink: #ece6da;
+        --muted: #a39b8e;
+        --rule: #3a342d;
+        --moss: #a9b77e;
+        --wash: #2e3323;
+        color-scheme: dark;
+      }
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+    html { -webkit-text-size-adjust: 100%; scroll-padding-top: 96px; }
+    body {
+      margin: 0;
+      background: var(--paper);
+      color: var(--ink);
+      font-family: var(--sans);
+      font-size: 1rem;
+      line-height: 1.65;
+    }
+    main {
+      max-width: 60rem;
+      margin: 0 auto;
+      padding: 72px 20px 96px;
+    }
+    @media (min-width: 720px) {
+      main { padding: 104px 40px 144px; }
+    }
+
+    a { color: inherit; text-decoration-color: var(--moss); text-decoration-thickness: 1px; text-underline-offset: 0.22em; }
+    a:hover { color: var(--moss); }
+    a:focus-visible { outline: 1px solid var(--moss); outline-offset: 3px; }
+
+    /* ---------- Nav: a floating bar that stops short of the screen edges ---------- */
+    .nav {
+      position: sticky;
+      top: 16px;
+      z-index: 5;
+      width: calc(100% - 40px);
+      max-width: 44rem;
+      margin: 16px auto 0;
+      padding: 10px 22px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px 20px;
+      align-items: center;
+      justify-content: space-between;
+      background: var(--panel);
+      border: 1px solid var(--rule);
+      border-radius: 999px;
+      font-size: 0.9375rem;
+    }
+    .nav a { text-decoration: none; }
+    .nav .nav-name { font-family: var(--serif); font-size: 1.0625rem; }
+    .nav .nav-links { display: flex; gap: 4px 20px; flex-wrap: wrap; color: var(--muted); }
+    .nav + main { padding-top: 64px; }
+    @media (min-width: 720px) { .nav + main { padding-top: 88px; } }
+
+    /* ---------- Masthead ---------- */
+    .masthead { max-width: 38rem; }
+    h1 {
+      margin: 0;
+      font-family: var(--serif);
+      font-weight: 400;
+      font-size: clamp(2.75rem, 1.6rem + 5vw, 4.75rem);
+      line-height: 1.02;
+      letter-spacing: -0.015em;
+    }
+    .role { margin: 16px 0 0; color: var(--muted); font-size: 1.0625rem; }
+    .lead {
+      margin: 48px 0 0;
+      padding-top: 24px;
+      border-top: 1px solid var(--rule);
+      font-family: var(--serif);
+      font-size: clamp(1.25rem, 1.1rem + 0.6vw, 1.5rem);
+      line-height: 1.5;
+    }
+
+    /* ---------- Section heads ---------- */
+    .section-head {
+      margin: 96px 0 0;
+      font-family: var(--serif);
+      font-weight: 400;
+      font-size: 1.5rem;
+      letter-spacing: -0.005em;
+    }
+    .section-note { margin: 8px 0 0; color: var(--muted); max-width: 38rem; }
+
+    /* ---------- Tiles ---------- */
+    .proofs {
+      list-style: none;
+      margin: 24px 0 0;
+      padding: 0;
+      display: grid;
+      column-gap: 48px;
+    }
+    @media (min-width: 720px) {
+      .proofs { grid-template-columns: 1fr 1fr; }
+    }
+    .proof {
+      display: grid;
+      grid-template-columns: 3.25rem 1fr;
+      column-gap: 16px;
+      padding: 24px 0 36px;
+      border-top: 1px solid var(--rule);
+    }
+    .proof-num {
+      font-family: var(--serif);
+      font-size: 2.75rem;
+      line-height: 1;
+      font-variant-numeric: lining-nums;
+      color: var(--muted);
+    }
+    .proof-title {
+      margin: 4px 0 0;
+      font-family: var(--serif);
+      font-weight: 400;
+      font-size: 1.375rem;
+      line-height: 1.25;
+    }
+    .proof-title a { text-decoration: none; }
+    .proof-title a:hover { text-decoration: underline; text-decoration-color: var(--moss); text-decoration-thickness: 1px; }
+    .status { margin: 6px 0 0; font-size: 0.9375rem; color: var(--muted); }
+    .proof-headline { margin: 14px 0 0; font-family: var(--serif); font-size: 1.1875rem; line-height: 1.35; }
+    .proof-sentence { margin: 12px 0 0; }
+    .proof-graded { margin: 10px 0 0; font-size: 0.9375rem; color: var(--muted); }
+    .proof-links {
+      margin: 14px 0 0;
+      padding: 0;
+      list-style: none;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px 24px;
+      font-size: 0.9375rem;
+    }
+
+    /* In progress and live: moss numeral and status, with a small solid mark. */
+    .is-active .proof-num,
+    .is-active.status,
+    .is-active .status { color: var(--moss); }
+    .is-active.status::before,
+    .is-active .status::before {
+      content: "";
+      display: inline-block;
+      width: 7px;
+      height: 7px;
+      margin-right: 8px;
+      background: var(--moss);
+      vertical-align: 0.08em;
+    }
+
+    /* ---------- Diagrams ---------- */
+    .figure { margin: 32px 0 0; padding: 28px 20px; background: var(--panel); border: 1px solid var(--rule); border-radius: 14px; overflow-x: auto; }
+    .dia { display: block; width: 100%; min-width: 600px; max-width: 760px; height: auto; margin: 0 auto; font-family: var(--sans); }
+    .dia-box { fill: var(--paper); stroke: var(--rule); stroke-width: 1; }
+    .dia-box.b { fill: var(--wash); stroke: var(--moss); }
+    .dia-box.m { stroke-dasharray: 4 3; stroke: var(--muted); }
+    .dia-text { fill: var(--ink); font-size: 13.5px; }
+    .dia-sub { fill: var(--muted); font-size: 11.5px; }
+    .dia-label { fill: var(--muted); font-size: 11.5px; }
+    .dia-line { fill: none; stroke: var(--muted); stroke-width: 1.2; }
+    .dia-dash { stroke-dasharray: 4 3; }
+    .dia-head { fill: var(--muted); }
+    .figure-key { margin: 16px auto 0; max-width: 760px; font-size: 0.875rem; color: var(--muted); }
+
+    /* ---------- Write-up pages ---------- */
+    .writeup-head { max-width: 44rem; }
+    .writeup-head h1 { font-size: clamp(2rem, 1.3rem + 3vw, 3.25rem); line-height: 1.08; }
+    .writeup-head .status { margin-top: 20px; }
+    .headline {
+      margin: 40px 0 0;
+      padding: 24px 0;
+      border-top: 1px solid var(--rule);
+      border-bottom: 1px solid var(--rule);
+      max-width: 44rem;
+    }
+    .headline-label { margin: 0; font-size: 0.8125rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); }
+    .headline-value { margin: 8px 0 0; font-family: var(--serif); font-size: clamp(1.25rem, 1.1rem + 0.8vw, 1.625rem); line-height: 1.35; }
+    .recording { margin: 32px 0 0; max-width: 44rem; }
+    .recording video { display: block; width: 100%; border: 1px solid var(--rule); border-radius: 10px; }
+    .prose { max-width: 44rem; margin-top: 56px; }
+    .prose h2 { margin: 56px 0 0; font-family: var(--serif); font-weight: 400; font-size: 1.5rem; line-height: 1.25; }
+    .prose h3 { margin: 36px 0 0; font-family: var(--serif); font-weight: 400; font-size: 1.1875rem; }
+    .prose p, .prose ul, .prose ol { margin: 16px 0 0; }
+    .prose ul, .prose ol { padding-left: 1.25rem; }
+    .prose li + li { margin-top: 6px; }
+    .prose code { font-family: var(--mono); font-size: 0.875em; background: var(--panel); border: 1px solid var(--rule); border-radius: 4px; padding: 1px 5px; }
+    .prose pre { margin: 16px 0 0; padding: 16px 18px; background: var(--panel); border: 1px solid var(--rule); border-radius: 10px; overflow-x: auto; line-height: 1.5; }
+    .prose pre code { background: none; border: 0; padding: 0; font-size: 0.8125rem; }
+    .tw { margin: 20px 0 0; overflow-x: auto; }
+    .prose table { border-collapse: collapse; width: 100%; min-width: 30rem; font-size: 0.9375rem; }
+    .prose th, .prose td { text-align: left; vertical-align: top; padding: 10px 14px 10px 0; border-bottom: 1px solid var(--rule); }
+    .prose th { font-weight: 600; font-size: 0.8125rem; letter-spacing: 0.04em; text-transform: uppercase; color: var(--muted); }
+    .repo-links { margin: 16px 0 0; padding: 0; list-style: none; display: flex; flex-wrap: wrap; gap: 8px 28px; }
+    .pager { margin: 96px 0 0; padding-top: 24px; border-top: 1px solid var(--rule); display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px 32px; }
+    .pager span { display: block; font-size: 0.8125rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); }
+    .pager a { font-family: var(--serif); font-size: 1.1875rem; text-decoration: none; }
+    .pager .next { text-align: right; margin-left: auto; }
+  </style>
+</head>
+<body>
+  <nav class="nav" aria-label="Site">
+    <a class="nav-name" href="../index.html">Max Pickard</a>
+    <span class="nav-links"><a href="../index.html">All proofs</a><a href="https://github.com/mpickles/revenue-stack-demo/tree/main/crm/salesforce_dedupe">This build on GitHub</a></span>
+  </nav>
+  <main>
+    <header class="writeup-head">
+      <h1>CRM cleanup: duplicates merged by script and graded against an answer key</h1>
+      <p class="status is-planned">Planned</p>
+    </header>
+    <div class="headline">
+      <p class="headline-label">Not graded yet. It will be graded on</p>
+      <p class="headline-value">Merges right and wrong against an answer key, with decoys that must be left alone.</p>
+    </div>
+
+    <div class="figure">
+      <svg class="dia" viewBox="0 0 756 542" role="img" aria-labelledby="crm-cleanup-t crm-cleanup-d" xmlns="http://www.w3.org/2000/svg">
+      <title id="crm-cleanup-t">How the CRM cleanup merges and is graded</title>
+      <desc id="crm-cleanup-d">A seed script plants a known mess in Salesforce and writes an answer key. Duplicate groups are found with SQL on an export. A plan file lists every merge first, then a backup is written. Accounts with an open opportunity go to a list for a person. The rest are merged, and an audit grades every merge against the answer key.</desc>
+      <defs><marker id="crm-cleanup-a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" class="dia-head"/></marker></defs>
+      <path d="M214 47 L278 47" class="dia-line" marker-end="url(#crm-cleanup-a)"/>
+      <path d="M114 80 L114 126" class="dia-line" marker-end="url(#crm-cleanup-a)"/>
+      <path d="M378 80 L378 126" class="dia-line" marker-end="url(#crm-cleanup-a)"/>
+      <path d="M478 159 L542 159" class="dia-line" marker-end="url(#crm-cleanup-a)"/>
+      <path d="M378 192 L378 238" class="dia-line" marker-end="url(#crm-cleanup-a)"/>
+      <path d="M378 304 L378 350" class="dia-line" marker-end="url(#crm-cleanup-a)"/>
+      <path d="M378 416 L378 462" class="dia-line" marker-end="url(#crm-cleanup-a)"/>
+      <path d="M114 192 L114 495 L278 495" class="dia-line" marker-end="url(#crm-cleanup-a)"/>
+      <text x="122" y="383" class="dia-label" text-anchor="start">grades</text>
+      <rect x="14" y="14" width="200" height="66" rx="6" class="dia-box "/>
+      <text x="114.0" y="44" class="dia-text" text-anchor="middle">Seed script</text>
+      <text x="114.0" y="61" class="dia-sub" text-anchor="middle">80 accounts, 300 contacts</text>
+      <rect x="278" y="14" width="200" height="66" rx="6" class="dia-box b"/>
+      <text x="378.0" y="44" class="dia-text" text-anchor="middle">Find duplicate groups</text>
+      <text x="378.0" y="61" class="dia-sub" text-anchor="middle">SQL on an export</text>
+      <rect x="14" y="126" width="200" height="66" rx="6" class="dia-box "/>
+      <text x="114.0" y="163.5" class="dia-text" text-anchor="middle">Answer key</text>
+      <rect x="278" y="126" width="200" height="66" rx="6" class="dia-box b"/>
+      <text x="378.0" y="156" class="dia-text" text-anchor="middle">Plan file</text>
+      <text x="378.0" y="173" class="dia-sub" text-anchor="middle">every merge listed first</text>
+      <rect x="542" y="126" width="200" height="66" rx="6" class="dia-box m"/>
+      <text x="642.0" y="156" class="dia-text" text-anchor="middle">List for a person</text>
+      <text x="642.0" y="173" class="dia-sub" text-anchor="middle">account has open pipeline</text>
+      <rect x="278" y="238" width="200" height="66" rx="6" class="dia-box b"/>
+      <text x="378.0" y="275.5" class="dia-text" text-anchor="middle">Backup written</text>
+      <rect x="278" y="350" width="200" height="66" rx="6" class="dia-box b"/>
+      <text x="378.0" y="387.5" class="dia-text" text-anchor="middle">Merge into one survivor</text>
+      <rect x="278" y="462" width="200" height="66" rx="6" class="dia-box b"/>
+      <text x="378.0" y="492" class="dia-text" text-anchor="middle">Audit</text>
+      <text x="378.0" y="509" class="dia-sub" text-anchor="middle">right, wrong, found, missed</text>
+      </svg>
+    </div>
+
+    <article class="prose">
+      <p>Status: planned. Nothing in this folder is built yet. This page says what it will do and how it will be graded.</p>
+      <p>A Salesforce account seeded with a known mess, a script that finds and merges the duplicates, and an answer key that grades every merge. It is for a team whose CRM has duplicate accounts and contacts and who cannot afford a wrong merge.</p>
+      <h2>What it will do</h2>
+      <ol>
+      <li>Seed the same mess every time: 80 accounts and 300 contacts with planted duplicates, contacts with no account, broken names, and decoys that look like duplicates but are not.</li>
+      <li>Export the records and find duplicate groups with SQL.</li>
+      <li>Write a plan file that lists every merge before any is made. Dry run is the default.</li>
+      <li>Write a backup of every seeded record before the first merge.</li>
+      <li>Merge each group into one surviving record, chosen by a written rule.</li>
+      <li>Leave any account with an open opportunity alone and put it on a list for a person.</li>
+      <li>Grade the result against the answer key.</li>
+      </ol>
+      <h2>How it will be graded</h2>
+      <div class="tw"><table>
+      <thead>
+      <tr>
+      <th>Check</th>
+      <th>Pass bar</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr>
+      <td>Merges made</td>
+      <td>0 wrong, decoys included</td>
+      </tr>
+      <tr>
+      <td>True duplicates</td>
+      <td>The share found is stated. Each miss is kept in the table with the reason</td>
+      </tr>
+      <tr>
+      <td>Groups of three or more</td>
+      <td>Each ends as one record, with the right survivor</td>
+      </tr>
+      <tr>
+      <td>Three accounts with an open opportunity</td>
+      <td>All three are on the list for a person and untouched</td>
+      </tr>
+      <tr>
+      <td>A second run</td>
+      <td>Nothing to do</td>
+      </tr>
+      <tr>
+      <td>A run stopped halfway and restarted</td>
+      <td>No pair is merged twice. The final grade is the same</td>
+      </tr>
+      <tr>
+      <td>API calls in a full run</td>
+      <td>Counted, printed and far under the daily limit</td>
+      </tr>
+      </tbody>
+      </table></div>
+      <h2>Planned files</h2>
+      <ul>
+      <li><code>seed.py</code> and <code>answer_key.json</code></li>
+      <li><code>find_duplicates.sql</code>: written by hand</li>
+      <li><code>clean.py</code>: dry run by default</li>
+      <li><code>audit.py</code>: grades against the answer key</li>
+      </ul>
+      <h2>Choices already made</h2>
+      <ul>
+      <li>A Salesforce merge deletes the other records and cannot be undone. So the backup and the plan are written first, and the script never merges an account with open pipeline on its own.</li>
+      <li>Every seeded record carries a marker, so the script can never touch the routing build's test leads.</li>
+      <li>A wrong merge is worse than a missed duplicate. The script is tuned for 0 wrong merges, and the misses are reported.</li>
+      </ul>
+      <h2>Limits</h2>
+      <ul>
+      <li>The mess is one I planted. A real CRM has kinds of mess nobody planned for.</li>
+      <li>380 records. Real cleanups run on far more, where API limits and run time matter more.</li>
+      </ul>
+      <h2>About the data</h2>
+      <p>The Salesforce account is real. Every account and contact in it is made up, on example.com addresses.</p>
+      <h2>In the repo</h2>
+      <ul class="repo-links">
+        <li><a href="https://github.com/mpickles/revenue-stack-demo/tree/main/crm/salesforce_dedupe">Build folder</a></li>
+        <li><a href="https://github.com/mpickles/revenue-stack-demo/blob/main/docs/decisions.md">Decisions</a></li>
+      </ul>
+    </article>
+
+    <nav class="pager" aria-label="More proofs">
+      <a class="prev" href="funnel-and-reporting.html"><span>Before</span>Funnel in SQL and a reporting agent</a>
+    </nav>
+  </main>
+</body>
+</html>

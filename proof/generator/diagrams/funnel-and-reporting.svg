@@ -1,0 +1,41 @@
+<svg class="dia" viewBox="0 0 756 542" role="img" aria-labelledby="funnel-and-reporting-t funnel-and-reporting-d" xmlns="http://www.w3.org/2000/svg">
+<title id="funnel-and-reporting-t">How a number gets from SQL into the weekly summary</title>
+<desc id="funnel-and-reporting-d">Made-up data and a Salesforce export load into staging models. SQL models build the funnel by source and credit by channel. A figures block is taken from the SQL output. Claude writes the summary from the figures block. Code checks every number in the summary against the block. If every number matches it is published, otherwise it is rejected. One field, a segment, goes back to Salesforce.</desc>
+<defs><marker id="funnel-and-reporting-a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" class="dia-head"/></marker></defs>
+<path d="M214 47 L278 47" class="dia-line" marker-end="url(#funnel-and-reporting-a)"/>
+<path d="M542 47 L478 47" class="dia-line" marker-end="url(#funnel-and-reporting-a)"/>
+<path d="M378 80 L378 126" class="dia-line" marker-end="url(#funnel-and-reporting-a)"/>
+<path d="M478 159 L542 159" class="dia-line" marker-end="url(#funnel-and-reporting-a)"/>
+<path d="M378 192 L378 238" class="dia-line" marker-end="url(#funnel-and-reporting-a)"/>
+<path d="M378 304 L378 350" class="dia-line" marker-end="url(#funnel-and-reporting-a)"/>
+<path d="M378 416 L378 462" class="dia-line" marker-end="url(#funnel-and-reporting-a)"/>
+<path d="M278 495 L214 495" class="dia-line" marker-end="url(#funnel-and-reporting-a)"/>
+<path d="M478 495 L542 495" class="dia-line" marker-end="url(#funnel-and-reporting-a)"/>
+<rect x="14" y="14" width="200" height="66" rx="6" class="dia-box "/>
+<text x="114.0" y="44" class="dia-text" text-anchor="middle">Made-up data</text>
+<text x="114.0" y="61" class="dia-sub" text-anchor="middle">fixed seed</text>
+<rect x="278" y="14" width="200" height="66" rx="6" class="dia-box b"/>
+<text x="378.0" y="44" class="dia-text" text-anchor="middle">Staging models</text>
+<text x="378.0" y="61" class="dia-sub" text-anchor="middle">dbt on DuckDB</text>
+<rect x="542" y="14" width="200" height="66" rx="6" class="dia-box "/>
+<text x="642.0" y="44" class="dia-text" text-anchor="middle">Salesforce export</text>
+<text x="642.0" y="61" class="dia-sub" text-anchor="middle">the real test leads</text>
+<rect x="278" y="126" width="200" height="66" rx="6" class="dia-box b"/>
+<text x="378.0" y="156" class="dia-text" text-anchor="middle">Funnel and credit models</text>
+<text x="378.0" y="173" class="dia-sub" text-anchor="middle">tested to add up to 100%</text>
+<rect x="542" y="126" width="200" height="66" rx="6" class="dia-box "/>
+<text x="642.0" y="163.5" class="dia-text" text-anchor="middle">Segment back to Salesforce</text>
+<rect x="278" y="238" width="200" height="66" rx="6" class="dia-box "/>
+<text x="378.0" y="268" class="dia-text" text-anchor="middle">Figures block</text>
+<text x="378.0" y="285" class="dia-sub" text-anchor="middle">numbers from the SQL output</text>
+<rect x="278" y="350" width="200" height="66" rx="6" class="dia-box b"/>
+<text x="378.0" y="387.5" class="dia-text" text-anchor="middle">Claude writes the summary</text>
+<rect x="278" y="462" width="200" height="66" rx="6" class="dia-box b"/>
+<text x="378.0" y="499.5" class="dia-text" text-anchor="middle">Code checks every number</text>
+<rect x="14" y="462" width="200" height="66" rx="6" class="dia-box "/>
+<text x="114.0" y="492" class="dia-text" text-anchor="middle">Published</text>
+<text x="114.0" y="509" class="dia-sub" text-anchor="middle">every number matched</text>
+<rect x="542" y="462" width="200" height="66" rx="6" class="dia-box m"/>
+<text x="642.0" y="492" class="dia-text" text-anchor="middle">Rejected</text>
+<text x="642.0" y="509" class="dia-sub" text-anchor="middle">one number not in the block</text>
+</svg>
