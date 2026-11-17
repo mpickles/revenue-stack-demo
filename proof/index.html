@@ -4,8 +4,8 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="robots" content="noindex, nofollow">
-  <title>Max Pickard: proof of work</title>
-  <!-- Made by proof/generator/build.py. Do not edit by hand. -->
+  <title>Max Pickard</title>
+  <!-- Made by proof/generator/build.py. Do not edit by hand. Edit proof/generator/templates/home.html. -->
   <style>
     :root {
       --paper: #f2eee6;
@@ -221,21 +221,85 @@
     .pager span { display: block; font-size: 0.8125rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); }
     .pager a { font-family: var(--serif); font-size: 1.1875rem; text-decoration: none; }
     .pager .next { text-align: right; margin-left: auto; }
+
+    /* ---------- Home page: about, path, facts, work ---------- */
+    .sub-head { margin: 64px 0 0; font-family: var(--serif); font-weight: 400; font-size: 1.25rem; }
+    .about { max-width: 38rem; margin-top: 16px; }
+    .about p { margin: 16px 0 0; }
+    .path { list-style: none; margin: 40px 0 0; padding: 0; display: grid; gap: 0; }
+    .path li { position: relative; padding: 0 0 22px 28px; border-left: 1px solid var(--rule); margin-left: 5px; }
+    .path li:last-child { padding-bottom: 0; border-left-color: transparent; }
+    .path li::before { content: ""; position: absolute; left: -5px; top: 6px; width: 9px; height: 9px; border-radius: 50%; background: var(--paper); border: 1px solid var(--muted); }
+    .path li.is-now::before { background: var(--moss); border-color: var(--moss); }
+    .path-when { display: block; font-size: 0.8125rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); }
+    .path-what { display: block; font-family: var(--serif); font-size: 1.1875rem; line-height: 1.3; }
+    .path-note { display: block; font-size: 0.9375rem; color: var(--muted); }
+    @media (min-width: 860px) {
+      .path { grid-template-columns: repeat(5, 1fr); }
+      .path li { padding: 22px 16px 0 0; margin: 0; border-left: 0; border-top: 1px solid var(--rule); }
+      .path li:last-child { border-top-color: var(--rule); }
+      .path li::before { left: 0; top: -5px; }
+    }
+    .facts { margin: 48px 0 0; display: grid; gap: 0 48px; }
+    @media (min-width: 720px) { .facts { grid-template-columns: 1fr 1fr; } }
+    .facts div { padding: 14px 0; border-top: 1px solid var(--rule); }
+    .facts dt { font-size: 0.8125rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); }
+    .facts dd { margin: 4px 0 0; }
+    .work { list-style: none; margin: 24px 0 0; padding: 0; display: grid; gap: 0 48px; }
+    @media (min-width: 720px) { .work { grid-template-columns: 1fr 1fr; } }
+    .work li { padding: 20px 0 24px; border-top: 1px solid var(--rule); }
+    .work h3 { margin: 0; font-family: var(--serif); font-weight: 400; font-size: 1.25rem; }
+    .work p { margin: 8px 0 0; }
+    .contact { margin: 20px 0 0; font-family: var(--serif); font-size: clamp(1.25rem, 1.1rem + 0.6vw, 1.5rem); display: flex; flex-wrap: wrap; gap: 8px 40px; }
   </style>
 </head>
 <body>
-  <main>
+  <nav class="nav" aria-label="Site">
+    <a class="nav-name" href="#top">Max Pickard</a>
+    <span class="nav-links"><a href="#about">About</a><a href="#work">Work</a><a href="#projects">Projects</a><a href="#contact">Contact</a></span>
+  </nav>
+  <main id="top">
     <header class="masthead">
       <h1>Max Pickard</h1>
-      <p class="role">Marketing operations and measurement</p>
+      <p class="role">Marketing Operations Specialist at Upgrow. Chicago.</p>
       <p class="lead">
-        This is a public rebuild of work I do on live accounts for multiple B2B SaaS
-        clients. The company and data here are fictional so that all of it can be open.
+        I set up the tracking, the CRM plumbing and the AI automation that marketing
+        teams run on. I got here from paid search and SEO, so I know what the numbers
+        are for.
       </p>
     </header>
 
-    <h2 class="section-head">Proofs</h2>
-    <p class="section-note">Six builds on one made-up company. Each one is graded against an answer key, and each opens a write-up.</p>
+    <h2 class="section-head" id="about">About</h2>
+    <div class="about">
+      <p>I did not start in marketing. I worked on an alpaca ranch, then cooked for a sorority house, then started as an SEO intern at Upgrow, a marketing agency for B2B software companies, with no marketing experience at all.</p>
+      <p>I learned SEO and conversion tracking on the job, asked to learn paid search, and kept getting pulled toward the question behind every campaign: can we trust this number? That question is now my job.</p>
+      <p>I studied applied mathematics at UC San Diego. Outside work I shoot photos and write screenplays.</p>
+    </div>
+    <ol class="path" aria-label="How I got here">
+      <li><span class="path-when">Before</span><span class="path-what">Alpaca rancher</span></li>
+      <li><span class="path-when">Before</span><span class="path-what">Sorority house chef</span></li>
+      <li><span class="path-when">Upgrow</span><span class="path-what">SEO Intern</span><span class="path-note">SEO writing, conversion tracking, dashboards</span></li>
+      <li><span class="path-when">May 2024</span><span class="path-what">SEO and PPC Specialist</span><span class="path-note">Google Ads, Microsoft Ads, LinkedIn Ads</span></li>
+      <li class="is-now"><span class="path-when">July 2026</span><span class="path-what">Marketing Operations Specialist</span><span class="path-note">Tracking, CRM connections, AI automation</span></li>
+    </ol>
+    <dl class="facts">
+      <div><dt>Based in</dt><dd>Chicago</dd></div>
+      <div><dt>Degree</dt><dd>B.S. Applied Mathematics, minor in Economics, UC San Diego</dd></div>
+      <div><dt>Tools</dt><dd>Google Tag Manager, GA4, Google Ads, Microsoft Ads, LinkedIn Ads, HubSpot, Salesforce, Zapier, Claude Code</dd></div>
+      <div><dt>Certificates</dt><dd>Google Ads Display, Search Ads 360, LinkedIn Marketing Fundamentals, LinkedIn Measurement</dd></div>
+    </dl>
+
+    <h2 class="section-head" id="work">What I do at work</h2>
+    <p class="section-note">Client work stays private, so this is the shape of it with no names and no numbers. The projects below rebuild the same kind of work in public.</p>
+    <ul class="work">
+      <li><h3>Conversion tracking</h3><p>Tag Manager and GA4 setups, consent, and finding out why a conversion stopped firing.</p></li>
+      <li><h3>CRM to ad platforms</h3><p>Sending real pipeline stages from Salesforce and HubSpot back to Google Ads and LinkedIn, so bidding learns from more than form fills.</p></li>
+      <li><h3>Paid search and SEO</h3><p>Hands-on campaign work in Google Ads, Microsoft Ads and LinkedIn Ads, plus SEO. It is where I started and why I care about the data.</p></li>
+      <li><h3>AI automation</h3><p>Reporting and review workflows built with Claude Code, where code checks every number and a person approves before anything goes out.</p></li>
+    </ul>
+
+    <h2 class="section-head" id="projects">Projects</h2>
+    <p class="section-note"><strong>Roadwren revenue stack.</strong> One made-up company and six builds that follow a lead from the ad click to the report. Each build is graded against an answer key, and each opens a write-up.</p>
     <ol class="proofs">
       <li class="proof is-active">
         <span class="proof-num" aria-hidden="true">1</span>
@@ -311,8 +375,8 @@
       </li>
     </ol>
 
-    <h2 class="section-head">How they connect</h2>
-    <p class="section-note">One lead, from the ad click to the report. The shaded boxes are the six builds.</p>
+    <h3 class="sub-head">How the six connect</h3>
+    <p class="section-note">The shaded boxes are the six builds.</p>
     <div class="figure">
       <svg class="dia" viewBox="0 0 756 542" role="img" aria-labelledby="system-t system-d" xmlns="http://www.w3.org/2000/svg">
       <title id="system-t">How the six builds connect</title>
@@ -376,10 +440,10 @@
       <text x="642.0" y="517.5" class="dia-sub" text-anchor="middle">Proof 5</text>
       </svg>
     </div>
+    <p class="section-note">The systems are real and running. Roadwren and every person, lead and record in it are made up. The code, the answer keys and the decisions are in <a href="https://github.com/mpickles/revenue-stack-demo">the repo</a>. Claude Code writes most of the code from my specs. The tests and answer keys are how I check it.</p>
 
-    <h2 class="section-head">About the data</h2>
-    <p class="section-note">The systems are real and running. Roadwren is a made-up company, and every person, lead and record is made up. All of the code, the answer keys and the decisions are in <a href="https://github.com/mpickles/revenue-stack-demo">the repo</a>.</p>
-
+    <h2 class="section-head" id="contact">Contact</h2>
+    <p class="contact"><a href="mailto:maxapickard@gmail.com">maxapickard@gmail.com</a><a href="https://www.linkedin.com/in/maxwellapickard/">LinkedIn</a></p>
   </main>
 </body>
 </html>
