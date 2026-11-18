@@ -112,11 +112,15 @@ td.num{font-variant-numeric:tabular-nums}
 .rows .status{color:var(--muted);justify-self:end}
 .rows li[hidden]{display:none}
 
-.work{display:grid;gap:0 56px;margin-top:40px}
-@media (min-width:760px){.work{grid-template-columns:1fr 1fr}}
-.work div{padding:22px 0;border-top:1px solid var(--line)}
-.work b{display:block;font-weight:600;font-size:1.25rem;letter-spacing:-.02em;margin-bottom:6px}
-.work p{margin:0;color:var(--muted)}
+.xp{list-style:none;margin:44px 0 0;padding:0;border-top:2px solid var(--accent)}
+.xp>li{display:grid;gap:6px 56px;padding:26px 0;border-bottom:1px solid var(--line)}
+@media (min-width:860px){.xp>li{grid-template-columns:12rem minmax(0,1fr)}}
+.xp .when{font-family:var(--mono);font-size:.8125rem;color:var(--muted);padding-top:.35em}
+.xp b{display:block;font-weight:500;font-size:clamp(1.25rem,1.1rem + .8vw,1.75rem);letter-spacing:-.03em;line-height:1.1}
+.xp .where{display:block;margin-top:4px;color:var(--muted)}
+.xp p{margin:12px 0 0;max-width:40rem}
+.tags{list-style:none;margin:14px 0 0;padding:0;display:flex;flex-wrap:wrap;gap:6px}
+.tags li{font-family:var(--mono);font-size:.75rem;border:1px solid var(--line);border-radius:4px;padding:3px 8px;color:var(--muted)}
 
 .about{margin-top:44px;max-width:44rem}
 .about p{margin:0 0 18px}

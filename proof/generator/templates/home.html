@@ -30,7 +30,7 @@ $style
   <div class="progress" aria-hidden="true"></div>
   <nav class="nav" aria-label="Site">
     <a class="nav-name" href="#top">Max Pickard</a>
-    <div><a href="#work">Work</a><a href="#about">About</a>$contact_nav<button type="button" data-theme-toggle>Dark</button></div>
+    <div><a href="#work">Work</a><a href="#experience">Experience</a><a href="#skills">Skills</a>$contact_nav<button type="button" data-theme-toggle>Dark</button></div>
   </nav>
   <main id="top">
     <header class="hero"><div class="wrap">
@@ -46,7 +46,7 @@ $style
       </div>
       <div class="under">
         <p>Tracking, CRM and AI systems for marketing teams.</p>
-        <nav aria-label="Links"><a href="#work">Work</a><a href="#about">About</a>$contact_links<a href="$repo">GitHub</a></nav>
+        <nav aria-label="Links"><a href="#work">Work</a><a href="#experience">Experience</a>$contact_links<a href="$repo">GitHub</a></nav>
       </div>
     </div></header>
 $proof
@@ -77,15 +77,44 @@ $rows
       </ul>
     </div></section>
 
-    <section class="sec"><div class="wrap">
-      <h2>What I do at work</h2>
-      <p class="sub">Client work stays private, so no names and no numbers. The builds above rebuild the same kind of work in public.</p>
-      <div class="work" data-stagger>
-        <div><b>Conversion tracking</b><p>Tag Manager and GA4 setups, consent, and finding out why a conversion stopped firing.</p></div>
-        <div><b>CRM to ad platforms</b><p>Mapping CRM stages from Salesforce and HubSpot back to Google Ads and LinkedIn as offline conversions.</p></div>
-        <div><b>Paid search and SEO</b><p>Hands-on campaign work in Google Ads, Microsoft Ads and LinkedIn Ads. Where I started.</p></div>
-        <div><b>How I build</b><p>With Claude Code. I write the spec, the test set and the answer key. Claude writes most of the code. The tests are how I check it.</p></div>
-      </div>
+    <section class="sec" id="experience"><div class="wrap">
+      <h2>Experience</h2>
+      <ol class="xp" data-stagger>
+        <li>
+          <span class="when">Jul 2026 to now</span>
+          <div><b>Marketing Operations Specialist</b><span class="where">Upgrow, a marketing agency for B2B software companies</span>
+            <p>Conversion tracking, CRM connections and AI automation across client accounts. I build the internal tools the paid media team reports from.</p>
+            <ul class="tags"><li>Google Tag Manager</li><li>GA4</li><li>Salesforce</li><li>HubSpot</li><li>Offline conversions</li><li>Claude Code</li></ul></div>
+        </li>
+        <li>
+          <span class="when">May 2024 to Jul 2026</span>
+          <div><b>SEO and PPC Specialist</b><span class="where">Upgrow</span>
+            <p>Hands-on paid search and SEO for B2B software clients: building campaigns, keyword research, tracking and reporting.</p>
+            <ul class="tags"><li>Google Ads</li><li>Microsoft Ads</li><li>LinkedIn Ads</li><li>SEO</li><li>Looker Studio</li></ul></div>
+        </li>
+        <li>
+          <span class="when">Before May 2024</span>
+          <div><b>SEO Intern</b><span class="where">Upgrow</span>
+            <p>Started with no marketing experience. Learned SEO writing and conversion tracking on the job, then asked to learn paid search.</p>
+            <ul class="tags"><li>SEO</li><li>Conversion tracking</li><li>Dashboards</li></ul></div>
+        </li>
+        <li>
+          <span class="when">Degree</span>
+          <div><b>B.S. Applied Mathematics, minor in Economics</b><span class="where">UC San Diego</span></div>
+        </li>
+      </ol>
+    </div></section>
+
+    <section class="sec" id="skills"><div class="wrap">
+      <h2>Skills</h2>
+      <p class="sub">Split honestly: what I use at work, and what I am building in the projects above.</p>
+      <div class="tw"><table data-wipe>
+        <tr><th>Area</th><th>Use at work</th><th>Building in the projects</th></tr>
+        <tr><td>Tracking and analytics</td><td>Google Tag Manager, GA4, consent mode, conversion tracking, Looker Studio</td><td>Browser tests for consent</td></tr>
+        <tr><td>CRM and data</td><td>HubSpot and Salesforce connections, offline conversion imports, Zapier</td><td>Salesforce Flow, SQL, dbt</td></tr>
+        <tr><td>Paid media and SEO</td><td>Google Ads, Microsoft Ads, LinkedIn Ads, SEO</td><td></td></tr>
+        <tr><td>AI and automation</td><td>Claude Code, internal tools where code checks the output</td><td>Python, agents graded against answer keys, n8n, Clay</td></tr>
+      </table></div>
     </div></section>
 
     <section class="sec" id="about"><div class="wrap">
