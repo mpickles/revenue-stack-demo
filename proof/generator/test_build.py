@@ -104,16 +104,71 @@ class CommittedPages(unittest.TestCase):
                     target = re.sub(r"[^/]+/\.\./", "", target, count=1)
                 self.assertIn(target, self.pages, f"{path} links to {href}")
 
-    def test_a_tile_without_a_result_says_how_it_will_be_graded(self):
+    def test_a_build_without_a_result_says_so_on_its_write_up(self):
+        for item in self.config["builds"]:
+            page = self.pages[f'builds/{item["slug"]}.html']
+            if not item.get("headline"):
+                self.assertIn("Not graded yet", page)
+                self.assertIn(html.escape(item["graded_on"]), page)
+
+    def test_a_missing_result_or_recording_shows_as_a_marked_empty_slot(self):
+        """Empty slots are allowed, invented results are not: a slot appears exactly when the real thing is missing."""
+        home = self.pages["index.html"]
+        project = self.config["project"]
+        self.assertEqual('<span class="slot">To come once graded</span>' in home, not project.get("headline"))
+        self.assertEqual('<span class="slot">Walkthrough to come</span>' in home, not project.get("recording"))
+        for item in self.config["builds"]:
+            page = self.pages[f'builds/{item["slug"]}.html']
+            self.assertEqual("walkthrough to come" in page, not item.get("recording"), item["slug"])
+
+    def test_the_home_page_does_not_explain_how_a_build_works(self):
+        home = self.pages["index.html"]
+        self.assertNotIn('<section class="scene"', home)
+        self.assertNotIn("How it is graded", home)
+
+    def test_every_build_is_listed_on_the_home_page(self):
         home = self.pages["index.html"]
         for item in self.config["builds"]:
-            if not item.get("headline"):
-                self.assertIn("Graded on: " + html.escape(item["graded_on"]), home)
+            self.assertIn(f'href="builds/{item["slug"]}.html"', home)
+
+    def test_no_proof_section_until_a_build_has_a_result(self):
+        home = self.pages["index.html"]
+        has_result = any(item.get("headline") for item in self.config["builds"])
+        self.assertEqual("Proof, in one line each" in home, has_result)
+
+    def test_gsap_is_loaded_at_one_pinned_version(self):
+        for path, text in self.pages.items():
+            versions = set(re.findall(r"/ajax/libs/gsap/([0-9.]+)/", text))
+            self.assertEqual(versions, {"3.13.0"}, path)
+
+    def test_every_image_on_a_page_exists(self):
+        for path, text in self.pages.items():
+            folder = Path(path).parent
+            for src in re.findall(r'<img src="([^"]+)"', text):
+                target = (build.PROOF / folder / src).resolve()
+                self.assertTrue(target.is_file(), f"{path} shows {src}")
+
+    def test_every_image_has_alt_text_and_a_size(self):
+        for path, text in self.pages.items():
+            for tag in re.findall(r"<img [^>]+>", text):
+                self.assertRegex(tag, r'alt="[^"]{10,}"', path)
+                self.assertRegex(tag, r'width="\d+" height="\d+"', path)
+
+    def test_no_placeholder_text_is_published(self):
+        for path, text in self.pages.items():
+            self.assertNotIn("placeholder", text.lower(), path)
 
     def test_no_page_shows_a_recording_that_does_not_exist(self):
         for item in self.config["builds"]:
             if not item.get("recording"):
                 self.assertNotIn("<video", self.pages[f'builds/{item["slug"]}.html'])
+
+    def test_contact_shows_what_is_set_and_nothing_else(self):
+        home = self.pages["index.html"]
+        contact = self.config.get("contact") or {}
+        self.assertEqual("mailto:" in home, bool(contact.get("email")))
+        self.assertEqual("linkedin.com/in/" in home, bool(contact.get("linkedin")))
+        self.assertEqual('href="#contact"' in home, bool(contact.get("email") or contact.get("linkedin")))
 
     def test_no_em_dashes(self):
         for path, text in self.pages.items():

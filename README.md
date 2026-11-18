@@ -5,7 +5,7 @@ A working marketing and revenue stack for a made-up company, built to show how I
 Roadwren is a fictional fleet telematics company. Every person, customer and record in this repo is made up. The site, the tags, the CRM setup and the code are real and running.
 
 - Live demo site: https://roadwren-demo.vercel.app
-- Proof page: https://maxpickard-revenue-stack.vercel.app
+- My portfolio, with a write-up of each build: https://maxpickard-revenue-stack.vercel.app
 
 ## How the pieces connect
 
@@ -29,7 +29,7 @@ Solid arrows that end at HubSpot are live today. The Salesforce, agent, SQL and 
 
 ## Status
 
-Six builds, in the order a lead moves through them. Each has a write-up on the [proof page](https://maxpickard-revenue-stack.vercel.app), made from the README in its folder.
+Six builds, in the order a lead moves through them. Each has a write-up on [my portfolio](https://maxpickard-revenue-stack.vercel.app), made from the README in its folder.
 
 | Build | Folders | Status |
 |---|---|---|
@@ -61,9 +61,9 @@ npm test
 npm run test:e2e
 ```
 
-## The proof page
+## The portfolio site
 
-The proof page is plain HTML in `proof/`. A short Python script builds it: the home page from `proof/generator/builds.json`, and one write-up page per build from that build's README. After changing a README, run it and commit the pages.
+My portfolio is plain HTML in `proof/`. A short Python script builds it: the home page from `proof/generator/templates/home.html` and `proof/generator/builds.json`, and one write-up page per build from that build's README. After changing a README, run it and commit the pages.
 
 ```
 pip install -r proof/generator/requirements.txt
@@ -97,4 +97,4 @@ I design and run this. Claude Code writes most of the code from my specs. The te
 
 ## Not in this repo
 
-Client names, client data and anything from my employer. Secrets live in environment variables and a pre-commit hook blocks commits that contain one.
+Client names, client data and anything from my employer. The one exception is the portfolio home page, which names where I work. Secrets live in environment variables and a pre-commit hook blocks commits that contain one.

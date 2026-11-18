@@ -2,8 +2,15 @@
   "repo": "https://github.com/mpickles/revenue-stack-demo",
   "demo": "https://roadwren-demo.vercel.app",
   "contact": {
-    "email": null,
-    "linkedin": null
+    "email": "maxapickard@gmail.com",
+    "linkedin": "https://www.linkedin.com/in/maxwellapickard/"
+  },
+  "project": {
+    "title": "A full revenue stack for a made-up B2B software company",
+    "sentence": "One lead followed the whole way: ad click, consent, form, CRM, routing, conversions sent back to the ad platform, and the report at the end. Built in six parts on a made-up company, Roadwren, so all of it can be public.",
+    "built_with": "Next.js, Tag Manager, GA4, HubSpot, Salesforce Flow, Python, SQL, dbt",
+    "headline": null,
+    "recording": null
   },
   "builds": [
     {
@@ -39,7 +46,14 @@
           "label": "Decisions",
           "path": "docs/decisions.md"
         }
-      ]
+      ],
+      "image": {
+        "src": "img/tracked-site.webp",
+        "width": 1440,
+        "height": 900,
+        "alt": "The Roadwren demo form with the cookie banner open, offering Reject all and Accept all, before any click ID is stored.",
+        "caption": "The live demo form. The banner comes first: nothing is stored until Accept."
+      }
     },
     {
       "slug": "salesforce-routing",
@@ -66,7 +80,8 @@
           "label": "Decisions",
           "path": "docs/decisions.md"
         }
-      ]
+      ],
+      "scene": "routing-scene.html"
     },
     {
       "slug": "campaign-qa-agent",

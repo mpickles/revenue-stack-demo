@@ -1,0 +1,16 @@
+<section class="scene" aria-label="How the routing build works">
+  <div class="pin">
+    <h2>How it works</h2>
+    <p class="sub">One lead, from the form to Google Ads. Scroll to draw it.</p>
+    <svg viewBox="0 0 1200 330" role="img" aria-label="A form submit passes two rules that block junk, becomes a Salesforce lead, is routed by a Flow, converts with its click ID kept, is written to a checked upload file, and reaches Google Ads.">
+      <g data-step="A visitor submits the form, with a click ID from the ad."><rect class="box" x="20" y="30" width="230" height="78" rx="4"/><text x="135" y="64">Form submit</text><text class="s" x="135" y="88">click ID, UTMs, consent</text></g>
+      <g data-step="Two rules block junk: no consent, or a free email at a big company."><path class="wire" d="M250 69 H320"/><rect class="box" x="320" y="30" width="230" height="78" rx="4"/><text x="435" y="64">Rules block junk</text><text class="s" x="435" y="88">2 validation rules</text></g>
+      <g data-step="The lead lands in Salesforce with its click ID attached."><path class="wire" d="M550 69 H620"/><rect class="box" x="620" y="30" width="230" height="78" rx="4"/><text x="735" y="64">Salesforce lead</text><text class="s" x="735" y="88">7 custom fields</text></g>
+      <g data-step="One Flow sets the stage, adds the campaign and assigns the owner."><path class="wire" d="M850 69 H920"/><rect class="box" x="920" y="30" width="260" height="78" rx="4"/><text x="1050" y="64">Flow routes the lead</text><text class="s" x="1050" y="88">stage, campaign, owner</text></g>
+      <g data-step="When the lead converts, the click ID carries over to the opportunity."><path class="wire" d="M1050 108 V222"/><rect class="box" x="920" y="222" width="260" height="78" rx="4"/><text x="1050" y="256">Lead converts</text><text class="s" x="1050" y="280">click ID kept on the opportunity</text></g>
+      <g data-step="A script writes the conversion upload file and rejects every bad row."><path class="wire" d="M920 261 H850"/><rect class="box" x="620" y="222" width="230" height="78" rx="4"/><text x="735" y="256">Upload file, checked</text><text class="s" x="735" y="280">bad rows rejected</text></g>
+      <g data-step="Google Ads learns which clicks became pipeline."><path class="wire" d="M620 261 H550"/><rect class="box end" x="320" y="222" width="230" height="78" rx="4"/><text x="435" y="256">Google Ads</text><text class="s" x="435" y="280">bidding learns from pipeline</text></g>
+    </svg>
+    <p class="says" aria-hidden="true"></p>
+  </div>
+</section>

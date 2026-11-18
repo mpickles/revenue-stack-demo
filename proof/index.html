@@ -4,382 +4,534 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="robots" content="noindex, nofollow">
-  <title>Max Pickard: proof of work</title>
-  <!-- Made by proof/generator/build.py. Do not edit by hand. -->
+  <title>Max Pickard</title>
+  <!-- Made by proof/generator/build.py. Do not edit by hand. Edit proof/generator/templates/home.html. -->
+  <script>
+    // Runs before the page paints. Applies the saved light or dark choice, and picks one accent
+    // colour per visit: teal, cobalt, red, orange or plum. Each pair is [light mode, dark mode].
+    (function () {
+      var el = document.documentElement, pairs = [["#0F7B6C", "#3CC8B4"], ["#2348E8", "#7C93FF"], ["#C4261D", "#FF6B5E"], ["#C2500C", "#FF8A3D"], ["#8A2A6B", "#E58FCA"]];
+      var pick = Math.floor(Math.random() * pairs.length);
+      try {
+        var theme = localStorage.getItem("theme"); if (theme) el.dataset.theme = theme;
+        var saved = sessionStorage.getItem("accent");
+        if (saved !== null && pairs[saved]) pick = Number(saved); else sessionStorage.setItem("accent", pick);
+      } catch (e) {}
+      el.style.setProperty("--a-l", pairs[pick][0]); el.style.setProperty("--a-d", pairs[pick][1]);
+    })();
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
   <style>
-    :root {
-      --paper: #f2eee6;
-      --panel: #f8f5ef;
-      --ink: #1f1b16;
-      --muted: #6b645a;
-      --rule: #d9d2c5;
-      --moss: #4f5d32;
-      --wash: #e4e6d4;
-      --serif: "Iowan Old Style", "Palatino Linotype", Palatino, "Book Antiqua", Georgia, serif;
-      --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-      --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-      color-scheme: light;
+    /* Technical direction. Named tokens, light and dark. IBM Plex Sans for reading,
+       IBM Plex Mono only where something is data: tables, statuses, diagram notes. */
+    :root{
+      --bg:#FAFAF9;--ink:#111417;--muted:#60666D;--line:#D9DBDD;--panel:#F0F1F0;--a-l:#0F7B6C;--a-d:#3CC8B4;--accent:var(--a-l);--on-accent:#FAFAF9;
+      --sans:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;--mono:"IBM Plex Mono",ui-monospace,Menlo,Consolas,monospace;
+      --ease:cubic-bezier(.23,1,.32,1);
     }
-    @media (prefers-color-scheme: dark) {
-      :root {
-        --paper: #1c1915;
-        --panel: #24201b;
-        --ink: #ece6da;
-        --muted: #a39b8e;
-        --rule: #3a342d;
-        --moss: #a9b77e;
-        --wash: #2e3323;
-        color-scheme: dark;
-      }
-    }
+    @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#101214;--ink:#ECEDEE;--muted:#979DA4;--line:#272B2F;--panel:#171A1D;--accent:var(--a-d);--on-accent:#101214;color-scheme:dark}}
+    :root[data-theme="dark"]{--bg:#101214;--ink:#ECEDEE;--muted:#979DA4;--line:#272B2F;--panel:#171A1D;--accent:var(--a-d);--on-accent:#101214;color-scheme:dark}
+    *,*::before,*::after{box-sizing:border-box}
+    html{-webkit-text-size-adjust:100%;scroll-padding-top:96px}
+    body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:1.125rem;line-height:1.5;overflow-x:hidden}
+    ::selection{background:var(--accent);color:var(--bg)}
+    button{font:inherit;color:inherit;cursor:pointer}
+    a{color:inherit;text-decoration:none;background:linear-gradient(currentColor,currentColor) no-repeat left 100%/100% 1px;transition:background-size .2s var(--ease),color .2s var(--ease)}
+    a:hover{color:var(--accent);background-size:0 1px;background-position:right 100%}
+    a:focus-visible,button:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+    .wrap{width:100%;max-width:78rem;margin:0 auto;padding:0 clamp(20px,5vw,64px)}
+    h1,h2,h3{margin:0;font-weight:500;letter-spacing:-.04em}
+    h2{font-size:clamp(1.875rem,1.3rem + 2.4vw,3.25rem);line-height:1.02;max-width:22ch;text-wrap:balance}
+    h2 .mask{display:block;overflow:hidden;padding-bottom:.12em;margin-bottom:-.12em}
+    h2 .mask>span{display:block}
+    .sub{margin:14px 0 0;color:var(--muted);max-width:38rem}
+    .sec{padding:clamp(88px,12vw,168px) 0 0}
 
-    *, *::before, *::after { box-sizing: border-box; }
-    html { -webkit-text-size-adjust: 100%; scroll-padding-top: 96px; }
-    body {
-      margin: 0;
-      background: var(--paper);
-      color: var(--ink);
-      font-family: var(--sans);
-      font-size: 1rem;
-      line-height: 1.65;
-    }
-    main {
-      max-width: 60rem;
-      margin: 0 auto;
-      padding: 72px 20px 96px;
-    }
-    @media (min-width: 720px) {
-      main { padding: 104px 40px 144px; }
-    }
+    /* Nav: floats, stops short of the screen edges */
+    .nav{position:fixed;top:16px;left:50%;transform:translateX(-50%);z-index:20;width:min(calc(100% - 32px),42rem);display:flex;gap:8px 20px;align-items:center;justify-content:space-between;padding:8px 8px 8px 20px;background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(12px);border:1px solid var(--line);border-radius:14px;font-size:.9375rem}
+    .nav .nav-name{font-weight:600;background:none}
+    .nav div{display:flex;gap:6px 18px;align-items:center}
+    .nav div a{background:none;color:var(--muted)}
+    .nav div a:hover{color:var(--ink)}
+    .nav button{border:1px solid var(--line);background:none;border-radius:8px;padding:6px 12px;min-height:36px;font-size:.875rem}
+    @media (max-width:560px){.nav div a{display:none}}
 
-    a { color: inherit; text-decoration-color: var(--moss); text-decoration-thickness: 1px; text-underline-offset: 0.22em; }
-    a:hover { color: var(--moss); }
-    a:focus-visible { outline: 1px solid var(--moss); outline-offset: 3px; }
+    /* Hero */
+    .hero{min-height:100svh;display:flex;flex-direction:column;justify-content:flex-end;padding:132px 0 clamp(40px,6vw,80px)}
+    .hero h1{font-size:clamp(3.5rem,1rem + 10.5vw,10rem);line-height:.88;letter-spacing:-.055em;max-width:8ch}
+    .hero h1 i{font-style:normal;color:var(--accent)}
+    .progress{position:fixed;inset:0 0 auto 0;height:3px;z-index:30;background:var(--accent);transform:scaleX(0);transform-origin:left}
+    .hero-grid{display:grid;gap:28px 64px;align-items:end}
+    @media (min-width:980px){.hero-grid{grid-template-columns:1fr 21rem}}
+    .spec{margin:0;border-top:2px solid var(--accent);font-size:.9375rem}
+    .spec div{display:grid;grid-template-columns:6.5rem 1fr;gap:12px;padding:9px 0;border-bottom:1px solid var(--line)}
+    .spec dt{color:var(--muted)}.spec dd{margin:0}
+    .under{display:flex;flex-wrap:wrap;gap:14px 40px;justify-content:space-between;align-items:baseline;margin-top:clamp(32px,5vw,64px);padding-top:22px;border-top:1px solid var(--line)}
+    .under p{margin:0;font-size:clamp(1.0625rem,1rem + .5vw,1.375rem);letter-spacing:-.01em}
+    .under nav{display:flex;flex-wrap:wrap;gap:6px 26px;font-size:1rem}
+    .copy{border:0;background:linear-gradient(currentColor,currentColor) no-repeat left 100%/100% 1px;padding:0}
+    .copy:hover{color:var(--accent)}
 
-    /* ---------- Nav: a floating bar that stops short of the screen edges ---------- */
-    .nav {
-      position: sticky;
-      top: 16px;
-      z-index: 5;
-      width: calc(100% - 40px);
-      max-width: 44rem;
-      margin: 16px auto 0;
-      padding: 10px 22px;
-      display: flex;
-      flex-wrap: wrap;
-      gap: 4px 20px;
-      align-items: center;
-      justify-content: space-between;
-      background: var(--panel);
-      border: 1px solid var(--rule);
-      border-radius: 999px;
-      font-size: 0.9375rem;
-    }
-    .nav a { text-decoration: none; }
-    .nav .nav-name { font-family: var(--serif); font-size: 1.0625rem; }
-    .nav .nav-links { display: flex; gap: 4px 20px; flex-wrap: wrap; color: var(--muted); }
-    .nav + main { padding-top: 64px; }
-    @media (min-width: 720px) { .nav + main { padding-top: 88px; } }
+    /* A real screenshot in a plain browser frame */
+    .frame{margin:44px 0 0;border:1px solid var(--line);border-radius:10px;overflow:hidden;background:var(--panel);transform-origin:50% 0}
+    .frame-bar{display:flex;align-items:center;gap:7px;padding:10px 14px;border-bottom:1px solid var(--line);font-family:var(--mono);font-size:.75rem;color:var(--muted)}
+    .frame-bar i{width:9px;height:9px;border-radius:50%;border:1px solid var(--muted)}
+    .frame-bar i:first-child{background:var(--accent);border-color:var(--accent)}
+    .frame-bar span{margin-left:10px}
+    .frame img{display:block;width:100%;height:auto}
+    .frame figcaption{padding:12px 14px;border-top:1px solid var(--line);font-size:.9375rem;color:var(--muted)}
+    .writeup .frame{max-width:52rem}
 
-    /* ---------- Masthead ---------- */
-    .masthead { max-width: 38rem; }
-    h1 {
-      margin: 0;
-      font-family: var(--serif);
-      font-weight: 400;
-      font-size: clamp(2.75rem, 1.6rem + 5vw, 4.75rem);
-      line-height: 1.02;
-      letter-spacing: -0.015em;
-    }
-    .role { margin: 16px 0 0; color: var(--muted); font-size: 1.0625rem; }
-    .lead {
-      margin: 48px 0 0;
-      padding-top: 24px;
-      border-top: 1px solid var(--rule);
-      font-family: var(--serif);
-      font-size: clamp(1.25rem, 1.1rem + 0.6vw, 1.5rem);
-      line-height: 1.5;
-    }
+    /* Proof lines */
+    .proof{margin:40px 0 0;padding:0;list-style:none;max-width:52rem}
+    .proof li{padding:16px 0;border-top:1px solid var(--line);font-size:clamp(1.125rem,1rem + .7vw,1.5rem);letter-spacing:-.015em}
+    .proof li:last-child{border-bottom:1px solid var(--line)}
 
-    /* ---------- Section heads ---------- */
-    .section-head {
-      margin: 96px 0 0;
-      font-family: var(--serif);
-      font-weight: 400;
-      font-size: 1.5rem;
-      letter-spacing: -0.005em;
-    }
-    .section-note { margin: 8px 0 0; color: var(--muted); max-width: 38rem; }
+    /* Featured systems: text left, facts right */
+    .sys{display:grid;gap:10px 56px;padding:34px 0;border-top:1px solid var(--line)}
+    .sys:first-of-type{margin-top:44px;border-top:2px solid var(--accent)}
+    .sys.second{margin-top:88px;border-top:2px solid var(--accent)}
+    .sys p a{margin-right:18px}
+    .parts-h{margin:56px 0 8px;font-size:1.25rem;letter-spacing:-.02em}
+    @media (min-width:900px){.sys{grid-template-columns:minmax(0,7fr) minmax(0,4fr)}}
+    .sys h3{margin:0 0 10px;font-size:clamp(1.5rem,1.2rem + 1.4vw,2.375rem);line-height:1.05}
+    .sys h3 a{background:none}
+    .sys p{margin:0 0 12px;max-width:36rem}
+    .sys p.q{color:var(--muted)}
+    .facts{margin:0;font-size:.9375rem}
+    .facts div{display:grid;grid-template-columns:5.5rem 1fr;gap:12px;padding:8px 0;border-bottom:1px solid var(--line)}
+    .facts dt{color:var(--muted)}.facts dd{margin:0}
+    .status{display:inline-flex;align-items:center;gap:8px;font-family:var(--mono);font-size:.8125rem}
+    .status::before{content:"";width:8px;height:8px;border-radius:50%;border:1.5px solid var(--muted)}
+    .status.is-active::before{background:var(--accent);border-color:var(--accent)}
+    .status.is-active,.rows .status.is-active{color:var(--accent)}
 
-    /* ---------- Tiles ---------- */
-    .proofs {
-      list-style: none;
-      margin: 24px 0 0;
-      padding: 0;
-      display: grid;
-      column-gap: 48px;
-    }
-    @media (min-width: 720px) {
-      .proofs { grid-template-columns: 1fr 1fr; }
-    }
-    .proof {
-      display: grid;
-      grid-template-columns: 3.25rem 1fr;
-      column-gap: 16px;
-      padding: 24px 0 36px;
-      border-top: 1px solid var(--rule);
-    }
-    .proof-num {
-      font-family: var(--serif);
-      font-size: 2.75rem;
-      line-height: 1;
-      font-variant-numeric: lining-nums;
-      color: var(--muted);
-    }
-    .proof-title {
-      margin: 4px 0 0;
-      font-family: var(--serif);
-      font-weight: 400;
-      font-size: 1.375rem;
-      line-height: 1.25;
-    }
-    .proof-title a { text-decoration: none; }
-    .proof-title a:hover { text-decoration: underline; text-decoration-color: var(--moss); text-decoration-thickness: 1px; }
-    .status { margin: 6px 0 0; font-size: 0.9375rem; color: var(--muted); }
-    .proof-headline { margin: 14px 0 0; font-family: var(--serif); font-size: 1.1875rem; line-height: 1.35; }
-    .proof-sentence { margin: 12px 0 0; }
-    .proof-graded { margin: 10px 0 0; font-size: 0.9375rem; color: var(--muted); }
-    .proof-links {
-      margin: 14px 0 0;
-      padding: 0;
-      list-style: none;
-      display: flex;
-      flex-wrap: wrap;
-      gap: 4px 24px;
-      font-size: 0.9375rem;
-    }
+    /* The scene: one system, drawn as you scroll */
+    .pin{min-height:100svh;display:flex;flex-direction:column;justify-content:center;padding:96px 0 40px}
+    .writeup .scene{margin-top:24px}
+    .writeup .scene h2{font-size:clamp(1.5rem,1.3rem + .9vw,2rem)}
+    .scene svg{display:block;width:100%;height:auto;overflow:visible;margin:40px 0 0}
+    .scene .box{fill:var(--bg);stroke:var(--ink);stroke-width:1.5}
+    .scene .box.end{fill:var(--panel)}
+    .scene .wire{fill:none;stroke:var(--accent);stroke-width:2}
+    .scene text{font-family:var(--sans);font-size:19px;fill:var(--ink);text-anchor:middle}
+    .scene text.s{font-family:var(--mono);font-size:12.5px;fill:var(--muted)}
+    .says{color:var(--accent);margin:28px 0 0;font-weight:500;font-size:clamp(1.25rem,1rem + 1.3vw,2.125rem);line-height:1.15;letter-spacing:-.025em;min-height:2.4em;max-width:44rem}
 
-    /* In progress and live: moss numeral and status, with a small solid mark. */
-    .is-active .proof-num,
-    .is-active.status,
-    .is-active .status { color: var(--moss); }
-    .is-active.status::before,
-    .is-active .status::before {
-      content: "";
-      display: inline-block;
-      width: 7px;
-      height: 7px;
-      margin-right: 8px;
-      background: var(--moss);
-      vertical-align: 0.08em;
-    }
+    /* Tables: the grading table is the look of the site */
+    .tw{overflow-x:auto;margin-top:36px}
+    table{width:100%;border-collapse:collapse;font-family:var(--mono);font-size:.8125rem;border:1px solid var(--line);min-width:32rem}
+    th,td{text-align:left;padding:10px 14px;border-bottom:1px solid var(--line);border-right:1px solid var(--line);vertical-align:top}
+    th{font-weight:500;color:var(--muted);background:var(--panel)}
+    td.num{font-variant-numeric:tabular-nums}
 
-    /* ---------- Diagrams ---------- */
-    .figure { margin: 32px 0 0; padding: 28px 20px; background: var(--panel); border: 1px solid var(--rule); border-radius: 14px; overflow-x: auto; }
-    .dia { display: block; width: 100%; min-width: 600px; max-width: 760px; height: auto; margin: 0 auto; font-family: var(--sans); }
-    .dia-box { fill: var(--paper); stroke: var(--rule); stroke-width: 1; }
-    .dia-box.b { fill: var(--wash); stroke: var(--moss); }
-    .dia-box.m { stroke-dasharray: 4 3; stroke: var(--muted); }
-    .dia-text { fill: var(--ink); font-size: 13.5px; }
-    .dia-sub { fill: var(--muted); font-size: 11.5px; }
-    .dia-label { fill: var(--muted); font-size: 11.5px; }
-    .dia-line { fill: none; stroke: var(--muted); stroke-width: 1.2; }
-    .dia-dash { stroke-dasharray: 4 3; }
-    .dia-head { fill: var(--muted); }
-    .figure-key { margin: 16px auto 0; max-width: 760px; font-size: 0.875rem; color: var(--muted); }
+    /* All builds: rows and a filter */
+    .chips{display:flex;flex-wrap:wrap;gap:8px;margin:36px 0 8px}
+    .chips button{border:1px solid var(--line);background:none;border-radius:8px;padding:8px 14px;min-height:40px;font-size:.9375rem}
+    .chips button[aria-pressed="true"]{background:var(--accent);color:var(--on-accent);border-color:var(--accent)}
+    .rows{list-style:none;margin:0;padding:0}
+    .rows li{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:4px 24px;align-items:baseline;padding:18px 0;border-bottom:1px solid var(--line)}
+    @media (min-width:860px){.rows li{grid-template-columns:minmax(0,1fr) minmax(0,1.5fr) 8.5rem}}
+    .rows b{font-weight:600;font-size:1.25rem;letter-spacing:-.02em}
+    .rows b a{background:none}
+    .rows p{margin:0;color:var(--muted);grid-column:1/-1}
+    @media (min-width:860px){.rows p{grid-column:auto}}
+    .rows .status{color:var(--muted);justify-self:end}
+    .rows li[hidden]{display:none}
 
-    /* ---------- Write-up pages ---------- */
-    .writeup-head { max-width: 44rem; }
-    .writeup-head h1 { font-size: clamp(2rem, 1.3rem + 3vw, 3.25rem); line-height: 1.08; }
-    .writeup-head .status { margin-top: 20px; }
-    .headline {
-      margin: 40px 0 0;
-      padding: 24px 0;
-      border-top: 1px solid var(--rule);
-      border-bottom: 1px solid var(--rule);
-      max-width: 44rem;
-    }
-    .headline-label { margin: 0; font-size: 0.8125rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); }
-    .headline-value { margin: 8px 0 0; font-family: var(--serif); font-size: clamp(1.25rem, 1.1rem + 0.8vw, 1.625rem); line-height: 1.35; }
-    .recording { margin: 32px 0 0; max-width: 44rem; }
-    .recording video { display: block; width: 100%; border: 1px solid var(--rule); border-radius: 10px; }
-    .prose { max-width: 44rem; margin-top: 56px; }
-    .prose h2 { margin: 56px 0 0; font-family: var(--serif); font-weight: 400; font-size: 1.5rem; line-height: 1.25; }
-    .prose h3 { margin: 36px 0 0; font-family: var(--serif); font-weight: 400; font-size: 1.1875rem; }
-    .prose p, .prose ul, .prose ol { margin: 16px 0 0; }
-    .prose ul, .prose ol { padding-left: 1.25rem; }
-    .prose li + li { margin-top: 6px; }
-    .prose code { font-family: var(--mono); font-size: 0.875em; background: var(--panel); border: 1px solid var(--rule); border-radius: 4px; padding: 1px 5px; }
-    .prose pre { margin: 16px 0 0; padding: 16px 18px; background: var(--panel); border: 1px solid var(--rule); border-radius: 10px; overflow-x: auto; line-height: 1.5; }
-    .prose pre code { background: none; border: 0; padding: 0; font-size: 0.8125rem; }
-    .tw { margin: 20px 0 0; overflow-x: auto; }
-    .prose table { border-collapse: collapse; width: 100%; min-width: 30rem; font-size: 0.9375rem; }
-    .prose th, .prose td { text-align: left; vertical-align: top; padding: 10px 14px 10px 0; border-bottom: 1px solid var(--rule); }
-    .prose th { font-weight: 600; font-size: 0.8125rem; letter-spacing: 0.04em; text-transform: uppercase; color: var(--muted); }
-    .repo-links { margin: 16px 0 0; padding: 0; list-style: none; display: flex; flex-wrap: wrap; gap: 8px 28px; }
-    .pager { margin: 96px 0 0; padding-top: 24px; border-top: 1px solid var(--rule); display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px 32px; }
-    .pager span { display: block; font-size: 0.8125rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); }
-    .pager a { font-family: var(--serif); font-size: 1.1875rem; text-decoration: none; }
-    .pager .next { text-align: right; margin-left: auto; }
+    .xp{list-style:none;margin:44px 0 0;padding:0;border-top:2px solid var(--accent)}
+    .xp>li{display:grid;gap:6px 56px;padding:26px 0;border-bottom:1px solid var(--line)}
+    @media (min-width:860px){.xp>li{grid-template-columns:12rem minmax(0,1fr)}}
+    .xp .when{font-family:var(--mono);font-size:.8125rem;color:var(--muted);padding-top:.35em}
+    .xp b{display:block;font-weight:500;font-size:clamp(1.25rem,1.1rem + .8vw,1.75rem);letter-spacing:-.03em;line-height:1.1}
+    .xp .where{display:block;margin-top:4px;color:var(--muted)}
+    .xp p{margin:12px 0 0;max-width:40rem}
+    .tags{list-style:none;margin:14px 0 0;padding:0;display:flex;flex-wrap:wrap;gap:6px}
+    .tags li{font-family:var(--mono);font-size:.75rem;border:1px solid var(--line);border-radius:4px;padding:3px 8px;color:var(--muted)}
+
+    .slot{font-family:var(--mono);font-size:.75rem;color:var(--muted);border:1px dashed var(--muted);border-radius:4px;padding:2px 8px}
+    .slot-box{display:grid;place-items:center;border:1px dashed var(--muted);border-radius:6px;background:repeating-linear-gradient(135deg,transparent 0 14px,color-mix(in srgb,var(--accent) 7%,transparent) 14px 15px)}
+    .slot-box span{font-family:var(--mono);font-size:.8125rem;color:var(--muted);background:var(--bg);padding:4px 10px;border-radius:4px}
+    .slot-box.tall{aspect-ratio:4/5;width:100%;max-width:18rem}
+    .slot-box.wide{aspect-ratio:16/9}
+    .about-grid{margin-top:44px;display:grid;gap:36px 56px;align-items:start}
+    @media (min-width:860px){.about-grid{grid-template-columns:18rem minmax(0,1fr)}}
+    .about{max-width:44rem}
+    .about p{margin:0 0 18px}
+    .about p:first-child{font-size:clamp(1.25rem,1.05rem + .9vw,1.75rem);line-height:1.3;letter-spacing:-.02em}
+
+    .contact{margin-top:clamp(88px,12vw,168px);padding:clamp(72px,10vw,140px) 0 72px;background:var(--accent);color:var(--on-accent)}
+    .contact ::selection{background:var(--on-accent);color:var(--accent)}
+    .contact a:hover,.contact .copy:hover{color:var(--on-accent);opacity:.75}
+    .contact a:focus-visible,.contact button:focus-visible{outline-color:var(--on-accent)}
+    .contact .mail{display:inline-block;margin-top:22px;font-weight:500;font-size:clamp(1.5rem,.6rem + 4.6vw,4.75rem);letter-spacing:-.045em;line-height:1.05;overflow-wrap:anywhere;background:linear-gradient(currentColor,currentColor) no-repeat left 100%/0 3px;padding-bottom:6px;transition:background-size .45s var(--ease)}
+    .contact .mail:hover{opacity:1;background-size:100% 3px}
+    .contact small{display:block;margin-top:14px;font-size:.9375rem;min-height:1.5em}
+    .foot{display:flex;flex-wrap:wrap;gap:8px 32px;margin-top:56px;padding-top:20px;border-top:1px solid color-mix(in srgb,var(--on-accent) 35%,transparent);font-size:.9375rem}
+
+    /* Write-up pages */
+    .writeup{padding:132px 0 96px}
+    .writeup-head{max-width:52rem}
+    .writeup-head h1{font-size:clamp(2.25rem,1.3rem + 3.6vw,4.25rem);line-height:1}
+    .writeup-head .status{margin-top:22px}
+    .headline{margin:40px 0 0;padding:22px 0;border-top:1px solid var(--ink);border-bottom:1px solid var(--line);max-width:52rem}
+    .headline-label{margin:0;font-family:var(--mono);font-size:.8125rem;color:var(--muted)}
+    .headline-value{margin:8px 0 0;font-size:clamp(1.25rem,1.1rem + .8vw,1.75rem);line-height:1.3;letter-spacing:-.02em}
+    .recording{margin:32px 0 0;max-width:52rem}
+    .recording video{display:block;width:100%;border:1px solid var(--line);border-radius:6px}
+    .figure{margin:40px 0 0;padding:28px 20px;background:var(--panel);border:1px solid var(--line);border-radius:6px;overflow-x:auto}
+    .dia{display:block;width:100%;min-width:600px;max-width:780px;height:auto;margin:0 auto;font-family:var(--sans)}
+    .dia-box{fill:var(--bg);stroke:var(--line);stroke-width:1.2}
+    .dia-box.b{stroke:var(--ink)}
+    .dia-box.m{stroke-dasharray:4 3;stroke:var(--muted)}
+    .dia-text{fill:var(--ink);font-size:13.5px}
+    .dia-sub,.dia-label{fill:var(--muted);font-family:var(--mono);font-size:10.5px}
+    .dia-line{fill:none;stroke:var(--accent);stroke-width:1.5}
+    .dia-dash{stroke-dasharray:4 3}
+    .dia-head{fill:var(--accent)}
+    .dia-route{fill:none;stroke:none}.dia-pulse{display:none}
+    .prose{max-width:44rem;margin-top:56px}
+    .prose h2{margin:56px 0 0;font-size:clamp(1.5rem,1.3rem + .9vw,2rem);line-height:1.1;max-width:none}
+    .prose h3{margin:36px 0 0;font-size:1.25rem;letter-spacing:-.02em}
+    .prose p,.prose ul,.prose ol{margin:16px 0 0}
+    .prose ul,.prose ol{padding-left:1.25rem}
+    .prose li+li{margin-top:6px}
+    .prose code{font-family:var(--mono);font-size:.85em;background:var(--panel);border:1px solid var(--line);border-radius:4px;padding:1px 5px}
+    .prose pre{margin:16px 0 0;padding:16px 18px;background:var(--panel);border:1px solid var(--line);border-radius:6px;overflow-x:auto;line-height:1.5}
+    .prose pre code{background:none;border:0;padding:0;font-size:.8125rem}
+    .prose .tw{margin-top:20px}
+    .repo-links{margin:16px 0 0;padding:0;list-style:none;display:flex;flex-wrap:wrap;gap:8px 28px}
+    .pager{margin:96px 0 0;padding-top:24px;border-top:1px solid var(--line);display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px 32px}
+    .pager a{background:none;font-size:1.25rem;font-weight:500;letter-spacing:-.02em}
+    .pager span{display:block;font-family:var(--mono);font-size:.8125rem;font-weight:400;letter-spacing:0;color:var(--muted)}
+    .pager .next{text-align:right;margin-left:auto}
+
+    /* Cursor: the normal pointer stays. A small coral dot trails it and grows into a soft ring over links.
+       Fine pointers only, added by the script. Coral is fixed, whatever the accent colour is. */
+    :root{--coral:#FF6F61}
+    .grid{position:fixed;inset:0;width:100%;height:100%;z-index:-1;pointer-events:none}
+    .cursor{position:fixed;left:0;top:0;width:12px;height:12px;margin:-6px 0 0 -6px;border-radius:50%;background:var(--coral);pointer-events:none;z-index:40;opacity:0;transition:background-color .2s var(--ease)}
+    .cursor.on-link{background:color-mix(in srgb,var(--coral) 24%,transparent);box-shadow:inset 0 0 0 .5px var(--coral)}
+    @media (prefers-reduced-motion:reduce){*{transition:none!important}.cursor{display:none}}
   </style>
 </head>
 <body>
-  <main>
-    <header class="masthead">
-      <h1>Max Pickard</h1>
-      <p class="role">Marketing operations and measurement</p>
-      <p class="lead">
-        This is a public rebuild of work I do on live accounts for multiple B2B SaaS
-        clients. The company and data here are fictional so that all of it can be open.
-      </p>
-    </header>
+  <div class="progress" aria-hidden="true"></div>
+  <nav class="nav" aria-label="Site">
+    <a class="nav-name" href="#top">Max Pickard</a>
+    <div><a href="#work">Work</a><a href="#experience">Experience</a><a href="#skills">Skills</a><a href="#contact">Contact</a><button type="button" data-theme-toggle>Dark</button></div>
+  </nav>
+  <main id="top">
+    <header class="hero"><div class="wrap">
+      <div class="hero-grid">
+        <h1 data-rise>Max Pickard<i aria-hidden="true">.</i></h1>
+        <dl class="spec">
+          <div><dt>Role</dt><dd>Marketing Operations Specialist</dd></div>
+          <div><dt>Company</dt><dd>Upgrow</dd></div>
+          <div><dt>Based</dt><dd>Chicago</dd></div>
+          <div><dt>Trained in</dt><dd>Applied mathematics</dd></div>
+          <div><dt>Builds with</dt><dd>Claude Code, SQL, Salesforce, Tag Manager</dd></div>
+        </dl>
+      </div>
+      <div class="under">
+        <p>Tracking, CRM and AI systems for marketing teams.</p>
+        <nav aria-label="Links"><a href="#work">Work</a><a href="#experience">Experience</a><button type="button" class="copy" data-copy="maxapickard@gmail.com">Copy email</button><a href="https://www.linkedin.com/in/maxwellapickard/">LinkedIn</a><a href="https://github.com/mpickles/revenue-stack-demo">GitHub</a></nav>
+      </div>
+    </div></header>
 
-    <h2 class="section-head">Proofs</h2>
-    <p class="section-note">Six builds on one made-up company. Each one is graded against an answer key, and each opens a write-up.</p>
-    <ol class="proofs">
-      <li class="proof is-active">
-        <span class="proof-num" aria-hidden="true">1</span>
+    <section class="sec" id="work"><div class="wrap">
+      <h2>Projects</h2>
+      <article class="sys">
         <div>
-          <h3 class="proof-title"><a href="builds/tracked-site.html">Tracked site</a></h3>
-          <p class="status">In progress</p>
-          <p class="proof-sentence">A demo site that stores a click ID only after consent and carries it through the form into the CRM.</p>
-          <p class="proof-graded">Graded on: With consent rejected: no cookie set, no click ID stored. With consent accepted: the click ID reaches the CRM.</p>
-          <ul class="proof-links">
-            <li><a href="builds/tracked-site.html">Read the write-up</a></li>
-          </ul>
+          <h3>A full revenue stack for a made-up B2B software company</h3>
+          <p>One lead followed the whole way: ad click, consent, form, CRM, routing, conversions sent back to the ad platform, and the report at the end. Built in six parts on a made-up company, Roadwren, so all of it can be public.</p>
+          <p><a href="https://roadwren-demo.vercel.app">Open the live demo</a> <a href="https://github.com/mpickles/revenue-stack-demo">Code on GitHub</a></p>
         </div>
-      </li>
-      <li class="proof is-active">
-        <span class="proof-num" aria-hidden="true">2</span>
+        <dl class="facts">
+          <div><dt>Status</dt><dd><span class="status is-active">In progress</span></dd></div>
+          <div><dt>Result</dt><dd><span class="slot">To come once graded</span></dd></div>
+          <div><dt>Built with</dt><dd>Next.js, Tag Manager, GA4, HubSpot, Salesforce Flow, Python, SQL, dbt</dd></div>
+          <div><dt>Watch</dt><dd><span class="slot">Walkthrough to come</span></dd></div>
+        </dl>
+      </article>
+      <figure class="frame" data-grow>
+        <div class="frame-bar" aria-hidden="true"><i></i><i></i><i></i><span>roadwren-demo.vercel.app/demo</span></div>
+        <img src="img/tracked-site.webp" width="1440" height="900" loading="lazy" alt="The Roadwren demo form with the cookie banner open, offering Reject all and Accept all, before any click ID is stored.">
+      </figure>
+      <h3 class="parts-h">6 parts, each with its own write-up</h3>
+      <ul class="rows" data-stagger>
+        <li class="is-active"><b><a href="builds/tracked-site.html">Tracked site</a></b><p>A demo site that stores a click ID only after consent and carries it through the form into the CRM.</p><span class="status is-active">In progress</span></li>
+        <li class="is-active"><b><a href="builds/salesforce-routing.html">Salesforce routing and conversions</a></b><p>Leads from the form get a stage, a campaign and an owner in Salesforce. Conversions go back to Google Ads.</p><span class="status is-active">In progress</span></li>
+        <li class="is-planned"><b><a href="builds/campaign-qa-agent.html">Campaign QA agent</a></b><p>A Python tool that checks landing pages for tags, consent, the conversion event and UTM values before launch.</p><span class="status is-planned">Planned</span></li>
+        <li class="is-planned"><b><a href="builds/lead-qualifier.html">Lead qualifier agent</a></b><p>Claude scores each new lead against a written rubric, routes the strong ones and asks a person when unsure.</p><span class="status is-planned">Planned</span></li>
+        <li class="is-planned"><b><a href="builds/funnel-and-reporting.html">Funnel in SQL and a reporting agent</a></b><p>The funnel and ad credit in SQL, and a weekly summary where code checks every number before it is published.</p><span class="status is-planned">Planned</span></li>
+        <li class="is-planned"><b><a href="builds/crm-cleanup.html">CRM cleanup</a></b><p>Duplicate accounts and contacts in Salesforce found and merged by script, with every merge graded.</p><span class="status is-planned">Planned</span></li>
+      </ul>
+      <article class="sys second">
         <div>
-          <h3 class="proof-title"><a href="builds/salesforce-routing.html">Salesforce routing and conversions</a></h3>
-          <p class="status">In progress</p>
-          <p class="proof-sentence">Leads from the form get a stage, a campaign and an owner in Salesforce. Conversions go back to Google Ads.</p>
-          <p class="proof-graded">Graded on: 37 test leads with an answer key: the right stage, campaign and owner for each, and every junk lead blocked.</p>
-          <ul class="proof-links">
-            <li><a href="builds/salesforce-routing.html">Read the write-up</a></li>
-          </ul>
+          <h3>Upgrow marketing operations platform</h3>
+          <p>The internal platform I built for the paid media team at work. One warehouse pulls the ad, tag, task, meeting and CRM data. Workflows on top handle monthly reports, budget pacing, tracking audits and morning alerts. It never changes an account on its own.</p>
         </div>
-      </li>
-      <li class="proof is-planned">
-        <span class="proof-num" aria-hidden="true">3</span>
-        <div>
-          <h3 class="proof-title"><a href="builds/campaign-qa-agent.html">Campaign QA agent</a></h3>
-          <p class="status">Planned</p>
-          <p class="proof-sentence">A Python tool that checks landing pages for tags, consent, the conversion event and UTM values before launch.</p>
-          <p class="proof-graded">Graded on: 14 pages with a planted bug and 8 clean pages: bugs caught, and false alarms raised.</p>
-          <ul class="proof-links">
-            <li><a href="builds/campaign-qa-agent.html">Read the write-up</a></li>
-          </ul>
-        </div>
-      </li>
-      <li class="proof is-planned">
-        <span class="proof-num" aria-hidden="true">4</span>
-        <div>
-          <h3 class="proof-title"><a href="builds/lead-qualifier.html">Lead qualifier agent</a></h3>
-          <p class="status">Planned</p>
-          <p class="proof-sentence">Claude scores each new lead against a written rubric, routes the strong ones and asks a person when unsure.</p>
-          <p class="proof-graded">Graded on: Agreement with 36 hand labels, and whether a person&#x27;s edit survives a second run.</p>
-          <ul class="proof-links">
-            <li><a href="builds/lead-qualifier.html">Read the write-up</a></li>
-          </ul>
-        </div>
-      </li>
-      <li class="proof is-planned">
-        <span class="proof-num" aria-hidden="true">5</span>
-        <div>
-          <h3 class="proof-title"><a href="builds/funnel-and-reporting.html">Funnel in SQL and a reporting agent</a></h3>
-          <p class="status">Planned</p>
-          <p class="proof-sentence">The funnel and ad credit in SQL, and a weekly summary where code checks every number before it is published.</p>
-          <p class="proof-graded">Graded on: Credit adds up to exactly 100 percent, and three planted wrong summaries are rejected.</p>
-          <ul class="proof-links">
-            <li><a href="builds/funnel-and-reporting.html">Read the write-up</a></li>
-          </ul>
-        </div>
-      </li>
-      <li class="proof is-planned">
-        <span class="proof-num" aria-hidden="true">6</span>
-        <div>
-          <h3 class="proof-title"><a href="builds/crm-cleanup.html">CRM cleanup</a></h3>
-          <p class="status">Planned</p>
-          <p class="proof-sentence">Duplicate accounts and contacts in Salesforce found and merged by script, with every merge graded.</p>
-          <p class="proof-graded">Graded on: Merges right and wrong against an answer key, with decoys that must be left alone.</p>
-          <ul class="proof-links">
-            <li><a href="builds/crm-cleanup.html">Read the write-up</a></li>
-          </ul>
-        </div>
-      </li>
-    </ol>
+        <dl class="facts">
+          <div><dt>Status</dt><dd>Built</dd></div>
+          <div><dt>Write-up</dt><dd><span class="slot">Write-up to come</span></dd></div>
+          <div><dt>Built with</dt><dd>Claude Code, a data warehouse, a Claude connector</dd></div>
+        </dl>
+      </article>
+    </div></section>
 
-    <h2 class="section-head">How they connect</h2>
-    <p class="section-note">One lead, from the ad click to the report. The shaded boxes are the six builds.</p>
-    <div class="figure">
-      <svg class="dia" viewBox="0 0 756 542" role="img" aria-labelledby="system-t system-d" xmlns="http://www.w3.org/2000/svg">
-      <title id="system-t">How the six builds connect</title>
-      <desc id="system-d">A visitor clicks an ad and lands on the tracked site. The campaign QA agent checks the site before launch. A form submit goes through the lead API to HubSpot and Salesforce. In Salesforce a Flow sets the stage, campaign and owner. The lead qualifier scores the lead and proposes an owner. The CRM cleanup merges duplicates. Qualified leads go back to Google Ads as a conversion upload file. Salesforce data feeds the SQL funnel, and a reporting agent writes a summary whose numbers are checked by code.</desc>
-      <defs><marker id="system-a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" class="dia-head"/></marker></defs>
-      <path d="M378 80 L378 126" class="dia-line" marker-end="url(#system-a)"/>
-      <text x="386" y="103" class="dia-label" text-anchor="start">click ID and UTMs</text>
-      <path d="M214 159 L278 159" class="dia-line" marker-end="url(#system-a)"/>
-      <text x="246" y="152" class="dia-label" text-anchor="middle">checks</text>
-      <path d="M478 159 L542 159" class="dia-line" marker-end="url(#system-a)"/>
-      <text x="510" y="152" class="dia-label" text-anchor="middle">one event</text>
-      <path d="M378 192 L378 238" class="dia-line" marker-end="url(#system-a)"/>
-      <text x="386" y="215" class="dia-label" text-anchor="start">form submit</text>
-      <path d="M478 271 L542 271" class="dia-line" marker-end="url(#system-a)"/>
-      <path d="M378 304 L378 350" class="dia-line" marker-end="url(#system-a)"/>
-      <text x="386" y="327" class="dia-label" text-anchor="start">lead</text>
-      <path d="M214 383 L278 383" class="dia-line" marker-end="url(#system-a)"/>
-      <text x="246" y="376" class="dia-label" text-anchor="middle">merges</text>
-      <path d="M478 383 L542 383" class="dia-line" marker-end="url(#system-a)" marker-start="url(#system-a)"/>
-      <text x="510" y="376" class="dia-label" text-anchor="middle">score</text>
-      <path d="M318 416 L318 439 L114 439 L114 462" class="dia-line" marker-end="url(#system-a)"/>
-      <text x="122" y="455" class="dia-label" text-anchor="start">qualified leads</text>
-      <path d="M408 416 L408 462" class="dia-line" marker-end="url(#system-a)"/>
-      <text x="416" y="439" class="dia-label" text-anchor="start">leads</text>
-      <path d="M478 495 L542 495" class="dia-line" marker-end="url(#system-a)"/>
-      <text x="510" y="488" class="dia-label" text-anchor="middle">figures</text>
-      <rect x="278" y="14" width="200" height="66" rx="6" class="dia-box "/>
-      <text x="378.0" y="51.5" class="dia-text" text-anchor="middle">Visitor clicks an ad</text>
-      <rect x="14" y="126" width="200" height="66" rx="6" class="dia-box b"/>
-      <text x="114.0" y="156" class="dia-text" text-anchor="middle">Campaign QA agent</text>
-      <text x="114.0" y="173" class="dia-sub" text-anchor="middle">Proof 3</text>
-      <rect x="278" y="126" width="200" height="66" rx="6" class="dia-box b"/>
-      <text x="378.0" y="156" class="dia-text" text-anchor="middle">Tracked site</text>
-      <text x="378.0" y="173" class="dia-sub" text-anchor="middle">Proof 1</text>
-      <rect x="542" y="126" width="200" height="66" rx="6" class="dia-box "/>
-      <text x="642.0" y="163.5" class="dia-text" text-anchor="middle">Tag Manager and GA4</text>
-      <rect x="278" y="238" width="200" height="66" rx="6" class="dia-box "/>
-      <text x="378.0" y="275.5" class="dia-text" text-anchor="middle">Lead API</text>
-      <rect x="542" y="238" width="200" height="66" rx="6" class="dia-box "/>
-      <text x="642.0" y="275.5" class="dia-text" text-anchor="middle">HubSpot contact</text>
-      <rect x="14" y="350" width="200" height="66" rx="6" class="dia-box b"/>
-      <text x="114.0" y="380" class="dia-text" text-anchor="middle">CRM cleanup</text>
-      <text x="114.0" y="397" class="dia-sub" text-anchor="middle">Proof 6</text>
-      <rect x="278" y="350" width="200" height="66" rx="6" class="dia-box b"/>
-      <text x="378.0" y="371.5" class="dia-text" text-anchor="middle">Salesforce: stage,</text>
-      <text x="378.0" y="388.5" class="dia-text" text-anchor="middle">campaign and owner</text>
-      <text x="378.0" y="405.5" class="dia-sub" text-anchor="middle">Proof 2</text>
-      <rect x="542" y="350" width="200" height="66" rx="6" class="dia-box b"/>
-      <text x="642.0" y="380" class="dia-text" text-anchor="middle">Lead qualifier agent</text>
-      <text x="642.0" y="397" class="dia-sub" text-anchor="middle">Proof 4</text>
-      <rect x="14" y="462" width="200" height="66" rx="6" class="dia-box b"/>
-      <text x="114.0" y="483.5" class="dia-text" text-anchor="middle">Conversion upload</text>
-      <text x="114.0" y="500.5" class="dia-text" text-anchor="middle">file for Google Ads</text>
-      <text x="114.0" y="517.5" class="dia-sub" text-anchor="middle">Proof 2</text>
-      <rect x="278" y="462" width="200" height="66" rx="6" class="dia-box b"/>
-      <text x="378.0" y="492" class="dia-text" text-anchor="middle">Funnel and credit in SQL</text>
-      <text x="378.0" y="509" class="dia-sub" text-anchor="middle">Proof 5</text>
-      <rect x="542" y="462" width="200" height="66" rx="6" class="dia-box b"/>
-      <text x="642.0" y="483.5" class="dia-text" text-anchor="middle">Reporting agent with</text>
-      <text x="642.0" y="500.5" class="dia-text" text-anchor="middle">a number check</text>
-      <text x="642.0" y="517.5" class="dia-sub" text-anchor="middle">Proof 5</text>
-      </svg>
-    </div>
+    <section class="sec" id="experience"><div class="wrap">
+      <h2>Experience</h2>
+      <ol class="xp" data-stagger>
+        <li>
+          <span class="when">Jul 2026 to now</span>
+          <div><b>Marketing Operations Specialist</b><span class="where">Upgrow, a marketing agency for B2B software companies</span>
+            <p>Conversion tracking, CRM connections and AI automation across client accounts. I also built the team's internal operations platform.</p>
+            <ul class="tags"><li>Google Tag Manager</li><li>GA4</li><li>Salesforce</li><li>HubSpot</li><li>Offline conversions</li><li>Claude Code</li></ul></div>
+        </li>
+        <li>
+          <span class="when">May 2024 to Jul 2026</span>
+          <div><b>SEO and PPC Specialist</b><span class="where">Upgrow</span>
+            <p>Hands-on paid search and SEO for B2B software clients: building campaigns, keyword research, tracking and reporting.</p>
+            <ul class="tags"><li>Google Ads</li><li>Microsoft Ads</li><li>LinkedIn Ads</li><li>SEO</li><li>Looker Studio</li></ul></div>
+        </li>
+        <li>
+          <span class="when">Before May 2024</span>
+          <div><b>SEO Intern</b><span class="where">Upgrow</span>
+            <p>Started with no marketing experience. Learned SEO writing and conversion tracking on the job, then asked to learn paid search.</p>
+            <ul class="tags"><li>SEO</li><li>Conversion tracking</li><li>Dashboards</li></ul></div>
+        </li>
+        <li>
+          <span class="when">Degree</span>
+          <div><b>B.S. Applied Mathematics, minor in Economics</b><span class="where">UC San Diego</span></div>
+        </li>
+      </ol>
+    </div></section>
 
-    <h2 class="section-head">About the data</h2>
-    <p class="section-note">The systems are real and running. Roadwren is a made-up company, and every person, lead and record is made up. All of the code, the answer keys and the decisions are in <a href="https://github.com/mpickles/revenue-stack-demo">the repo</a>.</p>
+    <section class="sec" id="skills"><div class="wrap">
+      <h2>Skills</h2>
+      <p class="sub">Split honestly: what I use at work, and what I am building in the projects above.</p>
+      <div class="tw"><table data-wipe>
+        <tr><th>Area</th><th>Use at work</th><th>Building in the projects</th></tr>
+        <tr><td>Tracking and analytics</td><td>Google Tag Manager, GA4, consent mode, conversion tracking, Looker Studio</td><td>Browser tests for consent</td></tr>
+        <tr><td>CRM and data</td><td>HubSpot and Salesforce connections, offline conversion imports, Zapier</td><td>Salesforce Flow, SQL, dbt</td></tr>
+        <tr><td>Paid media and SEO</td><td>Google Ads, Microsoft Ads, LinkedIn Ads, SEO</td><td></td></tr>
+        <tr><td>AI and automation</td><td>Claude Code, internal tools where code checks the output</td><td>Python, agents graded against answer keys, n8n, Clay</td></tr>
+      </table></div>
+    </div></section>
 
+    <section class="sec" id="about"><div class="wrap">
+      <h2>About</h2>
+      <div class="about-grid">
+      <div class="slot-box tall" role="img" aria-label="Photo of Max to come"><span>Photo to come</span></div>
+      <div class="about">
+        <p>I learn whatever the job needs next. At Upgrow that has been SEO, then paid search, then tracking and CRMs, then SQL, and now building tools with AI.</p>
+        <p>I studied applied mathematics at UC San Diego, which is why I grade my own builds against answer keys. Before any of this I worked on an alpaca ranch and cooked for a sorority house.</p>
+      </div>
+      </div>
+    </div></section>
+
+    <section class="contact" id="contact"><div class="wrap">
+      <h2>Say hello</h2>
+      <a class="mail" href="mailto:maxapickard@gmail.com">maxapickard@gmail.com</a>
+      <small><button type="button" class="copy" data-copy="maxapickard@gmail.com">Copy the address</button> <span id="copied" aria-live="polite"></span></small>
+      <div class="foot"><a href="https://www.linkedin.com/in/maxwellapickard/">LinkedIn</a><span>Chicago</span></div>
+    </div></section>
   </main>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/ScrollTrigger.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/SplitText.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/Flip.min.js"></script>
+  <script>
+    // Behaviour and motion for every page. Pages read fine with this script off, and
+    // with "reduce motion" on nothing is hidden or animated.
+    (function () {
+      var root = document.documentElement;
+      var still = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      var $$ = function (s, el) { return Array.prototype.slice.call((el || document).querySelectorAll(s)); };
+
+      // Light and dark. Follows the device until the visitor picks one.
+      var toggle = document.querySelector("[data-theme-toggle]");
+      function isDark() { return root.dataset.theme ? root.dataset.theme === "dark" : window.matchMedia("(prefers-color-scheme: dark)").matches; }
+      function paint() { toggle.textContent = isDark() ? "Light" : "Dark"; }
+      paint();
+      toggle.addEventListener("click", function () {
+        root.dataset.theme = isDark() ? "light" : "dark";
+        try { localStorage.setItem("theme", root.dataset.theme); } catch (e) {}
+        paint();
+      });
+
+      // A thin bar at the top shows how far down the page you are.
+      var bar = document.querySelector(".progress");
+      if (bar) window.addEventListener("scroll", function () {
+        var max = root.scrollHeight - window.innerHeight;
+        bar.style.transform = "scaleX(" + (max > 0 ? Math.min(1, window.scrollY / max) : 0) + ")";
+      }, { passive: true });
+
+      // Copy the email address, with a confirmation.
+      $$("[data-copy]").forEach(function (button) {
+        var label = button.textContent, note = document.getElementById("copied");
+        button.addEventListener("click", function () {
+          var done = function () { button.textContent = "Copied"; if (note) note.textContent = "Copied to your clipboard."; setTimeout(function () { button.textContent = label; }, 1600); };
+          try { navigator.clipboard.writeText(button.dataset.copy).then(done, function () {}); } catch (e) {}
+        });
+      });
+
+      // The routing scene: the sentence under the diagram.
+      var steps = $$(".scene [data-step]"), says = document.querySelector(".says"), shown = -1;
+      function say(i) { if (says && i !== shown) { shown = i; says.textContent = steps[i].dataset.step; } }
+      if (steps.length) say(steps.length - 1);
+
+      var motion = window.gsap && window.ScrollTrigger && !still;
+      if (motion) gsap.registerPlugin.apply(gsap, [ScrollTrigger].concat(window.SplitText ? [SplitText] : [], window.Flip ? [Flip] : []));
+
+      // The build filter. Rows slide to their new places.
+      var chips = $$(".chips button"), rows = $$(".rows li");
+      chips.forEach(function (chip) {
+        chip.addEventListener("click", function () {
+          chips.forEach(function (c) { c.setAttribute("aria-pressed", String(c === chip)); });
+          var state = motion && window.Flip ? Flip.getState(rows) : null;
+          rows.forEach(function (row) { row.hidden = !(chip.dataset.f === "all" || row.classList.contains(chip.dataset.f)); });
+          if (state) Flip.from(state, { duration: 0.5, ease: "power2.inOut", absolute: true,
+            onEnter: function (els) { return gsap.fromTo(els, { opacity: 0 }, { opacity: 1, duration: 0.3 }); },
+            onLeave: function (els) { return gsap.to(els, { opacity: 0, duration: 0.2 }); } });
+          if (motion) ScrollTrigger.refresh();
+        });
+      });
+
+      if (!motion) return;
+
+      function start() {
+        // The page title rises line by line, once.
+        var title = document.querySelector("[data-rise]");
+        if (title) {
+          if (window.SplitText) {
+            var split = SplitText.create(title, { type: "lines", mask: "lines", aria: "auto" });
+            gsap.from(split.lines, { yPercent: 105, duration: 0.95, stagger: 0.08, ease: "expo.out", delay: 0.1 });
+          } else {
+            gsap.from(title, { opacity: 0, y: 24, duration: 0.9, ease: "expo.out", delay: 0.1 });
+          }
+          gsap.from(".under, .spec, .writeup-head .status, .headline", { opacity: 0, duration: 0.7, ease: "power2.out", delay: 0.65 });
+        }
+
+        // The name eases back as you scroll away from it.
+        if (document.querySelector(".hero h1")) gsap.to(".hero h1", { yPercent: -12, opacity: 0.25, ease: "none", scrollTrigger: { trigger: ".hero", start: "top top", end: "bottom 15%", scrub: true } });
+
+        // The screenshot grows to full width as it comes up the screen.
+        $$("[data-grow]").forEach(function (frame) {
+          gsap.fromTo(frame, { scale: 0.86, borderRadius: 22 }, { scale: 1, borderRadius: 10, ease: "none", scrollTrigger: { trigger: frame, start: "top 95%", end: "top 30%", scrub: true } });
+        });
+
+        // Section headings rise out of a mask as they arrive.
+        $$("main h2").forEach(function (h) {
+          if (h.closest(".prose")) return;
+          var text = h.textContent; h.setAttribute("aria-label", text); h.textContent = "";
+          var mask = document.createElement("span"); mask.className = "mask"; mask.setAttribute("aria-hidden", "true");
+          var inner = document.createElement("span"); inner.textContent = text; mask.appendChild(inner); h.appendChild(mask);
+          gsap.from(inner, { yPercent: 112, duration: 0.9, ease: "expo.out", scrollTrigger: { trigger: h, start: "top 88%" } });
+        });
+
+        // Lists and cards arrive one after another.
+        [".sys", ".proof li", "[data-stagger] > *"].forEach(function (group) {
+          if (!document.querySelector(group)) return;
+          ScrollTrigger.batch(group, { start: "top 90%", once: true, onEnter: function (batch) {
+            gsap.from(batch, { opacity: 0, y: 28, duration: 0.7, stagger: 0.07, ease: "power3.out", clearProps: "opacity,transform" });
+          } });
+        });
+
+        // Table rows wipe in from the left.
+        $$("table[data-wipe]").forEach(function (table) {
+          gsap.from(table.querySelectorAll("tr"), { clipPath: "inset(0 100% 0 0)", duration: 0.6, stagger: 0.08, ease: "power2.out", scrollTrigger: { trigger: table, start: "top 82%" } });
+        });
+
+        // The routing scene: the page holds while the diagram draws itself.
+        if (steps.length) {
+          var draw = gsap.timeline({ scrollTrigger: { trigger: ".scene .pin", start: "top top", end: "+=2000", pin: true, scrub: 0.4,
+            onUpdate: function (self) { say(Math.min(steps.length - 1, Math.floor(self.progress * steps.length))); } } });
+          steps.forEach(function (step) {
+            var wire = step.querySelector(".wire");
+            if (wire) { var len = wire.getTotalLength(); gsap.set(wire, { strokeDasharray: len, strokeDashoffset: len }); draw.to(wire, { strokeDashoffset: 0, duration: 0.5, ease: "none" }); }
+            draw.from(step.querySelectorAll("rect, text"), { opacity: 0, duration: 0.5, ease: "none" }, wire ? ">-0.1" : 0);
+          });
+          say(0);
+        }
+
+        // Write-up diagrams draw their arrows once, when they come into view.
+        $$("svg.dia").forEach(function (svg) {
+          var lines = $$(".dia-line:not(.dia-dash)", svg);
+          lines.forEach(function (line) { var len = line.getTotalLength(); gsap.set(line, { strokeDasharray: len, strokeDashoffset: len }); });
+          var tl = gsap.timeline({ scrollTrigger: { trigger: svg, start: "top 78%" } });
+          tl.from($$(".dia-box, .dia-text, .dia-sub", svg), { opacity: 0, duration: 0.5, stagger: 0.015 })
+            .to(lines, { strokeDashoffset: 0, duration: 0.5, stagger: 0.09, ease: "power2.out" }, 0.3)
+            .from($$(".dia-label, .dia-dash", svg), { opacity: 0, duration: 0.4 }, ">-0.2");
+        });
+
+        // The big email draws in at the end.
+        if (document.querySelector(".mail")) gsap.from(".mail", { yPercent: 60, opacity: 0, duration: 0.9, ease: "expo.out", scrollTrigger: { trigger: ".mail", start: "top 94%" } });
+
+        // Cursor: a coral dot trails the normal pointer and grows over anything clickable.
+        if (window.matchMedia("(pointer: fine)").matches) {
+          var dot = document.createElement("div"); dot.className = "cursor"; dot.setAttribute("aria-hidden", "true"); document.body.appendChild(dot);
+          var x = gsap.quickTo(dot, "x", { duration: 0.45, ease: "power3" }), y = gsap.quickTo(dot, "y", { duration: 0.45, ease: "power3" });
+          window.addEventListener("pointermove", function (e) { if (e.pointerType === "touch") return; gsap.to(dot, { opacity: 1, duration: 0.2, overwrite: "auto" }); x(e.clientX); y(e.clientY); });
+          document.addEventListener("pointerleave", function () { gsap.to(dot, { opacity: 0, duration: 0.2 }); });
+          document.addEventListener("pointerover", function (e) {
+            var hot = !!e.target.closest("a, button");
+            dot.classList.toggle("on-link", hot);
+            gsap.to(dot, { scale: hot ? 3.4 : 1, duration: 0.3, ease: "power3.out", overwrite: "auto" });
+          });
+          window.addEventListener("pointerdown", function () { gsap.to(dot, { scale: 0.7, duration: 0.12 }); });
+          window.addEventListener("pointerup", function (e) { gsap.to(dot, { scale: e.target.closest && e.target.closest("a, button") ? 3.4 : 1, duration: 0.25 }); });
+        }
+        ScrollTrigger.refresh();
+      }
+      // Background: a faint dot grid. Dots near the pointer swell and take the accent colour,
+      // and one ripple crosses the page on load, done in under five seconds. Nothing else moves on its own. With "reduce motion" the grid is drawn once and stays still.
+      (function () {
+        var c = document.createElement("canvas"); c.className = "grid"; c.setAttribute("aria-hidden", "true");
+        document.body.insertBefore(c, document.body.firstChild);
+        var g = c.getContext("2d"); if (!g) return;
+        var gap = 28, w = 0, h = 0, px = -999, py = -999, tx = -999, ty = -999, base = "", accent = "", read = 0;
+        var blocks = $$("h1, h2, h3, p, dl, table, figure, .rows, .xp, .nav, .under, .slot-box, .prose ul, .prose ol, .prose pre, .pager");
+        var born = performance.now();
+        function colours() { var s = getComputedStyle(root); base = s.getPropertyValue("--muted").trim(); accent = s.getPropertyValue("--accent").trim(); }
+        function size() {
+          var d = Math.min(window.devicePixelRatio || 1, 2); w = window.innerWidth; h = window.innerHeight;
+          c.width = w * d; c.height = h * d; g.setTransform(d, 0, 0, d, 0, 0);
+        }
+        function draw(now) {
+          if (now - read > 500) { colours(); read = now; }
+          px += (tx - px) * 0.12; py += (ty - py) * 0.12;
+          var reach = Math.hypot(w, h), ring = still ? -999 : (now - born) / 1000 * 420 - 80;
+          g.clearRect(0, 0, w, h);
+          // No dots behind words: skip any dot that falls inside a block of text on screen.
+          var boxes = [];
+          for (var i = 0; i < blocks.length; i++) {
+            var r = blocks[i].getBoundingClientRect();
+            if (r.bottom > 0 && r.top < h && r.width) boxes.push(r);
+          }
+          for (var x = gap / 2; x < w; x += gap) dots: for (var y = gap / 2; y < h; y += gap) {
+            for (var j = 0; j < boxes.length; j++) { var b = boxes[j]; if (x > b.left - 10 && x < b.right + 10 && y > b.top - 8 && y < b.bottom + 8) continue dots; }
+            var near = Math.max(0, 1 - Math.hypot(x - px, y - py) / 150);
+            var wave = Math.max(0, 1 - Math.abs(Math.hypot(x, y) - ring) / 70) * 0.55;
+            var a = Math.max(near, wave);
+            if (a < 0.02) { g.globalAlpha = 0.2; g.fillStyle = base; g.fillRect(x - 0.5, y - 0.5, 1, 1); continue; }
+            g.globalAlpha = 0.2 + a * 0.7; g.fillStyle = accent;
+            g.beginPath(); g.arc(x, y, 0.6 + a * 1.5, 0, 6.2832); g.fill();
+          }
+          if (!still && !document.hidden) requestAnimationFrame(draw);
+        }
+        size(); requestAnimationFrame(draw);
+        window.addEventListener("resize", function () { size(); if (still) requestAnimationFrame(draw); });
+        if (still) { toggle.addEventListener("click", function () { read = 0; requestAnimationFrame(draw); }); return; }
+        document.addEventListener("visibilitychange", function () { if (!document.hidden) requestAnimationFrame(draw); });
+        window.addEventListener("pointermove", function (e) { if (e.pointerType !== "touch") { tx = e.clientX; ty = e.clientY; } });
+        document.addEventListener("pointerleave", function () { tx = ty = -999; });
+      })();
+
+      if (document.fonts && document.fonts.ready) document.fonts.ready.then(start); else start();
+    })();
+  </script>
 </body>
 </html>

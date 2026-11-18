@@ -4,38 +4,143 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="robots" content="noindex, nofollow">
-  <title>Max Pickard: proof of work</title>
-  <!-- Made by proof/generator/build.py. Do not edit by hand. -->
+  <title>Max Pickard</title>
+  <!-- Made by proof/generator/build.py. Do not edit by hand. Edit proof/generator/templates/home.html. -->
+  <script>
+    // Runs before the page paints. Applies the saved light or dark choice, and picks one accent
+    // colour per visit: teal, cobalt, red, orange or plum. Each pair is [light mode, dark mode].
+    (function () {
+      var el = document.documentElement, pairs = [["#0F7B6C", "#3CC8B4"], ["#2348E8", "#7C93FF"], ["#C4261D", "#FF6B5E"], ["#C2500C", "#FF8A3D"], ["#8A2A6B", "#E58FCA"]];
+      var pick = Math.floor(Math.random() * pairs.length);
+      try {
+        var theme = localStorage.getItem("theme"); if (theme) el.dataset.theme = theme;
+        var saved = sessionStorage.getItem("accent");
+        if (saved !== null && pairs[saved]) pick = Number(saved); else sessionStorage.setItem("accent", pick);
+      } catch (e) {}
+      el.style.setProperty("--a-l", pairs[pick][0]); el.style.setProperty("--a-d", pairs[pick][1]);
+    })();
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
   <style>
 $style
   </style>
 </head>
 <body>
-  <main>
-    <header class="masthead">
-      <h1>Max Pickard</h1>
-      <p class="role">Marketing operations and measurement</p>
-      <p class="lead">
-        This is a public rebuild of work I do on live accounts for multiple B2B SaaS
-        clients. The company and data here are fictional so that all of it can be open.
-      </p>
-    </header>
+  <div class="progress" aria-hidden="true"></div>
+  <nav class="nav" aria-label="Site">
+    <a class="nav-name" href="#top">Max Pickard</a>
+    <div><a href="#work">Work</a><a href="#experience">Experience</a><a href="#skills">Skills</a>$contact_nav<button type="button" data-theme-toggle>Dark</button></div>
+  </nav>
+  <main id="top">
+    <header class="hero"><div class="wrap">
+      <div class="hero-grid">
+        <h1 data-rise>Max Pickard<i aria-hidden="true">.</i></h1>
+        <dl class="spec">
+          <div><dt>Role</dt><dd>Marketing Operations Specialist</dd></div>
+          <div><dt>Company</dt><dd>Upgrow</dd></div>
+          <div><dt>Based</dt><dd>Chicago</dd></div>
+          <div><dt>Trained in</dt><dd>Applied mathematics</dd></div>
+          <div><dt>Builds with</dt><dd>Claude Code, SQL, Salesforce, Tag Manager</dd></div>
+        </dl>
+      </div>
+      <div class="under">
+        <p>Tracking, CRM and AI systems for marketing teams.</p>
+        <nav aria-label="Links"><a href="#work">Work</a><a href="#experience">Experience</a>$contact_links<a href="$repo">GitHub</a></nav>
+      </div>
+    </div></header>
+$proof
+    <section class="sec" id="work"><div class="wrap">
+      <h2>Projects</h2>
+      <article class="sys">
+        <div>
+          <h3>$project_title</h3>
+          <p>$project_sentence</p>
+          <p><a href="$demo">Open the live demo</a> <a href="$repo">Code on GitHub</a></p>
+        </div>
+        <dl class="facts">
+$project_facts
+        </dl>
+      </article>
+      <figure class="frame" data-grow>
+        <div class="frame-bar" aria-hidden="true"><i></i><i></i><i></i><span>roadwren-demo.vercel.app/demo</span></div>
+        <img src="img/tracked-site.webp" width="1440" height="900" loading="lazy" alt="The Roadwren demo form with the cookie banner open, offering Reject all and Accept all, before any click ID is stored.">
+      </figure>
+      <h3 class="parts-h">$parts parts, each with its own write-up</h3>
+      <ul class="rows" data-stagger>
+$rows
+      </ul>
+      <article class="sys second">
+        <div>
+          <h3>Upgrow marketing operations platform</h3>
+          <p>The internal platform I built for the paid media team at work. One warehouse pulls the ad, tag, task, meeting and CRM data. Workflows on top handle monthly reports, budget pacing, tracking audits and morning alerts. It never changes an account on its own.</p>
+        </div>
+        <dl class="facts">
+          <div><dt>Status</dt><dd>Built</dd></div>
+          <div><dt>Write-up</dt><dd><span class="slot">Write-up to come</span></dd></div>
+          <div><dt>Built with</dt><dd>Claude Code, a data warehouse, a Claude connector</dd></div>
+        </dl>
+      </article>
+    </div></section>
 
-    <h2 class="section-head">Proofs</h2>
-    <p class="section-note">Six builds on one made-up company. Each one is graded against an answer key, and each opens a write-up.</p>
-    <ol class="proofs">
-$tiles
-    </ol>
+    <section class="sec" id="experience"><div class="wrap">
+      <h2>Experience</h2>
+      <ol class="xp" data-stagger>
+        <li>
+          <span class="when">Jul 2026 to now</span>
+          <div><b>Marketing Operations Specialist</b><span class="where">Upgrow, a marketing agency for B2B software companies</span>
+            <p>Conversion tracking, CRM connections and AI automation across client accounts. I also built the team's internal operations platform.</p>
+            <ul class="tags"><li>Google Tag Manager</li><li>GA4</li><li>Salesforce</li><li>HubSpot</li><li>Offline conversions</li><li>Claude Code</li></ul></div>
+        </li>
+        <li>
+          <span class="when">May 2024 to Jul 2026</span>
+          <div><b>SEO and PPC Specialist</b><span class="where">Upgrow</span>
+            <p>Hands-on paid search and SEO for B2B software clients: building campaigns, keyword research, tracking and reporting.</p>
+            <ul class="tags"><li>Google Ads</li><li>Microsoft Ads</li><li>LinkedIn Ads</li><li>SEO</li><li>Looker Studio</li></ul></div>
+        </li>
+        <li>
+          <span class="when">Before May 2024</span>
+          <div><b>SEO Intern</b><span class="where">Upgrow</span>
+            <p>Started with no marketing experience. Learned SEO writing and conversion tracking on the job, then asked to learn paid search.</p>
+            <ul class="tags"><li>SEO</li><li>Conversion tracking</li><li>Dashboards</li></ul></div>
+        </li>
+        <li>
+          <span class="when">Degree</span>
+          <div><b>B.S. Applied Mathematics, minor in Economics</b><span class="where">UC San Diego</span></div>
+        </li>
+      </ol>
+    </div></section>
 
-    <h2 class="section-head">How they connect</h2>
-    <p class="section-note">One lead, from the ad click to the report. The shaded boxes are the six builds.</p>
-    <div class="figure">
-$diagram
-    </div>
+    <section class="sec" id="skills"><div class="wrap">
+      <h2>Skills</h2>
+      <p class="sub">Split honestly: what I use at work, and what I am building in the projects above.</p>
+      <div class="tw"><table data-wipe>
+        <tr><th>Area</th><th>Use at work</th><th>Building in the projects</th></tr>
+        <tr><td>Tracking and analytics</td><td>Google Tag Manager, GA4, consent mode, conversion tracking, Looker Studio</td><td>Browser tests for consent</td></tr>
+        <tr><td>CRM and data</td><td>HubSpot and Salesforce connections, offline conversion imports, Zapier</td><td>Salesforce Flow, SQL, dbt</td></tr>
+        <tr><td>Paid media and SEO</td><td>Google Ads, Microsoft Ads, LinkedIn Ads, SEO</td><td></td></tr>
+        <tr><td>AI and automation</td><td>Claude Code, internal tools where code checks the output</td><td>Python, agents graded against answer keys, n8n, Clay</td></tr>
+      </table></div>
+    </div></section>
 
-    <h2 class="section-head">About the data</h2>
-    <p class="section-note">The systems are real and running. Roadwren is a made-up company, and every person, lead and record is made up. All of the code, the answer keys and the decisions are in <a href="$repo">the repo</a>.</p>
+    <section class="sec" id="about"><div class="wrap">
+      <h2>About</h2>
+      <div class="about-grid">
+      <div class="slot-box tall" role="img" aria-label="Photo of Max to come"><span>Photo to come</span></div>
+      <div class="about">
+        <p>I learn whatever the job needs next. At Upgrow that has been SEO, then paid search, then tracking and CRMs, then SQL, and now building tools with AI.</p>
+        <p>I studied applied mathematics at UC San Diego, which is why I grade my own builds against answer keys. Before any of this I worked on an alpaca ranch and cooked for a sorority house.</p>
+      </div>
+      </div>
+    </div></section>
 $contact
   </main>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/ScrollTrigger.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/SplitText.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/Flip.min.js"></script>
+  <script>
+$script
+  </script>
 </body>
 </html>

@@ -4,6 +4,7 @@ Everything in this repo is public. The company and all data are made up.
 ## Rules that always apply
 - Never read, print or commit .env or any token. Use the names in .env.example.
 - Never add real people, real companies, or anything from my employer.
+  One exception: the portfolio home page (proof/generator/templates/home.html) may name me, my employer and my job history. No client names, colleague names, client data or work numbers there either.
 - Small diffs. One change per commit. Tell me what changed and how to test it.
 - Tests come from the spec. Never weaken or delete a test to make it pass.
 - New dependency: say why, pin the version, and stop for my OK.

@@ -110,39 +110,73 @@ def link_url(link, repo):
     return link["url"] if "url" in link else github_url(repo, link["path"])
 
 
-def tile_html(number, build, status):
+def row_html(build, status):
+    """One line per build in the list on the home page."""
     text, css = STATUSES[status]
     e = html.escape
-    lines = [
-        f'<li class="proof {css}">',
-        f'  <span class="proof-num" aria-hidden="true">{number}</span>',
-        "  <div>",
-        f'    <h3 class="proof-title"><a href="builds/{build["slug"]}.html">{e(build["tile"])}</a></h3>',
-        f'    <p class="status">{text}</p>',
-    ]
-    if build.get("headline"):
-        lines.append(f'    <p class="proof-headline">{e(build["headline"])}</p>')
-    lines.append(f'    <p class="proof-sentence">{e(build["sentence"])}</p>')
-    if not build.get("headline"):
-        lines.append(f'    <p class="proof-graded">Graded on: {e(build["graded_on"])}</p>')
-    lines.append('    <ul class="proof-links">')
-    lines.append(f'      <li><a href="builds/{build["slug"]}.html">Read the write-up</a></li>')
-    if build.get("recording"):
-        lines.append(f'      <li><a href="{e(build["recording"])}">Two-minute recording</a></li>')
-    lines += ["    </ul>", "  </div>", "</li>"]
-    return "\n".join(lines)
+    return (
+        f'<li class="{css}"><b><a href="builds/{build["slug"]}.html">{e(build["tile"])}</a></b>'
+        f'<p>{e(build["sentence"])}</p><span class="status {css}">{text}</span></li>'
+    )
+
+
+def project_facts_html(project, statuses):
+    """The facts beside the project on the home page. A missing result or recording shows as a marked empty slot."""
+    e = html.escape
+    status = statuses[0] if len(set(statuses)) == 1 else "in progress"
+    text, css = STATUSES[status]
+    result = e(project["headline"]) if project.get("headline") else '<span class="slot">To come once graded</span>'
+    watch = (
+        f'<a href="{e(project["recording"])}">Two-minute walkthrough</a>'
+        if project.get("recording")
+        else '<span class="slot">Walkthrough to come</span>'
+    )
+    return "\n".join([
+        f'<div><dt>Status</dt><dd><span class="status {css}">{text}</span></dd></div>',
+        f"<div><dt>Result</dt><dd>{result}</dd></div>",
+        f'<div><dt>Built with</dt><dd>{e(project["built_with"])}</dd></div>',
+        f"<div><dt>Watch</dt><dd>{watch}</dd></div>",
+    ])
+
+
+def proof_html(builds):
+    """Real results only. The section is left out until at least one build has a headline."""
+    items = [f'<li>{html.escape(b["tile"])}: {html.escape(b["headline"])}</li>' for b in builds if b.get("headline")]
+    if not items:
+        return ""
+    return (
+        '\n    <section class="sec"><div class="wrap">\n      <h2>Proof, in one line each</h2>\n      <ul class="proof">\n        '
+        + "\n        ".join(items) + "\n      </ul>\n    </div></section>\n"
+    )
 
 
 def contact_html(contact):
     """Shown only once an email or a LinkedIn address is set in builds.json."""
+    e = html.escape
+    if not (contact.get("email") or contact.get("linkedin")):
+        return ""
+    lines = ['', '    <section class="contact" id="contact"><div class="wrap">', "      <h2>Say hello</h2>"]
+    if contact.get("email"):
+        lines.append(f'      <a class="mail" href="mailto:{e(contact["email"])}">{e(contact["email"])}</a>')
+        lines.append(f'      <small><button type="button" class="copy" data-copy="{e(contact["email"])}">Copy the address</button> <span id="copied" aria-live="polite"></span></small>')
+    foot = []
+    if contact.get("linkedin"):
+        foot.append(f'<a href="{e(contact["linkedin"])}">LinkedIn</a>')
+    foot.append("<span>Chicago</span>")
+    lines.append('      <div class="foot">' + "".join(foot) + "</div>")
+    lines.append("    </div></section>")
+    return "\n".join(lines)
+
+
+def contact_links_html(contact):
+    """The short links under the name."""
+    e = html.escape
     parts = []
     if contact.get("email"):
-        parts.append(f'<a href="mailto:{html.escape(contact["email"])}">{html.escape(contact["email"])}</a>')
+        parts.append(f'<button type="button" class="copy" data-copy="{e(contact["email"])}">Copy email</button>')
     if contact.get("linkedin"):
-        parts.append(f'<a href="{html.escape(contact["linkedin"])}">LinkedIn</a>')
-    if not parts:
-        return ""
-    return '\n    <h2 class="section-head">Contact</h2>\n    <p class="section-note">' + " &middot; ".join(parts) + "</p>"
+        parts.append(f'<a href="{e(contact["linkedin"])}">LinkedIn</a>')
+    return "".join(parts)
 
 
 def build_pages():
@@ -151,6 +185,7 @@ def build_pages():
     repo = config["repo"]
     builds = config["builds"]
     style = indent((GENERATOR / "templates" / "style.css").read_text(encoding="utf-8").strip(), 4)
+    script = indent((GENERATOR / "templates" / "script.js").read_text(encoding="utf-8").strip(), 4)
     e = html.escape
 
     rendered = []
@@ -160,13 +195,25 @@ def build_pages():
         rendered.append({"title": title, "body": body, "status": read_status(readme_text)})
 
     pages = {}
-    tiles = [tile_html(n, b, r["status"]) for n, (b, r) in enumerate(zip(builds, rendered), start=1)]
+    contact_config = config.get("contact") or {}
+    contact = contact_html(contact_config)
+    status_of = {b["slug"]: r["status"] for b, r in zip(builds, rendered)}
+    project = config["project"]
+    rows = [row_html(b, status_of[b["slug"]]) for b in builds]
     pages["index.html"] = template("home.html").substitute(
         style=style,
-        tiles=indent("\n".join(tiles), 6),
-        diagram=indent(diagram("system"), 6),
+        script=script,
         repo=repo,
-        contact=contact_html(config.get("contact") or {}),
+        demo=config["demo"],
+        proof=proof_html(builds),
+        project_title=e(project["title"]),
+        project_sentence=e(project["sentence"]),
+        project_facts=indent(project_facts_html(project, [r["status"] for r in rendered]), 10),
+        parts=str(len(builds)),
+        rows=indent("\n".join(rows), 8),
+        contact=contact,
+        contact_nav='<a href="#contact">Contact</a>' if contact else "",
+        contact_links=contact_links_html(contact_config),
     )
 
     for index, (build, page) in enumerate(zip(builds, rendered)):
@@ -181,10 +228,24 @@ def build_pages():
             f'      <p class="headline-value">{e(value)}</p>\n    </div>'
         )
 
-        recording = ""
+        recording = '    <div class="recording"><div class="slot-box wide"><span>Two-minute walkthrough to come</span></div></div>'
         if build.get("recording"):
             recording = (
                 f'    <div class="recording">\n      <video controls preload="metadata" src="{e(build["recording"])}"></video>\n    </div>'
+            )
+
+        # A build can swap its static diagram for a scroll-drawn scene kept in templates/.
+        if build.get("scene"):
+            figure = indent((GENERATOR / "templates" / build["scene"]).read_text(encoding="utf-8").strip(), 4)
+        else:
+            figure = '    <div class="figure">\n' + indent(diagram(build["slug"]), 6) + "\n    </div>"
+
+        image = ""
+        if build.get("image"):
+            shot = build["image"]
+            image = (
+                f'    <figure class="frame">\n      <img src="../{e(shot["src"])}" width="{shot["width"]}" height="{shot["height"]}" loading="lazy" alt="{e(shot["alt"])}">\n'
+                f'      <figcaption>{e(shot["caption"])}</figcaption>\n    </figure>'
             )
 
         links = [f'<li><a href="{e(link_url(link, repo))}">{e(link["label"])}</a></li>' for link in build["links"]]
@@ -199,6 +260,7 @@ def build_pages():
 
         pages[f'builds/{build["slug"]}.html'] = template("build.html").substitute(
             style=style,
+            script=script,
             title=e(page["title"]),
             readme=build["readme"],
             folder_url=github_url(repo, posixpath.dirname(build["readme"])),
@@ -206,7 +268,8 @@ def build_pages():
             status_text=status_text,
             headline=headline,
             recording=recording,
-            diagram=indent(diagram(build["slug"]), 6),
+            image=image,
+            figure=figure,
             body=indent(page["body"].strip(), 6),
             links=indent("\n".join(links), 8),
             pager=indent("\n".join(pager), 6),
