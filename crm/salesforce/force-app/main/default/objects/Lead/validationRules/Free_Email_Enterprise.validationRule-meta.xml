@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Free_Email_Enterprise</fullName>
+    <active>true</active>
+    <description>Blocks a free email address on a lead from a company of 200 or more employees.</description>
+    <errorConditionFormula>AND(
+  NumberOfEmployees &gt;= 200,
+  OR(
+    CONTAINS(LOWER(Email), &quot;@gmail.&quot;),
+    CONTAINS(LOWER(Email), &quot;@yahoo.&quot;),
+    CONTAINS(LOWER(Email), &quot;@hotmail.&quot;),
+    CONTAINS(LOWER(Email), &quot;@outlook.&quot;)
+  )
+)</errorConditionFormula>
+    <errorMessage>Use a work email for companies of 200 or more.</errorMessage>
+</ValidationRule>
