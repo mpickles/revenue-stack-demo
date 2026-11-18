@@ -66,12 +66,15 @@
     .hero h1{font-size:clamp(3.5rem,1rem + 10.5vw,10rem);line-height:.88;letter-spacing:-.055em;max-width:8ch}
     .hero h1 i{font-style:normal;color:var(--accent)}
     .progress{position:fixed;inset:0 0 auto 0;height:3px;z-index:30;background:var(--accent);transform:scaleX(0);transform-origin:left}
-    .hero-grid{display:grid;gap:28px 64px;align-items:end}
-    @media (min-width:980px){.hero-grid{grid-template-columns:1fr 21rem}}
-    .spec{margin:0;border-top:2px solid var(--accent);font-size:.9375rem;font-variant-numeric:tabular-nums}
+    .hero-grid{display:grid;gap:36px 64px;align-items:end}
+    @media (min-width:980px){.hero-grid{grid-template-columns:1fr 19rem}}
+    .slot-box.portrait{aspect-ratio:4/5;width:100%;max-width:19rem;border-radius:10px}
+    @media (max-width:979px){.slot-box.portrait{max-width:10rem}}
+    .spec{margin:clamp(28px,4vw,48px) 0 0;border-top:2px solid var(--accent);font-size:.9375rem;font-variant-numeric:tabular-nums}
     .spec div{display:grid;grid-template-columns:6.5rem 1fr;gap:12px;padding:11px 0;border-bottom:1px solid var(--line)}
     .spec dt{color:var(--muted)}.spec dd{margin:0}
-    .under{display:flex;flex-wrap:wrap;gap:14px 40px;justify-content:space-between;align-items:baseline;margin-top:clamp(32px,5vw,64px);padding-top:22px;border-top:1px solid var(--line)}
+    @media (min-width:980px){.spec{display:grid;grid-template-columns:1.3fr .7fr .7fr 1fr 1.5fr;gap:0 32px}.spec div{display:block;padding:14px 0 0;border-bottom:0}.spec dd{margin-top:4px}}
+    .under{display:flex;flex-wrap:wrap;gap:14px 40px;justify-content:space-between;align-items:baseline;margin-top:clamp(28px,4vw,48px);padding-top:22px;border-top:1px solid var(--line)}
     .under p{margin:0;font-size:clamp(1.0625rem,1rem + .5vw,1.375rem);letter-spacing:-.01em}
     .under nav{display:flex;flex-wrap:wrap;gap:6px 26px;font-size:1rem}
     .copy{border:0;background:linear-gradient(currentColor,currentColor) no-repeat left 100%/100% 1px;padding:0}
@@ -156,11 +159,8 @@
     .slot{font-family:var(--mono);font-size:.75rem;color:var(--muted);border:1px dashed var(--muted);border-radius:4px;padding:2px 8px}
     .slot-box{display:grid;place-items:center;border:1px dashed var(--muted);border-radius:6px;background:repeating-linear-gradient(135deg,transparent 0 14px,color-mix(in srgb,var(--accent) 7%,transparent) 14px 15px)}
     .slot-box span{font-family:var(--mono);font-size:.8125rem;color:var(--muted);background:var(--bg);padding:4px 10px;border-radius:4px}
-    .slot-box.tall{aspect-ratio:4/5;width:100%;max-width:18rem}
     .slot-box.wide{aspect-ratio:16/9}
-    .about-grid{margin-top:56px;display:grid;gap:40px 72px;align-items:start}
-    @media (min-width:860px){.about-grid{grid-template-columns:18rem minmax(0,1fr)}}
-    .about{max-width:44rem}
+    .about{margin-top:56px;max-width:44rem}
     .about p{margin:0 0 18px}
     .about p:first-child{font-size:clamp(1.25rem,1.05rem + .9vw,1.75rem);line-height:1.3;letter-spacing:-.02em}
 
@@ -229,14 +229,15 @@
     <header class="hero"><div class="wrap">
       <div class="hero-grid">
         <h1 data-rise>Max Pickard<i aria-hidden="true">.</i></h1>
-        <dl class="spec">
-          <div><dt>Role</dt><dd>Marketing Operations Specialist</dd></div>
-          <div><dt>Company</dt><dd>Upgrow</dd></div>
-          <div><dt>Based</dt><dd>Chicago</dd></div>
-          <div><dt>Trained in</dt><dd>Applied mathematics</dd></div>
-          <div><dt>Builds with</dt><dd>Claude Code, SQL, Salesforce, Tag Manager</dd></div>
-        </dl>
+        <div class="slot-box portrait" role="img" aria-label="Photo of Max to come"><span>Photo to come</span></div>
       </div>
+      <dl class="spec">
+        <div><dt>Role</dt><dd>Marketing Operations Specialist</dd></div>
+        <div><dt>Company</dt><dd>Upgrow</dd></div>
+        <div><dt>Based</dt><dd>Chicago</dd></div>
+        <div><dt>Trained in</dt><dd>Applied mathematics</dd></div>
+        <div><dt>Builds with</dt><dd>Claude Code, SQL, Salesforce, Tag Manager</dd></div>
+      </dl>
       <div class="under">
         <p>Tracking, CRM and AI systems for marketing teams.</p>
         <nav aria-label="Links"><a href="#work">Work</a><a href="#experience">Experience</a><button type="button" class="copy" data-copy="maxapickard@gmail.com">Copy email</button><a href="https://www.linkedin.com/in/maxwellapickard/">LinkedIn</a><a href="https://github.com/mpickles/revenue-stack-demo">GitHub</a></nav>
@@ -326,12 +327,9 @@
 
     <section class="sec" id="about"><div class="wrap">
       <h2>About</h2>
-      <div class="about-grid">
-      <div class="slot-box tall" role="img" aria-label="Photo of Max to come"><span>Photo to come</span></div>
       <div class="about">
         <p>I learn whatever the job needs next. At Upgrow that has been SEO, then paid search, then tracking and CRMs, then SQL, and now building tools with AI.</p>
         <p>I studied applied mathematics at UC San Diego, which is why I grade my own builds against answer keys. Before any of this I worked on an alpaca ranch and cooked for a sorority house.</p>
-      </div>
       </div>
     </div></section>
 
@@ -415,7 +413,7 @@
           } else {
             gsap.from(title, { opacity: 0, y: 24, duration: 0.9, ease: "expo.out", delay: 0.1 });
           }
-          gsap.from(".under, .spec, .writeup-head .status, .headline", { opacity: 0, duration: 0.7, ease: "power2.out", delay: 0.65 });
+          gsap.from(".under, .spec, .slot-box.portrait, .writeup-head .status, .headline", { opacity: 0, duration: 0.7, ease: "power2.out", delay: 0.65 });
         }
 
         // The name eases back as you scroll away from it.
