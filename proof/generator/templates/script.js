@@ -140,6 +140,19 @@
     }
     ScrollTrigger.refresh();
   }
+  // Scrolling boxes (wide tables, diagrams, code) fade out at whichever edge still has more to scroll to.
+  (function () {
+    var boxes = $$(".tw, .figure, .prose pre");
+    function mark(el) {
+      var more = el.scrollWidth - el.clientWidth, x = el.scrollLeft, edge = [];
+      if (more > 1 && x > 1) edge.push("l");
+      if (more > 1 && x < more - 1) edge.push("r");
+      if (edge.length) el.setAttribute("data-fade", edge.join(" ")); else el.removeAttribute("data-fade");
+    }
+    boxes.forEach(function (el) { mark(el); el.addEventListener("scroll", function () { mark(el); }, { passive: true }); });
+    window.addEventListener("resize", function () { boxes.forEach(mark); });
+  })();
+
   // Background: a faint dot grid. Dots near the pointer swell and take the accent colour,
   // and one ripple crosses the page on load, done in under five seconds. Nothing else moves on its own. With "reduce motion" the grid is drawn once and stays still.
   (function () {
