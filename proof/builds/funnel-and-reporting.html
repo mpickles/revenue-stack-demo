@@ -514,13 +514,14 @@
         ScrollTrigger.refresh();
       }
       // Background: a faint dot grid. Dots near the pointer swell and take the accent colour,
-      // and a slow ripple crosses the page now and then. With "reduce motion" the grid is drawn once and stays still.
+      // and one ripple crosses the page on load, done in under five seconds. Nothing else moves on its own. With "reduce motion" the grid is drawn once and stays still.
       (function () {
         var c = document.createElement("canvas"); c.className = "grid"; c.setAttribute("aria-hidden", "true");
         document.body.insertBefore(c, document.body.firstChild);
         var g = c.getContext("2d"); if (!g) return;
         var gap = 28, w = 0, h = 0, px = -999, py = -999, tx = -999, ty = -999, base = "", accent = "", read = 0;
         var blocks = $$("h1, h2, h3, p, dl, table, figure, .rows, .xp, .nav, .under, .slot-box, .prose ul, .prose ol, .prose pre, .pager");
+        var born = performance.now();
         function colours() { var s = getComputedStyle(root); base = s.getPropertyValue("--muted").trim(); accent = s.getPropertyValue("--accent").trim(); }
         function size() {
           var d = Math.min(window.devicePixelRatio || 1, 2); w = window.innerWidth; h = window.innerHeight;
@@ -529,7 +530,7 @@
         function draw(now) {
           if (now - read > 500) { colours(); read = now; }
           px += (tx - px) * 0.12; py += (ty - py) * 0.12;
-          var reach = Math.hypot(w, h), ring = still ? -999 : ((now / 1000 * 260) % (reach + 900)) - 80;
+          var reach = Math.hypot(w, h), ring = still ? -999 : (now - born) / 1000 * 420 - 80;
           g.clearRect(0, 0, w, h);
           // No dots behind words: skip any dot that falls inside a block of text on screen.
           var boxes = [];
