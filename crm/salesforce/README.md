@@ -59,9 +59,37 @@ Two things are not confirmed from Salesforce's own pages and need a real run:
 
 Record the outcome of both rows, and of one repeat submit through the live form, under Results.
 
+## Set up the fields, rules and queues from files
+
+The fields, the two blocking rules, the four queues and one permission set are already written as files in `force-app/`. Two commands create all of them in the Salesforce account, in place of clicking each one in Setup. Both ways end in the same place.
+
+| Created from the files | Still done by hand in Salesforce |
+|---|---|
+| 7 Lead fields and 5 Opportunity fields | The lead field mapping (Lead, Fields & Relationships, Map Lead Fields) |
+| 2 validation rules, active | The Marketing User tick box and the three campaigns |
+| 4 queues that accept leads | Adding yourself as a member of each queue |
+| A permission set that lets you see and edit the new fields | The Flow |
+
+After the one-time CLI setup below, from this folder (`crm/salesforce`):
+
+```
+sf org login web --alias roadwren-dev --set-default
+sf project deploy start --source-dir force-app --dry-run
+sf project deploy start --source-dir force-app
+sf org assign permset --name Roadwren_Build_1
+```
+
+The `--dry-run` line checks the files against the account and changes nothing. Run the real deploy only when it comes back clean.
+
+Why the permission set: a field created from a file is hidden from every user, admins included, until a permission set or profile grants it. A field created by clicking through Setup gets that access in the wizard. Skip the last command and the fields exist but do not show up anywhere.
+
+The new fields are not added to the Lead page layout. They show in list views and reports, and the Flow and the form can write to them. To see them on a lead record, add them in Object Manager, Lead, Page Layouts.
+
+These files have not been run against a Salesforce account yet. If the dry run reports an error, the error text names the file.
+
 ## The setup, saved as files
 
-Fields, validation rules, the Flow, its tests, the queues and the lead field mapping are pulled out of Salesforce as files with the Salesforce CLI, so the build can be read and compared without logging in.
+Everything built by hand (the Flow, its tests, the lead field mapping) is pulled out of Salesforce as files with the Salesforce CLI, next to the fields, rules and queues above, so the build can be read and compared without logging in.
 
 One-time setup on Windows:
 
