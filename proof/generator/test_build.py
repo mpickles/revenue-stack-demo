@@ -111,10 +111,15 @@ class CommittedPages(unittest.TestCase):
                 self.assertIn("Not graded yet", page)
                 self.assertIn(html.escape(item["graded_on"]), page)
 
-    def test_the_home_page_shows_a_result_only_when_one_exists(self):
+    def test_a_missing_result_or_recording_shows_as_a_marked_empty_slot(self):
+        """Empty slots are allowed, invented results are not: a slot appears exactly when the real thing is missing."""
         home = self.pages["index.html"]
-        has_result = any(item.get("headline") for item in self.config["builds"])
-        self.assertEqual("<dt>Result</dt>" in home, has_result)
+        featured = [item for item in self.config["builds"] if item.get("featured")]
+        self.assertEqual(home.count('<span class="slot">To come once graded</span>'), sum(1 for i in featured if not i.get("headline")))
+        self.assertEqual(home.count('<span class="slot">Walkthrough to come</span>'), sum(1 for i in featured if not i.get("recording")))
+        for item in self.config["builds"]:
+            page = self.pages[f'builds/{item["slug"]}.html']
+            self.assertEqual("walkthrough to come" in page, not item.get("recording"), item["slug"])
 
     def test_the_home_page_does_not_explain_how_a_build_works(self):
         home = self.pages["index.html"]

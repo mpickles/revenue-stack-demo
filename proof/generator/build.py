@@ -137,9 +137,13 @@ def featured_html(build, status):
     ]
     if build.get("headline"):
         lines.append(f'    <div><dt>Result</dt><dd>{e(build["headline"])}</dd></div>')
+    else:
+        lines.append('    <div><dt>Result</dt><dd><span class="slot">To come once graded</span></dd></div>')
     lines.append(f'    <div><dt>Built with</dt><dd>{e(build["built_with"])}</dd></div>')
     if build.get("recording"):
         lines.append(f'    <div><dt>Watch</dt><dd><a href="{e(build["recording"])}">Two-minute recording</a></dd></div>')
+    else:
+        lines.append('    <div><dt>Watch</dt><dd><span class="slot">Walkthrough to come</span></dd></div>')
     lines += ["  </dl>", "</article>"]
     return "\n".join(lines)
 
@@ -231,7 +235,7 @@ def build_pages():
             f'      <p class="headline-value">{e(value)}</p>\n    </div>'
         )
 
-        recording = ""
+        recording = '    <div class="recording"><div class="slot-box wide"><span>Two-minute walkthrough to come</span></div></div>'
         if build.get("recording"):
             recording = (
                 f'    <div class="recording">\n      <video controls preload="metadata" src="{e(build["recording"])}"></video>\n    </div>'
