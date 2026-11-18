@@ -48,11 +48,6 @@ h2 .mask>span{display:block}
 .copy{border:0;background:linear-gradient(currentColor,currentColor) no-repeat left 100%/100% 1px;padding:0}
 .copy:hover{color:var(--accent)}
 
-/* Statement: the story in three sentences. Words light up as you scroll. */
-.statement{padding:clamp(72px,10vw,150px) 0 0}
-.statement p{margin:0;font-weight:500;font-size:clamp(1.75rem,1.1rem + 3.3vw,4rem);line-height:1.08;letter-spacing:-.04em;max-width:22ch}
-.statement .w{display:inline-block;margin-right:.24em}
-
 /* A real screenshot in a plain browser frame */
 .frame{margin:44px 0 0;border:1px solid var(--line);border-radius:10px;overflow:hidden;background:var(--panel);transform-origin:50% 0}
 .frame-bar{display:flex;align-items:center;gap:7px;padding:10px 14px;border-bottom:1px solid var(--line);font-family:var(--mono);font-size:.75rem;color:var(--muted)}

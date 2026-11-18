@@ -72,14 +72,6 @@
     // The name eases back as you scroll away from it.
     if (document.querySelector(".hero h1")) gsap.to(".hero h1", { yPercent: -12, opacity: 0.25, ease: "none", scrollTrigger: { trigger: ".hero", start: "top top", end: "bottom 15%", scrub: true } });
 
-    // The statement lights up word by word as you read down.
-    $$("[data-words]").forEach(function (p) {
-      var words = p.textContent.trim().split(/\s+/);
-      p.setAttribute("aria-label", words.join(" ")); p.textContent = "";
-      words.forEach(function (w) { var s = document.createElement("span"); s.className = "w"; s.setAttribute("aria-hidden", "true"); s.textContent = w; p.appendChild(s); });
-      gsap.fromTo(p.querySelectorAll(".w"), { opacity: 0.14 }, { opacity: 1, stagger: 0.1, ease: "none", scrollTrigger: { trigger: p, start: "top 82%", end: "bottom 45%", scrub: true } });
-    });
-
     // The screenshot grows to full width as it comes up the screen.
     $$("[data-grow]").forEach(function (frame) {
       gsap.fromTo(frame, { scale: 0.86, borderRadius: 22 }, { scale: 1, borderRadius: 10, ease: "none", scrollTrigger: { trigger: frame, start: "top 95%", end: "top 30%", scrub: true } });
