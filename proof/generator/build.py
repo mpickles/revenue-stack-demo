@@ -120,32 +120,23 @@ def row_html(build, status):
     )
 
 
-def featured_html(build, status):
-    """A featured build on the home page: what it is, its status, and a link. The detail lives on its write-up."""
-    text, css = STATUSES[status]
+def project_facts_html(project, statuses):
+    """The facts beside the project on the home page. A missing result or recording shows as a marked empty slot."""
     e = html.escape
-    page = f'builds/{build["slug"]}.html'
-    lines = [
-        '<article class="sys">',
-        "  <div>",
-        f'    <h3><a href="{page}">{e(build["title"])}</a></h3>',
-        f'    <p>{e(build["sentence"])}</p>',
-        f'    <p><a href="{page}">Read the write-up</a></p>',
-        "  </div>",
-        '  <dl class="facts">',
-        f'    <div><dt>Status</dt><dd><span class="status {css}">{text}</span></dd></div>',
-    ]
-    if build.get("headline"):
-        lines.append(f'    <div><dt>Result</dt><dd>{e(build["headline"])}</dd></div>')
-    else:
-        lines.append('    <div><dt>Result</dt><dd><span class="slot">To come once graded</span></dd></div>')
-    lines.append(f'    <div><dt>Built with</dt><dd>{e(build["built_with"])}</dd></div>')
-    if build.get("recording"):
-        lines.append(f'    <div><dt>Watch</dt><dd><a href="{e(build["recording"])}">Two-minute recording</a></dd></div>')
-    else:
-        lines.append('    <div><dt>Watch</dt><dd><span class="slot">Walkthrough to come</span></dd></div>')
-    lines += ["  </dl>", "</article>"]
-    return "\n".join(lines)
+    status = statuses[0] if len(set(statuses)) == 1 else "in progress"
+    text, css = STATUSES[status]
+    result = e(project["headline"]) if project.get("headline") else '<span class="slot">To come once graded</span>'
+    watch = (
+        f'<a href="{e(project["recording"])}">Two-minute walkthrough</a>'
+        if project.get("recording")
+        else '<span class="slot">Walkthrough to come</span>'
+    )
+    return "\n".join([
+        f'<div><dt>Status</dt><dd><span class="status {css}">{text}</span></dd></div>',
+        f"<div><dt>Result</dt><dd>{result}</dd></div>",
+        f'<div><dt>Built with</dt><dd>{e(project["built_with"])}</dd></div>',
+        f"<div><dt>Watch</dt><dd>{watch}</dd></div>",
+    ])
 
 
 def proof_html(builds):
@@ -207,8 +198,7 @@ def build_pages():
     contact_config = config.get("contact") or {}
     contact = contact_html(contact_config)
     status_of = {b["slug"]: r["status"] for b, r in zip(builds, rendered)}
-    by_slug = {b["slug"]: b for b in builds}
-    featured = [featured_html(by_slug[slug], status_of[slug]) for slug in config["featured_order"]]
+    project = config["project"]
     rows = [row_html(b, status_of[b["slug"]]) for b in builds]
     pages["index.html"] = template("home.html").substitute(
         style=style,
@@ -216,7 +206,10 @@ def build_pages():
         repo=repo,
         demo=config["demo"],
         proof=proof_html(builds),
-        featured=indent("\n".join(featured), 6),
+        project_title=e(project["title"]),
+        project_sentence=e(project["sentence"]),
+        project_facts=indent(project_facts_html(project, [r["status"] for r in rendered]), 10),
+        parts=str(len(builds)),
         rows=indent("\n".join(rows), 8),
         contact=contact,
         contact_nav='<a href="#contact">Contact</a>' if contact else "",

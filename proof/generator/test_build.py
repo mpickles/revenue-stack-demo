@@ -114,9 +114,9 @@ class CommittedPages(unittest.TestCase):
     def test_a_missing_result_or_recording_shows_as_a_marked_empty_slot(self):
         """Empty slots are allowed, invented results are not: a slot appears exactly when the real thing is missing."""
         home = self.pages["index.html"]
-        featured = [item for item in self.config["builds"] if item.get("featured")]
-        self.assertEqual(home.count('<span class="slot">To come once graded</span>'), sum(1 for i in featured if not i.get("headline")))
-        self.assertEqual(home.count('<span class="slot">Walkthrough to come</span>'), sum(1 for i in featured if not i.get("recording")))
+        project = self.config["project"]
+        self.assertEqual('<span class="slot">To come once graded</span>' in home, not project.get("headline"))
+        self.assertEqual('<span class="slot">Walkthrough to come</span>' in home, not project.get("recording"))
         for item in self.config["builds"]:
             page = self.pages[f'builds/{item["slug"]}.html']
             self.assertEqual("walkthrough to come" in page, not item.get("recording"), item["slug"])

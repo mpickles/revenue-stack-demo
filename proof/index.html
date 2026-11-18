@@ -91,6 +91,9 @@
     /* Featured systems: text left, facts right */
     .sys{display:grid;gap:10px 56px;padding:34px 0;border-top:1px solid var(--line)}
     .sys:first-of-type{margin-top:44px;border-top:2px solid var(--accent)}
+    .sys.second{margin-top:88px;border-top:2px solid var(--accent)}
+    .sys p a{margin-right:18px}
+    .parts-h{margin:56px 0 8px;font-size:1.25rem;letter-spacing:-.02em}
     @media (min-width:900px){.sys{grid-template-columns:minmax(0,7fr) minmax(0,4fr)}}
     .sys h3{margin:0 0 10px;font-size:clamp(1.5rem,1.2rem + 1.4vw,2.375rem);line-height:1.05}
     .sys h3 a{background:none}
@@ -237,65 +240,25 @@
     </div></header>
 
     <section class="sec" id="work"><div class="wrap">
-      <h2>Selected work</h2>
-      <p class="sub">Built on a made-up company, Roadwren, so all of it can be public.</p>
+      <h2>Projects</h2>
       <article class="sys">
         <div>
-          <h3><a href="builds/salesforce-routing.html">Salesforce lead routing, with conversions sent back to Google Ads</a></h3>
-          <p>Leads from the form get a stage, a campaign and an owner in Salesforce. Conversions go back to Google Ads.</p>
-          <p><a href="builds/salesforce-routing.html">Read the write-up</a></p>
+          <h3>A full revenue stack for a made-up B2B software company</h3>
+          <p>One lead followed the whole way: ad click, consent, form, CRM, routing, conversions sent back to the ad platform, and the report at the end. Built in six parts on a made-up company, Roadwren, so all of it can be public.</p>
+          <p><a href="https://roadwren-demo.vercel.app">Open the live demo</a> <a href="https://github.com/mpickles/revenue-stack-demo">Code on GitHub</a></p>
         </div>
         <dl class="facts">
           <div><dt>Status</dt><dd><span class="status is-active">In progress</span></dd></div>
           <div><dt>Result</dt><dd><span class="slot">To come once graded</span></dd></div>
-          <div><dt>Built with</dt><dd>Salesforce Flow, Python</dd></div>
+          <div><dt>Built with</dt><dd>Next.js, Tag Manager, GA4, HubSpot, Salesforce Flow, Python, SQL, dbt</dd></div>
           <div><dt>Watch</dt><dd><span class="slot">Walkthrough to come</span></dd></div>
         </dl>
       </article>
-      <article class="sys">
-        <div>
-          <h3><a href="builds/tracked-site.html">A tracked site that stores a click ID only after consent</a></h3>
-          <p>A demo site that stores a click ID only after consent and carries it through the form into the CRM.</p>
-          <p><a href="builds/tracked-site.html">Read the write-up</a></p>
-        </div>
-        <dl class="facts">
-          <div><dt>Status</dt><dd><span class="status is-active">In progress</span></dd></div>
-          <div><dt>Result</dt><dd><span class="slot">To come once graded</span></dd></div>
-          <div><dt>Built with</dt><dd>Next.js, Tag Manager, GA4, HubSpot</dd></div>
-          <div><dt>Watch</dt><dd><span class="slot">Walkthrough to come</span></dd></div>
-        </dl>
-      </article>
-      <article class="sys">
-        <div>
-          <h3><a href="builds/funnel-and-reporting.html">A reporting agent that cannot misquote a number</a></h3>
-          <p>The funnel and ad credit in SQL, and a weekly summary where code checks every number before it is published.</p>
-          <p><a href="builds/funnel-and-reporting.html">Read the write-up</a></p>
-        </div>
-        <dl class="facts">
-          <div><dt>Status</dt><dd><span class="status is-planned">Planned</span></dd></div>
-          <div><dt>Result</dt><dd><span class="slot">To come once graded</span></dd></div>
-          <div><dt>Built with</dt><dd>dbt, DuckDB, Claude</dd></div>
-          <div><dt>Watch</dt><dd><span class="slot">Walkthrough to come</span></dd></div>
-        </dl>
-      </article>
-    </div></section>
-
-    <section class="sec shot"><div class="wrap">
-      <h2>It runs</h2>
-      <p class="sub"><a href="https://roadwren-demo.vercel.app">Open the live demo site</a></p>
       <figure class="frame" data-grow>
         <div class="frame-bar" aria-hidden="true"><i></i><i></i><i></i><span>roadwren-demo.vercel.app/demo</span></div>
         <img src="img/tracked-site.webp" width="1440" height="900" loading="lazy" alt="The Roadwren demo form with the cookie banner open, offering Reject all and Accept all, before any click ID is stored.">
       </figure>
-    </div></section>
-
-    <section class="sec"><div class="wrap">
-      <h2>All six builds</h2>
-      <div class="chips" role="group" aria-label="Filter builds">
-        <button type="button" data-f="all" aria-pressed="true">All</button>
-        <button type="button" data-f="is-active" aria-pressed="false">In progress</button>
-        <button type="button" data-f="is-planned" aria-pressed="false">Planned</button>
-      </div>
+      <h3 class="parts-h">6 parts, each with its own write-up</h3>
       <ul class="rows" data-stagger>
         <li class="is-active"><b><a href="builds/tracked-site.html">Tracked site</a></b><p>A demo site that stores a click ID only after consent and carries it through the form into the CRM.</p><span class="status is-active">In progress</span></li>
         <li class="is-active"><b><a href="builds/salesforce-routing.html">Salesforce routing and conversions</a></b><p>Leads from the form get a stage, a campaign and an owner in Salesforce. Conversions go back to Google Ads.</p><span class="status is-active">In progress</span></li>
@@ -304,6 +267,17 @@
         <li class="is-planned"><b><a href="builds/funnel-and-reporting.html">Funnel in SQL and a reporting agent</a></b><p>The funnel and ad credit in SQL, and a weekly summary where code checks every number before it is published.</p><span class="status is-planned">Planned</span></li>
         <li class="is-planned"><b><a href="builds/crm-cleanup.html">CRM cleanup</a></b><p>Duplicate accounts and contacts in Salesforce found and merged by script, with every merge graded.</p><span class="status is-planned">Planned</span></li>
       </ul>
+      <article class="sys second">
+        <div>
+          <h3>Upgrow marketing operations platform</h3>
+          <p>The internal platform I built for the paid media team at work. One warehouse pulls the ad, tag, task, meeting and CRM data. Workflows on top handle monthly reports, budget pacing, tracking audits and morning alerts. It never changes an account on its own.</p>
+        </div>
+        <dl class="facts">
+          <div><dt>Status</dt><dd>Built</dd></div>
+          <div><dt>Write-up</dt><dd><span class="slot">Write-up to come</span></dd></div>
+          <div><dt>Built with</dt><dd>Claude Code, a data warehouse, a Claude connector</dd></div>
+        </dl>
+      </article>
     </div></section>
 
     <section class="sec" id="experience"><div class="wrap">
@@ -312,7 +286,7 @@
         <li>
           <span class="when">Jul 2026 to now</span>
           <div><b>Marketing Operations Specialist</b><span class="where">Upgrow, a marketing agency for B2B software companies</span>
-            <p>Conversion tracking, CRM connections and AI automation across client accounts. I build the internal tools the paid media team reports from.</p>
+            <p>Conversion tracking, CRM connections and AI automation across client accounts. I also built the team's internal operations platform.</p>
             <ul class="tags"><li>Google Tag Manager</li><li>GA4</li><li>Salesforce</li><li>HubSpot</li><li>Offline conversions</li><li>Claude Code</li></ul></div>
         </li>
         <li>

@@ -66,6 +66,9 @@ h2 .mask>span{display:block}
 /* Featured systems: text left, facts right */
 .sys{display:grid;gap:10px 56px;padding:34px 0;border-top:1px solid var(--line)}
 .sys:first-of-type{margin-top:44px;border-top:2px solid var(--accent)}
+.sys.second{margin-top:88px;border-top:2px solid var(--accent)}
+.sys p a{margin-right:18px}
+.parts-h{margin:56px 0 8px;font-size:1.25rem;letter-spacing:-.02em}
 @media (min-width:900px){.sys{grid-template-columns:minmax(0,7fr) minmax(0,4fr)}}
 .sys h3{margin:0 0 10px;font-size:clamp(1.5rem,1.2rem + 1.4vw,2.375rem);line-height:1.05}
 .sys h3 a{background:none}
