@@ -1,12 +1,12 @@
 /* Technical direction. Named tokens, light and dark. IBM Plex Sans for reading,
    IBM Plex Mono only where something is data: tables, statuses, diagram notes. */
 :root{
-  --bg:#FAFAF9;--ink:#111417;--muted:#60666D;--line:#D9DBDD;--panel:#F0F1F0;--accent:#0F7B6C;--on-accent:#FAFAF9;
+  --bg:#FAFAF9;--ink:#111417;--muted:#60666D;--line:#D9DBDD;--panel:#F0F1F0;--a-l:#0F7B6C;--a-d:#3CC8B4;--accent:var(--a-l);--on-accent:#FAFAF9;
   --sans:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;--mono:"IBM Plex Mono",ui-monospace,Menlo,Consolas,monospace;
   --ease:cubic-bezier(.23,1,.32,1);
 }
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#101214;--ink:#ECEDEE;--muted:#979DA4;--line:#272B2F;--panel:#171A1D;--accent:#3CC8B4;--on-accent:#101214;color-scheme:dark}}
-:root[data-theme="dark"]{--bg:#101214;--ink:#ECEDEE;--muted:#979DA4;--line:#272B2F;--panel:#171A1D;--accent:#3CC8B4;--on-accent:#101214;color-scheme:dark}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#101214;--ink:#ECEDEE;--muted:#979DA4;--line:#272B2F;--panel:#171A1D;--accent:var(--a-d);--on-accent:#101214;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#101214;--ink:#ECEDEE;--muted:#979DA4;--line:#272B2F;--panel:#171A1D;--accent:var(--a-d);--on-accent:#101214;color-scheme:dark}
 *,*::before,*::after{box-sizing:border-box}
 html{-webkit-text-size-adjust:100%;scroll-padding-top:96px}
 body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:1.125rem;line-height:1.5;overflow-x:hidden}
