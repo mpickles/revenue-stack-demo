@@ -140,5 +140,40 @@
     }
     ScrollTrigger.refresh();
   }
+  // Background: a faint dot grid. Dots near the pointer swell and take the accent colour,
+  // and a slow ripple crosses the page now and then. With "reduce motion" the grid is drawn once and stays still.
+  (function () {
+    var c = document.createElement("canvas"); c.className = "grid"; c.setAttribute("aria-hidden", "true");
+    document.body.insertBefore(c, document.body.firstChild);
+    var g = c.getContext("2d"); if (!g) return;
+    var gap = 28, w = 0, h = 0, px = -999, py = -999, tx = -999, ty = -999, base = "", accent = "", read = 0;
+    function colours() { var s = getComputedStyle(root); base = s.getPropertyValue("--muted").trim(); accent = s.getPropertyValue("--accent").trim(); }
+    function size() {
+      var d = Math.min(window.devicePixelRatio || 1, 2); w = window.innerWidth; h = window.innerHeight;
+      c.width = w * d; c.height = h * d; g.setTransform(d, 0, 0, d, 0, 0);
+    }
+    function draw(now) {
+      if (now - read > 500) { colours(); read = now; }
+      px += (tx - px) * 0.12; py += (ty - py) * 0.12;
+      var reach = Math.hypot(w, h), ring = still ? -999 : ((now / 1000 * 260) % (reach + 900)) - 80;
+      g.clearRect(0, 0, w, h);
+      for (var x = gap / 2; x < w; x += gap) for (var y = gap / 2; y < h; y += gap) {
+        var near = Math.max(0, 1 - Math.hypot(x - px, y - py) / 150);
+        var wave = Math.max(0, 1 - Math.abs(Math.hypot(x, y) - ring) / 70) * 0.55;
+        var a = Math.max(near, wave);
+        if (a < 0.02) { g.globalAlpha = 0.2; g.fillStyle = base; g.fillRect(x - 0.5, y - 0.5, 1, 1); continue; }
+        g.globalAlpha = 0.2 + a * 0.7; g.fillStyle = accent;
+        g.beginPath(); g.arc(x, y, 0.6 + a * 1.5, 0, 6.2832); g.fill();
+      }
+      if (!still && !document.hidden) requestAnimationFrame(draw);
+    }
+    size(); requestAnimationFrame(draw);
+    window.addEventListener("resize", function () { size(); if (still) requestAnimationFrame(draw); });
+    if (still) { toggle.addEventListener("click", function () { read = 0; requestAnimationFrame(draw); }); return; }
+    document.addEventListener("visibilitychange", function () { if (!document.hidden) requestAnimationFrame(draw); });
+    window.addEventListener("pointermove", function (e) { if (e.pointerType !== "touch") { tx = e.clientX; ty = e.clientY; } });
+    document.addEventListener("pointerleave", function () { tx = ty = -999; });
+  })();
+
   if (document.fonts && document.fonts.ready) document.fonts.ready.then(start); else start();
 })();
