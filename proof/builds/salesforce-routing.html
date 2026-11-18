@@ -106,6 +106,8 @@
 
     /* The scene: one system, drawn as you scroll */
     .pin{min-height:100svh;display:flex;flex-direction:column;justify-content:center;padding:96px 0 40px}
+    .writeup .scene{margin-top:24px}
+    .writeup .scene h2{font-size:clamp(1.5rem,1.3rem + .9vw,2rem)}
     .scene svg{display:block;width:100%;height:auto;overflow:visible;margin:40px 0 0}
     .scene .box{fill:var(--bg);stroke:var(--ink);stroke-width:1.5}
     .scene .box.end{fill:var(--panel)}
@@ -215,49 +217,22 @@
       <p class="headline-value">37 test leads with an answer key: the right stage, campaign and owner for each, and every junk lead blocked.</p>
     </div>
 
-    <div class="figure">
-      <svg class="dia" viewBox="0 0 756 542" role="img" aria-labelledby="salesforce-routing-t salesforce-routing-d" xmlns="http://www.w3.org/2000/svg">
-      <title id="salesforce-routing-t">How a lead is routed in Salesforce</title>
-      <desc id="salesforce-routing-d">The Roadwren form sends a lead to Salesforce. Two validation rules block a lead with no consent or a free email at a company of 200 or more. A Flow sets the lifecycle stage, adds the lead to a campaign and assigns a queue. Leads with no employee count go to a Needs Review queue. When a lead converts, the click ID carries to the opportunity, and a script writes and checks the conversion upload file for Google Ads.</desc>
-      <defs><marker id="salesforce-routing-a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" class="dia-head"/></marker></defs>
-      <path d="M214 47 L278 47" class="dia-line" marker-end="url(#salesforce-routing-a)"/>
-      <path d="M478 47 L542 47" class="dia-line" marker-end="url(#salesforce-routing-a)"/>
-      <text x="510" y="40" class="dia-label" text-anchor="middle">fails</text>
-      <path d="M378 80 L378 126" class="dia-line" marker-end="url(#salesforce-routing-a)"/>
-      <text x="386" y="103" class="dia-label" text-anchor="start">passes</text>
-      <path d="M378 192 L378 238" class="dia-line" marker-end="url(#salesforce-routing-a)"/>
-      <path d="M378 304 L378 350" class="dia-line" marker-end="url(#salesforce-routing-a)"/>
-      <path d="M478 383 L542 383" class="dia-line" marker-end="url(#salesforce-routing-a)"/>
-      <path d="M378 416 L378 462" class="dia-line" marker-end="url(#salesforce-routing-a)"/>
-      <path d="M478 495 L542 495" class="dia-line" marker-end="url(#salesforce-routing-a)"/>
-      <rect x="14" y="14" width="200" height="66" rx="6" class="dia-box "/>
-      <text x="114.0" y="44" class="dia-text" text-anchor="middle">Roadwren form</text>
-      <text x="114.0" y="61" class="dia-sub" text-anchor="middle">UTMs, click ID, consent</text>
-      <rect x="278" y="14" width="200" height="66" rx="6" class="dia-box "/>
-      <text x="378.0" y="51.5" class="dia-text" text-anchor="middle">Two validation rules</text>
-      <rect x="542" y="14" width="200" height="66" rx="6" class="dia-box m"/>
-      <text x="642.0" y="44" class="dia-text" text-anchor="middle">Blocked</text>
-      <text x="642.0" y="61" class="dia-sub" text-anchor="middle">no consent, or free email at 200+</text>
-      <rect x="278" y="126" width="200" height="66" rx="6" class="dia-box b"/>
-      <text x="378.0" y="156" class="dia-text" text-anchor="middle">Flow: lifecycle stage</text>
-      <text x="378.0" y="173" class="dia-sub" text-anchor="middle">MQL or New</text>
-      <rect x="278" y="238" width="200" height="66" rx="6" class="dia-box b"/>
-      <text x="378.0" y="268" class="dia-text" text-anchor="middle">Flow: campaign</text>
-      <text x="378.0" y="285" class="dia-sub" text-anchor="middle">from UTM medium</text>
-      <rect x="278" y="350" width="200" height="66" rx="6" class="dia-box b"/>
-      <text x="378.0" y="380" class="dia-text" text-anchor="middle">Flow: owner queue</text>
-      <text x="378.0" y="397" class="dia-sub" text-anchor="middle">by company size</text>
-      <rect x="542" y="350" width="200" height="66" rx="6" class="dia-box "/>
-      <text x="642.0" y="380" class="dia-text" text-anchor="middle">Needs Review Queue</text>
-      <text x="642.0" y="397" class="dia-sub" text-anchor="middle">size unknown</text>
-      <rect x="278" y="462" width="200" height="66" rx="6" class="dia-box "/>
-      <text x="378.0" y="492" class="dia-text" text-anchor="middle">Lead converts</text>
-      <text x="378.0" y="509" class="dia-sub" text-anchor="middle">click ID kept on the opportunity</text>
-      <rect x="542" y="462" width="200" height="66" rx="6" class="dia-box b"/>
-      <text x="642.0" y="492" class="dia-text" text-anchor="middle">Upload file for Google Ads</text>
-      <text x="642.0" y="509" class="dia-sub" text-anchor="middle">every row checked</text>
-      </svg>
-    </div>
+    <section class="scene" aria-label="How the routing build works">
+      <div class="pin">
+        <h2>How it works</h2>
+        <p class="sub">One lead, from the form to Google Ads. Scroll to draw it.</p>
+        <svg viewBox="0 0 1200 330" role="img" aria-label="A form submit passes two rules that block junk, becomes a Salesforce lead, is routed by a Flow, converts with its click ID kept, is written to a checked upload file, and reaches Google Ads.">
+          <g data-step="A visitor submits the form, with a click ID from the ad."><rect class="box" x="20" y="30" width="230" height="78" rx="4"/><text x="135" y="64">Form submit</text><text class="s" x="135" y="88">click ID, UTMs, consent</text></g>
+          <g data-step="Two rules block junk: no consent, or a free email at a big company."><path class="wire" d="M250 69 H320"/><rect class="box" x="320" y="30" width="230" height="78" rx="4"/><text x="435" y="64">Rules block junk</text><text class="s" x="435" y="88">2 validation rules</text></g>
+          <g data-step="The lead lands in Salesforce with its click ID attached."><path class="wire" d="M550 69 H620"/><rect class="box" x="620" y="30" width="230" height="78" rx="4"/><text x="735" y="64">Salesforce lead</text><text class="s" x="735" y="88">7 custom fields</text></g>
+          <g data-step="One Flow sets the stage, adds the campaign and assigns the owner."><path class="wire" d="M850 69 H920"/><rect class="box" x="920" y="30" width="260" height="78" rx="4"/><text x="1050" y="64">Flow routes the lead</text><text class="s" x="1050" y="88">stage, campaign, owner</text></g>
+          <g data-step="When the lead converts, the click ID carries over to the opportunity."><path class="wire" d="M1050 108 V222"/><rect class="box" x="920" y="222" width="260" height="78" rx="4"/><text x="1050" y="256">Lead converts</text><text class="s" x="1050" y="280">click ID kept on the opportunity</text></g>
+          <g data-step="A script writes the conversion upload file and rejects every bad row."><path class="wire" d="M920 261 H850"/><rect class="box" x="620" y="222" width="230" height="78" rx="4"/><text x="735" y="256">Upload file, checked</text><text class="s" x="735" y="280">bad rows rejected</text></g>
+          <g data-step="Google Ads learns which clicks became pipeline."><path class="wire" d="M620 261 H550"/><rect class="box end" x="320" y="222" width="230" height="78" rx="4"/><text x="435" y="256">Google Ads</text><text class="s" x="435" y="280">bidding learns from pipeline</text></g>
+        </svg>
+        <p class="says" aria-hidden="true"></p>
+      </div>
+    </section>
 
     <article class="prose">
       <p>Status: in progress. The Salesforce account is a free Developer Edition. Every lead in it is made up.</p>

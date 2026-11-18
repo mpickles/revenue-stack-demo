@@ -121,25 +121,23 @@ def row_html(build, status):
 
 
 def featured_html(build, status):
-    """A featured build: the problem and what it does on the left, the facts on the right."""
+    """A featured build on the home page: what it is, its status, and a link. The detail lives on its write-up."""
     text, css = STATUSES[status]
     e = html.escape
     page = f'builds/{build["slug"]}.html'
-    result = e(build["headline"]) if build.get("headline") else "Not graded yet"
     lines = [
         '<article class="sys">',
         "  <div>",
         f'    <h3><a href="{page}">{e(build["title"])}</a></h3>',
-        f'    <p class="q">{e(build["problem"])}</p>',
         f'    <p>{e(build["sentence"])}</p>',
         f'    <p><a href="{page}">Read the write-up</a></p>',
         "  </div>",
         '  <dl class="facts">',
         f'    <div><dt>Status</dt><dd><span class="status {css}">{text}</span></dd></div>',
-        f'    <div><dt>Graded on</dt><dd>{e(build["graded_on"])}</dd></div>',
-        f'    <div><dt>Result</dt><dd>{result}</dd></div>',
-        f'    <div><dt>Built with</dt><dd>{e(build["built_with"])}</dd></div>',
     ]
+    if build.get("headline"):
+        lines.append(f'    <div><dt>Result</dt><dd>{e(build["headline"])}</dd></div>')
+    lines.append(f'    <div><dt>Built with</dt><dd>{e(build["built_with"])}</dd></div>')
     if build.get("recording"):
         lines.append(f'    <div><dt>Watch</dt><dd><a href="{e(build["recording"])}">Two-minute recording</a></dd></div>')
     lines += ["  </dl>", "</article>"]
@@ -239,6 +237,12 @@ def build_pages():
                 f'    <div class="recording">\n      <video controls preload="metadata" src="{e(build["recording"])}"></video>\n    </div>'
             )
 
+        # A build can swap its static diagram for a scroll-drawn scene kept in templates/.
+        if build.get("scene"):
+            figure = indent((GENERATOR / "templates" / build["scene"]).read_text(encoding="utf-8").strip(), 4)
+        else:
+            figure = '    <div class="figure">\n' + indent(diagram(build["slug"]), 6) + "\n    </div>"
+
         image = ""
         if build.get("image"):
             shot = build["image"]
@@ -268,7 +272,7 @@ def build_pages():
             headline=headline,
             recording=recording,
             image=image,
-            diagram=indent(diagram(build["slug"]), 6),
+            figure=figure,
             body=indent(page["body"].strip(), 6),
             links=indent("\n".join(links), 8),
             pager=indent("\n".join(pager), 6),

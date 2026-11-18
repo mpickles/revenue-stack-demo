@@ -42,7 +42,6 @@
       ],
       "featured": true,
       "title": "A tracked site that stores a click ID only after consent",
-      "problem": "Most tracking either ignores consent or loses the click ID. This does neither.",
       "built_with": "Next.js, Tag Manager, GA4, HubSpot",
       "image": {
         "src": "img/tracked-site.webp",
@@ -80,8 +79,8 @@
       ],
       "featured": true,
       "title": "Salesforce lead routing, with conversions sent back to Google Ads",
-      "problem": "A lead that gets the wrong owner, or loses its click ID on the way to an opportunity, costs money twice.",
-      "built_with": "Salesforce Flow, Python"
+      "built_with": "Salesforce Flow, Python",
+      "scene": "routing-scene.html"
     },
     {
       "slug": "campaign-qa-agent",
@@ -149,7 +148,6 @@
       ],
       "featured": true,
       "title": "A reporting agent that cannot misquote a number",
-      "problem": "The worry with AI reports is a confident wrong figure.",
       "built_with": "dbt, DuckDB, Claude"
     },
     {

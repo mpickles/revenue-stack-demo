@@ -104,14 +104,22 @@ class CommittedPages(unittest.TestCase):
                     target = re.sub(r"[^/]+/\.\./", "", target, count=1)
                 self.assertIn(target, self.pages, f"{path} links to {href}")
 
-    def test_a_featured_build_without_a_result_says_how_it_will_be_graded(self):
-        home = self.pages["index.html"]
-        by_slug = {item["slug"]: item for item in self.config["builds"]}
-        for slug in self.config["featured_order"]:
-            item = by_slug[slug]
-            self.assertIn(html.escape(item["graded_on"]), home)
+    def test_a_build_without_a_result_says_so_on_its_write_up(self):
+        for item in self.config["builds"]:
+            page = self.pages[f'builds/{item["slug"]}.html']
             if not item.get("headline"):
-                self.assertIn("Not graded yet", home)
+                self.assertIn("Not graded yet", page)
+                self.assertIn(html.escape(item["graded_on"]), page)
+
+    def test_the_home_page_shows_a_result_only_when_one_exists(self):
+        home = self.pages["index.html"]
+        has_result = any(item.get("headline") for item in self.config["builds"])
+        self.assertEqual("<dt>Result</dt>" in home, has_result)
+
+    def test_the_home_page_does_not_explain_how_a_build_works(self):
+        home = self.pages["index.html"]
+        self.assertNotIn('<section class="scene"', home)
+        self.assertNotIn("How it is graded", home)
 
     def test_every_build_is_listed_on_the_home_page(self):
         home = self.pages["index.html"]
