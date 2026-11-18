@@ -38,6 +38,10 @@
         <name>DuplicateRule</name>
     </types>
     <types>
+        <members>Roadwren_Build_1</members>
+        <name>PermissionSet</name>
+    </types>
+    <types>
         <members>LeadConvertSettings</members>
         <name>LeadConvertSettings</name>
     </types>
