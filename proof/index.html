@@ -493,6 +493,7 @@
         document.body.insertBefore(c, document.body.firstChild);
         var g = c.getContext("2d"); if (!g) return;
         var gap = 28, w = 0, h = 0, px = -999, py = -999, tx = -999, ty = -999, base = "", accent = "", read = 0;
+        var blocks = $$("h1, h2, h3, p, dl, table, figure, .rows, .xp, .nav, .under, .slot-box, .prose ul, .prose ol, .prose pre, .pager");
         function colours() { var s = getComputedStyle(root); base = s.getPropertyValue("--muted").trim(); accent = s.getPropertyValue("--accent").trim(); }
         function size() {
           var d = Math.min(window.devicePixelRatio || 1, 2); w = window.innerWidth; h = window.innerHeight;
@@ -503,7 +504,14 @@
           px += (tx - px) * 0.12; py += (ty - py) * 0.12;
           var reach = Math.hypot(w, h), ring = still ? -999 : ((now / 1000 * 260) % (reach + 900)) - 80;
           g.clearRect(0, 0, w, h);
-          for (var x = gap / 2; x < w; x += gap) for (var y = gap / 2; y < h; y += gap) {
+          // No dots behind words: skip any dot that falls inside a block of text on screen.
+          var boxes = [];
+          for (var i = 0; i < blocks.length; i++) {
+            var r = blocks[i].getBoundingClientRect();
+            if (r.bottom > 0 && r.top < h && r.width) boxes.push(r);
+          }
+          for (var x = gap / 2; x < w; x += gap) dots: for (var y = gap / 2; y < h; y += gap) {
+            for (var j = 0; j < boxes.length; j++) { var b = boxes[j]; if (x > b.left - 10 && x < b.right + 10 && y > b.top - 8 && y < b.bottom + 8) continue dots; }
             var near = Math.max(0, 1 - Math.hypot(x - px, y - py) / 150);
             var wave = Math.max(0, 1 - Math.abs(Math.hypot(x, y) - ring) / 70) * 0.55;
             var a = Math.max(near, wave);
