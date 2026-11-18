@@ -191,11 +191,12 @@
     .pager span{display:block;font-family:var(--mono);font-size:.8125rem;font-weight:400;letter-spacing:0;color:var(--muted)}
     .pager .next{text-align:right;margin-left:auto}
 
-    /* Cursor: a small dot that follows the pointer and grows over links. Fine pointers only, added by the script. */
-    .cursor{position:fixed;left:0;top:0;width:12px;height:12px;margin:-6px 0 0 -6px;border-radius:50%;background:var(--accent);pointer-events:none;z-index:40;opacity:0;transition:background-color .2s var(--ease)}
-    .cursor.on-link{background:color-mix(in srgb,var(--accent) 22%,transparent);box-shadow:inset 0 0 0 .5px var(--accent)}
-    .has-cursor,.has-cursor a,.has-cursor button{cursor:none}
-    @media (prefers-reduced-motion:reduce){*{transition:none!important}.cursor{display:none}.has-cursor,.has-cursor a,.has-cursor button{cursor:auto}}
+    /* Cursor: the normal pointer stays. A small coral dot trails it and grows into a soft ring over links.
+       Fine pointers only, added by the script. Coral is fixed, whatever the accent colour is. */
+    :root{--coral:#FF6F61}
+    .cursor{position:fixed;left:0;top:0;width:12px;height:12px;margin:-6px 0 0 -6px;border-radius:50%;background:var(--coral);pointer-events:none;z-index:40;opacity:0;transition:background-color .2s var(--ease)}
+    .cursor.on-link{background:color-mix(in srgb,var(--coral) 24%,transparent);box-shadow:inset 0 0 0 .5px var(--coral)}
+    @media (prefers-reduced-motion:reduce){*{transition:none!important}.cursor{display:none}}
   </style>
 </head>
 <body>
@@ -481,11 +482,10 @@
         // The big email draws in at the end.
         if (document.querySelector(".mail")) gsap.from(".mail", { yPercent: 60, opacity: 0, duration: 0.9, ease: "expo.out", scrollTrigger: { trigger: ".mail", start: "top 94%" } });
 
-        // Cursor: a dot that follows the pointer and grows over anything clickable.
+        // Cursor: a coral dot trails the normal pointer and grows over anything clickable.
         if (window.matchMedia("(pointer: fine)").matches) {
           var dot = document.createElement("div"); dot.className = "cursor"; dot.setAttribute("aria-hidden", "true"); document.body.appendChild(dot);
-          root.classList.add("has-cursor");
-          var x = gsap.quickTo(dot, "x", { duration: 0.3, ease: "power3" }), y = gsap.quickTo(dot, "y", { duration: 0.3, ease: "power3" });
+          var x = gsap.quickTo(dot, "x", { duration: 0.45, ease: "power3" }), y = gsap.quickTo(dot, "y", { duration: 0.45, ease: "power3" });
           window.addEventListener("pointermove", function (e) { if (e.pointerType === "touch") return; gsap.to(dot, { opacity: 1, duration: 0.2, overwrite: "auto" }); x(e.clientX); y(e.clientY); });
           document.addEventListener("pointerleave", function () { gsap.to(dot, { opacity: 0, duration: 0.2 }); });
           document.addEventListener("pointerover", function (e) {

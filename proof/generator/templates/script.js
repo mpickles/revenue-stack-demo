@@ -124,11 +124,10 @@
     // The big email draws in at the end.
     if (document.querySelector(".mail")) gsap.from(".mail", { yPercent: 60, opacity: 0, duration: 0.9, ease: "expo.out", scrollTrigger: { trigger: ".mail", start: "top 94%" } });
 
-    // Cursor: a dot that follows the pointer and grows over anything clickable.
+    // Cursor: a coral dot trails the normal pointer and grows over anything clickable.
     if (window.matchMedia("(pointer: fine)").matches) {
       var dot = document.createElement("div"); dot.className = "cursor"; dot.setAttribute("aria-hidden", "true"); document.body.appendChild(dot);
-      root.classList.add("has-cursor");
-      var x = gsap.quickTo(dot, "x", { duration: 0.3, ease: "power3" }), y = gsap.quickTo(dot, "y", { duration: 0.3, ease: "power3" });
+      var x = gsap.quickTo(dot, "x", { duration: 0.45, ease: "power3" }), y = gsap.quickTo(dot, "y", { duration: 0.45, ease: "power3" });
       window.addEventListener("pointermove", function (e) { if (e.pointerType === "touch") return; gsap.to(dot, { opacity: 1, duration: 0.2, overwrite: "auto" }); x(e.clientX); y(e.clientY); });
       document.addEventListener("pointerleave", function () { gsap.to(dot, { opacity: 0, duration: 0.2 }); });
       document.addEventListener("pointerover", function (e) {
