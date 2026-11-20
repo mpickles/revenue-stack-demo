@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <title>$title | Max Pickard</title>
+  <!-- Made by proof/generator/build.py from templates/platform/$file. Do not edit by hand. -->
+  <script>
+    // Runs before the page paints. Applies the saved light or dark choice, and picks one accent
+    // colour per visit: teal, cobalt, red, orange or plum. Each pair is [light mode, dark mode].
+    (function () {
+      var el = document.documentElement, pairs = [["#0F7B6C", "#3CC8B4"], ["#2348E8", "#7C93FF"], ["#C4261D", "#FF6B5E"], ["#C2500C", "#FF8A3D"], ["#8A2A6B", "#E58FCA"]];
+      var pick = Math.floor(Math.random() * pairs.length);
+      try {
+        var theme = localStorage.getItem("theme"); if (theme) el.dataset.theme = theme;
+        var saved = sessionStorage.getItem("accent");
+        if (saved !== null && pairs[saved]) pick = Number(saved); else sessionStorage.setItem("accent", pick);
+      } catch (e) {}
+      el.style.setProperty("--a-l", pairs[pick][0]); el.style.setProperty("--a-d", pairs[pick][1]);
+    })();
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+$style
+$platform_style
+  </style>
+</head>
+<body>
+  <div class="progress" aria-hidden="true"></div>
+  <nav class="nav" aria-label="Site">
+    <a class="nav-name" href="index.html">Max Pickard</a>
+    <div><a href="index.html#work">Work</a><a href="platform.html">Platform</a><button type="button" data-theme-toggle>Dark</button></div>
+  </nav>
+$body
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/ScrollTrigger.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/SplitText.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/Flip.min.js"></script>
+  <script>
+$script
+  </script>
+</body>
+</html>
