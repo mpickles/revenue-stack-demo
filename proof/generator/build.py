@@ -286,6 +286,13 @@ def build_pages():
         started=str(started),
         covers=indent("\n".join(cards), 8),
         platform_cover=cover("platform", grows=True),
+        workflows=indent("\n".join(
+            f'<a class="wf-card cover-card" href="{e(w["href"])}">{cover("wf-" + w["slug"])}'
+            f'<span class="body"><b>{e(w["title"])}</b>'
+            f'<span class="meta"><span class="status is-active">Live</span><span>{e(w["kind"])}</span></span></span></a>'
+            for w in config["platform"]["workflows"]
+        ), 8),
+        workflow_count=str(len(config["platform"]["workflows"])),
         project_cover=cover("project", grows=True),
         contact=contact,
         contact_nav='<a href="#contact">Contact</a>' if contact else "",
