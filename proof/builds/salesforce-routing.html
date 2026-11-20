@@ -277,6 +277,58 @@
     @keyframes m-pop{0%{transform:scale(.3);opacity:0}60%{transform:scale(1.18);opacity:1}100%{transform:scale(1)}}
     @keyframes m-grow{from{transform:scaleX(0)}to{transform:scaleX(1)}}
     @keyframes m-slide{from{transform:translateX(-70px);opacity:0}to{transform:none}}
+
+    /* The project page: ownership line, facts, the lead's path, the choices. */
+    .own{margin:22px 0 0;font-size:clamp(1.125rem,1rem + .6vw,1.5rem);line-height:1.35;letter-spacing:-.02em;max-width:44rem;text-wrap:pretty}
+    .plat{display:grid;gap:0 40px;margin:40px 0 0;border-top:1px solid var(--line)}
+    @media (min-width:860px){.plat{grid-template-columns:repeat(3,minmax(0,1fr))}}
+    .plat div{padding:18px 0;border-bottom:1px solid var(--line)}
+    .plat dt{font-weight:500;font-size:1.0625rem;letter-spacing:-.02em}
+    .plat dd{margin:4px 0 0;color:var(--muted);font-size:.9375rem;line-height:1.45}
+    .ctl{margin-top:32px}
+    .ctl button{border:1px solid var(--ink);background:var(--ink);color:var(--bg);border-radius:8px;padding:9px 16px 10px;font-size:.9375rem}
+    .map{position:relative;display:grid;grid-template-columns:minmax(0,1fr) 30px minmax(0,1fr) 30px minmax(0,1fr) 30px minmax(0,1fr) 30px minmax(0,1fr) 30px minmax(0,1fr);margin:32px 0 0}
+    .stop{position:relative;border:1px solid var(--line);border-radius:10px;background:var(--bg);padding:0;text-align:left;display:flex;flex-direction:column;transition:border-color .3s,box-shadow .3s,transform .3s var(--ease)}
+    .stop:hover{transform:translateY(-2px)}
+    .stop:active{transform:scale(.98)}
+    .stop .art{border-bottom:1px solid var(--line);border-radius:9px 9px 0 0;transition:opacity .3s}
+    .stop-cap{padding:12px 14px 14px}
+    .stop-cap b{font-weight:500;font-size:1rem;letter-spacing:-.015em;line-height:1.2}
+    .stop-cap b i{font-style:normal;color:var(--muted);margin-right:6px;font-variant-numeric:tabular-nums}
+    .stop:not(.done) .art{opacity:.5}
+    .stop.cur{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent),var(--lift)}
+    .link{position:relative}
+    .link .ln{position:absolute;left:5px;right:5px;top:var(--mid,50px);height:2px;margin-top:-1px;background:var(--line);transition:background-color .5s}
+    .link .ln::after{content:"";position:absolute;right:0;top:50%;width:7px;height:7px;border-top:2px solid var(--muted);border-right:2px solid var(--muted);transform:translateY(-50%) rotate(45deg);opacity:.6;transition:border-color .5s,opacity .5s}
+    .link.on .ln{background:var(--accent)}.link.on .ln::after{border-color:var(--accent);opacity:1}
+    .lead{position:absolute;left:0;top:0;width:16px;height:16px;margin:-8px 0 0 -8px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 4px color-mix(in srgb,var(--accent) 24%,transparent),0 0 0 2px var(--bg);z-index:3;pointer-events:none;transition:transform .5s var(--ease)}
+    .lead.still{transition:none}
+    .one{margin:28px 0 0;border:1px solid var(--line);border-radius:10px;background:var(--bg);padding:26px 28px 28px;display:grid;gap:10px 56px;align-items:start}
+    @media (min-width:860px){.one{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}}
+    .one h3{margin:8px 0 0;font-size:clamp(1.375rem,1.1rem + 1vw,1.875rem);letter-spacing:-.03em;line-height:1.12;font-weight:500;text-wrap:balance}
+    .one p{margin:12px 0 0;color:var(--muted);max-width:34rem}
+    .one .go{display:inline-block;margin-top:18px}
+    .one dl{margin:0}
+    .one dl div{display:grid;grid-template-columns:5.5rem 1fr;gap:12px;padding:12px 0;border-bottom:1px solid var(--line)}
+    .one dl div:first-child{border-top:1px solid var(--line)}
+    .one dt{color:var(--muted);font-size:.875rem;padding-top:.1em}.one dd{margin:0}
+    .one .swap{animation:swap .5s var(--ease) both}
+    @keyframes swap{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+    @media (max-width:860px){.map{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.link,.lead{display:none}}
+    .why{display:grid;gap:20px;margin-top:32px}
+    @media (min-width:860px){.why{grid-template-columns:repeat(3,minmax(0,1fr))}}
+    .why article{border:1px solid var(--line);border-radius:10px;overflow:hidden;background:var(--bg);display:flex;flex-direction:column}
+    .why .c{padding:18px 20px;background:var(--panel);border-bottom:1px solid var(--line)}
+    .why .d{padding:18px 20px 22px}
+    .why small{display:block;font-family:var(--mono);font-size:.6875rem;color:var(--muted);margin-bottom:6px}
+    .why .c b{font-weight:500;line-height:1.35;display:block}
+    .why .d b{font-weight:500;font-size:1.125rem;letter-spacing:-.02em;line-height:1.3;display:block}
+    .why .d p{margin:10px 0 0;font-size:.9375rem;line-height:1.5;color:var(--muted)}
+    .cs-slot{margin:32px 0 0}
+    .shows{margin:32px 0 0;border-top:2px solid var(--accent)}
+    .shows div{display:grid;gap:6px 40px;padding:18px 0;border-bottom:1px solid var(--line)}
+    @media (min-width:860px){.shows div{grid-template-columns:16rem 1fr}}
+    .shows dt{font-weight:500;font-size:1.0625rem;letter-spacing:-.02em}.shows dd{margin:0;color:var(--muted);line-height:1.5}
   </style>
 </head>
 <body>
@@ -597,6 +649,38 @@
           if (motion) ScrollTrigger.refresh();
         });
       });
+
+      // The lead's path on the project page. Click a part, or let one lead walk through all of them.
+      (function () {
+        var map = document.getElementById("map"), src = document.getElementById("journey");
+        if (!map || !src) return;
+        var steps = JSON.parse(src.textContent), at = 0, timer = null, play = document.getElementById("play");
+        var lead = map.querySelector(".lead"), stops = map.querySelectorAll(".stop"), links = map.querySelectorAll(".link");
+        var calm = matchMedia("(prefers-reduced-motion: reduce)").matches;
+        function rest(i) { var m = map.getBoundingClientRect(), r = stops[i].getBoundingClientRect(); return "translate(" + (r.left - m.left + r.width / 2) + "px," + (r.top - m.top) + "px)"; }
+        function text(id, value, quiet) { var el = document.getElementById(id); el.textContent = value; if (quiet) return; el.classList.remove("swap"); void el.offsetWidth; el.classList.add("swap"); }
+        function show(i, quiet) {
+          at = Math.max(0, Math.min(steps.length - 1, i)); var step = steps[at];
+          lead.classList.toggle("still", !!quiet || calm); lead.style.transform = rest(at);
+          stops.forEach(function (b, k) { b.classList.toggle("done", k <= at); b.classList.toggle("cur", k === at); if (k === at) b.setAttribute("aria-current", "step"); else b.removeAttribute("aria-current"); });
+          links.forEach(function (l, k) { l.classList.toggle("on", k < at); });
+          if (!quiet) { var art = stops[at].querySelector(".art"); art.classList.remove("play"); void art.getBoundingClientRect(); art.classList.add("play"); }
+          var status = document.getElementById("s-status"); status.textContent = step.status; status.className = "status " + step.css;
+          text("s-name", step.name, quiet); text("s-why", step.why, quiet); text("s-gets", step.gets, quiet); text("s-out", step.out, quiet);
+          document.getElementById("s-go").href = "builds/" + step.slug + ".html";
+        }
+        function size() { map.style.setProperty("--mid", stops[0].querySelector(".art").getBoundingClientRect().height / 2 + "px"); lead.classList.add("still"); lead.style.transform = rest(at); }
+        function stop() { if (timer) clearInterval(timer); timer = null; play.textContent = "Follow the lead"; }
+        play.addEventListener("click", function () {
+          if (timer) return stop();
+          show(0); play.textContent = "Stop";
+          timer = setInterval(function () { if (at >= steps.length - 1) return stop(); show(at + 1); }, 2200);
+        });
+        stops.forEach(function (b) { b.addEventListener("click", function () { stop(); show(Number(b.dataset.step)); }); });
+        window.addEventListener("resize", size);
+        if (document.fonts && document.fonts.ready) document.fonts.ready.then(size);
+        size(); show(0, true);
+      })();
 
       if (!motion) return;
 
