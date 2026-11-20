@@ -268,10 +268,10 @@
     .art .m-grow{transform-origin:left center}
     .art .m-draw{stroke-dasharray:1}
     @media (prefers-reduced-motion:no-preference){
-      :is(.cover-card,.sys-cover):hover .m-draw,.art.play .m-draw{animation:m-draw .8s var(--ease) both;animation-delay:calc(var(--i,0)*70ms)}
-      :is(.cover-card,.sys-cover):hover .m-pop,.art.play .m-pop{animation:m-pop .55s var(--ease) both;animation-delay:calc(var(--i,0)*70ms)}
-      :is(.cover-card,.sys-cover):hover :is(.m-grow,.m-growc),.art.play :is(.m-grow,.m-growc){animation:m-grow .7s var(--ease) both;animation-delay:calc(var(--i,0)*70ms)}
-      :is(.cover-card,.sys-cover):hover .m-slide,.art.play .m-slide{animation:m-slide .8s var(--ease) both;animation-delay:calc(var(--i,0)*110ms)}
+      :is(.cover-card,.sys-cover):hover .m-draw,.art.play .m-draw{animation:m-draw 1.4s var(--ease) both;animation-delay:calc(var(--i,0)*130ms)}
+      :is(.cover-card,.sys-cover):hover .m-pop,.art.play .m-pop{animation:m-pop .9s var(--ease) both;animation-delay:calc(var(--i,0)*130ms)}
+      :is(.cover-card,.sys-cover):hover :is(.m-grow,.m-growc),.art.play :is(.m-grow,.m-growc){animation:m-grow 1.2s var(--ease) both;animation-delay:calc(var(--i,0)*130ms)}
+      :is(.cover-card,.sys-cover):hover .m-slide,.art.play .m-slide{animation:m-slide 1.3s var(--ease) both;animation-delay:calc(var(--i,0)*200ms)}
     }
     @keyframes m-draw{from{stroke-dashoffset:1}to{stroke-dashoffset:0}}
     @keyframes m-pop{0%{transform:scale(.3);opacity:0}60%{transform:scale(1.18);opacity:1}100%{transform:scale(1)}}
@@ -587,7 +587,7 @@
           entries.forEach(function (entry) {
             if (!entry.isIntersecting) return;
             var art = entry.target; seen.unobserve(art); art.classList.add("play");
-            setTimeout(function () { art.classList.remove("play"); }, 2600);
+            setTimeout(function () { art.classList.remove("play"); }, 4400);
           });
         }, { threshold: 0.6 });
         $$(".art").forEach(function (art) { seen.observe(art); });
