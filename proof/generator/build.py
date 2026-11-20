@@ -110,9 +110,13 @@ def link_url(link, repo):
     return link["url"] if "url" in link else github_url(repo, link["path"])
 
 
-def cover(name):
-    """A drawn cover, kept as an SVG file in covers/."""
-    return (GENERATOR / "covers" / f"{name}.svg").read_text(encoding="utf-8").strip()
+def cover(name, grows=False):
+    """A drawn cover, kept as an SVG file in covers/. With grows, it carries a name the browser uses to
+    grow it from a card into the top of the page it opens (same name on both pages)."""
+    art = (GENERATOR / "covers" / f"{name}.svg").read_text(encoding="utf-8").strip()
+    if grows:
+        art = art.replace('<svg class="art"', f'<svg class="art" style="view-transition-name:cover-{name}"', 1)
+    return art
 
 
 def card_html(build, status):
@@ -121,7 +125,7 @@ def card_html(build, status):
     text, css = STATUSES[status]
     off = " off" if status == "planned" else ""
     return (
-        f'<a class="cover-card{off}" href="builds/{build["slug"]}.html">{cover(build["slug"])}'
+        f'<a class="cover-card{off}" href="builds/{build["slug"]}.html">{cover(build["slug"], grows=True)}'
         f'<span class="body"><b>{e(build["card_title"])}</b>'
         f'<span class="meta"><span class="status {css}">{text}</span><span>{e(build["tools"])}</span></span></span></a>'
     )
@@ -177,7 +181,7 @@ def journey_html(project, builds, status_of):
     for index, step in enumerate(project["journey"]):
         text, css = STATUSES[status_of[step["slug"]]]
         stops.append(
-            f'<button type="button" class="stop" data-step="{index}">{cover(step["slug"])}'
+            f'<button type="button" class="stop" data-step="{index}">{cover(step["slug"], grows=True)}'
             f'<span class="stop-cap"><b><i>{index + 1}</i>{e(step["short"])}</b></span></button>'
             + ('<div class="link"><i class="ln"></i></div>' if index < last else "")
         )
@@ -282,6 +286,7 @@ def build_pages():
         started=str(started),
         covers=indent("\n".join(cards), 8),
         platform_cover=cover("platform"),
+        project_cover=cover("project", grows=True),
         contact=contact,
         contact_nav='<a href="#contact">Contact</a>' if contact else "",
         contact_links=contact_links_html(contact_config),
@@ -343,6 +348,7 @@ def build_pages():
         else:
             sections = [headline, recording, figure, image, article]
         sections.insert(0, sits_html(project, build["slug"]))
+        banner = f'    <div class="page-cover">{cover(build["slug"], grows=True)}</div>'
 
         pages[f'builds/{build["slug"]}.html'] = template("build.html").substitute(
             style=style,
@@ -352,6 +358,7 @@ def build_pages():
             folder_url=github_url(repo, posixpath.dirname(build["readme"])),
             status_class=status_class,
             status_text=status_text,
+            banner=banner,
             sections="\n".join(s for s in sections if s),
             pager=indent("\n".join(pager), 6),
         )
@@ -364,6 +371,7 @@ def build_pages():
         script=script,
         repo=repo,
         title=e(project["title"]),
+        banner=cover("project", grows=True),
         parts=str(len(builds)),
         started=str(started),
         own=e(project["own"]),
