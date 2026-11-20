@@ -35,3 +35,4 @@ One line each: chose X over Y because Z, accepting T.
 - Every part write-up now opens with a strip of all six parts in order, this one marked, and a link back to the map. So a reader always knows where they are.
 - The project has its own drawing on the home page, beside the words, with three buttons. The big demo screenshot is off the home page (it is on the tracked site write-up). A drawing grows from its card into the top of the page it opens, in browsers that support it and only when motion is welcome.
 - The project drawing now tells the project: many clicks come in, one is followed past the consent gate, down one of three routes, to the bottom of the funnel. It borrows a piece from each part drawing.
+- Drawings can now show the lead itself: one grey dot steps out of the crowd and takes the colour, and funnel bars take the colour for a moment as the lead passes. Used on the project drawing and the funnel drawing.

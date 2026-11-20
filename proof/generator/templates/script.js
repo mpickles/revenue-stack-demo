@@ -179,7 +179,7 @@
       entries.forEach(function (entry) {
         if (!entry.isIntersecting) return;
         var art = entry.target; seen.unobserve(art); art.classList.add("play");
-        setTimeout(function () { art.classList.remove("play"); }, 4400);
+        setTimeout(function () { art.classList.remove("play"); }, 5400);
       });
     }, { threshold: 0.6 });
     $$(".art").forEach(function (art) { seen.observe(art); });
