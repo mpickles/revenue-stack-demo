@@ -299,6 +299,21 @@ class CommittedPages(unittest.TestCase):
             if 'class="pick"' in page or 'id="app"' in page:
                 self.assertRegex(page, r"made[- ]up", item["file"])
 
+    def test_every_platform_workflow_has_a_card_on_the_home_page_that_opens_something(self):
+        home = self.pages["index.html"]
+        workflows = self.config["platform"]["workflows"]
+        self.assertEqual(home.count('class="wf-card cover-card"'), len(workflows))
+        for w in workflows:
+            self.assertTrue((build.GENERATOR / "covers" / f'wf-{w["slug"]}.svg').is_file(), w["slug"])
+            self.assertIn(html.escape(w["title"]), home)
+            self.assertIn(f'href="{w["href"]}"', home)
+            self.assertIn(w["href"].split("#")[0], self.pages)
+
+    def test_the_platform_map_comes_before_the_reasons_and_the_failures(self):
+        page = self.pages["platform.html"]
+        self.assertLess(page.index('id="hub"'), page.index("Why it is built the way it is"))
+        self.assertLess(page.index('id="hub"'), page.index("What broke, and what I did about it"))
+
     def test_no_em_dashes(self):
         for path, text in self.pages.items():
             self.assertNotIn(chr(0x2014), text, path)
