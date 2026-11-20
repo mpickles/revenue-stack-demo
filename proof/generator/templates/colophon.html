@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <title>How this site was made, Max Pickard</title>
+  <!-- Made by proof/generator/build.py from templates/colophon.html. Do not edit by hand. -->
+  <script>
+    // Runs before the page paints. Applies the saved light or dark choice, and picks one accent
+    // colour per visit: teal, cobalt, red, orange or plum. Each pair is [light mode, dark mode].
+    (function () {
+      var el = document.documentElement, pairs = [["#0F7B6C", "#3CC8B4"], ["#2348E8", "#7C93FF"], ["#C4261D", "#FF6B5E"], ["#C2500C", "#FF8A3D"], ["#8A2A6B", "#E58FCA"]];
+      var pick = Math.floor(Math.random() * pairs.length);
+      try {
+        var theme = localStorage.getItem("theme"); if (theme) el.dataset.theme = theme;
+        var saved = sessionStorage.getItem("accent");
+        if (saved !== null && pairs[saved]) pick = Number(saved); else sessionStorage.setItem("accent", pick);
+      } catch (e) {}
+      el.style.setProperty("--a-l", pairs[pick][0]); el.style.setProperty("--a-d", pairs[pick][1]);
+    })();
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+$style
+  </style>
+</head>
+<body>
+  <div class="progress" aria-hidden="true"></div>
+  <nav class="nav" aria-label="Site">
+    <a class="nav-name" href="index.html">Max Pickard</a>
+    <div><a href="index.html#work">Work</a><a href="index.html#contact">Contact</a><button type="button" data-theme-toggle>Dark</button></div>
+  </nav>
+  <main class="writeup"><div class="wrap">
+    <header class="writeup-head">
+      <h1 data-rise>How this site was made</h1>
+    </header>
+    <p class="sub">The site is a piece of work too. These are the choices behind it.</p>
+
+    <div class="cs-block">
+      <h2 class="cs-h">Type</h2>
+      <div class="specimen">
+        <div><div class="big">Aa</div><small>IBM Plex Sans, for everything you read. Weight 400 and 500 only.</small></div>
+        <div><div class="mono">gclid=Cj0KCQ 37/37</div><small>IBM Plex Mono, for data only: dates, statuses, tool names, numbers. Never for decoration.</small></div>
+      </div>
+    </div>
+
+    <div class="cs-block">
+      <h2 class="cs-h">Colour</h2>
+      <p>Off-white and near-black, never pure. One accent colour, picked at random each visit. Press one to try it.</p>
+      <div class="swatches" role="group" aria-label="Accent colour">
+        <button type="button" data-a="0"><i style="background:#0F7B6C"></i><span>Teal</span></button>
+        <button type="button" data-a="1"><i style="background:#2348E8"></i><span>Cobalt</span></button>
+        <button type="button" data-a="2"><i style="background:#C4261D"></i><span>Red</span></button>
+        <button type="button" data-a="3"><i style="background:#C2500C"></i><span>Orange</span></button>
+        <button type="button" data-a="4"><i style="background:#8A2A6B"></i><span>Plum</span></button>
+      </div>
+    </div>
+
+    <div class="cs-block cs-cols" data-stagger>
+      <section><h2>Motion</h2><ul>
+        <li>Things move once, when you reach them, and then stay put.</li>
+        <li>Nothing loops. The one background ripple ends in under five seconds.</li>
+        <li>The dot grid only moves where your pointer is.</li>
+        <li>With "reduce motion" on, nothing moves at all.</li>
+      </ul></section>
+      <section><h2>Small things</h2><ul>
+        <li>Borders are see-through ink, so they sit right on any background.</li>
+        <li>The nav corner is the button corner plus the gap around it.</li>
+        <li>Numbers in tables are all the same width.</li>
+        <li>Wide tables fade at the edge that still scrolls.</li>
+      </ul></section>
+      <section><h2>What I left out</h2><ul>
+        <li>Gradient blobs, glass cards and floating particles.</li>
+        <li>Numbered section labels and tiny all-caps headings.</li>
+        <li>A cursor that replaces yours.</li>
+        <li>Any number I cannot back up.</li>
+      </ul></section>
+    </div>
+
+    <div class="cs-block">
+      <h2 class="cs-h">Built with</h2>
+      <div class="tw"><table>
+        <tr><th>Part</th><th>What</th><th>Why</th></tr>
+        <tr><td>Pages</td><td>Plain HTML and CSS, made by one Python script</td><td>No framework to keep alive. Each write-up is built from the README beside the code</td></tr>
+        <tr><td>Motion</td><td>GSAP 3.13.0</td><td>One library, one pinned version</td></tr>
+        <tr><td>Background</td><td>A small canvas script</td><td>No library needed</td></tr>
+        <tr><td>Checks</td><td>Automatic tests on every change</td><td>Links resolve, images have descriptions, no result is shown that does not exist</td></tr>
+        <tr><td>Hosting</td><td>Vercel, static files</td><td>Nothing to run</td></tr>
+        <tr><td>How</td><td>Designed and directed by me, built with Claude Code</td><td>Every real choice is written down in the repo</td></tr>
+      </table></div>
+    </div>
+  </div></main>
+  <script>
+    (function () {
+      var pairs = [["#0F7B6C", "#3CC8B4"], ["#2348E8", "#7C93FF"], ["#C4261D", "#FF6B5E"], ["#C2500C", "#FF8A3D"], ["#8A2A6B", "#E58FCA"]], el = document.documentElement;
+      var now = 0; try { now = Number(sessionStorage.getItem("accent")) || 0; } catch (e) {}
+      function set(i) {
+        el.style.setProperty("--a-l", pairs[i][0]); el.style.setProperty("--a-d", pairs[i][1]);
+        try { sessionStorage.setItem("accent", i); } catch (e) {}
+        document.querySelectorAll(".swatches button").forEach(function (b) { b.setAttribute("aria-pressed", b.dataset.a == i); });
+      }
+      document.querySelectorAll(".swatches button").forEach(function (b) { b.addEventListener("click", function () { set(Number(b.dataset.a)); }); });
+      set(now);
+    })();
+  </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/ScrollTrigger.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/SplitText.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/Flip.min.js"></script>
+  <script>
+$script
+  </script>
+</body>
+</html>
