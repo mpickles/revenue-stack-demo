@@ -239,8 +239,9 @@ details.full .prose{padding:0 22px 22px;margin-top:0}
 .cs-cols .repo-links li::before{display:none}
 .cs-cols .repo-links li{padding-left:0}
 /* Drawings move once when you point at them, and once when they first scroll into view. Never with "reduce motion". */
-.art .m-pop,.art .m-grow,.art .m-growc,.art .m-slide,.art .m-tint,.art .m-lead,.art .m-fall{transform-box:fill-box;transform-origin:center}
+.art .m-pop,.art .m-grow,.art .m-growc,.art .m-slide,.art .m-tint,.art .m-lead,.art .m-fall,.art .m-pass,.art .m-score{transform-box:fill-box;transform-origin:center}
 .art .m-fall{opacity:0}
+.art .m-score{transform-origin:left center}
 .art .m-grow{transform-origin:left center}
 .art .m-draw{stroke-dasharray:1}
 @media (prefers-reduced-motion:no-preference){
@@ -254,6 +255,13 @@ details.full .prose{padding:0 22px 22px;margin-top:0}
   :is(.cover-card,.sys-cover,.proj-cover,.stop):hover .m-lead,.art.play .m-lead{animation:m-lead 1.1s var(--ease) both;animation-delay:calc(var(--i,0)*130ms)}
   /* A box that is already there, empty, and fills with the colour when the lead reaches it. */
   :is(.cover-card,.sys-cover,.proj-cover,.stop):hover .m-fill,.art.play .m-fill{animation:m-fill .5s var(--ease) both;animation-delay:calc(var(--i,0)*130ms)}
+  /* A dot that starts grey, travels --d to its place, and takes the colour on the way. */
+  :is(.cover-card,.sys-cover,.proj-cover,.stop):hover .m-pass,.art.play .m-pass{animation:m-pass 1.3s var(--ease) both;animation-delay:calc(var(--i,0)*130ms)}
+  /* A cell the check passes over: it takes the colour for a moment. A flagged cell keeps it. */
+  :is(.cover-card,.sys-cover,.proj-cover,.stop):hover .m-blink,.art.play .m-blink{animation:m-tint .6s ease-in-out both;animation-delay:calc(var(--i,0)*130ms)}
+  :is(.cover-card,.sys-cover,.proj-cover,.stop):hover .m-mark,.art.play .m-mark{animation:m-mark .4s var(--ease) both;animation-delay:calc(var(--i,0)*130ms)}
+  /* A score bar that grows grey and takes the colour once it is past the line. */
+  :is(.cover-card,.sys-cover,.proj-cover,.stop):hover .m-score,.art.play .m-score{animation:m-grow 1.2s var(--ease) both,m-mark .4s var(--ease) both;animation-delay:calc(var(--i,0)*130ms),calc(var(--i,0)*130ms + 700ms)}
   /* The lead falling through the funnel: --d is how far, in drawing units. */
   :is(.cover-card,.sys-cover,.proj-cover,.stop):hover .m-fall,.art.play .m-fall{animation:m-fall 1.6s ease-in-out both;animation-delay:calc(var(--i,0)*130ms)}
 }
@@ -262,6 +270,8 @@ details.full .prose{padding:0 22px 22px;margin-top:0}
 @keyframes m-grow{from{transform:scaleX(0)}to{transform:scaleX(1)}}
 @keyframes m-slide{from{transform:translateX(-70px);opacity:0}to{transform:none}}
 @keyframes m-fill{from{fill:var(--bg);stroke:var(--muted);stroke-width:1.5;opacity:.8}to{fill:var(--accent);stroke:var(--accent);stroke-width:1.5;opacity:1}}
+@keyframes m-pass{0%{transform:translateX(calc(var(--d,80)*-1px));fill:var(--muted);opacity:.35}50%{fill:var(--muted);opacity:.35}100%{transform:none;fill:var(--accent);opacity:1}}
+@keyframes m-mark{from{fill:var(--muted);opacity:.35}to{fill:var(--accent);opacity:1}}
 @keyframes m-tint{0%,100%{fill:var(--muted);opacity:.35}45%{fill:var(--accent);opacity:1}}
 @keyframes m-lead{0%{transform:translateX(-40px) scale(.6);fill:var(--muted);opacity:.35}55%{transform:none;fill:var(--muted);opacity:.35}100%{transform:none;fill:var(--accent);opacity:1}}
 @keyframes m-fall{0%{transform:translateY(calc(var(--d,100)*-1px));opacity:0}12%,82%{opacity:1}100%{transform:none;opacity:0}}
