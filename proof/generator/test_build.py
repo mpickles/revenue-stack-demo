@@ -262,6 +262,43 @@ class CommittedPages(unittest.TestCase):
             self.assertIn("@media (prefers-reduced-motion:no-preference){@view-transition{navigation:auto}}", text, path)
             self.assertEqual(text.count("@view-transition"), 1, path)
 
+    def test_the_platform_has_its_own_drawing_on_the_home_page_and_it_opens_the_platform_page(self):
+        home = self.pages["index.html"]
+        self.assertIn('href="platform.html"', home)
+        self.assertEqual(home.count("view-transition-name:cover-platform"), 1)
+        self.assertEqual(self.pages["platform.html"].count("view-transition-name:cover-platform"), 1)
+
+    def test_every_platform_link_lands_on_a_page_that_exists(self):
+        for item in self.config["platform"]["pages"]:
+            page = self.pages[item["file"]]
+            for href in re.findall(r'href="([^"#:]+\.html)(?:#[^"]*)?"', page):
+                self.assertIn(href, self.pages, f'{item["file"]} links to {href}')
+
+    def test_every_box_on_the_platform_map_opens_something(self):
+        page = self.pages["platform.html"]
+        boxes = re.findall(r'<a class="rg" href="([^"]+)"', page)
+        self.assertEqual(len(boxes), 6)
+        for href in boxes:
+            self.assertTrue(href.startswith("#") or href.split("#")[0] in self.pages, href)
+
+    def test_every_platform_story_lists_all_the_stories_and_links_back_to_the_map(self):
+        stories = [item["file"] for item in self.config["platform"]["pages"] if item["file"] != "platform.html"]
+        for file in stories:
+            page = self.pages[file]
+            strip = page[page.index('<section class="sits"'):]
+            strip = strip[: strip.index("</section>")]
+            self.assertIn('href="platform.html#hub"', strip)
+            self.assertEqual(strip.count('aria-current="page"'), 1, file)
+            self.assertIn(f'href="{file}" aria-current="page"', strip)
+            for other in stories:
+                self.assertIn(f'href="{other}"', strip, file)
+
+    def test_a_platform_demo_says_its_clients_and_numbers_are_made_up(self):
+        for item in self.config["platform"]["pages"]:
+            page = self.pages[item["file"]]
+            if 'class="pick"' in page or 'id="app"' in page:
+                self.assertRegex(page, r"made[- ]up", item["file"])
+
     def test_no_em_dashes(self):
         for path, text in self.pages.items():
             self.assertNotIn(chr(0x2014), text, path)

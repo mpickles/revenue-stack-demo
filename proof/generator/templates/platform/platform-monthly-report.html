@@ -1,0 +1,70 @@
+<main class="writeup"><div class="wrap">
+    <header class="writeup-head">
+      <h1>Monthly reports that check their own numbers</h1>
+      <p class="status is-active">Live at Upgrow</p>
+    </header>
+    <p class="own">I designed and built this workflow <b>end to end</b>: the tables it reads, the instructions the model follows, the number checker and the review screen.</p>
+    <div class="nums"><div><b>4<i>of</i>9</b><span>decks built first time on the first full live day</span></div><div><b>9<i>of</i>9</b><span>rebuilt and checked by hand the next day</span></div><div><b>58%</b><span>smaller data packet per report after one rewrite</span></div></div>
+    <section class="sits" aria-label="Where this sits"><div class="sits-h"><span><b>Story 1 of 6</b> from the Upgrow operations platform</span><a href="platform.html#hub">Back to the platform map</a></div><div class="bstrip"><a href="platform-monthly-report.html" aria-current="page"><small>1</small>Reports that check their numbers</a><a href="platform-warehouse.html"><small>2</small>A warehouse that costs nothing</a><a href="platform-audit.html"><small>3</small>The audit that found blocked tags</a><a href="platform-access.html"><small>4</small>Each person sees only their clients</a><a href="platform-changes.html"><small>5</small>Change history, no token</a><a href="platform-more.html"><small>6</small>Six more things it does</a></div></section>
+    <div class="cs-block" style="margin-top:0">
+      <h2 class="cs-h">Try it: review a report</h2>
+      <p class="sub">One number on one slide does not match the data. Fix it, or build anyway.</p>
+      <div class="app" id="app">
+        <div class="app-bar"><span class="dots"><i></i><i></i><i></i></span><span>The review screen, rebuilt for this page with made-up clients and numbers.</span></div>
+        <div class="app-body">
+          <nav class="app-nav" aria-label="Screens"><strong>Operations</strong>
+            <button type="button" aria-pressed="true">Report review</button>
+            <small>Signed in as an account lead. You see your three clients and nobody else's.</small>
+          </nav>
+          <div class="app-main">
+            <section>
+              <div class="app-h"><b>Client B, October report</b><span>Report review</span></div>
+              <p class="app-sub">The model wrote the slides. Code checked every number on them. One does not match.</p>
+              <ul class="rows2" id="rv">
+                <li><span><b>The month in one line</b><small>3 numbers, all match the data</small></span><span class="tag2 ok">Checked</span></li>
+                <li><span><b>Spend and leads by campaign</b><small>12 numbers, all match the data</small></span><span class="tag2 ok">Checked</span></li>
+                <li id="rv-bad"><span><b>Cost per lead</b><small id="rv-note">The slide says $45.00. The data says $50.00.</small></span><span class="tag2 bad" id="rv-tag">Does not match</span></li>
+                <li><span><b>What we changed, and what happened</b><small>4 numbers, all match the data</small></span><span class="tag2 ok">Checked</span></li>
+              </ul>
+              <div class="act"><button type="button" id="rv-fix">Use the number from the data</button><button type="button" class="go" id="rv-go">Approve and build</button><span id="rv-say">You can still build with a warning. The choice is the account lead's, and it is logged.</span></div>
+            </section>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="cs-block"><h2 class="cs-h">The checker gets checked too</h2><p class="sub">If the checker itself breaks, the build fails and nothing ships.</p><div class="app"><div class="app-bar"><span class="dots"><i></i><i></i><i></i></span><span>Four tests that run every time the checker is built.</span></div><div class="app-body"><div class="app-main solo"><ul class="rows2"><li><span><b>A clean deck</b><small>Every number matches the data</small></span><span class="tag2 ok">Passes</span></li><li><span><b>One planted wrong number</b><small>A single figure changed on one slide</small></span><span class="tag2 bad">Caught</span></li><li><span><b>A number that is only in someone's notes</b><small>Not in the data at all</small></span><span class="tag2 bad">Caught</span></li><li><span><b>A deck with its numbers block missing</b><small>Nothing to check against</small></span><span class="tag2 bad">Refused</span></li></ul></div></div></div></div>
+    <div class="cs-block">
+      <h2 class="cs-h">How one report gets made</h2>
+      <ol class="run5"><li><small>1. It reads</small><p>Warehouse performance tables, CRM leads, the work log, account changes, call summaries and meeting notes</p></li><li><small>2. A draft is made</small><p>The model writes the story and the slide text from numbers that are already worked out</p></li><li><small>3. Code checks it</small><p>Numbers come only from tested tables. Stale data and partial periods are flagged, and the numbers on each slide are checked</p></li><li><small>4. A person decides</small><p>Reviews the packet slide by slide: reorders, edits, locks, cuts, adds context, then approves</p></li><li><small>5. It comes out</small><p>A draft slide deck and its data sheet. A person sends it</p></li></ol>
+    </div>
+    <div class="cs-block">
+      <h2 class="cs-h">Why it is built the way it is</h2>
+      <div class="why" data-stagger><article><div class="c"><small>Because</small><b>A model will state a wrong number with total confidence.</b></div><div class="d"><small>So</small><b>Code works out every number. The model only writes.</b><p>Each figure a slide can quote is worked out in SQL first and handed over.</p></div></article><article><div class="c"><small>Because</small><b>A true number from stale or half-finished data still misleads.</b></div><div class="d"><small>So</small><b>Stale data and partial periods are flagged on the slide.</b><p>The reviewer sees the warning before the client ever could.</p></div></article><article><div class="c"><small>Because</small><b>The account lead knows things the checker does not.</b></div><div class="d"><small>So</small><b>A failed number check warns. It does not lock the build.</b><p>They can build anyway, and the choice is logged against their name.</p></div></article></div>
+    </div>
+    <div class="cs-block">
+      <h2 class="cs-h">What broke, and what I did about it</h2>
+      <div class="broke" data-stagger>
+        <div><b>A date was read as a number, and every draft was blocked.</b><p>The number checker read the "2026-08" in a date as the number 202 and rejected every report that month.</p><small><i>Fix</i>Dates are stripped out before numbers are checked, with a test for it.</small></div>
+        <div><b>On the first full live day, fewer than half the decks built first time.</b><p>A missing file permission, a time limit that was too short, and a test run that had marked work as already done.</p><small><i>Fix</i>Each cause fixed that day, and every deck rebuilt and checked by hand the next.</small></div>
+      </div>
+    </div>
+    <div class="cs-block">
+      <h2 class="cs-h">Result</h2>
+      <div class="result"><p class="big">Hours saved per report: <span class="slot">being measured</span></p></div>
+    </div>
+    <p class="deep"><a class="go" href="platform.html#monthly-report">Back to the platform map</a></p>
+  </div></main>
+  <script>
+    (function () {
+      var fixed = false;
+      document.getElementById("rv-fix").addEventListener("click", function () {
+        fixed = true; var t = document.getElementById("rv-tag"); t.textContent = "Checked"; t.className = "tag2 ok";
+        document.getElementById("rv-note").textContent = "Now says $50.00, the same as the data."; this.disabled = true;
+        document.getElementById("rv-say").textContent = "Every number now matches.";
+      });
+      document.getElementById("rv-go").addEventListener("click", function () {
+        this.disabled = true; document.getElementById("rv-fix").disabled = true;
+        document.getElementById("rv-say").textContent = fixed ? "Deck draft built. A person sends it, not the platform." : "Deck draft built with one warning, logged against your name. A person sends it.";
+      });
+    })();
+  </script>

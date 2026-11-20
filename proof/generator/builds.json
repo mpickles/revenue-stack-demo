@@ -301,5 +301,37 @@
       "card_title": "Duplicate records merged and checked against an answer key",
       "tools": "Salesforce"
     }
-  ]
+  ],
+  "platform": {
+    "pages": [
+      {
+        "file": "platform.html",
+        "title": "Upgrow marketing operations platform"
+      },
+      {
+        "file": "platform-monthly-report.html",
+        "title": "Monthly reports that check their own numbers"
+      },
+      {
+        "file": "platform-warehouse.html",
+        "title": "A warehouse that costs nothing to run"
+      },
+      {
+        "file": "platform-audit.html",
+        "title": "The audit that found consent was blocking every tag"
+      },
+      {
+        "file": "platform-access.html",
+        "title": "Each person sees only their clients"
+      },
+      {
+        "file": "platform-changes.html",
+        "title": "Change history without a developer token"
+      },
+      {
+        "file": "platform-more.html",
+        "title": "Six more things it does"
+      }
+    ]
+  }
 }

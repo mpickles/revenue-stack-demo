@@ -285,7 +285,7 @@ def build_pages():
         parts=str(len(builds)),
         started=str(started),
         covers=indent("\n".join(cards), 8),
-        platform_cover=cover("platform"),
+        platform_cover=cover("platform", grows=True),
         project_cover=cover("project", grows=True),
         contact=contact,
         contact_nav='<a href="#contact">Contact</a>' if contact else "",
@@ -361,6 +361,15 @@ def build_pages():
             banner=banner,
             sections="\n".join(s for s in sections if s),
             pager=indent("\n".join(pager), 6),
+        )
+
+    # The platform pages are written by hand in templates/platform/ and wrapped in the shared shell.
+    platform_style = indent((GENERATOR / "templates" / "platform.css").read_text(encoding="utf-8").strip(), 4)
+    for item in config["platform"]["pages"]:
+        body = (GENERATOR / "templates" / "platform" / item["file"]).read_text(encoding="utf-8").rstrip()
+        body = body.replace("$$COVER$$", cover("platform", grows=True))
+        pages[item["file"]] = template("platform-shell.html").substitute(
+            style=style, platform_style=platform_style, script=script, title=e(item["title"]), file=item["file"], body=body,
         )
 
     stops, journey = journey_html(project, builds, status_of)
