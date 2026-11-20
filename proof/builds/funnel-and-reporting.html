@@ -342,6 +342,25 @@
     .mini a[aria-current]{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent);color:var(--ink)}
     .mini a:not([aria-current]) .art{opacity:.6}
     @media (max-width:700px){.mini{grid-template-columns:repeat(3,minmax(0,1fr))}}
+
+    /* The project on the home page: its drawing on one side, the words and three buttons on the other. */
+    .sys.lead-in{align-items:center}
+    @media (min-width:900px){.sys.lead-in{grid-template-columns:minmax(0,1.05fr) minmax(0,1fr)}}
+    .proj-cover{display:block;background:none;border:1px solid var(--line);border-radius:10px;overflow:hidden;transition:transform .35s var(--ease),box-shadow .35s var(--ease)}
+    .proj-cover:hover{transform:translateY(-3px);box-shadow:var(--lift)}
+    .sys p.acts{display:flex;flex-wrap:wrap;gap:8px;margin:24px 0 28px}
+    .sys p.acts a{margin:0;background:none;border:1px solid var(--line);border-radius:8px;padding:9px 16px 10px;font-size:.9375rem;transition:transform .16s var(--ease),border-color .2s var(--ease)}
+    .sys p.acts a:hover{border-color:var(--muted)}
+    .sys p.acts a:active{transform:scale(.96)}
+    .sys p.acts a.main{background:var(--ink);border-color:var(--ink);color:var(--bg)}
+    .sys.lead-in+.parts-h{margin-top:56px}
+
+    /* A drawing grows from its card into the top of the page it opens. Browsers without this just change page. */
+    .page-cover{border:1px solid var(--line);border-radius:10px;overflow:hidden;margin-bottom:56px;background:var(--panel)}
+    .page-cover .art{aspect-ratio:16/5}
+    @media (prefers-reduced-motion:no-preference){@view-transition{navigation:auto}}
+    ::view-transition-group(*){animation-duration:.5s;animation-timing-function:cubic-bezier(.23,1,.32,1)}
+    ::view-transition-old(root),::view-transition-new(root){animation-duration:.3s}
   </style>
 </head>
 <body>
@@ -351,6 +370,7 @@
     <div><a href="../index.html#work">All builds</a><a href="https://github.com/mpickles/revenue-stack-demo/tree/main/warehouse">GitHub</a><button type="button" data-theme-toggle>Dark</button></div>
   </nav>
   <main class="writeup"><div class="wrap">
+    <div class="page-cover"><svg class="art" style="view-transition-name:cover-funnel-and-reporting" viewBox="0 0 400 250" role="img" aria-label="Five bars narrowing to a coloured last step" xmlns="http://www.w3.org/2000/svg"><rect class="c-bar m-growc" style="--i:0" x="60.0" y="52" width="280" height="20" rx="4"/><rect class="c-bar m-growc" style="--i:1" x="93.0" y="83" width="214" height="20" rx="4"/><rect class="c-bar m-growc" style="--i:2" x="125.0" y="114" width="150" height="20" rx="4"/><rect class="c-bar m-growc" style="--i:3" x="152.0" y="145" width="96" height="20" rx="4"/><rect class="c-on m-growc" style="--i:4" x="174.0" y="176" width="52" height="20" rx="4"/></svg></div>
     <header class="writeup-head">
       <h1 data-rise>Funnel in SQL, and a reporting agent that cannot misquote</h1>
       <p class="status is-planned">Planned</p>

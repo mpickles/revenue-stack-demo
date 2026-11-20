@@ -342,6 +342,25 @@
     .mini a[aria-current]{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent);color:var(--ink)}
     .mini a:not([aria-current]) .art{opacity:.6}
     @media (max-width:700px){.mini{grid-template-columns:repeat(3,minmax(0,1fr))}}
+
+    /* The project on the home page: its drawing on one side, the words and three buttons on the other. */
+    .sys.lead-in{align-items:center}
+    @media (min-width:900px){.sys.lead-in{grid-template-columns:minmax(0,1.05fr) minmax(0,1fr)}}
+    .proj-cover{display:block;background:none;border:1px solid var(--line);border-radius:10px;overflow:hidden;transition:transform .35s var(--ease),box-shadow .35s var(--ease)}
+    .proj-cover:hover{transform:translateY(-3px);box-shadow:var(--lift)}
+    .sys p.acts{display:flex;flex-wrap:wrap;gap:8px;margin:24px 0 28px}
+    .sys p.acts a{margin:0;background:none;border:1px solid var(--line);border-radius:8px;padding:9px 16px 10px;font-size:.9375rem;transition:transform .16s var(--ease),border-color .2s var(--ease)}
+    .sys p.acts a:hover{border-color:var(--muted)}
+    .sys p.acts a:active{transform:scale(.96)}
+    .sys p.acts a.main{background:var(--ink);border-color:var(--ink);color:var(--bg)}
+    .sys.lead-in+.parts-h{margin-top:56px}
+
+    /* A drawing grows from its card into the top of the page it opens. Browsers without this just change page. */
+    .page-cover{border:1px solid var(--line);border-radius:10px;overflow:hidden;margin-bottom:56px;background:var(--panel)}
+    .page-cover .art{aspect-ratio:16/5}
+    @media (prefers-reduced-motion:no-preference){@view-transition{navigation:auto}}
+    ::view-transition-group(*){animation-duration:.5s;animation-timing-function:cubic-bezier(.23,1,.32,1)}
+    ::view-transition-old(root),::view-transition-new(root){animation-duration:.3s}
   </style>
 </head>
 <body>

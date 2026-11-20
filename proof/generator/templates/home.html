@@ -53,20 +53,17 @@ $style
 $proof
     <section class="sec" id="work"><div class="wrap">
       <h2>Projects</h2>
-      <article class="sys">
+      <article class="sys lead-in">
+        <a class="proj-cover" href="project.html" aria-label="See the whole system">$project_cover</a>
         <div>
           <h3>$project_title</h3>
           <p>$project_sentence</p>
-          <p><a href="project.html">See the whole system</a> <a href="$demo">Open the live demo</a> <a href="$repo">Code on GitHub</a></p>
-        </div>
-        <dl class="facts">
+          <p class="acts"><a class="main" href="project.html">See the whole system</a><a href="$demo">Live demo</a><a href="$repo">Code</a></p>
+          <dl class="facts">
 $project_facts
-        </dl>
+          </dl>
+        </div>
       </article>
-      <figure class="frame" data-grow>
-        <div class="frame-bar" aria-hidden="true"><i></i><i></i><i></i><span>roadwren-demo.vercel.app/demo</span></div>
-        <img src="img/tracked-site.webp" width="1440" height="900" loading="lazy" alt="The Roadwren demo form with the cookie banner open, offering Reject all and Accept all, before any click ID is stored.">
-      </figure>
       <p class="parts-h">$parts parts. $started are under way.</p>
       <div class="covers" data-stagger>
 $covers

@@ -33,3 +33,4 @@ One line each: chose X over Y because Z, accepting T.
 - Cover drawings move once when pointed at, and once when they first scroll into view (so phones see it). CSS only, no loop, off with reduce motion.
 - New page for the whole project: the six parts in the order a lead meets them, as one row you can click or play through. Order and wording live in builds.json under "journey". The launch check is called that, not "page checker", because it checks tracking before a campaign goes live.
 - Every part write-up now opens with a strip of all six parts in order, this one marked, and a link back to the map. So a reader always knows where they are.
+- The project has its own drawing on the home page, beside the words, with three buttons. The big demo screenshot is off the home page (it is on the tracked site write-up). A drawing grows from its card into the top of the page it opens, in browsers that support it and only when motion is welcome.

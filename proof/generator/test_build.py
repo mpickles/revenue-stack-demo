@@ -239,6 +239,29 @@ class CommittedPages(unittest.TestCase):
             for slug in order:
                 self.assertIn(f'href="{slug}.html"', strip)
 
+    def test_the_project_has_its_own_drawing_on_the_home_page_and_it_opens_the_project_page(self):
+        home = self.pages["index.html"]
+        self.assertTrue((build.GENERATOR / "covers" / "project.svg").is_file())
+        card = home[home.index('<a class="proj-cover"'):]
+        card = card[: card.index("</a>")]
+        self.assertIn('href="project.html"', card)
+        self.assertIn("view-transition-name:cover-project", card)
+        self.assertIn("view-transition-name:cover-project", self.pages["project.html"])
+
+    def test_a_drawing_grows_from_its_card_into_the_page_it_opens(self):
+        for item in self.config["builds"]:
+            name = f'view-transition-name:cover-{item["slug"]}'
+            self.assertEqual(self.pages["index.html"].count(name), 1, item["slug"])
+            self.assertEqual(self.pages["project.html"].count(name), 1, item["slug"])
+            page = self.pages[f'builds/{item["slug"]}.html']
+            self.assertEqual(page.count("view-transition-name:"), 1, item["slug"])
+            self.assertIn(name, page[page.index('<div class="page-cover">'):page.index('<header class="writeup-head">')])
+
+    def test_pages_only_slide_into_each_other_when_motion_is_welcome(self):
+        for path, text in self.pages.items():
+            self.assertIn("@media (prefers-reduced-motion:no-preference){@view-transition{navigation:auto}}", text, path)
+            self.assertEqual(text.count("@view-transition"), 1, path)
+
     def test_no_em_dashes(self):
         for path, text in self.pages.items():
             self.assertNotIn(chr(0x2014), text, path)

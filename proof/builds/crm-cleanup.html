@@ -342,6 +342,25 @@
     .mini a[aria-current]{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent);color:var(--ink)}
     .mini a:not([aria-current]) .art{opacity:.6}
     @media (max-width:700px){.mini{grid-template-columns:repeat(3,minmax(0,1fr))}}
+
+    /* The project on the home page: its drawing on one side, the words and three buttons on the other. */
+    .sys.lead-in{align-items:center}
+    @media (min-width:900px){.sys.lead-in{grid-template-columns:minmax(0,1.05fr) minmax(0,1fr)}}
+    .proj-cover{display:block;background:none;border:1px solid var(--line);border-radius:10px;overflow:hidden;transition:transform .35s var(--ease),box-shadow .35s var(--ease)}
+    .proj-cover:hover{transform:translateY(-3px);box-shadow:var(--lift)}
+    .sys p.acts{display:flex;flex-wrap:wrap;gap:8px;margin:24px 0 28px}
+    .sys p.acts a{margin:0;background:none;border:1px solid var(--line);border-radius:8px;padding:9px 16px 10px;font-size:.9375rem;transition:transform .16s var(--ease),border-color .2s var(--ease)}
+    .sys p.acts a:hover{border-color:var(--muted)}
+    .sys p.acts a:active{transform:scale(.96)}
+    .sys p.acts a.main{background:var(--ink);border-color:var(--ink);color:var(--bg)}
+    .sys.lead-in+.parts-h{margin-top:56px}
+
+    /* A drawing grows from its card into the top of the page it opens. Browsers without this just change page. */
+    .page-cover{border:1px solid var(--line);border-radius:10px;overflow:hidden;margin-bottom:56px;background:var(--panel)}
+    .page-cover .art{aspect-ratio:16/5}
+    @media (prefers-reduced-motion:no-preference){@view-transition{navigation:auto}}
+    ::view-transition-group(*){animation-duration:.5s;animation-timing-function:cubic-bezier(.23,1,.32,1)}
+    ::view-transition-old(root),::view-transition-new(root){animation-duration:.3s}
   </style>
 </head>
 <body>
@@ -351,6 +370,7 @@
     <div><a href="../index.html#work">All builds</a><a href="https://github.com/mpickles/revenue-stack-demo/tree/main/crm/salesforce_dedupe">GitHub</a><button type="button" data-theme-toggle>Dark</button></div>
   </nav>
   <main class="writeup"><div class="wrap">
+    <div class="page-cover"><svg class="art" style="view-transition-name:cover-crm-cleanup" viewBox="0 0 400 250" role="img" aria-label="Overlapping pairs of circles become three single circles" xmlns="http://www.w3.org/2000/svg"><circle class="c-hollow m-pop" style="--i:0" cx="86" cy="84" r="15"/><circle class="c-hollow m-pop" style="--i:1" cx="104" cy="92" r="15"/><circle class="c-hollow m-pop" style="--i:2" cx="80" cy="150" r="15"/><circle class="c-hollow m-pop" style="--i:3" cx="99" cy="160" r="15"/><circle class="c-hollow m-pop" style="--i:4" cx="140" cy="118" r="15"/><circle class="c-hollow m-pop" style="--i:5" cx="158" cy="126" r="15"/><path class="c-line m-draw" style="--i:5" pathLength="1" d="M196 125h52m-9-8 9 8-9 8"/><circle class="c-on m-pop" style="--i:7" cx="302" cy="84" r="15"/><circle class="c-on m-pop" style="--i:8" cx="302" cy="125" r="15"/><circle class="c-on m-pop" style="--i:9" cx="302" cy="166" r="15"/></svg></div>
     <header class="writeup-head">
       <h1 data-rise>CRM cleanup: duplicates merged by script and graded against an answer key</h1>
       <p class="status is-planned">Planned</p>
