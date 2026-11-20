@@ -263,6 +263,20 @@
     .specimen small{display:block;margin-top:12px;color:var(--muted);font-size:.875rem}
     .cs-cols .repo-links li::before{display:none}
     .cs-cols .repo-links li{padding-left:0}
+    /* Drawings move once when you point at them, and once when they first scroll into view. Never with "reduce motion". */
+    .art .m-pop,.art .m-grow,.art .m-growc,.art .m-slide{transform-box:fill-box;transform-origin:center}
+    .art .m-grow{transform-origin:left center}
+    .art .m-draw{stroke-dasharray:1}
+    @media (prefers-reduced-motion:no-preference){
+      :is(.cover-card,.sys-cover):hover .m-draw,.art.play .m-draw{animation:m-draw .8s var(--ease) both;animation-delay:calc(var(--i,0)*70ms)}
+      :is(.cover-card,.sys-cover):hover .m-pop,.art.play .m-pop{animation:m-pop .55s var(--ease) both;animation-delay:calc(var(--i,0)*70ms)}
+      :is(.cover-card,.sys-cover):hover :is(.m-grow,.m-growc),.art.play :is(.m-grow,.m-growc){animation:m-grow .7s var(--ease) both;animation-delay:calc(var(--i,0)*70ms)}
+      :is(.cover-card,.sys-cover):hover .m-slide,.art.play .m-slide{animation:m-slide .8s var(--ease) both;animation-delay:calc(var(--i,0)*110ms)}
+    }
+    @keyframes m-draw{from{stroke-dashoffset:1}to{stroke-dashoffset:0}}
+    @keyframes m-pop{0%{transform:scale(.3);opacity:0}60%{transform:scale(1.18);opacity:1}100%{transform:scale(1)}}
+    @keyframes m-grow{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+    @keyframes m-slide{from{transform:translateX(-70px);opacity:0}to{transform:none}}
   </style>
 </head>
 <body>
@@ -566,6 +580,19 @@
         }
         ScrollTrigger.refresh();
       }
+      // Cover drawings play once when they first come into view, so phones see the motion too.
+      // The class comes off afterwards so pointing at a card can play it again.
+      if (!still && "IntersectionObserver" in window) {
+        var seen = new IntersectionObserver(function (entries) {
+          entries.forEach(function (entry) {
+            if (!entry.isIntersecting) return;
+            var art = entry.target; seen.unobserve(art); art.classList.add("play");
+            setTimeout(function () { art.classList.remove("play"); }, 2600);
+          });
+        }, { threshold: 0.6 });
+        $$(".art").forEach(function (art) { seen.observe(art); });
+      }
+
       // Scrolling boxes (wide tables, diagrams, code) fade out at whichever edge still has more to scroll to.
       (function () {
         var boxes = $$(".tw, .figure, .prose pre");

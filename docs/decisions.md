@@ -30,3 +30,4 @@ One line each: chose X over Y because Z, accepting T.
 - Each part of the project is a card with a drawn cover and a title that says what it does. Covers are drawings of the idea, not data; a real screenshot replaces one when it exists. Planned parts are greyed but still link to their plan pages.
 - A write-up can have a short summary (what I did, then three bullets each for problem, build and choices). When it does, the README moves under "Full notes". Two parts have one so far.
 - New page: how the site was made (type, colour, motion, small details). New section: Notes, all marked "to come" until written.
+- Cover drawings move once when pointed at, and once when they first scroll into view (so phones see it). CSS only, no loop, off with reduce motion.

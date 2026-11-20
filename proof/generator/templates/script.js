@@ -140,6 +140,19 @@
     }
     ScrollTrigger.refresh();
   }
+  // Cover drawings play once when they first come into view, so phones see the motion too.
+  // The class comes off afterwards so pointing at a card can play it again.
+  if (!still && "IntersectionObserver" in window) {
+    var seen = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (!entry.isIntersecting) return;
+        var art = entry.target; seen.unobserve(art); art.classList.add("play");
+        setTimeout(function () { art.classList.remove("play"); }, 2600);
+      });
+    }, { threshold: 0.6 });
+    $$(".art").forEach(function (art) { seen.observe(art); });
+  }
+
   // Scrolling boxes (wide tables, diagrams, code) fade out at whichever edge still has more to scroll to.
   (function () {
     var boxes = $$(".tw, .figure, .prose pre");
