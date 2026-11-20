@@ -264,7 +264,8 @@
     .cs-cols .repo-links li::before{display:none}
     .cs-cols .repo-links li{padding-left:0}
     /* Drawings move once when you point at them, and once when they first scroll into view. Never with "reduce motion". */
-    .art .m-pop,.art .m-grow,.art .m-growc,.art .m-slide{transform-box:fill-box;transform-origin:center}
+    .art .m-pop,.art .m-grow,.art .m-growc,.art .m-slide,.art .m-tint,.art .m-lead,.art .m-fall{transform-box:fill-box;transform-origin:center}
+    .art .m-fall{opacity:0}
     .art .m-grow{transform-origin:left center}
     .art .m-draw{stroke-dasharray:1}
     @media (prefers-reduced-motion:no-preference){
@@ -272,11 +273,20 @@
       :is(.cover-card,.sys-cover,.proj-cover,.stop):hover .m-pop,.art.play .m-pop{animation:m-pop .9s var(--ease) both;animation-delay:calc(var(--i,0)*130ms)}
       :is(.cover-card,.sys-cover,.proj-cover,.stop):hover :is(.m-grow,.m-growc),.art.play :is(.m-grow,.m-growc){animation:m-grow 1.2s var(--ease) both;animation-delay:calc(var(--i,0)*130ms)}
       :is(.cover-card,.sys-cover,.proj-cover,.stop):hover .m-slide,.art.play .m-slide{animation:m-slide 1.3s var(--ease) both;animation-delay:calc(var(--i,0)*200ms)}
+      /* A bar that grows in, then takes the colour for a moment as the lead passes it (--t says when). */
+      :is(.cover-card,.sys-cover,.proj-cover,.stop):hover .m-tint,.art.play .m-tint{animation:m-grow 1.2s var(--ease) both,m-tint .8s ease-in-out both;animation-delay:calc(var(--i,0)*130ms),calc(var(--t,0)*130ms)}
+      /* The lead: starts as one grey dot in the crowd, steps forward, then takes the colour. */
+      :is(.cover-card,.sys-cover,.proj-cover,.stop):hover .m-lead,.art.play .m-lead{animation:m-lead 1.1s var(--ease) both;animation-delay:calc(var(--i,0)*130ms)}
+      /* The lead falling through the funnel: --d is how far, in drawing units. */
+      :is(.cover-card,.sys-cover,.proj-cover,.stop):hover .m-fall,.art.play .m-fall{animation:m-fall 1.6s ease-in-out both;animation-delay:calc(var(--i,0)*130ms)}
     }
     @keyframes m-draw{from{stroke-dashoffset:1}to{stroke-dashoffset:0}}
     @keyframes m-pop{0%{transform:scale(.3);opacity:0}60%{transform:scale(1.18);opacity:1}100%{transform:scale(1)}}
     @keyframes m-grow{from{transform:scaleX(0)}to{transform:scaleX(1)}}
     @keyframes m-slide{from{transform:translateX(-70px);opacity:0}to{transform:none}}
+    @keyframes m-tint{0%,100%{fill:var(--muted);opacity:.35}45%{fill:var(--accent);opacity:1}}
+    @keyframes m-lead{0%{transform:translateX(-40px) scale(.6);fill:var(--muted);opacity:.35}55%{transform:none;fill:var(--muted);opacity:.35}100%{transform:none;fill:var(--accent);opacity:1}}
+    @keyframes m-fall{0%{transform:translateY(calc(var(--d,100)*-1px));opacity:0}12%,82%{opacity:1}100%{transform:none;opacity:0}}
 
     /* The project page: ownership line, facts, the lead's path, the choices. */
     .own{margin:22px 0 0;font-size:clamp(1.125rem,1rem + .6vw,1.5rem);line-height:1.35;letter-spacing:-.02em;max-width:44rem;text-wrap:pretty}
@@ -628,7 +638,7 @@
           entries.forEach(function (entry) {
             if (!entry.isIntersecting) return;
             var art = entry.target; seen.unobserve(art); art.classList.add("play");
-            setTimeout(function () { art.classList.remove("play"); }, 4400);
+            setTimeout(function () { art.classList.remove("play"); }, 5400);
           });
         }, { threshold: 0.6 });
         $$(".art").forEach(function (art) { seen.observe(art); });
