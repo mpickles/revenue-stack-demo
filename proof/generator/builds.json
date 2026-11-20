@@ -53,6 +53,26 @@
         "height": 900,
         "alt": "The Roadwren demo form with the cookie banner open, offering Reject all and Accept all, before any click ID is stored.",
         "caption": "The live demo form. The banner comes first: nothing is stored until Accept."
+      },
+      "card_title": "A site that only tracks what the visitor agreed to",
+      "tools": "Next.js, Tag Manager, GA4, HubSpot",
+      "summary": {
+        "did": "Wrote the spec, built it with Claude Code, wrote the tests",
+        "problem": [
+          "An ad platform needs a click ID to match a lead back to the ad.",
+          "Storing that ID before the visitor agrees breaks consent.",
+          "A marketing team has to prove both: consent is respected and the loop still closes."
+        ],
+        "built": [
+          "All four consent signals start as denied, before any tag loads.",
+          "Click IDs wait in memory and are stored only after Accept.",
+          "The form carries them into HubSpot and fires one conversion event."
+        ],
+        "choices": [
+          "Advanced consent mode over basic, so Google can still model rejected visits.",
+          "Last ad click over first, because that is the one a platform matches.",
+          "Memory, not browser storage, before consent. Browser storage is storage too."
+        ]
       }
     },
     {
@@ -81,7 +101,27 @@
           "path": "docs/decisions.md"
         }
       ],
-      "scene": "routing-scene.html"
+      "scene": "routing-scene.html",
+      "card_title": "Every lead gets an owner, and the sale goes back to Google Ads",
+      "tools": "Salesforce Flow, Python",
+      "summary": {
+        "did": "Wrote the rules and both answer keys, built the Flow by hand, saved the setup as files",
+        "problem": [
+          "A lead with the wrong owner, or no owner, waits.",
+          "Ad platforms only learn which clicks became real leads if someone sends that back.",
+          "Routing built by clicking is hard to review and easy to break."
+        ],
+        "built": [
+          "Two rules block leads that should not get in.",
+          "One Flow sets the stage, the campaign and the owner queue.",
+          "A script writes the Google Ads upload file and checks every row."
+        ],
+        "choices": [
+          "Leads with no company size go to a review queue. Unknown is not small.",
+          "The UTM value is lowercased inside the Flow, because other forms and imports create leads too.",
+          "The setup is saved as files, so a change shows up as a diff."
+        ]
+      }
     },
     {
       "slug": "campaign-qa-agent",
@@ -100,7 +140,9 @@
           "label": "Decisions",
           "path": "docs/decisions.md"
         }
-      ]
+      ],
+      "card_title": "A checker that reads a landing page before the campaign launches",
+      "tools": "Python"
     },
     {
       "slug": "lead-qualifier",
@@ -119,7 +161,9 @@
           "label": "Decisions",
           "path": "docs/decisions.md"
         }
-      ]
+      ],
+      "card_title": "Leads scored against a written rubric, with the reasoning shown",
+      "tools": "Python, Claude"
     },
     {
       "slug": "funnel-and-reporting",
@@ -146,7 +190,9 @@
           "label": "Decisions",
           "path": "docs/decisions.md"
         }
-      ]
+      ],
+      "card_title": "One funnel in SQL, and a report that refuses to publish a wrong number",
+      "tools": "SQL, dbt"
     },
     {
       "slug": "crm-cleanup",
@@ -165,7 +211,9 @@
           "label": "Decisions",
           "path": "docs/decisions.md"
         }
-      ]
+      ],
+      "card_title": "Duplicate records merged and checked against an answer key",
+      "tools": "Salesforce"
     }
   ]
 }

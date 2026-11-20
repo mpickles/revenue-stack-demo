@@ -30,7 +30,7 @@ $style
   <div class="progress" aria-hidden="true"></div>
   <nav class="nav" aria-label="Site">
     <a class="nav-name" href="#top">Max Pickard</a>
-    <div><a href="#work">Work</a><a href="#experience">Experience</a><a href="#skills">Skills</a>$contact_nav<button type="button" data-theme-toggle>Dark</button></div>
+    <div><a href="#work">Work</a><a href="#experience">Experience</a><a href="#skills">Skills</a><a href="#notes">Notes</a>$contact_nav<button type="button" data-theme-toggle>Dark</button></div>
   </nav>
   <main id="top">
     <header class="hero"><div class="wrap">
@@ -39,14 +39,14 @@ $style
         <div class="slot-box portrait" role="img" aria-label="Photo of Max to come"><span>Photo to come</span></div>
       </div>
       <dl class="spec">
-        <div><dt>Role</dt><dd>Marketing Operations Specialist</dd></div>
-        <div><dt>Company</dt><dd>Upgrow</dd></div>
+        <div><dt>Work</dt><dd>Analytics developer</dd></div>
+        <div><dt>Day job</dt><dd>Marketing operations at Upgrow</dd></div>
         <div><dt>Based</dt><dd>Chicago</dd></div>
         <div><dt>Trained in</dt><dd>Applied mathematics</dd></div>
         <div><dt>Builds with</dt><dd>Claude Code, SQL, Salesforce, Tag Manager</dd></div>
       </dl>
       <div class="under">
-        <p>Tracking, CRM and AI systems for marketing teams.</p>
+        <p>I build data systems.</p>
         <nav aria-label="Links"><a href="#work">Work</a><a href="#experience">Experience</a>$contact_links<a href="$repo">GitHub</a></nav>
       </div>
     </div></header>
@@ -67,10 +67,10 @@ $project_facts
         <div class="frame-bar" aria-hidden="true"><i></i><i></i><i></i><span>roadwren-demo.vercel.app/demo</span></div>
         <img src="img/tracked-site.webp" width="1440" height="900" loading="lazy" alt="The Roadwren demo form with the cookie banner open, offering Reject all and Accept all, before any click ID is stored.">
       </figure>
-      <h3 class="parts-h">$parts parts, each with its own write-up</h3>
-      <ul class="rows" data-stagger>
-$rows
-      </ul>
+      <p class="parts-h">$parts parts. $started are under way.</p>
+      <div class="covers" data-stagger>
+$covers
+      </div>
       <article class="sys second">
         <div>
           <h3>Upgrow marketing operations platform</h3>
@@ -82,6 +82,7 @@ $rows
           <div><dt>Built with</dt><dd>Claude Code, a data warehouse, a Claude connector</dd></div>
         </dl>
       </article>
+      <div class="sys-cover">$platform_cover</div>
     </div></section>
 
     <section class="sec" id="experience"><div class="wrap">
@@ -117,11 +118,21 @@ $rows
       <p class="sub">Split honestly: what I use at work, and what I am building in the projects above.</p>
       <div class="tw"><table data-wipe>
         <tr><th>Area</th><th>Use at work</th><th>Building in the projects</th></tr>
+        <tr><td>Data and CRM</td><td>HubSpot and Salesforce connections, offline conversion imports, Zapier</td><td>Salesforce Flow, SQL, dbt</td></tr>
         <tr><td>Tracking and analytics</td><td>Google Tag Manager, GA4, consent mode, conversion tracking, Looker Studio</td><td>Browser tests for consent</td></tr>
-        <tr><td>CRM and data</td><td>HubSpot and Salesforce connections, offline conversion imports, Zapier</td><td>Salesforce Flow, SQL, dbt</td></tr>
-        <tr><td>Paid media and SEO</td><td>Google Ads, Microsoft Ads, LinkedIn Ads, SEO</td><td></td></tr>
         <tr><td>AI and automation</td><td>Claude Code, internal tools where code checks the output</td><td>Python, agents graded against answer keys, n8n, Clay</td></tr>
+        <tr><td>Paid media and SEO</td><td>Google Ads, Microsoft Ads, LinkedIn Ads, SEO</td><td></td></tr>
       </table></div>
+    </div></section>
+
+    <section class="sec" id="notes"><div class="wrap">
+      <h2>Notes</h2>
+      <p class="sub">Short write-ups of things I worked out while building. None are written yet.</p>
+      <ul class="notes-list" data-stagger>
+        <li><b>Why click IDs wait in memory until the visitor says yes</b><span class="slot">To come</span></li>
+        <li><b>Grading my own builds against an answer key</b><span class="slot">To come</span></li>
+        <li><b>Why the Flow sets the lead owner, not the assignment rules</b><span class="slot">To come</span></li>
+      </ul>
     </div></section>
 
     <section class="sec" id="about"><div class="wrap">
@@ -129,6 +140,7 @@ $rows
       <div class="about">
         <p>I learn whatever the job needs next. At Upgrow that has been SEO, then paid search, then tracking and CRMs, then SQL, and now building tools with AI.</p>
         <p>I studied applied mathematics at UC San Diego, which is why I grade my own builds against answer keys. Before any of this I worked on an alpaca ranch and cooked for a sorority house.</p>
+        <p><a href="colophon.html">How this site was made</a></p>
       </div>
     </div></section>
 $contact

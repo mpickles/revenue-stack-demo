@@ -73,7 +73,7 @@
     .spec{margin:clamp(28px,4vw,48px) 0 0;border-top:2px solid var(--accent);font-size:.9375rem;font-variant-numeric:tabular-nums}
     .spec div{display:grid;grid-template-columns:6.5rem 1fr;gap:12px;padding:11px 0;border-bottom:1px solid var(--line)}
     .spec dt{color:var(--muted)}.spec dd{margin:0}
-    @media (min-width:980px){.spec{display:grid;grid-template-columns:1.3fr .7fr .7fr 1fr 1.5fr;gap:0 32px}.spec div{display:block;padding:14px 0 0;border-bottom:0}.spec dd{margin-top:4px}}
+    @media (min-width:980px){.spec{display:grid;grid-template-columns:1fr 1.5fr .6fr 1fr 1.5fr;gap:0 32px}.spec div{display:block;padding:14px 0 0;border-bottom:0}.spec dd{margin-top:4px}}
     .under{display:flex;flex-wrap:wrap;gap:14px 40px;justify-content:space-between;align-items:baseline;margin-top:clamp(28px,4vw,48px);padding-top:22px;border-top:1px solid var(--line)}
     .under p{margin:0;font-size:clamp(1.0625rem,1rem + .5vw,1.375rem);letter-spacing:-.01em}
     .under nav{display:flex;flex-wrap:wrap;gap:6px 26px;font-size:1rem}
@@ -100,7 +100,7 @@
     .sys:first-of-type{margin-top:56px;border-top:2px solid var(--accent)}
     .sys.second{margin-top:128px;border-top:2px solid var(--accent)}
     .sys p a{margin-right:18px}
-    .parts-h{margin:88px 0 0;padding-bottom:14px;border-bottom:1px solid var(--line);font-size:1rem;font-weight:500;letter-spacing:0;color:var(--muted)}
+    .parts-h{margin:88px 0 0;font-size:1rem;font-weight:500;letter-spacing:0;color:var(--muted)}
     @media (min-width:900px){.sys{grid-template-columns:minmax(0,7fr) minmax(0,4fr)}}
     .sys h3{margin:0 0 16px;font-size:clamp(1.5rem,1.2rem + 1.4vw,2.375rem);line-height:1.05}
     .sys h3 a{background:none}
@@ -134,17 +134,6 @@
     table{width:100%;border-collapse:collapse;font-family:var(--mono);font-size:.8125rem;font-variant-numeric:tabular-nums;border:1px solid var(--line);min-width:32rem}
     th,td{text-align:left;padding:13px 16px;border-bottom:1px solid var(--line);border-right:1px solid var(--line);vertical-align:top}
     th{font-weight:500;color:var(--muted);background:var(--panel)}
-
-    /* The parts of a project, as rows */
-    .rows{list-style:none;margin:0;padding:0}
-    .rows li{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:6px 32px;align-items:baseline;padding:24px 0;border-bottom:1px solid var(--line)}
-    @media (min-width:860px){.rows li{grid-template-columns:minmax(0,1fr) minmax(0,1.5fr) 8.5rem}}
-    .rows b{font-weight:600;font-size:1.25rem;letter-spacing:-.02em}
-    .rows b a{background:none}
-    .rows p{margin:0;color:var(--muted);grid-column:1/-1}
-    @media (min-width:860px){.rows p{grid-column:auto}}
-    .rows .status{color:var(--muted);justify-self:end}
-    .rows li[hidden]{display:none}
 
     .xp{list-style:none;margin:56px 0 0;padding:0;border-top:2px solid var(--accent)}
     .xp>li{display:grid;gap:8px 72px;padding:36px 0;border-bottom:1px solid var(--line)}
@@ -217,13 +206,70 @@
     .cursor{position:fixed;left:0;top:0;width:12px;height:12px;margin:-6px 0 0 -6px;border-radius:50%;background:var(--coral);pointer-events:none;z-index:40;opacity:0;transition:background-color .2s var(--ease)}
     .cursor.on-link{background:color-mix(in srgb,var(--coral) 24%,transparent);box-shadow:inset 0 0 0 .5px var(--coral)}
     @media (prefers-reduced-motion:reduce){*{transition:none!important}.cursor{display:none}}
+    /* Covers, notes, case study summary, colophon */
+    .art{display:block;width:100%;aspect-ratio:16/10;background:var(--panel)}
+    .art .c-line{fill:none;stroke:var(--muted);stroke-width:1.5;opacity:.55}
+    .art .c-rule{stroke:var(--ink);stroke-width:1.5;stroke-dasharray:4 5;opacity:.5}
+    .art .c-dot,.art .c-bar,.art .c-cell{fill:var(--muted);opacity:.35}
+    .art .c-hollow{fill:none;stroke:var(--muted);stroke-width:1.5;opacity:.7}
+    .art .c-box{fill:var(--bg);stroke:var(--muted);stroke-width:1.5;opacity:.8}
+    .art .c-gate{fill:var(--ink)}
+    .art .c-on{fill:var(--accent)}
+    .art .c-on-line{fill:none;stroke:var(--accent);stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round}
+    .art .c-on-box{fill:var(--accent)}
+    .covers{display:grid;gap:24px;margin-top:28px}
+    @media (min-width:700px){.covers{grid-template-columns:repeat(2,minmax(0,1fr))}}
+    @media (min-width:1080px){.covers{grid-template-columns:repeat(3,minmax(0,1fr))}}
+    .cover-card{display:block;text-decoration:none;color:inherit;border:1px solid var(--line);border-radius:10px;overflow:hidden;background:var(--bg);transition:transform .35s var(--ease),box-shadow .35s var(--ease)}
+    a.cover-card:hover{transform:translateY(-4px);box-shadow:var(--lift)}
+    a.cover-card:hover b{text-decoration:underline;text-decoration-color:var(--accent);text-underline-offset:.2em}
+    .cover-card .art{border-bottom:1px solid var(--line)}
+    .cover-card .body{display:block;padding:20px 22px 22px}
+    .cover-card b{display:block;font-weight:500;font-size:1.125rem;line-height:1.3;letter-spacing:-.02em;text-wrap:balance}
+    .cover-card .meta{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px 16px;margin-top:16px;font-family:var(--mono);font-size:.75rem;color:var(--muted)}
+    .cover-card.off .art{opacity:.55}
+    .cover-card.off b{color:var(--muted)}
+    .sys-cover{margin:56px 0 0;border:1px solid var(--line);border-radius:10px;overflow:hidden}
+    .sys-cover .art{aspect-ratio:16/6}
+    .notes-list{list-style:none;margin:56px 0 0;padding:0;border-top:2px solid var(--accent)}
+    .notes-list li{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;gap:8px 32px;padding:24px 0;border-bottom:1px solid var(--line)}
+    .notes-list b{font-weight:500;font-size:clamp(1.125rem,1rem + .6vw,1.5rem);letter-spacing:-.025em}
+    .cs-strip{display:grid;gap:0 40px;margin:48px 0 0;border-top:2px solid var(--accent);font-size:.9375rem}
+    @media (min-width:860px){.cs-strip{grid-template-columns:1.6fr 1.4fr .8fr 1fr}}
+    .cs-strip div{padding:14px 0;border-bottom:1px solid var(--line)}
+    @media (min-width:860px){.cs-strip div{border-bottom:0}}
+    .cs-strip dt{color:var(--muted)}.cs-strip dd{margin:4px 0 0}
+    .cs-cols{display:grid;gap:40px 56px;margin:72px 0 0}
+    @media (min-width:860px){.cs-cols{grid-template-columns:repeat(3,minmax(0,1fr))}}
+    .cs-cols h2,.cs-h{font-size:1.25rem;letter-spacing:-.02em;font-weight:500;margin:0 0 16px;padding-bottom:12px;border-bottom:1px solid var(--line)}
+    .cs-cols ul{margin:0;padding:0;list-style:none}
+    .cs-cols li{padding:10px 0 10px 18px;position:relative;line-height:1.45}
+    .cs-cols li::before{content:"";position:absolute;left:0;top:1.05em;width:6px;height:6px;border-radius:50%;background:var(--accent)}
+    .cs-block{margin-top:88px}
+    details.full{margin-top:88px;border:1px solid var(--line);border-radius:10px;background:var(--bg)}
+    details.full summary{cursor:pointer;padding:18px 22px;font-weight:500;list-style:none;display:flex;justify-content:space-between}
+    details.full summary::after{content:"Open";font-family:var(--mono);font-size:.75rem;color:var(--muted)}
+    details.full[open] summary::after{content:"Close"}
+    details.full .prose{padding:0 22px 22px;margin-top:0}
+    .swatches{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px;margin-top:24px}
+    .swatches button{border:1px solid var(--line);border-radius:10px;padding:0;overflow:hidden;background:var(--bg);text-align:left}
+    .swatches i{display:block;height:72px}
+    .swatches span{display:block;padding:10px 12px;font-family:var(--mono);font-size:.75rem;color:var(--muted)}
+    .swatches button[aria-pressed="true"]{outline:2px solid var(--ink);outline-offset:2px}
+    .specimen{display:grid;gap:24px 56px;margin-top:24px;align-items:end}
+    @media (min-width:860px){.specimen{grid-template-columns:1fr 1fr}}
+    .specimen .big{font-size:clamp(4rem,12vw,8rem);line-height:.9;letter-spacing:-.05em;font-weight:500}
+    .specimen .mono{font-family:var(--mono);font-size:clamp(1.5rem,4vw,2.5rem);letter-spacing:-.02em}
+    .specimen small{display:block;margin-top:12px;color:var(--muted);font-size:.875rem}
+    .cs-cols .repo-links li::before{display:none}
+    .cs-cols .repo-links li{padding-left:0}
   </style>
 </head>
 <body>
   <div class="progress" aria-hidden="true"></div>
   <nav class="nav" aria-label="Site">
     <a class="nav-name" href="#top">Max Pickard</a>
-    <div><a href="#work">Work</a><a href="#experience">Experience</a><a href="#skills">Skills</a><a href="#contact">Contact</a><button type="button" data-theme-toggle>Dark</button></div>
+    <div><a href="#work">Work</a><a href="#experience">Experience</a><a href="#skills">Skills</a><a href="#notes">Notes</a><a href="#contact">Contact</a><button type="button" data-theme-toggle>Dark</button></div>
   </nav>
   <main id="top">
     <header class="hero"><div class="wrap">
@@ -232,14 +278,14 @@
         <div class="slot-box portrait" role="img" aria-label="Photo of Max to come"><span>Photo to come</span></div>
       </div>
       <dl class="spec">
-        <div><dt>Role</dt><dd>Marketing Operations Specialist</dd></div>
-        <div><dt>Company</dt><dd>Upgrow</dd></div>
+        <div><dt>Work</dt><dd>Analytics developer</dd></div>
+        <div><dt>Day job</dt><dd>Marketing operations at Upgrow</dd></div>
         <div><dt>Based</dt><dd>Chicago</dd></div>
         <div><dt>Trained in</dt><dd>Applied mathematics</dd></div>
         <div><dt>Builds with</dt><dd>Claude Code, SQL, Salesforce, Tag Manager</dd></div>
       </dl>
       <div class="under">
-        <p>Tracking, CRM and AI systems for marketing teams.</p>
+        <p>I build data systems.</p>
         <nav aria-label="Links"><a href="#work">Work</a><a href="#experience">Experience</a><button type="button" class="copy" data-copy="maxapickard@gmail.com">Copy email</button><a href="https://www.linkedin.com/in/maxwellapickard/">LinkedIn</a><a href="https://github.com/mpickles/revenue-stack-demo">GitHub</a></nav>
       </div>
     </div></header>
@@ -263,15 +309,15 @@
         <div class="frame-bar" aria-hidden="true"><i></i><i></i><i></i><span>roadwren-demo.vercel.app/demo</span></div>
         <img src="img/tracked-site.webp" width="1440" height="900" loading="lazy" alt="The Roadwren demo form with the cookie banner open, offering Reject all and Accept all, before any click ID is stored.">
       </figure>
-      <h3 class="parts-h">6 parts, each with its own write-up</h3>
-      <ul class="rows" data-stagger>
-        <li class="is-active"><b><a href="builds/tracked-site.html">Tracked site</a></b><p>A demo site that stores a click ID only after consent and carries it through the form into the CRM.</p><span class="status is-active">In progress</span></li>
-        <li class="is-active"><b><a href="builds/salesforce-routing.html">Salesforce routing and conversions</a></b><p>Leads from the form get a stage, a campaign and an owner in Salesforce. Conversions go back to Google Ads.</p><span class="status is-active">In progress</span></li>
-        <li class="is-planned"><b><a href="builds/campaign-qa-agent.html">Campaign QA agent</a></b><p>A Python tool that checks landing pages for tags, consent, the conversion event and UTM values before launch.</p><span class="status is-planned">Planned</span></li>
-        <li class="is-planned"><b><a href="builds/lead-qualifier.html">Lead qualifier agent</a></b><p>Claude scores each new lead against a written rubric, routes the strong ones and asks a person when unsure.</p><span class="status is-planned">Planned</span></li>
-        <li class="is-planned"><b><a href="builds/funnel-and-reporting.html">Funnel in SQL and a reporting agent</a></b><p>The funnel and ad credit in SQL, and a weekly summary where code checks every number before it is published.</p><span class="status is-planned">Planned</span></li>
-        <li class="is-planned"><b><a href="builds/crm-cleanup.html">CRM cleanup</a></b><p>Duplicate accounts and contacts in Salesforce found and merged by script, with every merge graded.</p><span class="status is-planned">Planned</span></li>
-      </ul>
+      <p class="parts-h">6 parts. 2 are under way.</p>
+      <div class="covers" data-stagger>
+        <a class="cover-card" href="builds/tracked-site.html"><svg class="art" viewBox="0 0 400 250" role="img" aria-label="Dots pass a gate; only some continue, in colour" xmlns="http://www.w3.org/2000/svg"><line class="c-line" x1="40" y1="125" x2="360" y2="125"/><rect class="c-gate" x="194" y="56" width="12" height="138" rx="3"/><circle class="c-dot" cx="62" cy="125" r="7"/><circle class="c-dot" cx="92" cy="125" r="7"/><circle class="c-dot" cx="122" cy="125" r="7"/><circle class="c-dot" cx="152" cy="125" r="7"/><circle class="c-hollow" cx="176" cy="96" r="7"/><circle class="c-hollow" cx="170" cy="158" r="7"/><circle class="c-on" cx="236" cy="125" r="7"/><circle class="c-on" cx="276" cy="125" r="7"/><circle class="c-on" cx="316" cy="125" r="7"/><path class="c-on-line" d="M330 125h26m-8-7 8 7-8 7"/></svg><span class="body"><b>A site that only tracks what the visitor agreed to</b><span class="meta"><span class="status is-active">In progress</span><span>Next.js, Tag Manager, GA4, HubSpot</span></span></span></a>
+        <a class="cover-card" href="builds/salesforce-routing.html"><svg class="art" viewBox="0 0 400 250" role="img" aria-label="One line splits into three; one branch is in colour" xmlns="http://www.w3.org/2000/svg"><circle class="c-dot" cx="70" cy="125" r="8"/><path class="c-line" d="M78 125H150M150 125C190 125 190 62 230 62H300M150 125H300M150 125C190 125 190 188 230 188H300"/><path class="c-on-line" d="M150 125C190 125 190 62 230 62H300"/><rect class="c-on-box" x="300" y="44" width="52" height="36" rx="6"/><rect class="c-box" x="300" y="107" width="52" height="36" rx="6"/><rect class="c-box" x="300" y="170" width="52" height="36" rx="6"/></svg><span class="body"><b>Every lead gets an owner, and the sale goes back to Google Ads</b><span class="meta"><span class="status is-active">In progress</span><span>Salesforce Flow, Python</span></span></span></a>
+        <a class="cover-card off" href="builds/campaign-qa-agent.html"><svg class="art" viewBox="0 0 400 250" role="img" aria-label="A grid of checks with six flagged in colour" xmlns="http://www.w3.org/2000/svg"><rect class="c-cell" x="76" y="66" width="22" height="22" rx="4"/><rect class="c-on" x="108" y="66" width="22" height="22" rx="4"/><rect class="c-cell" x="140" y="66" width="22" height="22" rx="4"/><rect class="c-cell" x="172" y="66" width="22" height="22" rx="4"/><rect class="c-cell" x="204" y="66" width="22" height="22" rx="4"/><rect class="c-cell" x="236" y="66" width="22" height="22" rx="4"/><rect class="c-cell" x="268" y="66" width="22" height="22" rx="4"/><rect class="c-cell" x="300" y="66" width="22" height="22" rx="4"/><rect class="c-cell" x="76" y="98" width="22" height="22" rx="4"/><rect class="c-cell" x="108" y="98" width="22" height="22" rx="4"/><rect class="c-cell" x="140" y="98" width="22" height="22" rx="4"/><rect class="c-cell" x="172" y="98" width="22" height="22" rx="4"/><rect class="c-on" x="204" y="98" width="22" height="22" rx="4"/><rect class="c-cell" x="236" y="98" width="22" height="22" rx="4"/><rect class="c-on" x="268" y="98" width="22" height="22" rx="4"/><rect class="c-cell" x="300" y="98" width="22" height="22" rx="4"/><rect class="c-cell" x="76" y="130" width="22" height="22" rx="4"/><rect class="c-cell" x="108" y="130" width="22" height="22" rx="4"/><rect class="c-on" x="140" y="130" width="22" height="22" rx="4"/><rect class="c-cell" x="172" y="130" width="22" height="22" rx="4"/><rect class="c-cell" x="204" y="130" width="22" height="22" rx="4"/><rect class="c-cell" x="236" y="130" width="22" height="22" rx="4"/><rect class="c-cell" x="268" y="130" width="22" height="22" rx="4"/><rect class="c-cell" x="300" y="130" width="22" height="22" rx="4"/><rect class="c-on" x="76" y="162" width="22" height="22" rx="4"/><rect class="c-cell" x="108" y="162" width="22" height="22" rx="4"/><rect class="c-cell" x="140" y="162" width="22" height="22" rx="4"/><rect class="c-cell" x="172" y="162" width="22" height="22" rx="4"/><rect class="c-cell" x="204" y="162" width="22" height="22" rx="4"/><rect class="c-on" x="236" y="162" width="22" height="22" rx="4"/><rect class="c-cell" x="268" y="162" width="22" height="22" rx="4"/><rect class="c-cell" x="300" y="162" width="22" height="22" rx="4"/></svg><span class="body"><b>A checker that reads a landing page before the campaign launches</b><span class="meta"><span class="status is-planned">Planned</span><span>Python</span></span></span></a>
+        <a class="cover-card off" href="builds/lead-qualifier.html"><svg class="art" viewBox="0 0 400 250" role="img" aria-label="Score bars; the ones past a threshold are in colour" xmlns="http://www.w3.org/2000/svg"><line class="c-rule" x1="250" y1="48" x2="250" y2="202"/><rect class="c-on" x="60" y="58" width="210" height="12" rx="6"/><rect class="c-bar" x="60" y="82" width="96" height="12" rx="6"/><rect class="c-on" x="60" y="106" width="248" height="12" rx="6"/><rect class="c-bar" x="60" y="130" width="150" height="12" rx="6"/><rect class="c-bar" x="60" y="154" width="60" height="12" rx="6"/><rect class="c-on" x="60" y="178" width="226" height="12" rx="6"/></svg><span class="body"><b>Leads scored against a written rubric, with the reasoning shown</b><span class="meta"><span class="status is-planned">Planned</span><span>Python, Claude</span></span></span></a>
+        <a class="cover-card off" href="builds/funnel-and-reporting.html"><svg class="art" viewBox="0 0 400 250" role="img" aria-label="Five bars narrowing to a coloured last step" xmlns="http://www.w3.org/2000/svg"><rect class="c-bar" x="60.0" y="52" width="280" height="20" rx="4"/><rect class="c-bar" x="93.0" y="83" width="214" height="20" rx="4"/><rect class="c-bar" x="125.0" y="114" width="150" height="20" rx="4"/><rect class="c-bar" x="152.0" y="145" width="96" height="20" rx="4"/><rect class="c-on" x="174.0" y="176" width="52" height="20" rx="4"/></svg><span class="body"><b>One funnel in SQL, and a report that refuses to publish a wrong number</b><span class="meta"><span class="status is-planned">Planned</span><span>SQL, dbt</span></span></span></a>
+        <a class="cover-card off" href="builds/crm-cleanup.html"><svg class="art" viewBox="0 0 400 250" role="img" aria-label="Overlapping pairs of circles become three single circles" xmlns="http://www.w3.org/2000/svg"><circle class="c-hollow" cx="86" cy="84" r="15"/><circle class="c-hollow" cx="104" cy="92" r="15"/><circle class="c-hollow" cx="80" cy="150" r="15"/><circle class="c-hollow" cx="99" cy="160" r="15"/><circle class="c-hollow" cx="140" cy="118" r="15"/><circle class="c-hollow" cx="158" cy="126" r="15"/><path class="c-line" d="M196 125h52m-9-8 9 8-9 8"/><circle class="c-on" cx="302" cy="84" r="15"/><circle class="c-on" cx="302" cy="125" r="15"/><circle class="c-on" cx="302" cy="166" r="15"/></svg><span class="body"><b>Duplicate records merged and checked against an answer key</b><span class="meta"><span class="status is-planned">Planned</span><span>Salesforce</span></span></span></a>
+      </div>
       <article class="sys second">
         <div>
           <h3>Upgrow marketing operations platform</h3>
@@ -283,6 +329,7 @@
           <div><dt>Built with</dt><dd>Claude Code, a data warehouse, a Claude connector</dd></div>
         </dl>
       </article>
+      <div class="sys-cover"><svg class="art" viewBox="0 0 400 250" role="img" aria-label="Five sources feed one store, which feeds three outputs" xmlns="http://www.w3.org/2000/svg"><rect class="c-box" x="46" y="43" width="46" height="22" rx="5"/><path class="c-line" d="M92 54C140 54 140 125 176 125"/><rect class="c-box" x="46" y="77" width="46" height="22" rx="5"/><path class="c-line" d="M92 88C140 88 140 125 176 125"/><rect class="c-box" x="46" y="111" width="46" height="22" rx="5"/><path class="c-line" d="M92 122C140 122 140 125 176 125"/><rect class="c-box" x="46" y="145" width="46" height="22" rx="5"/><path class="c-line" d="M92 156C140 156 140 125 176 125"/><rect class="c-box" x="46" y="179" width="46" height="22" rx="5"/><path class="c-line" d="M92 190C140 190 140 125 176 125"/><rect class="c-on-box" x="176" y="86" width="64" height="78" rx="10"/><path class="c-on-line" d="M240 125C276 125 276 74 308 74"/><rect class="c-box" x="308" y="61" width="50" height="26" rx="5"/><path class="c-on-line" d="M240 125C276 125 276 125 308 125"/><rect class="c-box" x="308" y="112" width="50" height="26" rx="5"/><path class="c-on-line" d="M240 125C276 125 276 176 308 176"/><rect class="c-box" x="308" y="163" width="50" height="26" rx="5"/></svg></div>
     </div></section>
 
     <section class="sec" id="experience"><div class="wrap">
@@ -318,11 +365,21 @@
       <p class="sub">Split honestly: what I use at work, and what I am building in the projects above.</p>
       <div class="tw"><table data-wipe>
         <tr><th>Area</th><th>Use at work</th><th>Building in the projects</th></tr>
+        <tr><td>Data and CRM</td><td>HubSpot and Salesforce connections, offline conversion imports, Zapier</td><td>Salesforce Flow, SQL, dbt</td></tr>
         <tr><td>Tracking and analytics</td><td>Google Tag Manager, GA4, consent mode, conversion tracking, Looker Studio</td><td>Browser tests for consent</td></tr>
-        <tr><td>CRM and data</td><td>HubSpot and Salesforce connections, offline conversion imports, Zapier</td><td>Salesforce Flow, SQL, dbt</td></tr>
-        <tr><td>Paid media and SEO</td><td>Google Ads, Microsoft Ads, LinkedIn Ads, SEO</td><td></td></tr>
         <tr><td>AI and automation</td><td>Claude Code, internal tools where code checks the output</td><td>Python, agents graded against answer keys, n8n, Clay</td></tr>
+        <tr><td>Paid media and SEO</td><td>Google Ads, Microsoft Ads, LinkedIn Ads, SEO</td><td></td></tr>
       </table></div>
+    </div></section>
+
+    <section class="sec" id="notes"><div class="wrap">
+      <h2>Notes</h2>
+      <p class="sub">Short write-ups of things I worked out while building. None are written yet.</p>
+      <ul class="notes-list" data-stagger>
+        <li><b>Why click IDs wait in memory until the visitor says yes</b><span class="slot">To come</span></li>
+        <li><b>Grading my own builds against an answer key</b><span class="slot">To come</span></li>
+        <li><b>Why the Flow sets the lead owner, not the assignment rules</b><span class="slot">To come</span></li>
+      </ul>
     </div></section>
 
     <section class="sec" id="about"><div class="wrap">
@@ -330,6 +387,7 @@
       <div class="about">
         <p>I learn whatever the job needs next. At Upgrow that has been SEO, then paid search, then tracking and CRMs, then SQL, and now building tools with AI.</p>
         <p>I studied applied mathematics at UC San Diego, which is why I grade my own builds against answer keys. Before any of this I worked on an alpaca ranch and cooked for a sorority house.</p>
+        <p><a href="colophon.html">How this site was made</a></p>
       </div>
     </div></section>
 

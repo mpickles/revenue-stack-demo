@@ -170,6 +170,38 @@ class CommittedPages(unittest.TestCase):
         self.assertEqual("linkedin.com/in/" in home, bool(contact.get("linkedin")))
         self.assertEqual('href="#contact"' in home, bool(contact.get("email") or contact.get("linkedin")))
 
+    def test_every_part_has_a_card_with_its_cover_and_tools(self):
+        home = self.pages["index.html"]
+        self.assertEqual(home.count('class="cover-card'), len(self.config["builds"]))
+        for item in self.config["builds"]:
+            self.assertTrue((build.GENERATOR / "covers" / f'{item["slug"]}.svg').is_file(), item["slug"])
+            self.assertIn(html.escape(item["card_title"]), home)
+            self.assertIn(html.escape(item["tools"]), home)
+
+    def test_a_write_up_with_a_summary_leads_with_it_and_keeps_the_full_notes(self):
+        for item in self.config["builds"]:
+            page = self.pages[f'builds/{item["slug"]}.html']
+            if item.get("summary"):
+                for key in ("problem", "built", "choices"):
+                    self.assertEqual(len(item["summary"][key]), 3, f'{item["slug"]} {key}')
+                    for line in item["summary"][key]:
+                        self.assertIn(html.escape(line), page)
+                self.assertLess(page.index('class="cs-cols"'), page.index('<details class="full">'), item["slug"])
+                self.assertIn('<article class="prose">', page[page.index('<details class="full">'):])
+            else:
+                self.assertNotIn('<details class="full">', page)
+
+    def test_the_page_about_how_the_site_was_made_exists_and_is_linked(self):
+        self.assertIn("colophon.html", self.pages)
+        self.assertIn('href="colophon.html"', self.pages["index.html"])
+
+    def test_a_note_that_is_not_written_shows_as_an_empty_slot(self):
+        home = self.pages["index.html"]
+        notes = home[home.index('<ul class="notes-list"'):]
+        notes = notes[: notes.index("</ul>")]
+        self.assertEqual(notes.count("<li>"), notes.count('<span class="slot">To come</span>'))
+        self.assertNotIn("<a ", notes)
+
     def test_no_em_dashes(self):
         for path, text in self.pages.items():
             self.assertNotIn(chr(0x2014), text, path)

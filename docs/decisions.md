@@ -26,3 +26,7 @@ One line each: chose X over Y because Z, accepting T.
 - Portfolio background: a faint dot grid on a canvas, dots near the pointer take the accent colour, one ripple on load (under five seconds, WCAG 2.2.2), and no dots behind text. No library. Drawn once and still with reduce motion; absent with scripts off.
 - Portfolio polish pass: see-through borders, layered shadow on the two floating things (nav, screenshot frame), nav corner 16 = button 8 + gap 8, tabular numbers on data, balanced headings, press state on buttons, faded edges on sideways-scrolling boxes, more space between blocks. Shadows stay off everything else to keep the flat bordered look.
 - Photo slot moved from About into the hero, beside the name. The facts table became a strip under them. Max asked to see it with the slot in place.
+- Portfolio is pitched as "I build data systems" with the label "Analytics developer". The real job title stays, as "Day job". Max does not want to be known as a marketer.
+- Each part of the project is a card with a drawn cover and a title that says what it does. Covers are drawings of the idea, not data; a real screenshot replaces one when it exists. Planned parts are greyed but still link to their plan pages.
+- A write-up can have a short summary (what I did, then three bullets each for problem, build and choices). When it does, the README moves under "Full notes". Two parts have one so far.
+- New page: how the site was made (type, colour, motion, small details). New section: Notes, all marked "to come" until written.

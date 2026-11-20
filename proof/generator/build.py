@@ -110,14 +110,44 @@ def link_url(link, repo):
     return link["url"] if "url" in link else github_url(repo, link["path"])
 
 
-def row_html(build, status):
-    """One line per build in the list on the home page."""
-    text, css = STATUSES[status]
+def cover(name):
+    """A drawn cover, kept as an SVG file in covers/."""
+    return (GENERATOR / "covers" / f"{name}.svg").read_text(encoding="utf-8").strip()
+
+
+def card_html(build, status):
+    """One part of the project on the home page: its cover, what it does, where it stands and what it is built with."""
     e = html.escape
+    text, css = STATUSES[status]
+    off = " off" if status == "planned" else ""
     return (
-        f'<li class="{css}"><b><a href="builds/{build["slug"]}.html">{e(build["tile"])}</a></b>'
-        f'<p>{e(build["sentence"])}</p><span class="status {css}">{text}</span></li>'
+        f'<a class="cover-card{off}" href="builds/{build["slug"]}.html">{cover(build["slug"])}'
+        f'<span class="body"><b>{e(build["card_title"])}</b>'
+        f'<span class="meta"><span class="status {css}">{text}</span><span>{e(build["tools"])}</span></span></span></a>'
     )
+
+
+def bullets(items):
+    return "".join(f"<li>{html.escape(item)}</li>" for item in items)
+
+
+def summary_html(summary, tools):
+    """The short version at the top of a write-up: what I did, then three bullets each for the problem, the build and the choices."""
+    e = html.escape
+    strip = (
+        '    <dl class="cs-strip">\n'
+        f'      <div><dt>What I did</dt><dd>{e(summary["did"])}</dd></div>\n'
+        f'      <div><dt>Built with</dt><dd>{e(tools)}</dd></div>\n'
+        "    </dl>"
+    )
+    cols = (
+        '    <div class="cs-cols" data-stagger>\n'
+        f'      <section><h2>The problem</h2><ul>{bullets(summary["problem"])}</ul></section>\n'
+        f'      <section><h2>What I built</h2><ul>{bullets(summary["built"])}</ul></section>\n'
+        f'      <section><h2>Three choices</h2><ul>{bullets(summary["choices"])}</ul></section>\n'
+        "    </div>"
+    )
+    return strip, cols
 
 
 def project_facts_html(project, statuses):
@@ -199,7 +229,8 @@ def build_pages():
     contact = contact_html(contact_config)
     status_of = {b["slug"]: r["status"] for b, r in zip(builds, rendered)}
     project = config["project"]
-    rows = [row_html(b, status_of[b["slug"]]) for b in builds]
+    cards = [card_html(b, status_of[b["slug"]]) for b in builds]
+    started = sum(1 for r in rendered if r["status"] != "planned")
     pages["index.html"] = template("home.html").substitute(
         style=style,
         script=script,
@@ -210,7 +241,9 @@ def build_pages():
         project_sentence=e(project["sentence"]),
         project_facts=indent(project_facts_html(project, [r["status"] for r in rendered]), 10),
         parts=str(len(builds)),
-        rows=indent("\n".join(rows), 8),
+        started=str(started),
+        covers=indent("\n".join(cards), 8),
+        platform_cover=cover("platform"),
         contact=contact,
         contact_nav='<a href="#contact">Contact</a>' if contact else "",
         contact_links=contact_links_html(contact_config),
@@ -258,22 +291,33 @@ def build_pages():
             after = builds[index + 1]
             pager.append(f'<a class="next" href="{after["slug"]}.html"><span>Next</span>{e(after["tile"])}</a>')
 
+        article = (
+            '    <article class="prose">\n' + indent(page["body"].strip(), 6) + '\n      <h2>In the repo</h2>\n'
+            '      <ul class="repo-links">\n' + indent("\n".join(links), 8) + "\n      </ul>\n    </article>"
+        )
+        title = page["title"]
+        if build.get("summary"):
+            # Short version first. The README is still there, folded under "Full notes".
+            strip, cols = summary_html(build["summary"], build["tools"])
+            title = build["card_title"]
+            notes = '    <details class="full">\n      <summary>Full notes from the repo</summary>\n' + article + "\n    </details>"
+            sections = [strip, headline, image, cols, figure, recording, notes]
+        else:
+            sections = [headline, recording, figure, image, article]
+
         pages[f'builds/{build["slug"]}.html'] = template("build.html").substitute(
             style=style,
             script=script,
-            title=e(page["title"]),
+            title=e(title),
             readme=build["readme"],
             folder_url=github_url(repo, posixpath.dirname(build["readme"])),
             status_class=status_class,
             status_text=status_text,
-            headline=headline,
-            recording=recording,
-            image=image,
-            figure=figure,
-            body=indent(page["body"].strip(), 6),
-            links=indent("\n".join(links), 8),
+            sections="\n".join(s for s in sections if s),
             pager=indent("\n".join(pager), 6),
         )
+
+    pages["colophon.html"] = template("colophon.html").substitute(style=style, script=script)
 
     return {path: text.rstrip() + "\n" for path, text in pages.items()}
 
