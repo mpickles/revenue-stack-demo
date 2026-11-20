@@ -189,6 +189,24 @@ def journey_html(project, builds, status_of):
     return "\n".join(stops), json.dumps(data).replace("</", "<\\/")
 
 
+def sits_html(project, slug):
+    """The strip on a part's write-up: all the parts in order, this one marked, and a way back to the map."""
+    e = html.escape
+    order = [step["slug"] for step in project["journey"]]
+    here = order.index(slug)
+    thumbs = "".join(
+        f'<a href="{step["slug"]}.html"' + (' aria-current="page"' if index == here else "")
+        + f'>{cover(step["slug"])}<span>{index + 1}. {e(step["short"])}</span></a>'
+        for index, step in enumerate(project["journey"])
+    )
+    return (
+        '    <section class="sits" aria-label="Where this part sits">\n'
+        f'      <div class="sits-h"><span><b>Part {here + 1} of {len(order)}</b> in the revenue stack</span>'
+        '<a href="../project.html">Back to the whole map</a></div>\n'
+        f'      <div class="mini">{thumbs}</div>\n    </section>'
+    )
+
+
 def proof_html(builds):
     """Real results only. The section is left out until at least one build has a headline."""
     items = [f'<li>{html.escape(b["tile"])}: {html.escape(b["headline"])}</li>' for b in builds if b.get("headline")]
@@ -324,6 +342,7 @@ def build_pages():
             sections = [strip, headline, image, cols, figure, recording, notes]
         else:
             sections = [headline, recording, figure, image, article]
+        sections.insert(0, sits_html(project, build["slug"]))
 
         pages[f'builds/{build["slug"]}.html'] = template("build.html").substitute(
             style=style,

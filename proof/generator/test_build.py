@@ -226,6 +226,19 @@ class CommittedPages(unittest.TestCase):
             for line in (because, so, detail):
                 self.assertIn(html.escape(line), page)
 
+    def test_every_write_up_shows_where_the_part_sits_and_links_back_to_the_map(self):
+        order = [step["slug"] for step in self.config["project"]["journey"]]
+        for item in self.config["builds"]:
+            page = self.pages[f'builds/{item["slug"]}.html']
+            strip = page[page.index('<section class="sits"'):]
+            strip = strip[: strip.index("</section>")]
+            self.assertIn(f"Part {order.index(item['slug']) + 1} of {len(order)}", strip)
+            self.assertIn('href="../project.html"', strip)
+            self.assertEqual(strip.count('aria-current="page"'), 1)
+            self.assertIn(f'href="{item["slug"]}.html" aria-current="page"', strip)
+            for slug in order:
+                self.assertIn(f'href="{slug}.html"', strip)
+
     def test_no_em_dashes(self):
         for path, text in self.pages.items():
             self.assertNotIn(chr(0x2014), text, path)
