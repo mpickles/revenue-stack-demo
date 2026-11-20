@@ -10,7 +10,93 @@
     "sentence": "One lead followed the whole way: ad click, consent, form, CRM, routing, conversions sent back to the ad platform, and the report at the end. Built in six parts on a made-up company, Roadwren, so all of it can be public.",
     "built_with": "Next.js, Tag Manager, GA4, HubSpot, Salesforce Flow, Python, SQL, dbt",
     "headline": null,
-    "recording": null
+    "recording": null,
+    "own": "I designed the whole system and I am building every part of it myself: the tracked site, the lead routing, the scoring, the cleanup and the reporting. The company, Roadwren, is made up, so every file is public.",
+    "journey": [
+      {
+        "slug": "campaign-qa-agent",
+        "short": "Launch check",
+        "name": "The page gets checked",
+        "gets": "A landing page that is about to go live",
+        "hands_on": "A page that passed its checks",
+        "why": "Everything after this depends on the tag firing. One bad page and the leads from it never get counted."
+      },
+      {
+        "slug": "tracked-site",
+        "short": "Tracked site",
+        "name": "The visit is tracked, if the visitor agrees",
+        "gets": "A visitor who clicked an ad",
+        "hands_on": "The form fill, the click ID and consent",
+        "why": "Without the click ID, nobody later on can say which ad this lead came from."
+      },
+      {
+        "slug": "salesforce-routing",
+        "short": "Lead routing",
+        "name": "The lead gets an owner",
+        "gets": "The form fill, with the click ID still attached",
+        "hands_on": "A lead with a stage, a campaign and an owner",
+        "why": "A lead nobody owns is a lead nobody calls. And the ad platform only learns if it hears which clicks became real leads."
+      },
+      {
+        "slug": "lead-qualifier",
+        "short": "Lead scoring",
+        "name": "The lead gets read and scored",
+        "gets": "The routed lead",
+        "hands_on": "A scored lead, with the reasons",
+        "why": "Rules can sort by size. They cannot read a lead. This does, and it asks a person when it is unsure."
+      },
+      {
+        "slug": "crm-cleanup",
+        "short": "Record cleanup",
+        "name": "Duplicates get merged",
+        "gets": "Every record in the CRM",
+        "hands_on": "One record per person and company",
+        "why": "The same person entered twice gets counted twice in every report after this."
+      },
+      {
+        "slug": "funnel-and-reporting",
+        "short": "Funnel and report",
+        "name": "It all gets added up",
+        "gets": "Clean CRM data",
+        "hands_on": "The funnel, ad credit and a checked report",
+        "why": "This is where a mistake anywhere earlier shows up. So the report refuses to publish a number it cannot prove."
+      }
+    ],
+    "choices": [
+      [
+        "A visitor can say no to tracking.",
+        "Nothing is stored until they agree.",
+        "Click IDs wait in memory until consent. Browser storage is storage too."
+      ],
+      [
+        "Google and Meta match a sale to the most recent ad click.",
+        "A new ad click replaces the stored one.",
+        "Earlier touches are lost. That is the cost, and it is written down."
+      ],
+      [
+        "An unknown company size is not a small company.",
+        "Leads with no employee count go to a review queue.",
+        "A wrong owner costs more than a short wait."
+      ]
+    ],
+    "shows": [
+      [
+        "Track with consent done properly",
+        "Nothing fires or is stored until the visitor agrees"
+      ],
+      [
+        "Wire a CRM end to end",
+        "Stage, campaign and owner set by rules, and the sale sent back to the ad platform"
+      ],
+      [
+        "Write decisions down",
+        "Every choice logged with what was given up for it"
+      ],
+      [
+        "Build to a spec",
+        "Each part is graded on checks written before it was built"
+      ]
+    ]
   },
   "builds": [
     {

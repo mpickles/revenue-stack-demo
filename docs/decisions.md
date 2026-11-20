@@ -31,3 +31,5 @@ One line each: chose X over Y because Z, accepting T.
 - A write-up can have a short summary (what I did, then three bullets each for problem, build and choices). When it does, the README moves under "Full notes". Two parts have one so far.
 - New page: how the site was made (type, colour, motion, small details). New section: Notes, all marked "to come" until written.
 - Cover drawings move once when pointed at, and once when they first scroll into view (so phones see it). CSS only, no loop, off with reduce motion.
+- New page for the whole project: the six parts in the order a lead meets them, as one row you can click or play through. Order and wording live in builds.json under "journey". The launch check is called that, not "page checker", because it checks tracking before a campaign goes live.
+- Every part write-up now opens with a strip of all six parts in order, this one marked, and a link back to the map. So a reader always knows where they are.

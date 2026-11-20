@@ -54,6 +54,38 @@
     });
   });
 
+  // The lead's path on the project page. Click a part, or let one lead walk through all of them.
+  (function () {
+    var map = document.getElementById("map"), src = document.getElementById("journey");
+    if (!map || !src) return;
+    var steps = JSON.parse(src.textContent), at = 0, timer = null, play = document.getElementById("play");
+    var lead = map.querySelector(".lead"), stops = map.querySelectorAll(".stop"), links = map.querySelectorAll(".link");
+    var calm = matchMedia("(prefers-reduced-motion: reduce)").matches;
+    function rest(i) { var m = map.getBoundingClientRect(), r = stops[i].getBoundingClientRect(); return "translate(" + (r.left - m.left + r.width / 2) + "px," + (r.top - m.top) + "px)"; }
+    function text(id, value, quiet) { var el = document.getElementById(id); el.textContent = value; if (quiet) return; el.classList.remove("swap"); void el.offsetWidth; el.classList.add("swap"); }
+    function show(i, quiet) {
+      at = Math.max(0, Math.min(steps.length - 1, i)); var step = steps[at];
+      lead.classList.toggle("still", !!quiet || calm); lead.style.transform = rest(at);
+      stops.forEach(function (b, k) { b.classList.toggle("done", k <= at); b.classList.toggle("cur", k === at); if (k === at) b.setAttribute("aria-current", "step"); else b.removeAttribute("aria-current"); });
+      links.forEach(function (l, k) { l.classList.toggle("on", k < at); });
+      if (!quiet) { var art = stops[at].querySelector(".art"); art.classList.remove("play"); void art.getBoundingClientRect(); art.classList.add("play"); }
+      var status = document.getElementById("s-status"); status.textContent = step.status; status.className = "status " + step.css;
+      text("s-name", step.name, quiet); text("s-why", step.why, quiet); text("s-gets", step.gets, quiet); text("s-out", step.out, quiet);
+      document.getElementById("s-go").href = "builds/" + step.slug + ".html";
+    }
+    function size() { map.style.setProperty("--mid", stops[0].querySelector(".art").getBoundingClientRect().height / 2 + "px"); lead.classList.add("still"); lead.style.transform = rest(at); }
+    function stop() { if (timer) clearInterval(timer); timer = null; play.textContent = "Follow the lead"; }
+    play.addEventListener("click", function () {
+      if (timer) return stop();
+      show(0); play.textContent = "Stop";
+      timer = setInterval(function () { if (at >= steps.length - 1) return stop(); show(at + 1); }, 2200);
+    });
+    stops.forEach(function (b) { b.addEventListener("click", function () { stop(); show(Number(b.dataset.step)); }); });
+    window.addEventListener("resize", size);
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(size);
+    size(); show(0, true);
+  })();
+
   if (!motion) return;
 
   function start() {

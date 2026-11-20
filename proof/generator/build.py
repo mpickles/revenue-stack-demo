@@ -169,6 +169,44 @@ def project_facts_html(project, statuses):
     ])
 
 
+def journey_html(project, builds, status_of):
+    """The lead's path on the project page: one stop per part, in the order a lead meets them."""
+    e = html.escape
+    stops, data = [], []
+    last = len(project["journey"]) - 1
+    for index, step in enumerate(project["journey"]):
+        text, css = STATUSES[status_of[step["slug"]]]
+        stops.append(
+            f'<button type="button" class="stop" data-step="{index}">{cover(step["slug"])}'
+            f'<span class="stop-cap"><b><i>{index + 1}</i>{e(step["short"])}</b></span></button>'
+            + ('<div class="link"><i class="ln"></i></div>' if index < last else "")
+        )
+        data.append({
+            "slug": step["slug"], "name": step["name"], "why": step["why"], "gets": step["gets"],
+            "out": step["hands_on"], "status": text, "css": css,
+        })
+    # "</" must not appear inside a script element, even as data.
+    return "\n".join(stops), json.dumps(data).replace("</", "<\\/")
+
+
+def sits_html(project, slug):
+    """The strip on a part's write-up: all the parts in order, this one marked, and a way back to the map."""
+    e = html.escape
+    order = [step["slug"] for step in project["journey"]]
+    here = order.index(slug)
+    thumbs = "".join(
+        f'<a href="{step["slug"]}.html"' + (' aria-current="page"' if index == here else "")
+        + f'>{cover(step["slug"])}<span>{index + 1}. {e(step["short"])}</span></a>'
+        for index, step in enumerate(project["journey"])
+    )
+    return (
+        '    <section class="sits" aria-label="Where this part sits">\n'
+        f'      <div class="sits-h"><span><b>Part {here + 1} of {len(order)}</b> in the revenue stack</span>'
+        '<a href="../project.html">Back to the whole map</a></div>\n'
+        f'      <div class="mini">{thumbs}</div>\n    </section>'
+    )
+
+
 def proof_html(builds):
     """Real results only. The section is left out until at least one build has a headline."""
     items = [f'<li>{html.escape(b["tile"])}: {html.escape(b["headline"])}</li>' for b in builds if b.get("headline")]
@@ -304,6 +342,7 @@ def build_pages():
             sections = [strip, headline, image, cols, figure, recording, notes]
         else:
             sections = [headline, recording, figure, image, article]
+        sections.insert(0, sits_html(project, build["slug"]))
 
         pages[f'builds/{build["slug"]}.html'] = template("build.html").substitute(
             style=style,
@@ -316,6 +355,38 @@ def build_pages():
             sections="\n".join(s for s in sections if s),
             pager=indent("\n".join(pager), 6),
         )
+
+    stops, journey = journey_html(project, builds, status_of)
+    first = project["journey"][0]
+    first_text, first_class = STATUSES[status_of[first["slug"]]]
+    pages["project.html"] = template("project.html").substitute(
+        style=style,
+        script=script,
+        repo=repo,
+        title=e(project["title"]),
+        parts=str(len(builds)),
+        started=str(started),
+        own=e(project["own"]),
+        facts=indent("\n".join([
+            f'<div><dt>Built with</dt><dd>{e(project["built_with"])}</dd></div>',
+            "<div><dt>Team</dt><dd>One. Me</dd></div>",
+            "<div><dt>Result</dt><dd>" + (e(project["headline"]) if project.get("headline") else '<span class="slot">To come once graded</span>') + "</dd></div>",
+        ]), 6),
+        stops=indent(stops, 8),
+        journey=journey,
+        first_class=first_class,
+        first_status=first_text,
+        first_name=e(first["name"]),
+        first_why=e(first["why"]),
+        first_slug=first["slug"],
+        first_gets=e(first["gets"]),
+        first_out=e(first["hands_on"]),
+        choices=indent("\n".join(
+            f'<article><div class="c"><small>Because</small><b>{e(c)}</b></div><div class="d"><small>So</small><b>{e(d)}</b><p>{e(t)}</p></div></article>'
+            for c, d, t in project["choices"]
+        ), 8),
+        shows=indent("\n".join(f"<div><dt>{e(a)}</dt><dd>{e(b)}</dd></div>" for a, b in project["shows"]), 8),
+    )
 
     pages["colophon.html"] = template("colophon.html").substitute(style=style, script=script)
 

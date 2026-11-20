@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <title>$title | Max Pickard</title>
+  <!-- Made by proof/generator/build.py from builds.json. Do not edit by hand. -->
+  <script>
+    // Runs before the page paints. Applies the saved light or dark choice, and picks one accent
+    // colour per visit: teal, cobalt, red, orange or plum. Each pair is [light mode, dark mode].
+    (function () {
+      var el = document.documentElement, pairs = [["#0F7B6C", "#3CC8B4"], ["#2348E8", "#7C93FF"], ["#C4261D", "#FF6B5E"], ["#C2500C", "#FF8A3D"], ["#8A2A6B", "#E58FCA"]];
+      var pick = Math.floor(Math.random() * pairs.length);
+      try {
+        var theme = localStorage.getItem("theme"); if (theme) el.dataset.theme = theme;
+        var saved = sessionStorage.getItem("accent");
+        if (saved !== null && pairs[saved]) pick = Number(saved); else sessionStorage.setItem("accent", pick);
+      } catch (e) {}
+      el.style.setProperty("--a-l", pairs[pick][0]); el.style.setProperty("--a-d", pairs[pick][1]);
+    })();
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+$style
+  </style>
+</head>
+<body>
+  <div class="progress" aria-hidden="true"></div>
+  <nav class="nav" aria-label="Site">
+    <a class="nav-name" href="index.html">Max Pickard</a>
+    <div><a href="index.html#work">Work</a><a href="$repo">GitHub</a><button type="button" data-theme-toggle>Dark</button></div>
+  </nav>
+  <main class="writeup"><div class="wrap">
+    <header class="writeup-head">
+      <h1 data-rise>$title</h1>
+      <p class="status is-active">$started of $parts parts under way</p>
+    </header>
+    <p class="own">$own</p>
+    <dl class="plat">
+$facts
+    </dl>
+
+    <div class="cs-block">
+      <h2 class="cs-h">One lead, start to finish</h2>
+      <p class="sub">$parts parts. Each one hands the lead to the next. Click a part, or watch one lead go through.</p>
+      <div class="ctl"><button type="button" id="play">Follow the lead</button></div>
+      <div class="map" id="map">
+$stops
+        <span class="lead" aria-hidden="true"></span>
+      </div>
+      <section class="one" aria-live="polite">
+        <div>
+          <span class="status $first_class" id="s-status">$first_status</span>
+          <h3 id="s-name">$first_name</h3>
+          <p id="s-why">$first_why</p>
+          <a class="go" id="s-go" href="builds/$first_slug.html">Open this part</a>
+        </div>
+        <dl>
+          <div><dt>Gets</dt><dd id="s-gets">$first_gets</dd></div>
+          <div><dt>Hands on</dt><dd id="s-out">$first_out</dd></div>
+        </dl>
+      </section>
+      <script type="application/json" id="journey">$journey</script>
+    </div>
+
+    <div class="cs-block">
+      <h2 class="cs-h">Why it is built the way it is</h2>
+      <p class="sub">Every choice is written down with what it costs.</p>
+      <div class="why" data-stagger>
+$choices
+      </div>
+    </div>
+
+    <div class="cs-block">
+      <h2 class="cs-h">What broke, and what I did about it</h2>
+      <p class="cs-slot"><span class="slot">To come as each part is graded</span></p>
+    </div>
+
+    <div class="cs-block">
+      <h2 class="cs-h">What this shows I can do</h2>
+      <dl class="shows">
+$shows
+      </dl>
+    </div>
+  </div></main>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/ScrollTrigger.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/SplitText.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/Flip.min.js"></script>
+  <script>
+$script
+  </script>
+</body>
+</html>

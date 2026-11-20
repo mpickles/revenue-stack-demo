@@ -202,6 +202,43 @@ class CommittedPages(unittest.TestCase):
         self.assertEqual(notes.count("<li>"), notes.count('<span class="slot">To come</span>'))
         self.assertNotIn("<a ", notes)
 
+    def test_the_project_page_walks_every_part_once_in_the_order_a_lead_meets_them(self):
+        page = self.pages["project.html"]
+        journey = self.config["project"]["journey"]
+        self.assertEqual(sorted(step["slug"] for step in journey), sorted(item["slug"] for item in self.config["builds"]))
+        self.assertEqual(page.count('class="stop"'), len(journey))
+        marks = [page.index(f'data-step="{index}"') for index in range(len(journey))]
+        self.assertEqual(marks, sorted(marks))
+        for step in journey:
+            self.assertIn(html.escape(step["short"]), page)
+        self.assertIn('href="project.html"', self.pages["index.html"])
+
+    def test_the_project_page_works_before_any_script_runs(self):
+        page = self.pages["project.html"]
+        first = self.config["project"]["journey"][0]
+        self.assertIn(f'href="builds/{first["slug"]}.html"', page)
+        self.assertIn(html.escape(first["name"]), page)
+        self.assertIn(html.escape(first["hands_on"]), page)
+
+    def test_the_project_page_gives_a_reason_for_each_choice(self):
+        page = self.pages["project.html"]
+        for because, so, detail in self.config["project"]["choices"]:
+            for line in (because, so, detail):
+                self.assertIn(html.escape(line), page)
+
+    def test_every_write_up_shows_where_the_part_sits_and_links_back_to_the_map(self):
+        order = [step["slug"] for step in self.config["project"]["journey"]]
+        for item in self.config["builds"]:
+            page = self.pages[f'builds/{item["slug"]}.html']
+            strip = page[page.index('<section class="sits"'):]
+            strip = strip[: strip.index("</section>")]
+            self.assertIn(f"Part {order.index(item['slug']) + 1} of {len(order)}", strip)
+            self.assertIn('href="../project.html"', strip)
+            self.assertEqual(strip.count('aria-current="page"'), 1)
+            self.assertIn(f'href="{item["slug"]}.html" aria-current="page"', strip)
+            for slug in order:
+                self.assertIn(f'href="{slug}.html"', strip)
+
     def test_no_em_dashes(self):
         for path, text in self.pages.items():
             self.assertNotIn(chr(0x2014), text, path)
