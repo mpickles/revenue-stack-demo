@@ -311,22 +311,24 @@ class CommittedPages(unittest.TestCase):
             block = page[page.index('<div class="chose">'):page.index("What went wrong, and what I do now</h2>")]
             self.assertGreaterEqual(block.count("<small>Chose</small>"), 3, part["file"])
             self.assertEqual(block.count("<small>Chose</small>"), block.count("<small>Turned down</small>"), part["file"])
-            self.assertEqual(block.count("<small>Chose</small>"), block.count("<small>Why, and what it cost</small>"), part["file"])
+            self.assertEqual(block.count("<small>Chose</small>"), block.count("<small>Why</small>"), part["file"])
 
-    def test_a_claim_that_something_was_done_says_how(self):
+    def test_a_claim_that_something_was_done_says_how_as_drawn_steps(self):
         for file, label in (
             ("platform-data-in.html", "How I cut each one"),
             ("platform-data-in.html", "How the capture works"),
             ("platform-web-app.html", "How the database decides"),
-            ("platform-reports.html", "How the number check works"),
+            ("platform-reports.html", "How one report gets made"),
             ("platform-audit.html", "How a sweep runs"),
             ("platform-spend.html", "How each one decides"),
         ):
             page = self.pages[file]
             self.assertIn(label, page, file)
             steps = page[page.index(label):]
-            steps = steps[steps.index('<ol class="how'):steps.index("</ol>")]
+            steps = steps[steps.index('<ol class="flow'):steps.index("</ol>")]
             self.assertGreaterEqual(steps.count("<li>"), 3, f"{file} {label}")
+            self.assertEqual(steps.count("<li>"), steps.count("<svg "), f"{file} {label}: every step has a drawing")
+            self.assertEqual(steps.count("<li>"), steps.count("<b>"), f"{file} {label}: every step has a short name")
 
     def test_every_platform_link_lands_on_a_page_that_exists(self):
         for item in self.config["platform"]["pages"]:
