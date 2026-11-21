@@ -96,6 +96,11 @@
         "Build to a spec",
         "Each part is graded on checks written before it was built"
       ]
+    ],
+    "tldr": [
+      "Most tracking setups lose the lead somewhere between the ad click and the report.",
+      "One lead followed the whole way, on a made-up company, in six parts.",
+      null
     ]
   },
   "builds": [

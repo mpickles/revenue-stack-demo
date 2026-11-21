@@ -319,22 +319,32 @@ class CommittedPages(unittest.TestCase):
         }
         self.assertEqual(on_disk, set(self.pages))
 
-    def test_the_app_replica_shows_four_screens_on_the_platform_page_and_one_on_its_part_page(self):
-        screens = {"platform-web-app.html": "clients", "platform-spend.html": "pacing", "platform-reports.html": "review", "platform-audit.html": "audit"}
+    def test_the_clickable_replica_is_only_on_the_platform_page_and_comes_last(self):
         page = self.pages["platform.html"]
         self.assertIn('id="app" data-start="pacing" data-only=""', page)
-        for screen in screens.values():
+        for screen in ("clients", "pacing", "review", "audit"):
             self.assertIn(f'data-screen="{screen}"', page)
-        for file, screen in screens.items():
-            self.assertIn(f'id="app" data-start="{screen}" data-only="{screen}"', self.pages[file], file)
+        self.assertGreater(page.index('id="app"'), page.index("What this shows I can do"))
+        self.assertLess(page.index('id="shots"'), page.index("Why it is built the way it is"))
+        for part in self.config["platform"]["parts"]:
+            self.assertNotIn('id="app"', self.pages[part["file"]], part["file"])
+            self.assertIn('class="rshot-frame"', self.pages[part["file"]]) if part["slug"] in ("web-app", "reports", "audit", "spend") else None
         for item in self.config["platform"]["pages"]:
             for token in ("$$APP", "$$TILES", "$$COVER", "$$START", "$$ONLY"):
                 self.assertFalse(token in self.pages[item["file"]], f'{token} left in {item["file"]}')
 
-    def test_the_replica_states_the_real_rules_for_a_report(self):
+    def test_every_project_and_platform_page_opens_with_problem_built_result(self):
+        files = ["project.html"] + [item["file"] for item in self.config["platform"]["pages"]]
+        for file in files:
+            page = self.pages[file]
+            top = page[page.index("<h1"):page.index('<p class="own">')]
+            for label in ("<dt>Problem</dt>", "<dt>What I built</dt>", "<dt>Result</dt>"):
+                self.assertEqual(top.count(label), 1, f"{file} {label}")
+
+    def test_the_report_page_states_the_real_rule(self):
         page = self.pages["platform-reports.html"]
-        self.assertIn("You can still approve.", page)
-        self.assertNotIn("build anyway", page.lower().replace("build anyway?", ""))
+        self.assertIn("It does not block.", page)
+        self.assertNotIn("build anyway", page.lower())
 
     def test_the_platform_shows_real_screenshots_in_light_and_dark(self):
         page = self.pages["platform.html"]

@@ -390,6 +390,15 @@
     /* A platform tile: number, name, one line. Same as its box on the map. */
     .wf-card .body b i{font-style:normal;color:var(--muted);margin-right:8px;font-variant-numeric:tabular-nums}
     .wf-card .line{display:block;margin-top:6px;color:var(--muted);font-size:.9375rem;line-height:1.4}
+
+    /* Three lines at the top of a page, for the reader who has one minute: the problem, what I built, the result. */
+    .tldr{display:grid;gap:0 40px;margin:36px 0 0;border-top:2px solid var(--accent)}
+    @media (min-width:860px){.tldr{grid-template-columns:repeat(3,minmax(0,1fr))}}
+    .tldr div{padding:18px 0 20px;border-bottom:1px solid var(--line)}
+    .tldr dt{font-family:var(--mono);font-size:.75rem;color:var(--muted)}
+    .tldr dd{margin:8px 0 0;font-size:1.0625rem;line-height:1.4;letter-spacing:-.01em;text-wrap:pretty}
+
+    .tldr + .own{margin-top:36px}
     /* Styles for the platform pages only. Loaded after style.css. */
     "
 
@@ -989,92 +998,12 @@
       <h1>Reports and notes that check their own numbers</h1>
       <p class="status is-active">Live at Upgrow</p>
     </header>
+    <dl class="tldr"><div><dt>Problem</dt><dd>A model will state a wrong number with total confidence.</dd></div><div><dt>What I built</dt><dd>Code works out every number. The model only writes. A checker flags anything that looks off.</dd></div><div><dt>Result</dt><dd>4 of 9 decks built first time on day one. 9 of 9 the next day, each checked by hand.</dd></div></dl>
     <p class="own">I designed and built this workflow <b>end to end</b>: the tables it reads, the instructions the model follows, the number checker and the review screen.</p>
     <div class="nums"><div><b>4<i>of</i>9</b><span>decks built first time on the first full live day</span></div><div><b>9<i>of</i>9</b><span>rebuilt and checked by hand the next day</span></div><div><b>58%</b><span>smaller data packet per report after one rewrite</span></div></div>
     <section class="sits" aria-label="Where this sits"><div class="sits-h"><span><b>Part 4 of 6</b> of the Upgrow operations platform</span><a href="platform.html#hub">Back to the platform map</a></div><div class="bstrip"><a href="platform-data-in.html"><small>1</small>Getting the data in</a><a href="platform-clean.html"><small>2</small>Cleaning and testing it</a><a href="platform-web-app.html"><small>3</small>The web app</a><a href="platform-reports.html" aria-current="page"><small>4</small>Reports and notes</a><a href="platform-audit.html"><small>5</small>Tracking audit</a><a href="platform-spend.html"><small>6</small>Search terms and budgets</a></div></section>
     <div class="cs-block"><h2 class="cs-h">The real screen</h2><div class="rshot"><figure class="rshot-frame"><div class="rshot-pane" data-pane="3"><img src="img/platform/07-report-review-numbers-look-off-light.webp" class="l" alt="The report review screen. A slide-by-slide outline, with one slide flagged because its numbers look off." width="1440" height="900" loading="lazy"><img src="img/platform/07-report-review-numbers-look-off-dark.webp" class="d" alt="The report review screen. A slide-by-slide outline, with one slide flagged because its numbers look off. Dark mode." width="1440" height="900" loading="lazy"><figcaption>Report review. One slide is flagged "Numbers look off" before anyone approves.</figcaption></div></figure><p class="ops-note">A real screenshot of the app, running on made-up clients, people and numbers.</p></div></div>
-    <div class="cs-block" style="margin-top:0">
-      <h2 class="cs-h">Try it: review a report</h2>
-      <p class="sub">One slide has a number that looks off. Cut it, or approve anyway: the check warns, and the person decides.</p>
-<div class="ops-wrap">
-  <div class="ops-ctl" role="group" aria-label="Screen">
-    <button type="button" data-go="clients" aria-pressed="false">Clients</button>
-    <button type="button" data-go="pacing" aria-pressed="false">Pacing</button>
-    <button type="button" data-go="review" aria-pressed="false">Report review</button>
-    <button type="button" data-go="audit" aria-pressed="false">Audit</button>
-    <span class="ops-role" data-for="clients">Signed in as
-      <select aria-label="Signed in as"><option value="owner">Owner</option><option value="director">Director</option><option value="lead">Account lead</option><option value="viewer">Viewer</option></select>
-    </span>
-  </div>
-  <div class="ops-scroll" data-fade>
-  <div class="ops" id="app" data-start="review" data-only="review">
-    <aside class="ops-side">
-      <b class="ops-mark">Upgrow Ops</b>
-      <nav aria-label="App">
-        <span>Home</span>
-        <button type="button" data-go="clients">Clients</button>
-        <button type="button" data-go="pacing">Pacing</button>
-        <button type="button" data-go="review">Reports</button>
-        <span>Inbox</span>
-        <span>Library</span>
-      </nav>
-      <span class="ops-help">Help</span>
-    </aside>
-    <div class="ops-main">
-      <div class="ops-top"><span class="ops-switch">Go to a client</span><i></i><span class="ops-search">Search <kbd>Ctrl K</kbd></span><span class="ops-dot" aria-hidden="true"></span><span class="ops-av" aria-hidden="true">P1</span></div>
-      <div class="ops-body">
-
-        <section data-screen="clients" hidden>
-          <div class="ops-ph"><h4>Clients</h4><p>Pacing as of Nov 20; spend and leads this month.</p><span class="ops-acts"><button type="button" class="o">What changed</button><button type="button" class="p" data-role-hide="lead viewer">Add client</button></span></div>
-          <div class="ops-tabs"><b>All</b><span>Board</span></div>
-          <div class="ops-filter"><span class="in">Search clients</span><span class="dd">Status</span><span class="dd">Pacing</span><i></i><span class="lk">Show gone (1)</span><span class="lk">Export</span></div>
-          <table class="ops-t"><thead><tr><th>Client</th><th>Status</th><th>Account Lead</th><th>Pacing</th><th class="r">Issues</th><th class="r">Budget</th><th>Last report</th></tr></thead><tbody id="ops-clients"></tbody></table>
-          <p class="ops-count" id="ops-count"></p>
-        </section>
-
-        <section data-screen="pacing" hidden>
-          <div class="ops-ch"><span class="ops-ic">A</span><h4>Client A</h4><span class="bd ok">Live</span><span class="mu">Account Lead Person 1</span></div>
-          <p class="ops-fresh">Data as of Nov 20 · next refresh about 6 AM · <u>Pull fresh</u></p>
-          <div class="ops-tabs"><span>Overview</span><span>Performance</span><b>Pacing</b><button type="button" data-go="review">Reports</button><span>SQRs</span><span>Meeting Notes</span><button type="button" data-go="audit">More</button></div>
-          <div class="ops-ph sm"><h5>November 2026, 10 days left</h5><span class="ops-acts"><span class="lk">Comments</span><button type="button" class="p" id="pc-edit">Edit budgets</button></span></div>
-          <div class="ops-bar" id="pc-bar" hidden><b id="pc-msg">Editing budgets</b><i></i><button type="button" class="g" id="pc-discard">Discard</button><button type="button" class="p" id="pc-save">Save</button></div>
-          <div class="ops-kpi"><div><small>Monthly budget</small><b>$10,000</b></div><div><small>Spent to date</small><b>$6,500</b></div><div><small>Left</small><b>$3,500</b></div><div><small>Projected</small><b>$9,900 <span class="bd ok">On track</span></b></div></div>
-          <table class="ops-t"><thead><tr><th>Channel / Campaign</th><th class="r">Monthly Budget</th><th>Check</th><th class="r">Month to Yesterday's Spend</th><th>Change</th></tr></thead><tbody id="ops-pacing"></tbody></table>
-        </section>
-
-        <section data-screen="review" hidden>
-          <div class="ops-ch"><span class="ops-ic">A</span><h4>Client A</h4><span class="bd ok">Live</span><span class="mu">Account Lead Person 1</span></div>
-          <div class="ops-tabs"><span>Overview</span><span>Performance</span><button type="button" data-go="pacing">Pacing</button><b>Reports</b><span>SQRs</span><span>Meeting Notes</span><button type="button" data-go="audit">More</button></div>
-          <p class="ops-back">← Back to reports in review</p>
-          <div class="ops-ph sm"><h5>Monthly report, October 2026 <span class="bd in" id="rv-status">In review</span> <span class="bd warn" id="rv-check">1 slide to check</span></h5><span class="ops-acts"><span class="lk">Versions</span><span class="lk">Files (2)</span><button type="button" class="p" id="rv-approve">Approve and build</button></span></div>
-          <div class="ops-story"><div><small>The story of this month <span class="bd warn">Draft, edit before approving</span></small><p>Spend held steady and leads rose. Search carried the month. One campaign needs a second look before this goes out.</p></div><div><small>Context for the story</small><p>Changes, meetings and tasks from the month.</p></div></div>
-          <table class="ops-t"><thead><tr><th class="r">#</th><th>Slide</th><th>What it will say</th><th>Key numbers</th><th>Your note</th><th>Lock</th><th></th></tr></thead><tbody id="ops-review"></tbody></table>
-          <div class="ops-sheet" id="rv-sheet" hidden><div><b>Approve and build</b><p>The kept, edited and added slides, in order, with the story and your notes, are what the deck is built from. Cut slides are left out. The deck is queued as soon as you approve.</p><p class="warn" id="rv-warn">1 slide has numbers to check. You can still approve.</p><span class="ops-acts"><button type="button" class="o" id="rv-cancel">Cancel</button><button type="button" class="p" id="rv-go">Approve and build</button></span></div></div>
-        </section>
-
-        <section data-screen="audit" hidden>
-          <div class="ops-ch"><span class="ops-ic">A</span><h4>Client A</h4><span class="bd ok">Live</span><span class="mu">Account Lead Person 1</span></div>
-          <div class="ops-tabs"><span>Overview</span><span>Performance</span><button type="button" data-go="pacing">Pacing</button><button type="button" data-go="review">Reports</button><span>SQRs</span><span>Meeting Notes</span><b>More: Audit</b></div>
-          <div class="ops-ph sm"><h5><span class="bd bad" id="au-b">2 Broken</span> <span class="bd warn" id="au-n">1 Needs a Look</span> <span class="bd ok" id="au-w">1 Working</span></h5><span class="ops-acts"><button type="button" class="o">Test Forms</button><button type="button" class="o">Ask Claude</button><button type="button" class="p" id="au-check">Check Now</button></span></div>
-          <h6>Is It Working?</h6>
-          <table class="ops-t"><thead><tr><th>Status</th><th>Conversion Action</th><th>Last Fired</th><th>What to Do</th><th>More</th></tr></thead><tbody id="ops-audit"></tbody></table>
-          <p class="ops-count" id="au-ignored"></p>
-          <h6>What's Wrong or New</h6>
-          <table class="ops-t"><thead><tr><th>Type</th><th>Impact</th><th>What</th><th>What to Do</th><th>State</th></tr></thead><tbody>
-            <tr><td>Action with no GTM tag</td><td><span class="bd bad">High</span></td><td><b>Demo form</b> <span class="mu">no tag sends to it</span></td><td>Add the tag</td><td><span class="bd warn">Open</span></td></tr>
-            <tr><td>Setting changed</td><td><span class="bd">Normal</span></td><td><b>Lead form</b> <span class="mu">count changed</span></td><td>Confirm with the client</td><td><span class="bd">Acknowledged</span></td></tr>
-          </tbody></table>
-        </section>
-
-      </div>
-      <div class="ops-toast" id="ops-toast" hidden><span></span><button type="button">Undo</button></div>
-    </div>
-  </div>
-  </div>
-  <p class="ops-note">Rebuilt from the real app: same layout, same labels, same colours. Every client, person and number here is made-up.</p>
-</div>
-    </div>
-    <div class="cs-block"><h2 class="cs-h">The checker gets checked too</h2><p class="sub">If the checker itself breaks, the build fails and nothing ships.</p><div class="app"><div class="app-bar"><span class="dots"><i></i><i></i><i></i></span><span>Four tests that run every time the checker is built.</span></div><div class="app-body"><div class="app-main solo"><ul class="rows2"><li><span><b>A clean deck</b><small>Every number matches the data</small></span><span class="tag2 ok">Passes</span></li><li><span><b>One planted wrong number</b><small>A single figure changed on one slide</small></span><span class="tag2 bad">Caught</span></li><li><span><b>A number that is only in someone's notes</b><small>Not in the data at all</small></span><span class="tag2 bad">Caught</span></li><li><span><b>A deck with its numbers block missing</b><small>Nothing to check against</small></span><span class="tag2 bad">Refused</span></li></ul></div></div></div></div>
+<div class="cs-block"><h2 class="cs-h">The checker gets checked too</h2><p class="sub">If the checker itself breaks, the build fails and nothing ships.</p><div class="app"><div class="app-bar"><span class="dots"><i></i><i></i><i></i></span><span>Four tests that run every time the checker is built.</span></div><div class="app-body"><div class="app-main solo"><ul class="rows2"><li><span><b>A clean deck</b><small>Every number matches the data</small></span><span class="tag2 ok">Passes</span></li><li><span><b>One planted wrong number</b><small>A single figure changed on one slide</small></span><span class="tag2 bad">Caught</span></li><li><span><b>A number that is only in someone's notes</b><small>Not in the data at all</small></span><span class="tag2 bad">Caught</span></li><li><span><b>A deck with its numbers block missing</b><small>Nothing to check against</small></span><span class="tag2 bad">Refused</span></li></ul></div></div></div></div>
     <div class="cs-block">
       <h2 class="cs-h">How one report gets made</h2>
       <ol class="run5"><li><small>1. It reads</small><p>Warehouse performance tables, CRM leads, the work log, account changes, call summaries and meeting notes</p></li><li><small>2. A draft is made</small><p>The model writes the story and the slide text from numbers that are already worked out</p></li><li><small>3. Code checks it</small><p>Numbers come only from tested tables. Stale data and partial periods are flagged, and the numbers on each slide are checked</p></li><li><small>4. A person decides</small><p>Reviews the packet slide by slide: reorders, edits, locks, cuts, adds context, then approves</p></li><li><small>5. It comes out</small><p>A draft slide deck and its data sheet. A person sends it</p></li></ol>
@@ -1102,123 +1031,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/SplitText.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/Flip.min.js"></script>
   <script>
-    // The app replica on the platform pages. Made-up clients; the layout and labels follow the real app.
-    (function () {
-      // The screenshot switcher on the platform page.
-      var shots = document.getElementById("shots");
-      if (shots) shots.querySelectorAll("[data-shot]").forEach(function (b) {
-        b.addEventListener("click", function () {
-          shots.querySelectorAll("[data-shot]").forEach(function (x) { x.setAttribute("aria-pressed", x === b); });
-          shots.querySelectorAll("[data-pane]").forEach(function (p) { p.hidden = p.dataset.pane !== b.dataset.shot; });
-        });
-      });
-      var app = document.getElementById("app"); if (!app) return;
-      var wrap = app.closest(".ops-wrap"), only = app.dataset.only, toast = document.getElementById("ops-toast"), toastTimer = null;
-      function $(id) { return document.getElementById(id); }
-      function money(n) { return "$" + Math.abs(Math.round(n)).toLocaleString("en-US"); }
-      function say(text, undo) {
-        toast.firstElementChild.textContent = text; toast.lastElementChild.hidden = !undo; toast.lastElementChild.onclick = function () { undo(); say("Undone."); };
-        toast.hidden = false; clearTimeout(toastTimer); toastTimer = setTimeout(function () { toast.hidden = true; }, 6000);
-      }
-      function go(name) {
-        app.querySelectorAll("[data-screen]").forEach(function (s) { s.hidden = s.dataset.screen !== name; });
-        wrap.querySelectorAll("[data-go]").forEach(function (b) { if (b.closest(".ops-ctl")) b.setAttribute("aria-pressed", b.dataset.go === name); else if (b.closest(".ops-side")) b.classList.toggle("on", b.dataset.go === name || (name === "audit" && b.dataset.go === "clients")); });
-        wrap.querySelectorAll("[data-for]").forEach(function (e) { e.hidden = e.dataset.for !== name; });
-        toast.hidden = true;
-      }
-      wrap.querySelectorAll("[data-go]").forEach(function (b) { b.addEventListener("click", function () { if (!only) go(b.dataset.go); }); });
-      if (only) wrap.classList.add("one");
 
-      // Clients: what each role sees.
-      var CLIENTS = [["A", "Live", "ok", "Person 1", "On track", "ok", 0, 10000, "Nov 5, 2026"], ["B", "Setup", "in", "Person 1", "No budget, $2,000 spent", "", 3, 0, "None yet"], ["C", "Live", "ok", "Person 1", "Over pacing", "warn", 1, 8000, "Nov 4, 2026"],
-                     ["D", "Live", "ok", "Person 2", "On track", "ok", 0, 15000, "Nov 5, 2026"], ["E", "Paused", "", "Person 2", "Under pacing", "warn", 2, 6000, "Oct 6, 2026"], ["F", "Live", "ok", "Person 3", "On track", "ok", 0, 12000, "Nov 3, 2026"]];
-      var SEES = { owner: "ABCDEF", director: "ABCDEF", lead: "ABC", viewer: "C" };
-      function clients(role) {
-        var rows = CLIENTS.filter(function (c) { return SEES[role].indexOf(c[0]) >= 0; });
-        $("ops-clients").innerHTML = rows.map(function (c) {
-          var budget = role === "viewer" ? '<span class="mu">Needs See spend</span>' : (c[7] ? money(c[7]) : '<span class="mu">No budget</span>');
-          return "<tr><td><b>Client " + c[0] + '</b></td><td><span class="bd ' + c[2] + '">' + c[1] + "</span></td><td>" + c[3] + '</td><td><span class="bd ' + c[5] + '">' + c[4] + '</span></td><td class="r">' + c[6] + '</td><td class="r">' + budget + "</td><td>" + c[8] + "</td></tr>";
-        }).join("");
-        $("ops-count").textContent = rows.length + " of " + rows.length + " clients" + (role === "lead" || role === "viewer" ? ". Only the clients assigned to you." : ".");
-        app.querySelectorAll("[data-role-hide]").forEach(function (e) { e.hidden = e.dataset.roleHide.split(" ").indexOf(role) >= 0; });
-      }
-      var roleSel = wrap.querySelector(".ops-role select"); roleSel.addEventListener("change", function () { clients(roleSel.value); }); clients("owner");
-
-      // Pacing: budgets nest. A child can never take a parent over.
-      var TREE = [["total", "Total", 0, null, 10000, 6500, ""], ["google", "Google", 1, "total", 7000, 4800, "Raise $20"], ["brand", "Brand", 2, "google", 3000, 2100, ""], ["c1", "Campaign 1", 3, "brand", 1500, 1100, ""], ["c2", "Campaign 2", 3, "brand", 1500, 1000, ""],
-                  ["nonbrand", "Non-brand", 2, "google", 4000, 2700, ""], ["c3", "Campaign 3", 3, "nonbrand", 4000, 2700, ""], ["microsoft", "Microsoft", 1, "total", 3000, 1700, "Lower $10"], ["c4", "Campaign 4", 2, "microsoft", 3000, 1700, ""]];
-      var saved = {}, now = {}, editing = false; TREE.forEach(function (r) { saved[r[0]] = r[4]; now[r[0]] = r[4]; });
-      function kids(id) { return TREE.filter(function (r) { return r[3] === id; }); }
-      function check(id) {
-        var k = kids(id); if (!k.length) return ["", "", 0];
-        var diff = now[id] - k.reduce(function (s, r) { return s + now[r[0]]; }, 0);
-        return diff === 0 ? ["Adds up", "ok", 0] : diff > 0 ? [money(diff) + " not assigned", "warn", 0] : [money(diff) + " over", "bad", -diff];
-      }
-      function checks() {
-        var over = null, changed = 0;
-        TREE.forEach(function (r) { var c = check(r[0]), cell = $("pk-" + r[0]); if (cell) cell.innerHTML = c[0] ? '<span class="bd ' + c[1] + '">' + c[0] + "</span>" : ""; if (c[2] && !over) over = [r[1], c[2]]; if (now[r[0]] !== saved[r[0]]) changed++; });
-        var bar = $("pc-bar"), save = $("pc-save");
-        bar.classList.toggle("bad", !!over);
-        $("pc-msg").textContent = over ? over[0] + " is " + money(over[1]) + " over. Lower it to save." : changed ? changed + " unsaved change" + (changed > 1 ? "s" : "") : "Editing budgets";
-        save.disabled = !!over || !changed; save.title = over ? "Over the parent: " + over[0] + " is " + money(over[1]) + " over" : "";
-      }
-      function pacing() {
-        $("ops-pacing").innerHTML = TREE.map(function (r) {
-          var cell = editing && r[0] !== "total" ? '<input type="number" step="100" min="0" value="' + now[r[0]] + '" data-id="' + r[0] + '" aria-label="' + r[1] + ' monthly budget">' : money(now[r[0]]);
-          return '<tr class="l' + r[2] + '"><td>' + (r[2] ? '<span class="tw">└</span> ' : "") + (r[2] < 2 || kids(r[0]).length ? "<b>" + r[1] + "</b>" : r[1]) + '</td><td class="r' + (editing && r[0] !== "total" ? " ed" : "") + '">' + cell + '</td><td id="pk-' + r[0] + '"></td><td class="r">' + money(r[5]) + "</td><td>" + r[6] + "</td></tr>";
-        }).join("");
-        $("pc-bar").hidden = !editing; $("pc-edit").hidden = editing; checks();
-        $("ops-pacing").querySelectorAll("input").forEach(function (i) { i.addEventListener("input", function () { now[i.dataset.id] = Math.max(0, Number(i.value) || 0); checks(); }); });
-      }
-      $("pc-edit").addEventListener("click", function () { editing = true; pacing(); });
-      $("pc-discard").addEventListener("click", function () { editing = false; Object.keys(saved).forEach(function (k) { now[k] = saved[k]; }); pacing(); });
-      $("pc-save").addEventListener("click", function () { editing = false; Object.keys(now).forEach(function (k) { saved[k] = now[k]; }); pacing(); say("Saved as one version of 2026-11. Only the rows you changed change."); });
-      pacing();
-
-      // Report review: a failed number check warns. It does not block approval.
-      var SLIDES = [["Month at a glance", "Spend steady; leads up", "Spend $10,000 (+5%)", "", ""], ["Google search", "Brand CPC rose", "Leads 0 (-100%)", "Leads is 0 but was 40 the period before.", "Mention the outage"],
-                    ["What we changed", "Three changes, each followed by its result", "3 changes", "", ""], ["Next month", "Two tests to run", "", "", ""]];
-      var cut = {}, locked = {}, built = false;
-      function review() {
-        $("ops-review").innerHTML = SLIDES.map(function (s, i) {
-          var badge = s[3] && !cut[i] ? ' <span class="bd warn" title="' + s[3] + '">Numbers look off</span>' : "";
-          return '<tr class="' + (cut[i] ? "cut" : "") + '"><td class="r">' + (i + 1) + "</td><td><b>" + s[0] + "</b>" + badge + "</td><td>" + s[1] + "</td><td>" + s[2] + (s[3] && !cut[i] ? '<small class="why">' + s[3] + "</small>" : "") + '</td><td class="' + (s[4] ? "" : "mu") + '">' + (s[4] || "Add a note") + '</td><td><button type="button" class="g" data-lock="' + i + '"' + (built ? " disabled" : "") + ">" + (locked[i] ? "Locked" : "Lock") + '</button></td><td><button type="button" class="g" data-cut="' + i + '"' + (built ? " disabled" : "") + ">" + (cut[i] ? "Put back" : "Cut") + "</button></td></tr>";
-        }).join("");
-        var open = SLIDES.filter(function (s, i) { return s[3] && !cut[i]; }).length;
-        $("rv-check").hidden = !open || built; $("rv-check").textContent = open + " slide" + (open > 1 ? "s" : "") + " to check";
-        $("rv-warn").hidden = !open; $("rv-warn").textContent = open + " slide" + (open > 1 ? "s have" : " has") + " numbers to check. You can still approve.";
-        $("ops-review").querySelectorAll("[data-cut]").forEach(function (b) { b.addEventListener("click", function () { cut[b.dataset.cut] = !cut[b.dataset.cut]; review(); }); });
-        $("ops-review").querySelectorAll("[data-lock]").forEach(function (b) { b.addEventListener("click", function () { locked[b.dataset.lock] = !locked[b.dataset.lock]; review(); }); });
-      }
-      $("rv-approve").addEventListener("click", function () { $("rv-sheet").hidden = false; });
-      $("rv-cancel").addEventListener("click", function () { $("rv-sheet").hidden = true; });
-      $("rv-go").addEventListener("click", function () { built = true; $("rv-sheet").hidden = true; $("rv-status").textContent = "Building"; $("rv-approve").disabled = true; review(); say("The deck is queued."); });
-      review();
-
-      // Audit: a person marks each conversion action. Nothing writes to the tag manager or the ad account.
-      var ACTIONS = [["Demo form", "GTM · Primary", "Never", "Check the tag", "bad"], ["Pricing click", "GTM · Secondary", "Nov 2, 2026", "Check the trigger", "bad"], ["Newsletter signup", "Google Ads · Secondary", "Nov 12, 2026", "Confirm it still matters", "warn"], ["Phone call", "Google Ads · Secondary", "Nov 19, 2026", "", "ok"]];
-      var LABEL = { bad: "Broken", warn: "Needs a Look", ok: "Working" }, mark = {}, menu = -1;
-      function audit() {
-        var n = { bad: 0, warn: 0, ok: 0 }, ignored = 0, html = "";
-        ACTIONS.forEach(function (a, i) {
-          if (mark[i] === "skip") { ignored++; return; }
-          var state = mark[i] === "ok" ? "ok" : a[4]; n[state]++;
-          html += '<tr><td><span class="bd ' + state + '">' + LABEL[state] + "</span></td><td><b>" + a[0] + '</b> <span class="mu">' + a[1] + "</span></td><td>" + a[2] + "</td><td>" + (state === "ok" ? "" : a[3]) + '</td><td class="mn"><button type="button" class="g" data-menu="' + i + '" aria-label="More for ' + a[0] + '">...</button>' + (menu === i ? '<span class="pop"><button type="button" data-set="skip">Not Relevant</button><button type="button" data-set="ok">Checked, It Works (7 days)</button></span>' : "") + "</td></tr>";
-        });
-        $("ops-audit").innerHTML = html;
-        $("au-b").textContent = n.bad + " Broken"; $("au-n").textContent = n.warn + " Needs a Look"; $("au-w").textContent = n.ok + " Working";
-        $("au-ignored").textContent = ignored ? "Ignored (" + ignored + ")" : "";
-        $("ops-audit").querySelectorAll("[data-menu]").forEach(function (b) { b.addEventListener("click", function () { var i = Number(b.dataset.menu); menu = menu === i ? -1 : i; audit(); }); });
-        $("ops-audit").querySelectorAll("[data-set]").forEach(function (b) { b.addEventListener("click", function () {
-          var i = menu, was = mark[i], name = ACTIONS[i][0]; mark[i] = b.dataset.set; menu = -1; audit();
-          say(b.dataset.set === "skip" ? "Not relevant: " + name + "." : "Checked, it works: " + name + ", for 7 days.", function () { mark[i] = was; audit(); });
-        }); });
-      }
-      $("au-check").addEventListener("click", function () { var b = this; b.textContent = "Checking"; b.disabled = true; setTimeout(function () { b.textContent = "Check Now"; b.disabled = false; say("Checked live against Google Ads."); }, 1200); });
-      audit();
-
-      go(only || app.dataset.start || "pacing");
-    })();
   </script>
   <script>
     // Behaviour and motion for every page. Pages read fine with this script off, and

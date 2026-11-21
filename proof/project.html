@@ -390,6 +390,15 @@
     /* A platform tile: number, name, one line. Same as its box on the map. */
     .wf-card .body b i{font-style:normal;color:var(--muted);margin-right:8px;font-variant-numeric:tabular-nums}
     .wf-card .line{display:block;margin-top:6px;color:var(--muted);font-size:.9375rem;line-height:1.4}
+
+    /* Three lines at the top of a page, for the reader who has one minute: the problem, what I built, the result. */
+    .tldr{display:grid;gap:0 40px;margin:36px 0 0;border-top:2px solid var(--accent)}
+    @media (min-width:860px){.tldr{grid-template-columns:repeat(3,minmax(0,1fr))}}
+    .tldr div{padding:18px 0 20px;border-bottom:1px solid var(--line)}
+    .tldr dt{font-family:var(--mono);font-size:.75rem;color:var(--muted)}
+    .tldr dd{margin:8px 0 0;font-size:1.0625rem;line-height:1.4;letter-spacing:-.01em;text-wrap:pretty}
+
+    .tldr + .own{margin-top:36px}
   </style>
 </head>
 <body>
@@ -404,6 +413,7 @@
       <h1 data-rise>A full revenue stack for a made‑up B2B software company</h1>
       <p class="status is-active">2 of 6 parts under way</p>
     </header>
+    <dl class="tldr"><div><dt>Problem</dt><dd>Most tracking setups lose the lead somewhere between the ad click and the report.</dd></div><div><dt>What I built</dt><dd>One lead followed the whole way, on a made-up company, in six parts.</dd></div><div><dt>Result</dt><dd><span class="slot">To come once graded</span></dd></div></dl>
     <p class="own">I designed the whole system and I am building every part of it myself: the tracked site, the lead routing, the scoring, the cleanup and the reporting. The company, Roadwren, is made up, so every file is public.</p>
     <dl class="plat">
       <div><dt>Built with</dt><dd>Next.js, Tag Manager, GA4, HubSpot, Salesforce Flow, Python, SQL, dbt</dd></div>
