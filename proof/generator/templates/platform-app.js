@@ -1,5 +1,13 @@
 // The app replica on the platform pages. Made-up clients; the layout and labels follow the real app.
 (function () {
+  // The screenshot switcher on the platform page.
+  var shots = document.getElementById("shots");
+  if (shots) shots.querySelectorAll("[data-shot]").forEach(function (b) {
+    b.addEventListener("click", function () {
+      shots.querySelectorAll("[data-shot]").forEach(function (x) { x.setAttribute("aria-pressed", x === b); });
+      shots.querySelectorAll("[data-pane]").forEach(function (p) { p.hidden = p.dataset.pane !== b.dataset.shot; });
+    });
+  });
   var app = document.getElementById("app"); if (!app) return;
   var wrap = app.closest(".ops-wrap"), only = app.dataset.only, toast = document.getElementById("ops-toast"), toastTimer = null;
   function $(id) { return document.getElementById(id); }

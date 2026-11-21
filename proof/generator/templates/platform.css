@@ -573,3 +573,14 @@ details.whole dd b{font-size:.9375rem}
 .ops .ops-t{font:inherit;font-variant-numeric:tabular-nums}
 .ops .ops-t td{white-space:normal;padding-top:6px;padding-bottom:6px}
 .ops .ops-t td:first-child,.ops .ops-t td.r,.ops .ops-t td .bd{white-space:nowrap}
+
+/* Real screenshots of the app. Light or dark follows the site. */
+.rshot{margin-top:32px}
+.rshot-frame{margin:0;border:1px solid var(--line);border-radius:12px;overflow:hidden;box-shadow:var(--lift);background:var(--panel)}
+.rshot-frame.second{margin-top:20px}
+.rshot-frame img,.rshot-frame video{display:block;width:100%;height:auto}
+.rshot-frame .d{display:none}
+:root[data-theme="dark"] .rshot-frame .l{display:none}:root[data-theme="dark"] .rshot-frame .d{display:block}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .rshot-frame .l{display:none}:root:not([data-theme="light"]) .rshot-frame .d{display:block}}
+.rshot-frame figcaption{padding:12px 16px;border-top:1px solid var(--line);font-size:.9375rem;color:var(--muted);background:var(--bg)}
+.rshot-pane[hidden]{display:none}

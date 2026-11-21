@@ -336,6 +336,22 @@ class CommittedPages(unittest.TestCase):
         self.assertIn("You can still approve.", page)
         self.assertNotIn("build anyway", page.lower().replace("build anyway?", ""))
 
+    def test_the_platform_shows_real_screenshots_in_light_and_dark(self):
+        page = self.pages["platform.html"]
+        shots = re.findall(r'<img src="(img/platform/[^"]+)-light\.webp" class="l"', page)
+        self.assertEqual(len(shots), 6)
+        for shot in shots:
+            self.assertIn(f'<img src="{shot}-dark.webp" class="d"', page)
+            self.assertTrue((build.PROOF / f"{shot}-dark.webp").is_file(), shot)
+        self.assertIn("made-up", page[page.index('id="shots"'):page.index('id="app"')])
+        for file in ("platform-spend.html", "platform-web-app.html", "platform-reports.html", "platform-audit.html"):
+            self.assertIn('class="rshot-frame"', self.pages[file], file)
+
+    def test_a_recording_on_a_page_is_a_file_that_exists(self):
+        for path, text in self.pages.items():
+            for src in re.findall(r'<source src="([^"]+)"', text):
+                self.assertTrue((build.PROOF / Path(path).parent / src).resolve().is_file(), f"{path} plays {src}")
+
     def test_no_em_dashes(self):
         for path, text in self.pages.items():
             self.assertNotIn(chr(0x2014), text, path)
