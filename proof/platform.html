@@ -999,6 +999,27 @@
     .shows.learn dt{font-size:1rem;line-height:1.4;letter-spacing:-.01em;text-wrap:pretty}
     .shows.learn dd{color:var(--ink);line-height:1.4;text-wrap:pretty}
     .shows.learn dd i{display:block;font-style:normal;font-family:var(--mono);font-size:.6875rem;color:var(--accent);margin-bottom:4px}
+
+    /* What I chose, and what I turned down: one row per decision, three cells. */
+    .chose{margin-top:32px;border-top:2px solid var(--accent)}
+    .chose div{display:grid;gap:14px 40px;padding:20px 0;border-bottom:1px solid var(--line)}
+    @media (min-width:860px){.chose div{grid-template-columns:repeat(3,minmax(0,1fr))}}
+    .chose p{margin:0;font-size:.9375rem;line-height:1.45;color:var(--muted);text-wrap:pretty}
+    .chose p:first-child{color:var(--ink);font-weight:500;font-size:1rem;letter-spacing:-.01em}
+    .chose small{display:block;font-family:var(--mono);font-size:.6875rem;font-weight:400;color:var(--muted);margin-bottom:5px;letter-spacing:0}
+    .chose p:first-child small{color:var(--accent)}
+    /* The three things I learned, side by side. */
+    .themes{display:grid;gap:16px;margin-top:32px}
+    @media (min-width:860px){.themes{grid-template-columns:repeat(3,minmax(0,1fr))}}
+    .themes article{border:1px solid var(--line);border-radius:10px;background:var(--bg);padding:22px}
+    .themes small{font-family:var(--mono);font-size:.75rem;color:var(--accent)}
+    .themes h3{margin:10px 0 0;font-size:1.25rem;font-weight:500;letter-spacing:-.025em;line-height:1.2}
+    .themes p{margin:10px 0 0;font-size:.9375rem;line-height:1.45;color:var(--muted)}
+    .themes ul{list-style:none;margin:16px 0 0;padding:0;border-top:1px solid var(--line)}
+    .themes li{padding:12px 0;border-bottom:1px solid var(--line);font-size:.9375rem;line-height:1.4}
+    .themes li:last-child{border-bottom:0;padding-bottom:0}
+    @media (min-width:1000px){.how.five{grid-template-columns:repeat(5,minmax(0,1fr))}}
+    .how p b{display:block;font-weight:500;margin-bottom:6px}
   </style>
 </head>
 <body>
@@ -1068,7 +1089,7 @@
       </div>
     </div>
 
-    <div class="cs-block"><h2 class="cs-h">What I learned, and what I would do differently</h2><dl class="shows learn"><div><dt>I built first and timed nothing. The before number for hours saved comes from memory, not a stopwatch.</dt><dd><i>Next time</i>Time the old way for a month before writing any code.</dd></div><div><dt>The launch date slipped three times.</dt><dd><i>Next time</i>Launch one workflow to two people first. Then widen.</dd></div><div><dt>A test run in production marked real work as done, and a client was skipped.</dt><dd><i>Next time</i>Keep test runs out of the live log from day one.</dd></div><div><dt>I built more screens than people could take in.</dt><dd><i>Next time</i>One screen per job, and cut what confuses people in the first week.</dd></div></dl></div>
+    <div class="cs-block"><h2 class="cs-h">What I learned, and what I would do differently</h2><p class="sub">In July I had never shipped a production app. In October I ran the go-live. Three things I had to learn to get there.</p><div class="themes"><article><small>1</small><h3>Moving data cheaply</h3><p>Every query costs money, so the design has to read less.</p><ul><li>Rebuild only what changed. The morning build went from about 30 GB a day to about 7.5.</li><li>A quota refuses a query. An alert only tells you after.</li><li>Measure before cutting. My one guess missed.</li></ul></article><article><small>2</small><h3>Designing for the person using it</h3><p>I had to think like a product manager: what will they really do, and what happens at the edges.</p><ul><li>119 pages became 46 after the first pilot on real data.</li><li>A form for rerun requests was too technical. It became one button with plain names.</li><li>I assumed sane inputs. A budget was saved at 403% of its parent. Now it cannot be.</li></ul></article><article><small>3</small><h3>Directing an AI, strictly</h3><p>Claude wrote the code. My job was the specs, the rules and the checks it could not skip.</p><ul><li>Plan first, then build. A test for every behaviour.</li><li>Hooks, reviewers and branch rules, each added after something went wrong.</li><li>Never guess at a cause. Read the logs first.</li></ul></article></div><div class="how-w"><p class="how-l">How the way I work with Claude Code got stricter</p><ol class="how five"><li><small>Aug to Sept</small><p><b>Chat and file drops</b>One file overwrote another. Rule: every patch must match the old text exactly once.</p></li><li><small>Early Oct</small><p><b>Specs before code</b>A rules file, a plan I approve, a test for every behaviour, security tests first. A reviewer that did not write the code found 12 issues in one phase.</p></li><li><small>Mid Oct</small><p><b>Hooks and guardrails</b>Hooks format the code, block destructive commands and secret reads, and will not let a session end on a failing check. "Never delete or skip a test to pass."</p></li><li><small>Mid Oct</small><p><b>Parallel sessions</b>Sessions on separate branches collided. Rule: reserved ranges, a merge script, and nothing merges without my go. A read-only security reviewer, and a test fixer that never weakens a test.</p></li><li><small>Nov</small><p><b>Release branches</b>Main only moves forward. I found a linter had been stopping the checks before the real tests ever ran, and fixed it.</p></li></ol></div><p class="how-l" style="margin-top:48px">What I would do differently</p><dl class="shows learn" style="margin-top:0"><div><dt>I promised time savings and timed nothing first. Two reporting cycles went by and that baseline is gone.</dt><dd><i>Next time</i>Time the old way before writing any code. Every deck now logs the minutes spent editing it.</dd></div><div><dt>Three checks failed open or never ran: the number checker, the automated tests, and the backups. Each one said it was fine.</dt><dd><i>Next time</i>Prove a check can fail before trusting it. Plant an error. Restore a backup.</dd></div><div><dt>A manual step nobody could see. I forgot one redeploy and production ran on old settings for a month.</dt><dd><i>Next time</i>No step that lives in my head. Settings now sit where the team can edit them.</dd></div><div><dt>I built more screens than people could take in.</dt><dd><i>Next time</i>One screen per job. Every action one click away.</dd></div></dl></div>
 
     <div class="cs-block">
       <h2 class="cs-h">What is next</h2>
