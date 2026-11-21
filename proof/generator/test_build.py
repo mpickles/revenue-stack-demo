@@ -262,6 +262,23 @@ class CommittedPages(unittest.TestCase):
         hero = home[home.index('<header class="hero">'):home.index("</header>")]
         self.assertEqual(hero.count('<a class="see" href="platform.html">See the platform</a>'), 1)
 
+    def test_every_page_has_a_link_preview_and_a_tab_icon(self):
+        self.assertTrue((build.PROOF / "favicon.svg").is_file())
+        self.assertTrue((build.PROOF / "img" / "og.png").is_file())
+        site = self.config["site"]
+        seen = set()
+        for path, page in self.pages.items():
+            head = page[: page.index("</head>")]
+            for tag in ('<meta name="description" content="', '<meta property="og:title" content="', '<meta property="og:description" content="'):
+                self.assertEqual(head.count(tag), 1, f"{path} {tag}")
+            self.assertIn(f'<meta property="og:image" content="{site}/img/og.png">', head, path)
+            self.assertIn('<link rel="icon" href="/favicon.svg"', head, path)
+            line = head[head.index('<meta name="description" content="') + 34:]
+            line = line[: line.index('"')]
+            self.assertTrue(20 <= len(html.unescape(line)) <= 200, f"{path}: {len(line)}")
+            seen.add(line)
+        self.assertGreater(len(seen), len(self.pages) // 2, "pages should not all share one description")
+
     def test_the_home_page_leads_with_the_live_platform(self):
         home = self.pages["index.html"]
         self.assertLess(home.index('<a class="proj-cover" href="platform.html"'), home.index('<a class="proj-cover" href="project.html"'))

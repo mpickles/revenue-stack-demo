@@ -381,7 +381,8 @@
         "tools": "Google Ads",
         "file": "platform-spend.html"
       }
-    ]
+    ],
+    "description": "The operations platform I built for a paid media team: a tested warehouse, a web app and the workflows on top."
   },
   "notes": [
     {
@@ -393,5 +394,7 @@
     {
       "title": "Why the Flow sets the lead owner, not the assignment rules"
     }
-  ]
+  ],
+  "site": "https://maxpickard-revenue-stack.vercel.app",
+  "description": "Analytics developer in Chicago. I built the operations platform a paid media team works in, and I am building a full revenue stack in public."
 }
