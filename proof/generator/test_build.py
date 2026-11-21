@@ -268,6 +268,16 @@ class CommittedPages(unittest.TestCase):
         self.assertEqual(home.count("view-transition-name:cover-platform"), 1)
         self.assertEqual(self.pages["platform.html"].count("view-transition-name:cover-platform"), 1)
 
+    def test_every_platform_tile_grows_into_the_drawing_on_top_of_its_page(self):
+        for part in self.config["platform"]["parts"]:
+            name = f'view-transition-name:cover-pf-{part["slug"]}'
+            for where in ("index.html", "platform.html"):
+                self.assertEqual(self.pages[where].count(name), 1, f'{where} {part["slug"]}')
+            page = self.pages[part["file"]]
+            self.assertEqual(page.count("view-transition-name:"), 1, part["file"])
+            self.assertLess(page.index(name), page.index("<h1"), part["file"])
+            self.assertIn('<div class="page-cover">', page[:page.index("<h1")], part["file"])
+
     def test_every_platform_link_lands_on_a_page_that_exists(self):
         for item in self.config["platform"]["pages"]:
             page = self.pages[item["file"]]
