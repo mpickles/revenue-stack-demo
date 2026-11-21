@@ -386,6 +386,10 @@
     @media (prefers-reduced-motion:no-preference){@view-transition{navigation:auto}}
     ::view-transition-group(*){animation-duration:.5s;animation-timing-function:cubic-bezier(.23,1,.32,1)}
     ::view-transition-old(root),::view-transition-new(root){animation-duration:.3s}
+
+    /* A platform tile: number, name, one line. Same as its box on the map. */
+    .wf-card .body b i{font-style:normal;color:var(--muted);margin-right:8px;font-variant-numeric:tabular-nums}
+    .wf-card .line{display:block;margin-top:6px;color:var(--muted);font-size:.9375rem;line-height:1.4}
   </style>
 </head>
 <body>

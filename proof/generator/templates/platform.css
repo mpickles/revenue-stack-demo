@@ -422,3 +422,22 @@ details.whole dd b{font-size:.9375rem}
 /* The map sits right under the facts. */
 .cs-block.tight{margin-top:56px}
 .cs-strip{margin-top:36px}
+
+/* The map with three boxes on the right, and the tiles under it. */
+.amap .rg-k{font-size:13px}
+.ptiles{margin-top:40px}
+.hub .archnote{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-top:18px}
+
+/* The budget demo. */
+.pace{display:grid;gap:14px}
+.pace label{display:grid;grid-template-columns:7rem 1fr 4.5rem;gap:16px;align-items:center;font-size:.9375rem}
+.pace input{width:100%;accent-color:var(--accent)}
+.pace output{font-family:var(--mono);font-size:.8125rem;text-align:right;font-variant-numeric:tabular-nums}
+.pace .meter{position:relative;height:12px;border-radius:6px;background:var(--line);margin-top:10px;overflow:hidden}
+.pace .meter i{position:absolute;left:0;top:0;bottom:0;background:var(--accent);border-radius:6px;transition:width .2s var(--ease)}
+.pace .meter b{position:absolute;left:71.43%;top:0;bottom:0;width:2px;background:var(--ink)}
+.pace .meter.over i{background:var(--ink)}
+.pace-sum{display:flex;justify-content:space-between;gap:16px;margin:10px 0 0;font-size:.9375rem;color:var(--muted)}
+.pace-sum b{color:var(--ink);font-weight:500}
+@media (max-width:560px){.pace label{grid-template-columns:1fr 4.5rem}.pace label span{grid-column:1/-1}}
+.amap .rg-go{display:none}

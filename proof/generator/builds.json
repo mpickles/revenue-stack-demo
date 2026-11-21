@@ -306,69 +306,75 @@
     "pages": [
       {
         "file": "platform.html",
-        "title": "Upgrow marketing operations platform"
+        "title": "I built the operations platform a paid media team works in"
       },
       {
-        "file": "platform-monthly-report.html",
-        "title": "Monthly reports that check their own numbers"
+        "file": "platform-data-in.html",
+        "title": "Getting the data in"
       },
       {
-        "file": "platform-warehouse.html",
-        "title": "A warehouse that costs nothing to run"
+        "file": "platform-clean.html",
+        "title": "Cleaning and testing it"
+      },
+      {
+        "file": "platform-web-app.html",
+        "title": "The web app"
+      },
+      {
+        "file": "platform-reports.html",
+        "title": "Reports and notes"
       },
       {
         "file": "platform-audit.html",
-        "title": "The audit that found consent was blocking every tag"
+        "title": "Tracking audit"
       },
       {
-        "file": "platform-access.html",
-        "title": "Each person sees only their clients"
-      },
-      {
-        "file": "platform-changes.html",
-        "title": "Change history without a developer token"
-      },
-      {
-        "file": "platform-more.html",
-        "title": "Six more things it does"
+        "file": "platform-spend.html",
+        "title": "Search terms and budgets"
       }
     ],
-    "workflows": [
+    "parts": [
       {
-        "slug": "monthly-report",
-        "title": "Monthly reports that check their own numbers",
-        "href": "platform-monthly-report.html",
-        "kind": "Full story"
+        "slug": "data-in",
+        "name": "Getting the data in",
+        "line": "Data from every tool, loaded on a schedule",
+        "tools": "BigQuery",
+        "file": "platform-data-in.html"
       },
       {
-        "slug": "search-terms-review",
-        "title": "Search terms sorted by rules, then judged",
-        "href": "platform-more.html#search-terms-review",
-        "kind": "Short"
+        "slug": "clean",
+        "name": "Cleaning and testing it",
+        "line": "Tests that stop a bad number reaching anyone",
+        "tools": "dbt",
+        "file": "platform-clean.html"
       },
       {
-        "slug": "budget-pacing",
-        "title": "Budget pacing that cannot overspend",
-        "href": "platform-more.html#budget-pacing",
-        "kind": "Short"
+        "slug": "web-app",
+        "name": "The web app",
+        "line": "Each person sees only their own clients",
+        "tools": "Postgres, Cloud Run",
+        "file": "platform-web-app.html"
       },
       {
-        "slug": "meeting-notes",
-        "title": "Client meeting notes, drafted from the record",
-        "href": "platform-more.html#meeting-notes",
-        "kind": "Short"
+        "slug": "reports",
+        "name": "Reports and notes",
+        "line": "Reports that check their own numbers",
+        "tools": "Claude API",
+        "file": "platform-reports.html"
       },
       {
-        "slug": "tracking-audit",
-        "title": "The audit that found consent was blocking every tag",
-        "href": "platform-audit.html",
-        "kind": "Full story"
+        "slug": "audit",
+        "name": "Tracking audit",
+        "line": "Found consent was blocking every tag",
+        "tools": "Tag Manager",
+        "file": "platform-audit.html"
       },
       {
-        "slug": "why-it-moved",
-        "title": "Change history beside results, with no developer token",
-        "href": "platform-changes.html",
-        "kind": "Full story"
+        "slug": "spend",
+        "name": "Search terms and budgets",
+        "line": "Nothing is spent without a person's yes",
+        "tools": "Google Ads",
+        "file": "platform-spend.html"
       }
     ]
   }

@@ -4,8 +4,8 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="robots" content="noindex, nofollow">
-  <title>Each person sees only their clients | Max Pickard</title>
-  <!-- Made by proof/generator/build.py from templates/platform/platform-access.html. Do not edit by hand. -->
+  <title>Getting the data in | Max Pickard</title>
+  <!-- Made by proof/generator/build.py from templates/platform/platform-data-in.html. Do not edit by hand. -->
   <script>
     // Runs before the page paints. Applies the saved light or dark choice, and picks one accent
     // colour per visit: teal, cobalt, red, orange or plum. Each pair is [light mode, dark mode].
@@ -386,6 +386,10 @@
     @media (prefers-reduced-motion:no-preference){@view-transition{navigation:auto}}
     ::view-transition-group(*){animation-duration:.5s;animation-timing-function:cubic-bezier(.23,1,.32,1)}
     ::view-transition-old(root),::view-transition-new(root){animation-duration:.3s}
+
+    /* A platform tile: number, name, one line. Same as its box on the map. */
+    .wf-card .body b i{font-style:normal;color:var(--muted);margin-right:8px;font-variant-numeric:tabular-nums}
+    .wf-card .line{display:block;margin-top:6px;color:var(--muted);font-size:.9375rem;line-height:1.4}
     /* Styles for the platform pages only. Loaded after style.css. */
     "
 
@@ -810,6 +814,25 @@
     /* The map sits right under the facts. */
     .cs-block.tight{margin-top:56px}
     .cs-strip{margin-top:36px}
+
+    /* The map with three boxes on the right, and the tiles under it. */
+    .amap .rg-k{font-size:13px}
+    .ptiles{margin-top:40px}
+    .hub .archnote{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-top:18px}
+
+    /* The budget demo. */
+    .pace{display:grid;gap:14px}
+    .pace label{display:grid;grid-template-columns:7rem 1fr 4.5rem;gap:16px;align-items:center;font-size:.9375rem}
+    .pace input{width:100%;accent-color:var(--accent)}
+    .pace output{font-family:var(--mono);font-size:.8125rem;text-align:right;font-variant-numeric:tabular-nums}
+    .pace .meter{position:relative;height:12px;border-radius:6px;background:var(--line);margin-top:10px;overflow:hidden}
+    .pace .meter i{position:absolute;left:0;top:0;bottom:0;background:var(--accent);border-radius:6px;transition:width .2s var(--ease)}
+    .pace .meter b{position:absolute;left:71.43%;top:0;bottom:0;width:2px;background:var(--ink)}
+    .pace .meter.over i{background:var(--ink)}
+    .pace-sum{display:flex;justify-content:space-between;gap:16px;margin:10px 0 0;font-size:.9375rem;color:var(--muted)}
+    .pace-sum b{color:var(--ink);font-weight:500}
+    @media (max-width:560px){.pace label{grid-template-columns:1fr 4.5rem}.pace label span{grid-column:1/-1}}
+    .amap .rg-go{display:none}
   </style>
 </head>
 <body>
@@ -819,19 +842,12 @@
     <div><a href="index.html#work">Work</a><a href="platform.html">Platform</a><button type="button" data-theme-toggle>Dark</button></div>
   </nav>
 <main class="writeup"><div class="wrap">
-<header class="writeup-head"><h1>Each person sees only their clients</h1><p class="status is-active">Live at Upgrow</p></header>
-<p class="own">I built the sign-in, the roles and the database rules <b>myself</b>. The screen does not hide other people's clients. The database refuses to return them.</p>
-<section class="sits" aria-label="Where this sits"><div class="sits-h"><span><b>Story 4 of 6</b> from the Upgrow operations platform</span><a href="platform.html#hub">Back to the platform map</a></div><div class="bstrip"><a href="platform-monthly-report.html"><small>1</small>Reports that check their numbers</a><a href="platform-warehouse.html"><small>2</small>A warehouse that costs nothing</a><a href="platform-audit.html"><small>3</small>The audit that found blocked tags</a><a href="platform-access.html" aria-current="page"><small>4</small>Each person sees only their clients</a><a href="platform-changes.html"><small>5</small>Change history, no token</a><a href="platform-more.html"><small>6</small>Six more things it does</a></div></section>
-<div class="nums" style="margin-top:0"><div><b>6</b><span>roles, from owner down to viewer</span></div><div><b>15</b><span>clients live in the app</span></div><div><b>26,838</b><span>tests passing on launch day</span></div></div><div class="cs-block"><h2 class="cs-h">Try it: change who is signed in</h2><div class="app"><div class="app-bar"><span class="dots"><i></i><i></i><i></i></span><span>The client list, with made-up people and clients.</span></div><div class="app-body"><div class="app-main solo"><div class="pick" id="who" role="group" aria-label="Signed in as"><button type="button" aria-pressed="true" data-k="0">Owner</button><button type="button" aria-pressed="false" data-k="1">Account lead A</button><button type="button" aria-pressed="false" data-k="2">Account lead B</button><button type="button" aria-pressed="false" data-k="3">Viewer</button></div><ul class="rows2" id="cl"><li><span><b>Client A</b></span><span class="tag2"></span></li><li><span><b>Client B</b></span><span class="tag2"></span></li><li><span><b>Client C</b></span><span class="tag2"></span></li><li><span><b>Client D</b></span><span class="tag2"></span></li><li><span><b>Client E</b></span><span class="tag2"></span></li><li><span><b>Client F</b></span><span class="tag2"></span></li></ul><p class="verdict" id="av"></p></div></div></div></div><div class="cs-block"><h2 class="cs-h">Why it is built the way it is</h2><div class="why" data-stagger><article><div class="c"><small>Because</small><b>A bug in one screen must not leak a client.</b></div><div class="d"><small>So</small><b>The database enforces it, not the screen.</b><p>Every table is deny by default, and a test fails if a client table is missing the rule.</p></div></article><article><div class="c"><small>Because</small><b>A half-applied settings change is worse than a stale one.</b></div><div class="d"><small>So</small><b>A settings sync is all or nothing.</b><p>One bad row blocks the whole sync, and the last good version stays live.</p></div></article><article><div class="c"><small>Because</small><b>Only staff should get in.</b></div><div class="d"><small>So</small><b>Company sign-in only.</b><p>And only once an admin has added the person.</p></div></article></div></div><div class="cs-block"><h2 class="cs-h">What broke, and what I did about it</h2><div class="broke" data-stagger><div><b>On the day I changed sign-in, everyone was refused.</b><p>The check compared two spellings of the same sign-in address.</p><small><i>Fix</i>Hotfix the same day.</small></div><div><b>On the first run with real data, screens showed $0.</b><p>Every date was being sent to the warehouse as empty.</p><small><i>Fix</i>Fixed before go-live.</small></div></div></div>
+<header class="writeup-head"><h1>Getting the data in</h1><p class="status is-active">Live at Upgrow</p></header>
+<p class="own">I built every load <b>myself</b>: scheduled loads from the ad platforms, scripts for what those miss, and one control sheet that says which client gets what.</p>
+<section class="sits" aria-label="Where this sits"><div class="sits-h"><span><b>Part 1 of 6</b> of the Upgrow operations platform</span><a href="platform.html#hub">Back to the platform map</a></div><div class="bstrip"><a href="platform-data-in.html" aria-current="page"><small>1</small>Getting the data in</a><a href="platform-clean.html"><small>2</small>Cleaning and testing it</a><a href="platform-web-app.html"><small>3</small>The web app</a><a href="platform-reports.html"><small>4</small>Reports and notes</a><a href="platform-audit.html"><small>5</small>Tracking audit</a><a href="platform-spend.html"><small>6</small>Search terms and budgets</a></div></section>
+<div class="nums" style="margin-top:0"><div><b>14,723</b><span>account changes captured on the first run</span></div><div><b>36</b><span>ad accounts read</span></div><div><b>56<i>to</i>18</b><span>GB read a day across the whole project, estimated</span></div></div><div class="cs-block"><h2 class="cs-h">Where the cost went</h2><p class="sub">Three things read the warehouse every day. I cut all three.</p><figure class="chart"><div class="key"><span><i></i>Before</span><span><i class="on"></i>After</span></div><svg viewBox="0 0 760 196" role="img" aria-label="Data read per day before and after, for three parts of the system"><text x="0" y="34">Morning build</text><rect class="b0" x="210" y="8" width="480" height="18" rx="4"/><text class="mu" x="698" y="22">about 30 GB</text><rect class="b1" x="210" y="32" width="120" height="18" rx="4"/><text x="338" y="46">about 7.5 GB</text><text x="0" y="98">Screens in the app</text><rect class="b0" x="210" y="72" width="114" height="18" rx="4"/><text class="mu" x="332" y="86">about 7.1 GB</text><rect class="b1" x="210" y="96" width="27" height="18" rx="4"/><text x="245" y="110">about 1.7 GB</text><text x="0" y="162">Scripts outside the build</text><rect class="b0" x="210" y="136" width="146" height="18" rx="4"/><text class="mu" x="364" y="150">about 9.1 GB</text><rect class="b1" x="210" y="160" width="21" height="18" rx="4"/><text x="239" y="174">about 1.3 GB</text><line class="ax" x1="210" y1="0" x2="210" y2="190"/></svg><figcaption>Data read per day. Estimates from my build log, October 2026.</figcaption></figure></div><div class="cs-block"><h2 class="cs-h">Change history, with no developer token</h2><p class="sub">A script inside the ad accounts stores what changed each day. A report can then show a change next to what happened after it.</p><figure class="chart"><svg viewBox="0 0 760 210" role="img" aria-label="Three tracks on one timeline: account changes, team work and leads per week"><text x="0" y="38">Changes in the account</text><line class="ax" x1="200" y1="34" x2="760" y2="34"/><text x="0" y="102">Work the team logged</text><line class="ax" x1="200" y1="98" x2="760" y2="98"/><text x="0" y="166">Leads per week</text><line class="ax" x1="200" y1="162" x2="760" y2="162"/><line class="tick" x1="236" y1="26" x2="236" y2="42"/><line class="tick" x1="262" y1="26" x2="262" y2="42"/><line class="tick" x1="318" y1="26" x2="318" y2="42"/><line class="tick" x1="420" y1="26" x2="420" y2="42"/><line class="tick" x1="446" y1="26" x2="446" y2="42"/><line class="tick" x1="468" y1="26" x2="468" y2="42"/><line class="tick" x1="580" y1="26" x2="580" y2="42"/><line class="tick" x1="668" y1="26" x2="668" y2="42"/><circle class="dot" cx="300" cy="98" r="6"/><circle class="dot on" cx="430" cy="98" r="6"/><circle class="dot" cx="610" cy="98" r="6"/><path class="ln" d="M210 176L280 172L350 174L420 170L490 150L560 142L630 138L700 134L750 132"/><text class="mu" x="440" y="124">a change, followed by more leads</text></svg><figcaption>Made-up data. Same layout as the timeline in the reports.</figcaption></figure></div><div class="cs-block"><h2 class="cs-h">Why it is built the way it is</h2><div class="why" data-stagger><article><div class="c"><small>Because</small><b>The official route needs a developer token I did not have.</b></div><div class="d"><small>So</small><b>The capture runs as a script inside the ad accounts.</b><p>No token needed, and it pages past the row cap the official route has.</p></div></article><article><div class="c"><small>Because</small><b>A budget alert only sends an email.</b></div><div class="d"><small>So</small><b>Hard quotas are the limit.</b><p>A quota refuses the query. An alert tells you after the money is gone.</p></div></article><article><div class="c"><small>Because</small><b>Changing a client setting used to need a redeploy.</b></div><div class="d"><small>So</small><b>Settings live in one control sheet.</b><p>It syncs to the warehouse every morning, before anything rebuilds.</p></div></article></div></div><div class="cs-block"><h2 class="cs-h">What broke, and what I did about it</h2><div class="broke" data-stagger><div><b>The first production build had zero rows.</b><p>Account IDs were written with dashes in one place and without in another.</p><small><i>Fix</i>One format everywhere.</small></div><div><b>My first cost fix missed its target.</b><p>I assumed a few heavy tables were the problem. The cost was hundreds of small tables, each billed a minimum read.</p><small><i>Fix</i>I now measure the read per table before cutting anything.</small></div></div></div>
 <p class="deep"><a class="go" href="platform.html#hub">Back to the platform map</a></p>
 </div></main>
-<script>(function(){
-var SEE=[[1,1,1,1,1,1],[1,1,1,0,0,0],[0,0,0,1,1,0],[0,0,1,0,0,0]],SAY=["The owner sees all six and can change roles.","Lead A sees three clients. The other three do not exist as far as this sign-in can tell.","Lead B sees two.","A viewer sees one client and cannot change anything."];
-var rows=document.querySelectorAll("#cl li");
-function draw(k){rows.forEach(function(r,i){var e=r.querySelector(".tag2"),on=SEE[k][i];e.textContent=on?(k===3?"Can read":"Can open"):"Refused by the database";e.className="tag2"+(on?" ok":" skip");r.classList.toggle("off",!on);});document.getElementById("av").textContent=SAY[k];}
-document.querySelectorAll("#who button").forEach(function(b){b.addEventListener("click",function(){document.querySelectorAll("#who button").forEach(function(x){x.setAttribute("aria-pressed",x===b);});draw(Number(b.dataset.k));});});
-draw(0);
-})();</script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/gsap.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/ScrollTrigger.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/SplitText.min.js"></script>
