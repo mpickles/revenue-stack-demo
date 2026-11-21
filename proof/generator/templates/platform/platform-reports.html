@@ -8,29 +8,8 @@
     <section class="sits" aria-label="Where this sits"><div class="sits-h"><span><b>Part 4 of 6</b> of the Upgrow operations platform</span><a href="platform.html#hub">Back to the platform map</a></div><div class="bstrip"><a href="platform-data-in.html"><small>1</small>Getting the data in</a><a href="platform-clean.html"><small>2</small>Cleaning and testing it</a><a href="platform-web-app.html"><small>3</small>The web app</a><a href="platform-reports.html" aria-current="page"><small>4</small>Reports and notes</a><a href="platform-audit.html"><small>5</small>Tracking audit</a><a href="platform-spend.html"><small>6</small>Search terms and budgets</a></div></section>
     <div class="cs-block" style="margin-top:0">
       <h2 class="cs-h">Try it: review a report</h2>
-      <p class="sub">One number on one slide does not match the data. Fix it, or build anyway.</p>
-      <div class="app" id="app">
-        <div class="app-bar"><span class="dots"><i></i><i></i><i></i></span><span>The review screen, rebuilt for this page with made-up clients and numbers.</span></div>
-        <div class="app-body">
-          <nav class="app-nav" aria-label="Screens"><strong>Operations</strong>
-            <button type="button" aria-pressed="true">Report review</button>
-            <small>Signed in as an account lead. You see your three clients and nobody else's.</small>
-          </nav>
-          <div class="app-main">
-            <section>
-              <div class="app-h"><b>Client B, October report</b><span>Report review</span></div>
-              <p class="app-sub">The model wrote the slides. Code checked every number on them. One does not match.</p>
-              <ul class="rows2" id="rv">
-                <li><span><b>The month in one line</b><small>3 numbers, all match the data</small></span><span class="tag2 ok">Checked</span></li>
-                <li><span><b>Spend and leads by campaign</b><small>12 numbers, all match the data</small></span><span class="tag2 ok">Checked</span></li>
-                <li id="rv-bad"><span><b>Cost per lead</b><small id="rv-note">The slide says $45.00. The data says $50.00.</small></span><span class="tag2 bad" id="rv-tag">Does not match</span></li>
-                <li><span><b>What we changed, and what happened</b><small>4 numbers, all match the data</small></span><span class="tag2 ok">Checked</span></li>
-              </ul>
-              <div class="act"><button type="button" id="rv-fix">Use the number from the data</button><button type="button" class="go" id="rv-go">Approve and build</button><span id="rv-say">You can still build with a warning. The choice is the account lead's, and it is logged.</span></div>
-            </section>
-          </div>
-        </div>
-      </div>
+      <p class="sub">One slide has a number that looks off. Cut it, or approve anyway: the check warns, and the person decides.</p>
+$$APP:review$$
     </div>
     <div class="cs-block"><h2 class="cs-h">The checker gets checked too</h2><p class="sub">If the checker itself breaks, the build fails and nothing ships.</p><div class="app"><div class="app-bar"><span class="dots"><i></i><i></i><i></i></span><span>Four tests that run every time the checker is built.</span></div><div class="app-body"><div class="app-main solo"><ul class="rows2"><li><span><b>A clean deck</b><small>Every number matches the data</small></span><span class="tag2 ok">Passes</span></li><li><span><b>One planted wrong number</b><small>A single figure changed on one slide</small></span><span class="tag2 bad">Caught</span></li><li><span><b>A number that is only in someone's notes</b><small>Not in the data at all</small></span><span class="tag2 bad">Caught</span></li><li><span><b>A deck with its numbers block missing</b><small>Nothing to check against</small></span><span class="tag2 bad">Refused</span></li></ul></div></div></div></div>
     <div class="cs-block">
@@ -40,7 +19,7 @@
     <div class="cs-block"><h2 class="cs-h">Meeting notes, by the same rule</h2><div class="more" style="margin-top:32px"><article id="meeting-notes"><svg class="art" viewBox="0 0 400 250" role="img" aria-label="A notes page with a new entry at the top" xmlns="http://www.w3.org/2000/svg"><rect class="c-box" x="112" y="46" width="176" height="160" rx="8"/><rect class="c-on m-grow" style="--i:0" x="130" y="66" width="120" height="12" rx="6"/><rect class="c-on m-grow" style="--i:1" x="130" y="86" width="84" height="8" rx="4"/><rect class="c-bar" x="130" y="116" width="140" height="8" rx="4"/><rect class="c-bar" x="130" y="136" width="110" height="8" rx="4"/><rect class="c-bar" x="130" y="156" width="132" height="8" rx="4"/><rect class="c-bar" x="130" y="176" width="96" height="8" rx="4"/></svg><div><h3>Meeting notes</h3><p>Drafts client notes from the task log, the change history and the call summary.</p><p class="d">A draft takes one to four minutes. It never says "caused".</p><small><i>Broke</i>A long set of notes was cut off by a time limit. Fixed.</small></div></article></div></div>
     <div class="cs-block">
       <h2 class="cs-h">Why it is built the way it is</h2>
-      <div class="why" data-stagger><article><div class="c"><small>Because</small><b>A model will state a wrong number with total confidence.</b></div><div class="d"><small>So</small><b>Code works out every number. The model only writes.</b><p>Each figure a slide can quote is worked out in SQL first and handed over.</p></div></article><article><div class="c"><small>Because</small><b>A true number from stale or half-finished data still misleads.</b></div><div class="d"><small>So</small><b>Stale data and partial periods are flagged on the slide.</b><p>The reviewer sees the warning before the client ever could.</p></div></article><article><div class="c"><small>Because</small><b>The account lead knows things the checker does not.</b></div><div class="d"><small>So</small><b>A failed number check warns. It does not lock the build.</b><p>They can build anyway, and the choice is logged against their name.</p></div></article></div>
+      <div class="why" data-stagger><article><div class="c"><small>Because</small><b>A model will state a wrong number with total confidence.</b></div><div class="d"><small>So</small><b>Code works out every number. The model only writes.</b><p>Each figure a slide can quote is worked out in SQL first and handed over.</p></div></article><article><div class="c"><small>Because</small><b>A true number from stale or half-finished data still misleads.</b></div><div class="d"><small>So</small><b>Stale data and partial periods are flagged on the slide.</b><p>The reviewer sees the warning before the client ever could.</p></div></article><article><div class="c"><small>Because</small><b>The account lead knows things the checker does not.</b></div><div class="d"><small>So</small><b>A number that looks off warns. It does not block.</b><p>The lead can still approve. Only a report on part of a period is blocked, and only an owner can override that, with a written reason.</p></div></article></div>
     </div>
     <div class="cs-block">
       <h2 class="cs-h">What broke, and what I did about it</h2>
@@ -55,17 +34,3 @@
     </div>
     <p class="deep"><a class="go" href="platform.html#hub">Back to the platform map</a></p>
   </div></main>
-  <script>
-    (function () {
-      var fixed = false;
-      document.getElementById("rv-fix").addEventListener("click", function () {
-        fixed = true; var t = document.getElementById("rv-tag"); t.textContent = "Checked"; t.className = "tag2 ok";
-        document.getElementById("rv-note").textContent = "Now says $50.00, the same as the data."; this.disabled = true;
-        document.getElementById("rv-say").textContent = "Every number now matches.";
-      });
-      document.getElementById("rv-go").addEventListener("click", function () {
-        this.disabled = true; document.getElementById("rv-fix").disabled = true;
-        document.getElementById("rv-say").textContent = fixed ? "Deck draft built. A person sends it, not the platform." : "Deck draft built with one warning, logged against your name. A person sends it.";
-      });
-    })();
-  </script>
