@@ -394,13 +394,12 @@ class CommittedPages(unittest.TestCase):
         }
         self.assertEqual(on_disk, set(self.pages))
 
-    def test_the_clickable_replica_is_only_on_the_platform_page_and_comes_last(self):
+    def test_real_screenshots_carry_the_platform_and_no_page_has_a_rebuilt_replica(self):
         page = self.pages["platform.html"]
-        self.assertIn('id="app" data-start="pacing" data-only=""', page)
-        for screen in ("clients", "pacing", "review", "audit"):
-            self.assertIn(f'data-screen="{screen}"', page)
-        self.assertGreater(page.index('id="app"'), page.index("What this shows I can do"))
         self.assertLess(page.index('id="shots"'), page.index("Why it is built the way it is"))
+        self.assertIn("data-shot", page)
+        self.assertIn('getElementById("shots")', page)
+        self.assertNotIn('id="app"', page)
         for part in self.config["platform"]["parts"]:
             self.assertNotIn('id="app"', self.pages[part["file"]], part["file"])
             self.assertIn('class="rshot-frame"', self.pages[part["file"]]) if part["slug"] in ("web-app", "reports", "audit", "spend") else None
@@ -429,7 +428,7 @@ class CommittedPages(unittest.TestCase):
         for shot in shots:
             self.assertIn(f'<img src="{shot}-dark.webp" class="d"', page)
             self.assertTrue((build.PROOF / f"{shot}-dark.webp").is_file(), shot)
-        self.assertIn("made-up", page[page.index('id="shots"'):page.index('id="app"')])
+        self.assertIn("made-up", page[page.index('id="shots"'):page.index("Why it is built the way it is")])
         for file in ("platform-spend.html", "platform-web-app.html", "platform-reports.html", "platform-audit.html"):
             self.assertIn('class="rshot-frame"', self.pages[file], file)
 

@@ -406,7 +406,7 @@ def build_pages():
         )
         pages[item["file"]] = template("platform-shell.html").substitute(
             style=style, platform_style=platform_style, script=script, title=e(item["title"]), file=item["file"], body=body,
-            app_script=app_script if 'id="app"' in body else "",
+            app_script=app_script if 'id="app"' in body or 'id="shots"' in body else "",
         )
 
     stops, journey = journey_html(project, builds, status_of)
