@@ -374,3 +374,13 @@ details.full .prose{padding:0 22px 22px;margin-top:0}
 .tldr dd{margin:8px 0 0;font-size:1.0625rem;line-height:1.4;letter-spacing:-.01em;text-wrap:pretty}
 
 .tldr + .own{margin-top:36px}
+
+/* Breadcrumb: where this page sits, once, at the very top. */
+.crumb{display:flex;flex-wrap:wrap;gap:6px 10px;align-items:baseline;margin:0 0 20px;font-size:.875rem;color:var(--muted)}
+.crumb a{color:var(--muted);background:none;text-decoration:underline;text-decoration-color:var(--line);text-underline-offset:3px}
+.crumb a:hover{color:var(--ink)}
+.crumb [aria-current]{color:var(--ink)}
+.pager .all{text-align:center}
+@media (max-width:700px){.pager .all{order:3;width:100%;text-align:left}}
+
+@media (min-width:701px){.pager:has(.all){display:grid;grid-template-columns:1fr auto 1fr;align-items:start}.pager:has(.all) .prev{grid-column:1}.pager .all{grid-column:2}.pager:has(.all) .next{grid-column:3}}
