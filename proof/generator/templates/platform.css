@@ -441,3 +441,29 @@ details.whole dd b{font-size:.9375rem}
 .pace-sum b{color:var(--ink);font-weight:500}
 @media (max-width:560px){.pace label{grid-template-columns:1fr 4.5rem}.pace label span{grid-column:1/-1}}
 .amap .rg-go{display:none}
+
+/* The stand-in app window on the platform page: its budget panel. */
+#app .rec{border:1px solid var(--line);border-radius:10px;background:var(--bg);box-shadow:var(--lift);overflow:hidden}
+#app .rec-head{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:14px 20px;background:var(--panel);border-bottom:1px solid var(--line)}
+#app .rec-head b{font-weight:500}
+#app .pill{font-family:var(--mono);font-size:.75rem;border-radius:99px;padding:3px 10px;border:1px solid var(--accent);color:var(--accent)}
+#app .pill.no{border-color:var(--ink);color:var(--bg);background:var(--ink)}
+#app .rec dl{margin:0;padding:4px 20px}
+#app .rec dl div{display:grid;grid-template-columns:7.5rem 1fr;gap:4px 16px;padding:14px 0;border-bottom:1px solid var(--line)}
+#app .rec dl div:last-child{border-bottom:0}
+#app .rec dt{color:var(--muted);font-size:.875rem;padding-top:.15em}
+#app .rec dd{margin:0}
+#app .rec dd b{display:block;font-weight:500;font-size:1.125rem;letter-spacing:-.02em}
+#app .rec dd small{display:block;margin-top:3px;color:var(--muted);font-size:.8125rem;line-height:1.4}
+#app .rec .swap{animation:swap .45s var(--ease) both}
+#app .rec-why{padding:18px 20px;font-size:.9375rem}
+#app .rec dl div.empty dd{color:var(--muted)}
+#app .rec dl div.empty b{font-weight:400;font-size:.875rem;font-family:var(--mono);color:var(--muted);border:1px dashed var(--muted);border-radius:4px;padding:1px 8px;display:inline-block}
+#app .rec dl div.new{animation:swap .6s var(--ease) both}
+#app .rec dl div.new b{color:var(--accent)}
+#app .sums{font-family:var(--mono);font-size:.8125rem;margin:0;padding:0;list-style:none}
+#app .sums li{display:flex;justify-content:space-between;gap:16px;padding:10px 0;border-bottom:1px solid var(--line)}
+#app .meter{position:relative;height:14px;border-radius:99px;background:var(--panel);border:1px solid var(--line);overflow:hidden}
+#app .meter span{display:block;height:100%;background:var(--accent);transition:width .35s var(--ease),background-color .2s}
+#app .meter i{position:absolute;left:71.43%;top:0;bottom:0;width:2px;background:var(--ink)}
+#app .meter.over span{background:var(--ink)}
