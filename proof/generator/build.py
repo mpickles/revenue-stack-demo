@@ -155,22 +155,38 @@ def summary_html(summary, tools):
 
 
 def project_facts_html(project, statuses):
-    """The facts beside the project on the home page. A missing result or recording shows as a marked empty slot."""
+    """The facts beside the project on the home page. A result or a recording gets a row only once it exists."""
     e = html.escape
     status = statuses[0] if len(set(statuses)) == 1 else "in progress"
     text, css = STATUSES[status]
-    result = e(project["headline"]) if project.get("headline") else '<span class="slot">To come once graded</span>'
-    watch = (
-        f'<a href="{e(project["recording"])}">Two-minute walkthrough</a>'
-        if project.get("recording")
-        else '<span class="slot">Walkthrough to come</span>'
+    rows = [f'<div><dt>Status</dt><dd><span class="status {css}">{text}</span></dd></div>']
+    if project.get("headline"):
+        rows.append(f'<div><dt>Result</dt><dd>{e(project["headline"])}</dd></div>')
+    rows.append(f'<div><dt>Built with</dt><dd>{e(project["built_with"])}</dd></div>')
+    if project.get("recording"):
+        rows.append(f'<div><dt>Watch</dt><dd><a href="{e(project["recording"])}">Two-minute walkthrough</a></dd></div>')
+    return "\n".join(rows)
+
+
+def portrait_html():
+    """The photo beside the name. Nothing is drawn until proof/img/portrait.webp exists."""
+    if not (PROOF / "img" / "portrait.webp").is_file():
+        return ""
+    return '        <img class="portrait" src="img/portrait.webp" alt="Max Pickard" width="608" height="760">\n'
+
+
+def notes_html(notes):
+    """The Notes section lists only notes that are written (they have an href). With none, there is no section."""
+    e = html.escape
+    written = [n for n in notes if n.get("href")]
+    if not written:
+        return ""
+    items = "\n".join(f'        <li><a href="{e(n["href"])}"><b>{e(n["title"])}</b></a></li>' for n in written)
+    return (
+        '    <section class="sec" id="notes"><div class="wrap">\n      <h2>Notes</h2>\n'
+        '      <p class="sub">Short write-ups of things I worked out while building.</p>\n'
+        f'      <ul class="notes-list" data-stagger>\n{items}\n      </ul>\n    </div></section>\n\n'
     )
-    return "\n".join([
-        f'<div><dt>Status</dt><dd><span class="status {css}">{text}</span></dd></div>',
-        f"<div><dt>Result</dt><dd>{result}</dd></div>",
-        f'<div><dt>Built with</dt><dd>{e(project["built_with"])}</dd></div>',
-        f"<div><dt>Watch</dt><dd>{watch}</dd></div>",
-    ])
 
 
 def journey_html(project, builds, status_of):
@@ -300,6 +316,9 @@ def build_pages():
         platform_count=str(len(config["platform"]["parts"])),
         project_cover=cover("project", grows=True),
         contact=contact,
+        portrait=portrait_html(),
+        notes=notes_html(config.get("notes", [])),
+        notes_nav='<a href="#notes">Notes</a>' if notes_html(config.get("notes", [])) else "",
         contact_nav='<a href="#contact">Contact</a>' if contact else "",
         contact_links=contact_links_html(contact_config),
     )

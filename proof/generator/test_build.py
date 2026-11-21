@@ -111,12 +111,16 @@ class CommittedPages(unittest.TestCase):
                 self.assertIn("Not graded yet", page)
                 self.assertIn(html.escape(item["graded_on"]), page)
 
-    def test_a_missing_result_or_recording_shows_as_a_marked_empty_slot(self):
-        """Empty slots are allowed, invented results are not: a slot appears exactly when the real thing is missing."""
+    def test_a_result_or_recording_is_shown_only_once_it_exists(self):
+        """Invented results are not allowed. On the home page a row appears exactly when the real thing exists; write-ups still say Not graded yet."""
         home = self.pages["index.html"]
         project = self.config["project"]
-        self.assertEqual('<span class="slot">To come once graded</span>' in home, not project.get("headline"))
-        self.assertEqual('<span class="slot">Walkthrough to come</span>' in home, not project.get("recording"))
+        facts = home[home.index('<a class="proj-cover" href="project.html"'):]
+        facts = facts[facts.index('<dl class="facts">'):]
+        facts = facts[: facts.index("</dl>")]
+        self.assertEqual("<dt>Result</dt>" in facts, bool(project.get("headline")))
+        self.assertEqual("<dt>Watch</dt>" in facts, bool(project.get("recording")))
+        self.assertNotIn('class="slot"', facts)
         for item in self.config["builds"]:
             page = self.pages[f'builds/{item["slug"]}.html']
             self.assertEqual("walkthrough to come" in page, not item.get("recording"), item["slug"])
@@ -195,12 +199,18 @@ class CommittedPages(unittest.TestCase):
         self.assertIn("colophon.html", self.pages)
         self.assertIn('href="colophon.html"', self.pages["index.html"])
 
-    def test_a_note_that_is_not_written_shows_as_an_empty_slot(self):
+    def test_the_home_page_lists_only_notes_that_are_written(self):
         home = self.pages["index.html"]
-        notes = home[home.index('<ul class="notes-list"'):]
-        notes = notes[: notes.index("</ul>")]
-        self.assertEqual(notes.count("<li>"), notes.count('<span class="slot">To come</span>'))
-        self.assertNotIn("<a ", notes)
+        written = [n for n in self.config.get("notes", []) if n.get("href")]
+        self.assertEqual('id="notes"' in home, bool(written))
+        self.assertEqual('href="#notes"' in home, bool(written))
+        for note in self.config.get("notes", []):
+            self.assertEqual(html.escape(note["title"]) in home, bool(note.get("href")), note["title"])
+
+    def test_the_photo_is_shown_only_once_there_is_one(self):
+        home = self.pages["index.html"]
+        self.assertNotIn("Photo to come", home)
+        self.assertEqual('class="portrait"' in home, (build.PROOF / "img" / "portrait.webp").is_file())
 
     def test_the_project_page_walks_every_part_once_in_the_order_a_lead_meets_them(self):
         page = self.pages["project.html"]

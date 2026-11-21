@@ -409,19 +409,20 @@
     @media (max-width:700px){.pager .all{order:3;width:100%;text-align:left}}
 
     @media (min-width:701px){.pager:has(.all){display:grid;grid-template-columns:1fr auto 1fr;align-items:start}.pager:has(.all) .prev{grid-column:1}.pager .all{grid-column:2}.pager:has(.all) .next{grid-column:3}}
+    img.portrait{aspect-ratio:4/5;width:100%;max-width:19rem;height:auto;object-fit:cover;border-radius:10px;border:1px solid var(--line)}
+    @media (max-width:979px){img.portrait{max-width:10rem}}
   </style>
 </head>
 <body>
   <div class="progress" aria-hidden="true"></div>
   <nav class="nav" aria-label="Site">
     <a class="nav-name" href="#top">Max Pickard</a>
-    <div><a href="#work">Work</a><a href="#experience">Experience</a><a href="#skills">Skills</a><a href="#notes">Notes</a><a href="#contact">Contact</a><button type="button" data-theme-toggle>Dark</button></div>
+    <div><a href="#work">Work</a><a href="#experience">Experience</a><a href="#skills">Skills</a><a href="#contact">Contact</a><button type="button" data-theme-toggle>Dark</button></div>
   </nav>
   <main id="top">
     <header class="hero"><div class="wrap">
       <div class="hero-grid">
         <h1 data-rise>Max Pickard<i aria-hidden="true">.</i></h1>
-        <div class="slot-box portrait" role="img" aria-label="Photo of Max to come"><span>Photo to come</span></div>
       </div>
       <dl class="spec">
         <div><dt>Work</dt><dd>Analytics developer</dd></div>
@@ -468,9 +469,7 @@
           <p class="acts"><a class="main" href="project.html">See the whole system</a><a href="https://roadwren-demo.vercel.app">Live demo</a><a href="https://github.com/mpickles/revenue-stack-demo">Code</a></p>
           <dl class="facts">
           <div><dt>Status</dt><dd><span class="status is-active">In progress</span></dd></div>
-          <div><dt>Result</dt><dd><span class="slot">To come once graded</span></dd></div>
           <div><dt>Built with</dt><dd>Next.js, Tag Manager, GA4, HubSpot, Salesforce Flow, Python, SQL, dbt</dd></div>
-          <div><dt>Watch</dt><dd><span class="slot">Walkthrough to come</span></dd></div>
           </dl>
         </div>
       </article>
@@ -523,16 +522,6 @@
         <tr><td>AI and automation</td><td>Claude Code, internal tools where code checks the output</td><td>Python, agents graded against answer keys, n8n, Clay</td></tr>
         <tr><td>Paid media and SEO</td><td>Google Ads, Microsoft Ads, LinkedIn Ads, SEO</td><td></td></tr>
       </table></div>
-    </div></section>
-
-    <section class="sec" id="notes"><div class="wrap">
-      <h2>Notes</h2>
-      <p class="sub">Short write-ups of things I worked out while building. None are written yet.</p>
-      <ul class="notes-list" data-stagger>
-        <li><b>Why click IDs wait in memory until the visitor says yes</b><span class="slot">To come</span></li>
-        <li><b>Grading my own builds against an answer key</b><span class="slot">To come</span></li>
-        <li><b>Why the Flow sets the lead owner, not the assignment rules</b><span class="slot">To come</span></li>
-      </ul>
     </div></section>
 
     <section class="sec" id="about"><div class="wrap">
