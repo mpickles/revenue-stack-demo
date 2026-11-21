@@ -305,8 +305,9 @@ class CommittedPages(unittest.TestCase):
         block = page[page.index("What I learned</h2>"):page.index("What went wrong, and what I do now</h2>")]
         for theme in ("Moving data cheaply", "Designing for the person using it", "Directing an AI, strictly"):
             self.assertEqual(block.count(f"<h3>{theme}</h3>"), 1, theme)
-        steps = block[block.index('<ol class="how five">'):block.index("</ol>")]
+        steps = block[block.index('<ol class="flow n5 dated">'):block.index("</ol>")]
         self.assertEqual(steps.count("<li>"), 5)
+        self.assertEqual(steps.count("<svg "), 5)
 
     def test_every_part_page_says_what_i_chose_and_what_i_turned_down(self):
         for part in self.config["platform"]["parts"]:
