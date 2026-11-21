@@ -241,11 +241,15 @@ class CommittedPages(unittest.TestCase):
     def test_the_project_has_its_own_drawing_on_the_home_page_and_it_opens_the_project_page(self):
         home = self.pages["index.html"]
         self.assertTrue((build.GENERATOR / "covers" / "project.svg").is_file())
-        card = home[home.index('<a class="proj-cover"'):]
+        self.assertEqual(home.count('<a class="proj-cover" href="project.html"'), 1)
+        card = home[home.index('<a class="proj-cover" href="project.html"'):]
         card = card[: card.index("</a>")]
-        self.assertIn('href="project.html"', card)
         self.assertIn("view-transition-name:cover-project", card)
         self.assertIn("view-transition-name:cover-project", self.pages["project.html"])
+
+    def test_the_home_page_leads_with_the_live_platform(self):
+        home = self.pages["index.html"]
+        self.assertLess(home.index('<a class="proj-cover" href="platform.html"'), home.index('<a class="proj-cover" href="project.html"'))
 
     def test_a_drawing_grows_from_its_card_into_the_page_it_opens(self):
         for item in self.config["builds"]:
