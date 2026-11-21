@@ -985,6 +985,20 @@
     @media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .rshot-frame .l{display:none}:root:not([data-theme="light"]) .rshot-frame .d{display:block}}
     .rshot-frame figcaption{padding:12px 16px;border-top:1px solid var(--line);font-size:.9375rem;color:var(--muted);background:var(--bg)}
     .rshot-pane[hidden]{display:none}
+
+    /* How: the steps behind a claim, so no line says "I did X" without saying how. */
+    .how-w{margin-top:32px}.how-w + .how-w{margin-top:40px}
+    .how-l{margin:0 0 12px;font-family:var(--mono);font-size:.75rem;color:var(--accent)}
+    .how{list-style:none;margin:0;padding:0;display:grid;gap:12px}
+    @media (min-width:900px){.how{grid-template-columns:repeat(4,minmax(0,1fr))}.how.three{grid-template-columns:repeat(3,minmax(0,1fr))}}
+    .how li{border:1px solid var(--line);border-radius:10px;background:var(--bg);padding:16px 16px 18px}
+    .how small{font-family:var(--mono);font-size:.6875rem;color:var(--muted)}
+    .how p{margin:8px 0 0;font-size:.9375rem;line-height:1.45}
+    /* What I learned: what happened on the left, what I would do next time on the right. */
+    @media (min-width:860px){.shows.learn div{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}}
+    .shows.learn dt{font-size:1rem;line-height:1.4;letter-spacing:-.01em;text-wrap:pretty}
+    .shows.learn dd{color:var(--ink);line-height:1.4;text-wrap:pretty}
+    .shows.learn dd i{display:block;font-style:normal;font-family:var(--mono);font-size:.6875rem;color:var(--accent);margin-bottom:4px}
   </style>
 </head>
 <body>
@@ -1004,6 +1018,7 @@
     <div class="nums"><div><b>4<i>of</i>9</b><span>decks built first time on the first full live day</span></div><div><b>9<i>of</i>9</b><span>rebuilt and checked by hand the next day</span></div><div><b>58%</b><span>smaller data packet per report after one rewrite</span></div></div>
     <section class="sits" aria-label="Where this sits"><div class="sits-h"><span><b>Part 4 of 6</b> of the Upgrow operations platform</span><a href="platform.html#hub">Back to the platform map</a></div><div class="bstrip"><a href="platform-data-in.html"><small>1</small>Getting the data in</a><a href="platform-clean.html"><small>2</small>Cleaning and testing it</a><a href="platform-web-app.html"><small>3</small>The web app</a><a href="platform-reports.html" aria-current="page"><small>4</small>Reports and notes</a><a href="platform-audit.html"><small>5</small>Tracking audit</a><a href="platform-spend.html"><small>6</small>Search terms and budgets</a></div></section>
     <div class="cs-block"><h2 class="cs-h">The real screen</h2><div class="rshot"><figure class="rshot-frame"><div class="rshot-pane" data-pane="3"><img src="img/platform/07-report-review-numbers-look-off-light.webp" class="l" alt="The report review screen. A slide-by-slide outline, with one slide flagged because its numbers look off." width="1440" height="900" loading="lazy"><img src="img/platform/07-report-review-numbers-look-off-dark.webp" class="d" alt="The report review screen. A slide-by-slide outline, with one slide flagged because its numbers look off. Dark mode." width="1440" height="900" loading="lazy"><figcaption>Report review. One slide is flagged "Numbers look off" before anyone approves.</figcaption></div></figure><p class="ops-note">A real screenshot of the app, running on made-up clients, people and numbers.</p></div></div>
+<div class="cs-block"><h2 class="cs-h">How the number check works</h2><div class="how-w"><p class="how-l">Every report, in this order</p><ol class="how"><li><small>1</small><p>SQL works out every number a report may quote and puts them in one numbers block.</p></li><li><small>2</small><p>The model writes from that block. If it needs a sum or a rate, it asks code to calculate it, and every formula is run again.</p></li><li><small>3</small><p>The checker reads every number on every slide, tables and charts included, and looks it up in the block.</p></li><li><small>4</small><p>A rounded number passes. Anything else is flagged. No numbers block, no build.</p></li></ol></div></div>
 <div class="cs-block"><h2 class="cs-h">The checker gets checked too</h2><p class="sub">If the checker itself breaks, the build fails and nothing ships.</p><div class="app"><div class="app-bar"><span class="dots"><i></i><i></i><i></i></span><span>Four tests that run every time the checker is built.</span></div><div class="app-body"><div class="app-main solo"><ul class="rows2"><li><span><b>A clean deck</b><small>Every number matches the data</small></span><span class="tag2 ok">Passes</span></li><li><span><b>One planted wrong number</b><small>A single figure changed on one slide</small></span><span class="tag2 bad">Caught</span></li><li><span><b>A number that is only in someone's notes</b><small>Not in the data at all</small></span><span class="tag2 bad">Caught</span></li><li><span><b>A deck with its numbers block missing</b><small>Nothing to check against</small></span><span class="tag2 bad">Refused</span></li></ul></div></div></div></div>
     <div class="cs-block">
       <h2 class="cs-h">How one report gets made</h2>
@@ -1025,6 +1040,7 @@
       <h2 class="cs-h">Result</h2>
       <div class="result"><p class="big">Hours saved per report: <span class="slot">being measured</span></p></div>
     </div>
+    <div class="cs-block"><h2 class="cs-h">What I learned, and what I would do differently</h2><dl class="shows learn"><div><dt>My first checker failed open. When it could not find the numbers block, it accepted any number on the page, including ones from notes.</dt><dd><i>Next time</i>A check that cannot run must stop the build. It does now, with a test for it.</dd></div><div><dt>The first feedback on the decks was that they read like a data dump.</dt><dd><i>Next time</i>Have the account lead approve the story before any deck is built. That came two months in. It should have been day one.</dd></div><div><dt>The checker still misses a real number on the wrong label, and "up" where the figure went down.</dt><dd><i>Next time</i>The tests print both gaps on every run, so they stay in front of me until they are closed.</dd></div></dl></div>
     <p class="deep"><a class="go" href="platform.html#hub">Back to the platform map</a></p>
   </div></main>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/gsap.min.js"></script>

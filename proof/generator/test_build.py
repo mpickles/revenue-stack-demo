@@ -278,6 +278,30 @@ class CommittedPages(unittest.TestCase):
             self.assertLess(page.index(name), page.index("<h1"), part["file"])
             self.assertIn('<div class="page-cover">', page[:page.index("<h1")], part["file"])
 
+    def test_every_platform_page_says_what_i_learned_and_what_i_would_do_differently(self):
+        for item in self.config["platform"]["pages"]:
+            page = self.pages[item["file"]]
+            self.assertEqual(page.count("What I learned, and what I would do differently</h2>"), 1, item["file"])
+            block = page[page.index("What I learned, and what I would do differently</h2>"):]
+            block = block[:block.index("</dl>")]
+            self.assertGreaterEqual(block.count("<dt>"), 3, item["file"])
+            self.assertEqual(block.count("<dt>"), block.count("<i>Next time</i>"), item["file"])
+
+    def test_a_claim_that_something_was_done_says_how(self):
+        for file, label in (
+            ("platform-data-in.html", "How I cut each one"),
+            ("platform-data-in.html", "How the capture works"),
+            ("platform-web-app.html", "How the database decides"),
+            ("platform-reports.html", "How the number check works"),
+            ("platform-audit.html", "How a sweep runs"),
+            ("platform-spend.html", "How each one decides"),
+        ):
+            page = self.pages[file]
+            self.assertIn(label, page, file)
+            steps = page[page.index(label):]
+            steps = steps[steps.index('<ol class="how'):steps.index("</ol>")]
+            self.assertGreaterEqual(steps.count("<li>"), 3, f"{file} {label}")
+
     def test_every_platform_link_lands_on_a_page_that_exists(self):
         for item in self.config["platform"]["pages"]:
             page = self.pages[item["file"]]

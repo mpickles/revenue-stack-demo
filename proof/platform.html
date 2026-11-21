@@ -985,6 +985,20 @@
     @media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .rshot-frame .l{display:none}:root:not([data-theme="light"]) .rshot-frame .d{display:block}}
     .rshot-frame figcaption{padding:12px 16px;border-top:1px solid var(--line);font-size:.9375rem;color:var(--muted);background:var(--bg)}
     .rshot-pane[hidden]{display:none}
+
+    /* How: the steps behind a claim, so no line says "I did X" without saying how. */
+    .how-w{margin-top:32px}.how-w + .how-w{margin-top:40px}
+    .how-l{margin:0 0 12px;font-family:var(--mono);font-size:.75rem;color:var(--accent)}
+    .how{list-style:none;margin:0;padding:0;display:grid;gap:12px}
+    @media (min-width:900px){.how{grid-template-columns:repeat(4,minmax(0,1fr))}.how.three{grid-template-columns:repeat(3,minmax(0,1fr))}}
+    .how li{border:1px solid var(--line);border-radius:10px;background:var(--bg);padding:16px 16px 18px}
+    .how small{font-family:var(--mono);font-size:.6875rem;color:var(--muted)}
+    .how p{margin:8px 0 0;font-size:.9375rem;line-height:1.45}
+    /* What I learned: what happened on the left, what I would do next time on the right. */
+    @media (min-width:860px){.shows.learn div{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}}
+    .shows.learn dt{font-size:1rem;line-height:1.4;letter-spacing:-.01em;text-wrap:pretty}
+    .shows.learn dd{color:var(--ink);line-height:1.4;text-wrap:pretty}
+    .shows.learn dd i{display:block;font-style:normal;font-family:var(--mono);font-size:.6875rem;color:var(--accent);margin-bottom:4px}
   </style>
 </head>
 <body>
@@ -1050,9 +1064,11 @@
       <div class="broke" data-stagger>
         <div><b>A date was read as a number, and every draft was blocked.</b><p>The number checker read the "2026-08" in a date as the number 202 and rejected every report that month.</p><small><i>Fix</i>Dates are stripped out before numbers are checked, with a test for it.</small></div>
         <div><b>On the first full live day, fewer than half the decks built first time.</b><p>A missing file permission, a time limit that was too short, and a test run that had marked work as already done.</p><small><i>Fix</i>Each cause fixed that day, and every deck rebuilt and checked by hand the next.</small></div>
-        <div><b>On launch day nobody could sign in.</b><p>The new sign-in stored each person's ID in a slightly different form from the one the app looked up.</p><small><i>Fix</i>Found and patched the same day.</small></div>
+        <div><b>On launch day nobody could sign in.</b><p>The new sign-in stored each person's ID in a slightly different form from the one the app looked up.</p><small><i>Fix</i>Both sides now use the same form of the ID. Patched the same day.</small></div>
       </div>
     </div>
+
+    <div class="cs-block"><h2 class="cs-h">What I learned, and what I would do differently</h2><dl class="shows learn"><div><dt>I built first and timed nothing. The before number for hours saved comes from memory, not a stopwatch.</dt><dd><i>Next time</i>Time the old way for a month before writing any code.</dd></div><div><dt>The launch date slipped three times.</dt><dd><i>Next time</i>Launch one workflow to two people first. Then widen.</dd></div><div><dt>A test run in production marked real work as done, and a client was skipped.</dt><dd><i>Next time</i>Keep test runs out of the live log from day one.</dd></div><div><dt>I built more screens than people could take in.</dt><dd><i>Next time</i>One screen per job, and cut what confuses people in the first week.</dd></div></dl></div>
 
     <div class="cs-block">
       <h2 class="cs-h">What is next</h2>

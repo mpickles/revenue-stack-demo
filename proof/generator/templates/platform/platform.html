@@ -50,9 +50,11 @@ $$TILES$$
       <div class="broke" data-stagger>
         <div><b>A date was read as a number, and every draft was blocked.</b><p>The number checker read the "2026-08" in a date as the number 202 and rejected every report that month.</p><small><i>Fix</i>Dates are stripped out before numbers are checked, with a test for it.</small></div>
         <div><b>On the first full live day, fewer than half the decks built first time.</b><p>A missing file permission, a time limit that was too short, and a test run that had marked work as already done.</p><small><i>Fix</i>Each cause fixed that day, and every deck rebuilt and checked by hand the next.</small></div>
-        <div><b>On launch day nobody could sign in.</b><p>The new sign-in stored each person's ID in a slightly different form from the one the app looked up.</p><small><i>Fix</i>Found and patched the same day.</small></div>
+        <div><b>On launch day nobody could sign in.</b><p>The new sign-in stored each person's ID in a slightly different form from the one the app looked up.</p><small><i>Fix</i>Both sides now use the same form of the ID. Patched the same day.</small></div>
       </div>
     </div>
+
+    <div class="cs-block"><h2 class="cs-h">What I learned, and what I would do differently</h2><dl class="shows learn"><div><dt>I built first and timed nothing. The before number for hours saved comes from memory, not a stopwatch.</dt><dd><i>Next time</i>Time the old way for a month before writing any code.</dd></div><div><dt>The launch date slipped three times.</dt><dd><i>Next time</i>Launch one workflow to two people first. Then widen.</dd></div><div><dt>A test run in production marked real work as done, and a client was skipped.</dt><dd><i>Next time</i>Keep test runs out of the live log from day one.</dd></div><div><dt>I built more screens than people could take in.</dt><dd><i>Next time</i>One screen per job, and cut what confuses people in the first week.</dd></div></dl></div>
 
     <div class="cs-block">
       <h2 class="cs-h">What is next</h2>
