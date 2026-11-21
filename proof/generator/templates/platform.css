@@ -621,4 +621,12 @@ details.whole dd b{font-size:.9375rem}
 .how p b{display:block;font-weight:500;margin-bottom:6px}
 .shows.learn dt b{display:block;font-weight:500;margin-bottom:4px}
 .shows.learn dt{color:var(--muted)}.shows.learn dt b{color:var(--ink)}
+/* No highlight on "myself". The sentence says it. */
+.own b{font-weight:inherit;background:none}
+.chart .vl{stroke:var(--accent);stroke-width:1.5;stroke-dasharray:4 4}
+.more-rows summary{cursor:pointer;padding:16px 0;font-size:.875rem;color:var(--muted);border-bottom:1px solid var(--line);list-style:none}
+.more-rows summary::-webkit-details-marker{display:none}
+.more-rows summary::before{content:"+";font-family:var(--mono);color:var(--accent);margin-right:10px}
+.more-rows[open] summary::before{content:"\2212"}
+.more-rows summary:hover{color:var(--ink)}
 

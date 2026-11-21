@@ -193,22 +193,21 @@ def journey_html(project, builds, status_of):
     return "\n".join(stops), json.dumps(data).replace("</", "<\\/")
 
 
-def sits_html(project, slug):
-    """The strip on a part's write-up: all the parts in order, this one marked, and a way back to the map."""
+def crumb_html(home, parent_href, parent, here, total):
+    """Where this page sits, said once at the very top: the way home, the project it belongs to, and which part it is."""
     e = html.escape
-    order = [step["slug"] for step in project["journey"]]
-    here = order.index(slug)
-    thumbs = "".join(
-        f'<a href="{step["slug"]}.html"' + (' aria-current="page"' if index == here else "")
-        + f'>{cover(step["slug"])}<span>{index + 1}. {e(step["short"])}</span></a>'
-        for index, step in enumerate(project["journey"])
-    )
     return (
-        '    <section class="sits" aria-label="Where this part sits">\n'
-        f'      <div class="sits-h"><span><b>Part {here + 1} of {len(order)}</b> in the revenue stack</span>'
-        '<a href="../project.html">Back to the whole map</a></div>\n'
-        f'      <div class="mini">{thumbs}</div>\n    </section>'
+        '<nav class="crumb" aria-label="Breadcrumb">'
+        f'<a href="{home}">Work</a><span aria-hidden="true">/</span>'
+        f'<a href="{parent_href}">{e(parent)}</a><span aria-hidden="true">/</span>'
+        f'<span aria-current="page">Part {here} of {total}</span></nav>'
     )
+
+
+def sits_html(project, slug):
+    """The breadcrumb on a part's write-up: the project it belongs to and which part it is."""
+    order = [step["slug"] for step in project["journey"]]
+    return "    " + crumb_html("../index.html#work", "../project.html", "Revenue stack", order.index(slug) + 1, len(order))
 
 
 def platform_tiles_html(platform):
@@ -360,8 +359,7 @@ def build_pages():
             sections = [strip, headline, image, cols, figure, recording, notes]
         else:
             sections = [headline, recording, figure, image, article]
-        sections.insert(0, sits_html(project, build["slug"]))
-        banner = f'    <div class="page-cover">{cover(build["slug"], grows=True)}</div>'
+        banner = sits_html(project, build["slug"]) + f'\n    <div class="page-cover">{cover(build["slug"], grows=True)}</div>'
 
         pages[f'builds/{build["slug"]}.html'] = template("build.html").substitute(
             style=style,
@@ -387,7 +385,19 @@ def build_pages():
         if part:  # a part page opens with its own drawing, the one its tile grows into
             head = '<main class="writeup"><div class="wrap">\n'
             assert body.startswith(head), item["file"]
-            body = head + f'<div class="page-cover">{cover("pf-" + part["slug"], grows=True)}</div>\n' + body[len(head):]
+            parts = config["platform"]["parts"]
+            at = parts.index(part)
+            crumb = crumb_html("index.html#work", "platform.html#hub", "Upgrow operations platform", at + 1, len(parts))
+            body = head + crumb + f'\n<div class="page-cover">{cover("pf-" + part["slug"], grows=True)}</div>\n' + body[len(head):]
+            links = []
+            if at > 0:
+                links.append(f'<a class="prev" href="{e(parts[at - 1]["file"])}"><span>Previous</span>{at}. {e(parts[at - 1]["name"])}</a>')
+            links.append('<a class="all" href="platform.html#hub"><span>Map</span>All six parts</a>')
+            if at < len(parts) - 1:
+                links.append(f'<a class="next" href="{e(parts[at + 1]["file"])}"><span>Next</span>{at + 2}. {e(parts[at + 1]["name"])}</a>')
+            tail = "</div></main>"
+            assert body.count(tail) == 1, item["file"]
+            body = body.replace(tail, '<nav class="pager" aria-label="Other parts">' + "".join(links) + "</nav>\n" + tail)
         body = body.replace("$$TILES$$", indent(platform_tiles_html(config["platform"]), 10))
         body = re.sub(
             r"\$\$APP(?::(\w+))?\$\$",

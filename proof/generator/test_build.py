@@ -226,18 +226,17 @@ class CommittedPages(unittest.TestCase):
             for line in (because, so, detail):
                 self.assertIn(html.escape(line), page)
 
-    def test_every_write_up_shows_where_the_part_sits_and_links_back_to_the_map(self):
+    def test_every_write_up_opens_with_a_breadcrumb_back_to_the_map(self):
         order = [step["slug"] for step in self.config["project"]["journey"]]
         for item in self.config["builds"]:
             page = self.pages[f'builds/{item["slug"]}.html']
-            strip = page[page.index('<section class="sits"'):]
-            strip = strip[: strip.index("</section>")]
-            self.assertIn(f"Part {order.index(item['slug']) + 1} of {len(order)}", strip)
-            self.assertIn('href="../project.html"', strip)
-            self.assertEqual(strip.count('aria-current="page"'), 1)
-            self.assertIn(f'href="{item["slug"]}.html" aria-current="page"', strip)
-            for slug in order:
-                self.assertIn(f'href="{slug}.html"', strip)
+            self.assertEqual(page.count('<nav class="crumb"'), 1, item["slug"])
+            crumb = page[page.index('<nav class="crumb"'):]
+            crumb = crumb[: crumb.index("</nav>")]
+            self.assertIn(f"Part {order.index(item['slug']) + 1} of {len(order)}", crumb)
+            self.assertIn('href="../project.html"', crumb)
+            self.assertLess(page.index('<nav class="crumb"'), page.index("<h1"), item["slug"])
+            self.assertNotIn('<section class="sits"', page)
 
     def test_the_project_has_its_own_drawing_on_the_home_page_and_it_opens_the_project_page(self):
         home = self.pages["index.html"]
@@ -359,18 +358,27 @@ class CommittedPages(unittest.TestCase):
             self.assertIn(part["file"], self.pages)
             self.assertTrue((build.GENERATOR / "covers" / f'pf-{part["slug"]}.svg').is_file(), part["slug"])
 
-    def test_every_platform_part_page_lists_all_the_parts_and_links_back_to_the_map(self):
-        files = [part["file"] for part in self.config["platform"]["parts"]]
-        for index, file in enumerate(files):
-            page = self.pages[file]
-            strip = page[page.index('<section class="sits"'):]
-            strip = strip[: strip.index("</section>")]
-            self.assertIn(f"Part {index + 1} of {len(files)}", strip)
-            self.assertIn('href="platform.html#hub"', strip)
-            self.assertEqual(strip.count('aria-current="page"'), 1, file)
-            self.assertIn(f'href="{file}" aria-current="page"', strip)
-            for other in files:
-                self.assertIn(f'href="{other}"', strip, file)
+    def test_every_platform_part_page_has_a_breadcrumb_on_top_and_its_neighbours_at_the_bottom(self):
+        parts = self.config["platform"]["parts"]
+        for index, part in enumerate(parts):
+            page = self.pages[part["file"]]
+            self.assertEqual(page.count('<nav class="crumb"'), 1, part["file"])
+            crumb = page[page.index('<nav class="crumb"'):]
+            crumb = crumb[: crumb.index("</nav>")]
+            self.assertIn(f"Part {index + 1} of {len(parts)}", crumb)
+            self.assertIn('href="platform.html#hub"', crumb)
+            self.assertLess(page.index('<nav class="crumb"'), page.index("<h1"), part["file"])
+            self.assertNotIn('<section class="sits"', page)
+            pager = page[page.index('<nav class="pager"'):]
+            pager = pager[: pager.index("</nav>")]
+            self.assertGreater(page.index('<nav class="pager"'), page.index("What went wrong, and what I do now"))
+            self.assertIn('href="platform.html#hub"', pager)
+            self.assertEqual('class="prev"' in pager, index > 0, part["file"])
+            self.assertEqual('class="next"' in pager, index < len(parts) - 1, part["file"])
+            if index > 0:
+                self.assertIn(f'class="prev" href="{parts[index - 1]["file"]}"', pager)
+            if index < len(parts) - 1:
+                self.assertIn(f'class="next" href="{parts[index + 1]["file"]}"', pager)
 
     def test_no_page_is_left_over_from_an_earlier_layout(self):
         on_disk = {
@@ -398,7 +406,8 @@ class CommittedPages(unittest.TestCase):
         files = ["project.html"] + [item["file"] for item in self.config["platform"]["pages"]]
         for file in files:
             page = self.pages[file]
-            top = page[page.index("<h1"):page.index('<p class="own">')]
+            top = page[page.index("<h1"):]
+            top = top[: top.index("</dl>")]
             for label in ("<dt>Problem</dt>", "<dt>What I built</dt>", "<dt>Result</dt>"):
                 self.assertEqual(top.count(label), 1, f"{file} {label}")
 
