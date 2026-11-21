@@ -619,4 +619,6 @@ details.whole dd b{font-size:.9375rem}
 .themes li:last-child{border-bottom:0;padding-bottom:0}
 @media (min-width:1000px){.how.five{grid-template-columns:repeat(5,minmax(0,1fr))}}
 .how p b{display:block;font-weight:500;margin-bottom:6px}
+.shows.learn dt b{display:block;font-weight:500;margin-bottom:4px}
+.shows.learn dt{color:var(--muted)}.shows.learn dt b{color:var(--ink)}
 

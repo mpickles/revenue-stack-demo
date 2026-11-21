@@ -278,18 +278,28 @@ class CommittedPages(unittest.TestCase):
             self.assertLess(page.index(name), page.index("<h1"), part["file"])
             self.assertIn('<div class="page-cover">', page[:page.index("<h1")], part["file"])
 
-    def test_every_platform_page_says_what_i_learned_and_what_i_would_do_differently(self):
+    def test_every_platform_page_says_what_went_wrong_and_what_i_do_now(self):
         for item in self.config["platform"]["pages"]:
             page = self.pages[item["file"]]
-            self.assertEqual(page.count("What I learned, and what I would do differently</h2>"), 1, item["file"])
-            block = page[page.index("What I learned, and what I would do differently</h2>"):]
+            self.assertEqual(page.count("What went wrong, and what I do now</h2>"), 1, item["file"])
+            block = page[page.index("What went wrong, and what I do now</h2>"):]
             block = block[:block.index("</dl>")]
             self.assertGreaterEqual(block.count("<dt>"), 3, item["file"])
-            self.assertEqual(block.count("<dt>"), block.count("<i>Next time</i>"), item["file"])
+            answers = sum(block.count(f"<i>{label}</i>") for label in ("Fix", "Next time", "Still open"))
+            self.assertEqual(block.count("<dt>"), answers, item["file"])
+
+    def test_a_part_page_has_three_story_sections_and_no_more(self):
+        gone = ("Why it is built the way it is", "What broke, and what I did about it", "What I learned")
+        for part in self.config["platform"]["parts"]:
+            page = self.pages[part["file"]]
+            for heading in gone:
+                self.assertNotIn(f'<h2 class="cs-h">{heading}', page, f'{part["file"]} {heading}')
+            self.assertLess(page.index("What I chose, and what I turned down</h2>"), page.index("What went wrong, and what I do now</h2>"), part["file"])
 
     def test_the_platform_page_names_the_three_things_i_learned_and_how_my_process_changed(self):
         page = self.pages["platform.html"]
-        block = page[page.index("What I learned, and what I would do differently</h2>"):page.index("What is next</h2>")]
+        self.assertEqual(page.count("What I learned</h2>"), 1)
+        block = page[page.index("What I learned</h2>"):page.index("What went wrong, and what I do now</h2>")]
         for theme in ("Moving data cheaply", "Designing for the person using it", "Directing an AI, strictly"):
             self.assertEqual(block.count(f"<h3>{theme}</h3>"), 1, theme)
         steps = block[block.index('<ol class="how five">'):block.index("</ol>")]
@@ -299,7 +309,7 @@ class CommittedPages(unittest.TestCase):
         for part in self.config["platform"]["parts"]:
             page = self.pages[part["file"]]
             self.assertEqual(page.count("What I chose, and what I turned down</h2>"), 1, part["file"])
-            block = page[page.index('<div class="chose">'):page.index("What I learned, and what I would do differently</h2>")]
+            block = page[page.index('<div class="chose">'):page.index("What went wrong, and what I do now</h2>")]
             self.assertGreaterEqual(block.count("<small>Chose</small>"), 3, part["file"])
             self.assertEqual(block.count("<small>Chose</small>"), block.count("<small>Turned down</small>"), part["file"])
             self.assertEqual(block.count("<small>Chose</small>"), block.count("<small>Why, and what it cost</small>"), part["file"])
@@ -334,7 +344,7 @@ class CommittedPages(unittest.TestCase):
     def test_the_platform_map_comes_before_the_reasons_and_the_failures(self):
         page = self.pages["platform.html"]
         self.assertLess(page.index('id="hub"'), page.index("Why it is built the way it is"))
-        self.assertLess(page.index('id="hub"'), page.index("What broke, and what I did about it"))
+        self.assertLess(page.index('id="hub"'), page.index("What went wrong, and what I do now"))
 
     def test_the_platform_map_its_tiles_and_its_pages_are_the_same_six_things_in_the_same_order(self):
         parts = self.config["platform"]["parts"]
