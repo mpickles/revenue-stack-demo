@@ -985,6 +985,20 @@
     @media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .rshot-frame .l{display:none}:root:not([data-theme="light"]) .rshot-frame .d{display:block}}
     .rshot-frame figcaption{padding:12px 16px;border-top:1px solid var(--line);font-size:.9375rem;color:var(--muted);background:var(--bg)}
     .rshot-pane[hidden]{display:none}
+
+    /* How: the steps behind a claim, so no line says "I did X" without saying how. */
+    .how-w{margin-top:32px}.how-w + .how-w{margin-top:40px}
+    .how-l{margin:0 0 12px;font-family:var(--mono);font-size:.75rem;color:var(--accent)}
+    .how{list-style:none;margin:0;padding:0;display:grid;gap:12px}
+    @media (min-width:900px){.how{grid-template-columns:repeat(4,minmax(0,1fr))}.how.three{grid-template-columns:repeat(3,minmax(0,1fr))}}
+    .how li{border:1px solid var(--line);border-radius:10px;background:var(--bg);padding:16px 16px 18px}
+    .how small{font-family:var(--mono);font-size:.6875rem;color:var(--muted)}
+    .how p{margin:8px 0 0;font-size:.9375rem;line-height:1.45}
+    /* What I learned: what happened on the left, what I would do next time on the right. */
+    @media (min-width:860px){.shows.learn div{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}}
+    .shows.learn dt{font-size:1rem;line-height:1.4;letter-spacing:-.01em;text-wrap:pretty}
+    .shows.learn dd{color:var(--ink);line-height:1.4;text-wrap:pretty}
+    .shows.learn dd i{display:block;font-style:normal;font-family:var(--mono);font-size:.6875rem;color:var(--accent);margin-bottom:4px}
   </style>
 </head>
 <body>
@@ -1007,6 +1021,7 @@
     columns:
       - name: day
         tests: [not_null, <b>no_missing_days</b>]   <i># a gap stops the build</i></pre></div></div><div class="cs-block"><h2 class="cs-h">The team's Claude reads these tables</h2><div class="more" style="margin-top:32px"><article id="claude"><svg class="art" viewBox="0 0 400 250" role="img" aria-label="A dot connected by a dashed line to a table" xmlns="http://www.w3.org/2000/svg"><circle class="c-on m-pop" style="--i:0" cx="104" cy="125" r="18"/><path class="c-rule" d="M126 125H220"/><rect class="c-box" x="224" y="70" width="96" height="110" rx="10"/><rect class="c-bar" x="240" y="92" width="64" height="8" rx="4"/><rect class="c-bar" x="240" y="112" width="64" height="8" rx="4"/><rect class="c-bar" x="240" y="132" width="64" height="8" rx="4"/><rect class="c-bar" x="240" y="152" width="40" height="8" rx="4"/></svg><div><h3>The Claude connection</h3><p>The team's Claude can query the tested tables in the warehouse.</p><p class="d">Read only. It can ask. It cannot write.</p></div></article></div></div><div class="cs-block"><h2 class="cs-h">Why it is built the way it is</h2><div class="why" data-stagger><article><div class="c"><small>Because</small><b>A bad number must never reach a report.</b></div><div class="d"><small>So</small><b>I chose dbt.</b><p>A failed test blocks everything after it by default.</p></div></article><article><div class="c"><small>Because</small><b>A live warehouse query costs money on every page view.</b></div><div class="d"><small>So</small><b>Screens read saved copies of the tested tables.</b><p>The warehouse is only asked live for a drill-down, with a size cap.</p></div></article><article><div class="c"><small>Because</small><b>An assistant must never change an ad account.</b></div><div class="d"><small>So</small><b>The Claude connection is read only.</b><p>It can ask the tested tables anything. It cannot write.</p></div></article></div></div><div class="cs-block"><h2 class="cs-h">What broke, and what I did about it</h2><div class="broke" data-stagger><div><b>The first scheduled run was refused.</b><p>The account the job runs as was not allowed to start it.</p><small><i>Fix</i>Gave that account the one role it needed.</small></div></div></div>
+<div class="cs-block"><h2 class="cs-h">What I learned, and what I would do differently</h2><dl class="shows learn"><div><dt>A test that stops the build stops it for every client. One missing account would have blocked every report.</dt><dd><i>Next time</i>Decide per test, when writing it, whether it blocks or only warns.</dd></div><div><dt>New models doubled the daily read before I noticed.</dt><dd><i>Next time</i>Any new model over a set size rebuilds only recent days by default.</dd></div><div><dt>My own test builds counted against the same daily limit as production. One day finished at 33.99 of 34.6 GB.</dt><dd><i>Next time</i>Give development its own limit, separate from production.</dd></div></dl></div>
 <p class="deep"><a class="go" href="platform.html#hub">Back to the platform map</a></p>
 </div></main>
 <script>(function(){
