@@ -215,7 +215,7 @@ def platform_tiles_html(platform):
     """One tile per part of the platform: same number, name and order as the boxes on its map."""
     e = html.escape
     return "\n".join(
-        f'<a class="wf-card cover-card" href="{e(part["file"])}">{cover("pf-" + part["slug"])}'
+        f'<a class="wf-card cover-card" href="{e(part["file"])}">{cover("pf-" + part["slug"], grows=True)}'
         f'<span class="body"><b><i>{index + 1}</i>{e(part["name"])}</b><span class="line">{e(part["line"])}</span>'
         f'<span class="meta"><span class="status is-active">Live</span><span>{e(part["tools"])}</span></span></span></a>'
         for index, part in enumerate(platform["parts"])
@@ -383,6 +383,11 @@ def build_pages():
     for item in config["platform"]["pages"]:
         body = (GENERATOR / "templates" / "platform" / item["file"]).read_text(encoding="utf-8").rstrip()
         body = body.replace("$$COVER$$", cover("platform", grows=True))
+        part = next((p for p in config["platform"]["parts"] if p["file"] == item["file"]), None)
+        if part:  # a part page opens with its own drawing, the one its tile grows into
+            head = '<main class="writeup"><div class="wrap">\n'
+            assert body.startswith(head), item["file"]
+            body = head + f'<div class="page-cover">{cover("pf-" + part["slug"], grows=True)}</div>\n' + body[len(head):]
         body = body.replace("$$TILES$$", indent(platform_tiles_html(config["platform"]), 10))
         body = re.sub(
             r"\$\$APP(?::(\w+))?\$\$",
