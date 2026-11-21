@@ -4,8 +4,8 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="robots" content="noindex, nofollow">
-  <title>Change history without a developer token | Max Pickard</title>
-  <!-- Made by proof/generator/build.py from templates/platform/platform-changes.html. Do not edit by hand. -->
+  <title>Reports and notes | Max Pickard</title>
+  <!-- Made by proof/generator/build.py from templates/platform/platform-reports.html. Do not edit by hand. -->
   <script>
     // Runs before the page paints. Applies the saved light or dark choice, and picks one accent
     // colour per visit: teal, cobalt, red, orange or plum. Each pair is [light mode, dark mode].
@@ -386,6 +386,10 @@
     @media (prefers-reduced-motion:no-preference){@view-transition{navigation:auto}}
     ::view-transition-group(*){animation-duration:.5s;animation-timing-function:cubic-bezier(.23,1,.32,1)}
     ::view-transition-old(root),::view-transition-new(root){animation-duration:.3s}
+
+    /* A platform tile: number, name, one line. Same as its box on the map. */
+    .wf-card .body b i{font-style:normal;color:var(--muted);margin-right:8px;font-variant-numeric:tabular-nums}
+    .wf-card .line{display:block;margin-top:6px;color:var(--muted);font-size:.9375rem;line-height:1.4}
     /* Styles for the platform pages only. Loaded after style.css. */
     "
 
@@ -810,6 +814,25 @@
     /* The map sits right under the facts. */
     .cs-block.tight{margin-top:56px}
     .cs-strip{margin-top:36px}
+
+    /* The map with three boxes on the right, and the tiles under it. */
+    .amap .rg-k{font-size:13px}
+    .ptiles{margin-top:40px}
+    .hub .archnote{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-top:18px}
+
+    /* The budget demo. */
+    .pace{display:grid;gap:14px}
+    .pace label{display:grid;grid-template-columns:7rem 1fr 4.5rem;gap:16px;align-items:center;font-size:.9375rem}
+    .pace input{width:100%;accent-color:var(--accent)}
+    .pace output{font-family:var(--mono);font-size:.8125rem;text-align:right;font-variant-numeric:tabular-nums}
+    .pace .meter{position:relative;height:12px;border-radius:6px;background:var(--line);margin-top:10px;overflow:hidden}
+    .pace .meter i{position:absolute;left:0;top:0;bottom:0;background:var(--accent);border-radius:6px;transition:width .2s var(--ease)}
+    .pace .meter b{position:absolute;left:71.43%;top:0;bottom:0;width:2px;background:var(--ink)}
+    .pace .meter.over i{background:var(--ink)}
+    .pace-sum{display:flex;justify-content:space-between;gap:16px;margin:10px 0 0;font-size:.9375rem;color:var(--muted)}
+    .pace-sum b{color:var(--ink);font-weight:500}
+    @media (max-width:560px){.pace label{grid-template-columns:1fr 4.5rem}.pace label span{grid-column:1/-1}}
+    .amap .rg-go{display:none}
   </style>
 </head>
 <body>
@@ -819,12 +842,76 @@
     <div><a href="index.html#work">Work</a><a href="platform.html">Platform</a><button type="button" data-theme-toggle>Dark</button></div>
   </nav>
 <main class="writeup"><div class="wrap">
-<header class="writeup-head"><h1>Change history without a developer token</h1><p class="status is-active">Live at Upgrow</p></header>
-<p class="own">I built the capture <b>myself</b>: a script that runs across every ad account each day and stores what changed, so a report can show a change next to what happened after it.</p>
-<section class="sits" aria-label="Where this sits"><div class="sits-h"><span><b>Story 5 of 6</b> from the Upgrow operations platform</span><a href="platform.html#hub">Back to the platform map</a></div><div class="bstrip"><a href="platform-monthly-report.html"><small>1</small>Reports that check their numbers</a><a href="platform-warehouse.html"><small>2</small>A warehouse that costs nothing</a><a href="platform-audit.html"><small>3</small>The audit that found blocked tags</a><a href="platform-access.html"><small>4</small>Each person sees only their clients</a><a href="platform-changes.html" aria-current="page"><small>5</small>Change history, no token</a><a href="platform-more.html"><small>6</small>Six more things it does</a></div></section>
-<div class="nums" style="margin-top:0"><div><b>14,723</b><span>changes captured on the first run</span></div><div><b>36</b><span>ad accounts read</span></div><div><b>0</b><span>failures, going 29 days back</span></div></div><div class="cs-block"><h2 class="cs-h">What it makes possible</h2><p class="sub">Three tracks on one line: what changed, what the team did, and what the leads did next.</p><figure class="chart"><svg viewBox="0 0 760 210" role="img" aria-label="Three tracks on one timeline: account changes, team work and leads per week"><text x="0" y="38">Changes in the account</text><line class="ax" x1="200" y1="34" x2="760" y2="34"/><text x="0" y="102">Work the team logged</text><line class="ax" x1="200" y1="98" x2="760" y2="98"/><text x="0" y="166">Leads per week</text><line class="ax" x1="200" y1="162" x2="760" y2="162"/><line class="tick" x1="236" y1="26" x2="236" y2="42"/><line class="tick" x1="262" y1="26" x2="262" y2="42"/><line class="tick" x1="318" y1="26" x2="318" y2="42"/><line class="tick" x1="420" y1="26" x2="420" y2="42"/><line class="tick" x1="446" y1="26" x2="446" y2="42"/><line class="tick" x1="468" y1="26" x2="468" y2="42"/><line class="tick" x1="580" y1="26" x2="580" y2="42"/><line class="tick" x1="668" y1="26" x2="668" y2="42"/><circle class="dot" cx="300" cy="98" r="6"/><circle class="dot on" cx="430" cy="98" r="6"/><circle class="dot" cx="610" cy="98" r="6"/><path class="ln" d="M210 176L280 172L350 174L420 170L490 150L560 142L630 138L700 134L750 132"/><text class="mu" x="440" y="124">a change, followed by more leads</text></svg><figcaption>Made-up data. Same layout as the timeline in the reports.</figcaption></figure></div><div class="cs-block"><h2 class="cs-h">Why it is built the way it is</h2><div class="why" data-stagger><article><div class="c"><small>Because</small><b>The official route needs a developer token I did not have.</b></div><div class="d"><small>So</small><b>The capture runs as a script inside the ad accounts.</b><p>No token needed.</p></div></article><article><div class="c"><small>Because</small><b>The official route silently drops rows past a cap.</b></div><div class="d"><small>So</small><b>The script pages past the cap.</b><p>Nothing is lost on a busy account.</p></div></article><article><div class="c"><small>Because</small><b>A change next to a result is not proof.</b></div><div class="d"><small>So</small><b>The wording is "followed by", never "caused".</b><p>And leads are only quoted when both periods are complete.</p></div></article></div></div><div class="cs-block"><h2 class="cs-h">What broke, and what I did about it</h2><div class="broke" data-stagger><div><b>The first production build had zero rows.</b><p>Account IDs were written with dashes in one place and without in another.</p><small><i>Fix</i>One format everywhere.</small></div><div><b>Changes got linked to the wrong task.</b><p>I reproduced it as four failing checks.</p><small><i>Fix</i>Fixed. All 101 checks pass.</small></div></div></div>
-<p class="deep"><a class="go" href="platform.html#hub">Back to the platform map</a></p>
-</div></main>
+    <header class="writeup-head">
+      <h1>Reports and notes that check their own numbers</h1>
+      <p class="status is-active">Live at Upgrow</p>
+    </header>
+    <p class="own">I designed and built this workflow <b>end to end</b>: the tables it reads, the instructions the model follows, the number checker and the review screen.</p>
+    <div class="nums"><div><b>4<i>of</i>9</b><span>decks built first time on the first full live day</span></div><div><b>9<i>of</i>9</b><span>rebuilt and checked by hand the next day</span></div><div><b>58%</b><span>smaller data packet per report after one rewrite</span></div></div>
+    <section class="sits" aria-label="Where this sits"><div class="sits-h"><span><b>Part 4 of 6</b> of the Upgrow operations platform</span><a href="platform.html#hub">Back to the platform map</a></div><div class="bstrip"><a href="platform-data-in.html"><small>1</small>Getting the data in</a><a href="platform-clean.html"><small>2</small>Cleaning and testing it</a><a href="platform-web-app.html"><small>3</small>The web app</a><a href="platform-reports.html" aria-current="page"><small>4</small>Reports and notes</a><a href="platform-audit.html"><small>5</small>Tracking audit</a><a href="platform-spend.html"><small>6</small>Search terms and budgets</a></div></section>
+    <div class="cs-block" style="margin-top:0">
+      <h2 class="cs-h">Try it: review a report</h2>
+      <p class="sub">One number on one slide does not match the data. Fix it, or build anyway.</p>
+      <div class="app" id="app">
+        <div class="app-bar"><span class="dots"><i></i><i></i><i></i></span><span>The review screen, rebuilt for this page with made-up clients and numbers.</span></div>
+        <div class="app-body">
+          <nav class="app-nav" aria-label="Screens"><strong>Operations</strong>
+            <button type="button" aria-pressed="true">Report review</button>
+            <small>Signed in as an account lead. You see your three clients and nobody else's.</small>
+          </nav>
+          <div class="app-main">
+            <section>
+              <div class="app-h"><b>Client B, October report</b><span>Report review</span></div>
+              <p class="app-sub">The model wrote the slides. Code checked every number on them. One does not match.</p>
+              <ul class="rows2" id="rv">
+                <li><span><b>The month in one line</b><small>3 numbers, all match the data</small></span><span class="tag2 ok">Checked</span></li>
+                <li><span><b>Spend and leads by campaign</b><small>12 numbers, all match the data</small></span><span class="tag2 ok">Checked</span></li>
+                <li id="rv-bad"><span><b>Cost per lead</b><small id="rv-note">The slide says $45.00. The data says $50.00.</small></span><span class="tag2 bad" id="rv-tag">Does not match</span></li>
+                <li><span><b>What we changed, and what happened</b><small>4 numbers, all match the data</small></span><span class="tag2 ok">Checked</span></li>
+              </ul>
+              <div class="act"><button type="button" id="rv-fix">Use the number from the data</button><button type="button" class="go" id="rv-go">Approve and build</button><span id="rv-say">You can still build with a warning. The choice is the account lead's, and it is logged.</span></div>
+            </section>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="cs-block"><h2 class="cs-h">The checker gets checked too</h2><p class="sub">If the checker itself breaks, the build fails and nothing ships.</p><div class="app"><div class="app-bar"><span class="dots"><i></i><i></i><i></i></span><span>Four tests that run every time the checker is built.</span></div><div class="app-body"><div class="app-main solo"><ul class="rows2"><li><span><b>A clean deck</b><small>Every number matches the data</small></span><span class="tag2 ok">Passes</span></li><li><span><b>One planted wrong number</b><small>A single figure changed on one slide</small></span><span class="tag2 bad">Caught</span></li><li><span><b>A number that is only in someone's notes</b><small>Not in the data at all</small></span><span class="tag2 bad">Caught</span></li><li><span><b>A deck with its numbers block missing</b><small>Nothing to check against</small></span><span class="tag2 bad">Refused</span></li></ul></div></div></div></div>
+    <div class="cs-block">
+      <h2 class="cs-h">How one report gets made</h2>
+      <ol class="run5"><li><small>1. It reads</small><p>Warehouse performance tables, CRM leads, the work log, account changes, call summaries and meeting notes</p></li><li><small>2. A draft is made</small><p>The model writes the story and the slide text from numbers that are already worked out</p></li><li><small>3. Code checks it</small><p>Numbers come only from tested tables. Stale data and partial periods are flagged, and the numbers on each slide are checked</p></li><li><small>4. A person decides</small><p>Reviews the packet slide by slide: reorders, edits, locks, cuts, adds context, then approves</p></li><li><small>5. It comes out</small><p>A draft slide deck and its data sheet. A person sends it</p></li></ol>
+    </div>
+    <div class="cs-block"><h2 class="cs-h">Meeting notes, by the same rule</h2><div class="more" style="margin-top:32px"><article id="meeting-notes"><svg class="art" viewBox="0 0 400 250" role="img" aria-label="A notes page with a new entry at the top" xmlns="http://www.w3.org/2000/svg"><rect class="c-box" x="112" y="46" width="176" height="160" rx="8"/><rect class="c-on m-grow" style="--i:0" x="130" y="66" width="120" height="12" rx="6"/><rect class="c-on m-grow" style="--i:1" x="130" y="86" width="84" height="8" rx="4"/><rect class="c-bar" x="130" y="116" width="140" height="8" rx="4"/><rect class="c-bar" x="130" y="136" width="110" height="8" rx="4"/><rect class="c-bar" x="130" y="156" width="132" height="8" rx="4"/><rect class="c-bar" x="130" y="176" width="96" height="8" rx="4"/></svg><div><h3>Meeting notes</h3><p>Drafts client notes from the task log, the change history and the call summary.</p><p class="d">A draft takes one to four minutes. It never says "caused".</p><small><i>Broke</i>A long set of notes was cut off by a time limit. Fixed.</small></div></article></div></div>
+    <div class="cs-block">
+      <h2 class="cs-h">Why it is built the way it is</h2>
+      <div class="why" data-stagger><article><div class="c"><small>Because</small><b>A model will state a wrong number with total confidence.</b></div><div class="d"><small>So</small><b>Code works out every number. The model only writes.</b><p>Each figure a slide can quote is worked out in SQL first and handed over.</p></div></article><article><div class="c"><small>Because</small><b>A true number from stale or half-finished data still misleads.</b></div><div class="d"><small>So</small><b>Stale data and partial periods are flagged on the slide.</b><p>The reviewer sees the warning before the client ever could.</p></div></article><article><div class="c"><small>Because</small><b>The account lead knows things the checker does not.</b></div><div class="d"><small>So</small><b>A failed number check warns. It does not lock the build.</b><p>They can build anyway, and the choice is logged against their name.</p></div></article></div>
+    </div>
+    <div class="cs-block">
+      <h2 class="cs-h">What broke, and what I did about it</h2>
+      <div class="broke" data-stagger>
+        <div><b>A date was read as a number, and every draft was blocked.</b><p>The number checker read the "2026-08" in a date as the number 202 and rejected every report that month.</p><small><i>Fix</i>Dates are stripped out before numbers are checked, with a test for it.</small></div>
+        <div><b>On the first full live day, fewer than half the decks built first time.</b><p>A missing file permission, a time limit that was too short, and a test run that had marked work as already done.</p><small><i>Fix</i>Each cause fixed that day, and every deck rebuilt and checked by hand the next.</small></div>
+      </div>
+    </div>
+    <div class="cs-block">
+      <h2 class="cs-h">Result</h2>
+      <div class="result"><p class="big">Hours saved per report: <span class="slot">being measured</span></p></div>
+    </div>
+    <p class="deep"><a class="go" href="platform.html#hub">Back to the platform map</a></p>
+  </div></main>
+  <script>
+    (function () {
+      var fixed = false;
+      document.getElementById("rv-fix").addEventListener("click", function () {
+        fixed = true; var t = document.getElementById("rv-tag"); t.textContent = "Checked"; t.className = "tag2 ok";
+        document.getElementById("rv-note").textContent = "Now says $50.00, the same as the data."; this.disabled = true;
+        document.getElementById("rv-say").textContent = "Every number now matches.";
+      });
+      document.getElementById("rv-go").addEventListener("click", function () {
+        this.disabled = true; document.getElementById("rv-fix").disabled = true;
+        document.getElementById("rv-say").textContent = fixed ? "Deck draft built. A person sends it, not the platform." : "Deck draft built with one warning, logged against your name. A person sends it.";
+      });
+    })();
+  </script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/gsap.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/ScrollTrigger.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/SplitText.min.js"></script>

@@ -274,45 +274,50 @@ class CommittedPages(unittest.TestCase):
             for href in re.findall(r'href="([^"#:]+\.html)(?:#[^"]*)?"', page):
                 self.assertIn(href, self.pages, f'{item["file"]} links to {href}')
 
-    def test_every_box_on_the_platform_map_opens_something(self):
-        page = self.pages["platform.html"]
-        boxes = re.findall(r'<a class="rg" href="([^"]+)"', page)
-        self.assertEqual(len(boxes), 6)
-        for href in boxes:
-            self.assertTrue(href.startswith("#") or href.split("#")[0] in self.pages, href)
-
-    def test_every_platform_story_lists_all_the_stories_and_links_back_to_the_map(self):
-        stories = [item["file"] for item in self.config["platform"]["pages"] if item["file"] != "platform.html"]
-        for file in stories:
-            page = self.pages[file]
-            strip = page[page.index('<section class="sits"'):]
-            strip = strip[: strip.index("</section>")]
-            self.assertIn('href="platform.html#hub"', strip)
-            self.assertEqual(strip.count('aria-current="page"'), 1, file)
-            self.assertIn(f'href="{file}" aria-current="page"', strip)
-            for other in stories:
-                self.assertIn(f'href="{other}"', strip, file)
-
     def test_a_platform_demo_says_its_clients_and_numbers_are_made_up(self):
         for item in self.config["platform"]["pages"]:
             page = self.pages[item["file"]]
             if 'class="pick"' in page or 'id="app"' in page:
                 self.assertRegex(page, r"made[- ]up", item["file"])
 
-    def test_every_platform_workflow_has_a_card_on_the_home_page_that_opens_something(self):
-        home = self.pages["index.html"]
-        workflows = self.config["platform"]["workflows"]
-        self.assertEqual(home.count('class="wf-card cover-card"'), len(workflows))
-        for w in workflows:
-            self.assertTrue((build.GENERATOR / "covers" / f'wf-{w["slug"]}.svg').is_file(), w["slug"])
-            self.assertIn(html.escape(w["title"]), home)
-            self.assertIn(f'href="{w["href"]}"', home)
-            self.assertIn(w["href"].split("#")[0], self.pages)
-
     def test_the_platform_map_comes_before_the_reasons_and_the_failures(self):
         page = self.pages["platform.html"]
         self.assertLess(page.index('id="hub"'), page.index("Why it is built the way it is"))
         self.assertLess(page.index('id="hub"'), page.index("What broke, and what I did about it"))
+
+    def test_the_platform_map_its_tiles_and_its_pages_are_the_same_six_things_in_the_same_order(self):
+        parts = self.config["platform"]["parts"]
+        page = self.pages["platform.html"]
+        boxes = re.findall(r'<a class="rg" href="([^"]+)" aria-label="(\d)\. ([^"]+)"', page)
+        self.assertEqual([(href, name) for href, _, name in boxes], [(part["file"], html.escape(part["name"])) for part in parts])
+        self.assertEqual([number for _, number, _ in boxes], [str(i + 1) for i in range(len(parts))])
+        for where in ("index.html", "platform.html"):
+            tiles = re.findall(r'<a class="wf-card cover-card" href="([^"]+)">.*?<b><i>(\d)</i>([^<]+)</b>', self.pages[where], re.S)
+            self.assertEqual(tiles, [(part["file"], str(i + 1), html.escape(part["name"])) for i, part in enumerate(parts)], where)
+        for part in parts:
+            self.assertIn(part["file"], self.pages)
+            self.assertTrue((build.GENERATOR / "covers" / f'pf-{part["slug"]}.svg').is_file(), part["slug"])
+
+    def test_every_platform_part_page_lists_all_the_parts_and_links_back_to_the_map(self):
+        files = [part["file"] for part in self.config["platform"]["parts"]]
+        for index, file in enumerate(files):
+            page = self.pages[file]
+            strip = page[page.index('<section class="sits"'):]
+            strip = strip[: strip.index("</section>")]
+            self.assertIn(f"Part {index + 1} of {len(files)}", strip)
+            self.assertIn('href="platform.html#hub"', strip)
+            self.assertEqual(strip.count('aria-current="page"'), 1, file)
+            self.assertIn(f'href="{file}" aria-current="page"', strip)
+            for other in files:
+                self.assertIn(f'href="{other}"', strip, file)
+
+    def test_no_page_is_left_over_from_an_earlier_layout(self):
+        on_disk = {
+            str(path.relative_to(build.PROOF)).replace("\\", "/")
+            for path in build.PROOF.rglob("*.html")
+            if "generator" not in path.relative_to(build.PROOF).parts
+        }
+        self.assertEqual(on_disk, set(self.pages))
 
     def test_no_em_dashes(self):
         for path, text in self.pages.items():

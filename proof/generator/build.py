@@ -211,6 +211,17 @@ def sits_html(project, slug):
     )
 
 
+def platform_tiles_html(platform):
+    """One tile per part of the platform: same number, name and order as the boxes on its map."""
+    e = html.escape
+    return "\n".join(
+        f'<a class="wf-card cover-card" href="{e(part["file"])}">{cover("pf-" + part["slug"])}'
+        f'<span class="body"><b><i>{index + 1}</i>{e(part["name"])}</b><span class="line">{e(part["line"])}</span>'
+        f'<span class="meta"><span class="status is-active">Live</span><span>{e(part["tools"])}</span></span></span></a>'
+        for index, part in enumerate(platform["parts"])
+    )
+
+
 def proof_html(builds):
     """Real results only. The section is left out until at least one build has a headline."""
     items = [f'<li>{html.escape(b["tile"])}: {html.escape(b["headline"])}</li>' for b in builds if b.get("headline")]
@@ -286,13 +297,8 @@ def build_pages():
         started=str(started),
         covers=indent("\n".join(cards), 8),
         platform_cover=cover("platform", grows=True),
-        workflows=indent("\n".join(
-            f'<a class="wf-card cover-card" href="{e(w["href"])}">{cover("wf-" + w["slug"])}'
-            f'<span class="body"><b>{e(w["title"])}</b>'
-            f'<span class="meta"><span class="status is-active">Live</span><span>{e(w["kind"])}</span></span></span></a>'
-            for w in config["platform"]["workflows"]
-        ), 8),
-        workflow_count=str(len(config["platform"]["workflows"])),
+        platform_tiles=indent(platform_tiles_html(config["platform"]), 8),
+        platform_count=str(len(config["platform"]["parts"])),
         project_cover=cover("project", grows=True),
         contact=contact,
         contact_nav='<a href="#contact">Contact</a>' if contact else "",
@@ -375,6 +381,7 @@ def build_pages():
     for item in config["platform"]["pages"]:
         body = (GENERATOR / "templates" / "platform" / item["file"]).read_text(encoding="utf-8").rstrip()
         body = body.replace("$$COVER$$", cover("platform", grows=True))
+        body = body.replace("$$TILES$$", indent(platform_tiles_html(config["platform"]), 10))
         pages[item["file"]] = template("platform-shell.html").substitute(
             style=style, platform_style=platform_style, script=script, title=e(item["title"]), file=item["file"], body=body,
         )
