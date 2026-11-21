@@ -287,6 +287,23 @@ class CommittedPages(unittest.TestCase):
             self.assertGreaterEqual(block.count("<dt>"), 3, item["file"])
             self.assertEqual(block.count("<dt>"), block.count("<i>Next time</i>"), item["file"])
 
+    def test_the_platform_page_names_the_three_things_i_learned_and_how_my_process_changed(self):
+        page = self.pages["platform.html"]
+        block = page[page.index("What I learned, and what I would do differently</h2>"):page.index("What is next</h2>")]
+        for theme in ("Moving data cheaply", "Designing for the person using it", "Directing an AI, strictly"):
+            self.assertEqual(block.count(f"<h3>{theme}</h3>"), 1, theme)
+        steps = block[block.index('<ol class="how five">'):block.index("</ol>")]
+        self.assertEqual(steps.count("<li>"), 5)
+
+    def test_every_part_page_says_what_i_chose_and_what_i_turned_down(self):
+        for part in self.config["platform"]["parts"]:
+            page = self.pages[part["file"]]
+            self.assertEqual(page.count("What I chose, and what I turned down</h2>"), 1, part["file"])
+            block = page[page.index('<div class="chose">'):page.index("What I learned, and what I would do differently</h2>")]
+            self.assertGreaterEqual(block.count("<small>Chose</small>"), 3, part["file"])
+            self.assertEqual(block.count("<small>Chose</small>"), block.count("<small>Turned down</small>"), part["file"])
+            self.assertEqual(block.count("<small>Chose</small>"), block.count("<small>Why, and what it cost</small>"), part["file"])
+
     def test_a_claim_that_something_was_done_says_how(self):
         for file, label in (
             ("platform-data-in.html", "How I cut each one"),
