@@ -319,6 +319,23 @@ class CommittedPages(unittest.TestCase):
         }
         self.assertEqual(on_disk, set(self.pages))
 
+    def test_the_app_replica_shows_four_screens_on_the_platform_page_and_one_on_its_part_page(self):
+        screens = {"platform-web-app.html": "clients", "platform-spend.html": "pacing", "platform-reports.html": "review", "platform-audit.html": "audit"}
+        page = self.pages["platform.html"]
+        self.assertIn('id="app" data-start="pacing" data-only=""', page)
+        for screen in screens.values():
+            self.assertIn(f'data-screen="{screen}"', page)
+        for file, screen in screens.items():
+            self.assertIn(f'id="app" data-start="{screen}" data-only="{screen}"', self.pages[file], file)
+        for item in self.config["platform"]["pages"]:
+            for token in ("$$APP", "$$TILES", "$$COVER", "$$START", "$$ONLY"):
+                self.assertFalse(token in self.pages[item["file"]], f'{token} left in {item["file"]}')
+
+    def test_the_replica_states_the_real_rules_for_a_report(self):
+        page = self.pages["platform-reports.html"]
+        self.assertIn("You can still approve.", page)
+        self.assertNotIn("build anyway", page.lower().replace("build anyway?", ""))
+
     def test_no_em_dashes(self):
         for path, text in self.pages.items():
             self.assertNotIn(chr(0x2014), text, path)

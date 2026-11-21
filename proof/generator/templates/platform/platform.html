@@ -28,63 +28,8 @@ $$TILES$$
 
     <div class="cs-block">
       <h2 class="cs-h">What it looks like</h2>
-      <p class="sub">Three screens you can click. A stand-in for now, with made-up clients. The real layouts replace it.</p>
-      <div class="app" id="app">
-      <div class="app-bar"><span class="dots"><i></i><i></i><i></i></span><span>The platform, rebuilt for this page with made-up clients and numbers. Click around.</span></div>
-      <div class="app-body">
-        <nav class="app-nav" aria-label="Screens"><strong>Operations</strong>
-          <button type="button" data-scr="pacing" aria-pressed="true">Budget pacing</button>
-          <button type="button" data-scr="review" aria-pressed="false">Report review</button>
-          <button type="button" data-scr="audit" aria-pressed="false">Tracking audit</button>
-          <small>Signed in as an account lead. You see your three clients and nobody else's.</small>
-        </nav>
-        <div class="app-main">
-          <section data-scr="pacing">
-            <div class="app-h"><b>Client A, search budget</b><span>Budget pacing</span></div>
-            <p class="app-sub">Drag a campaign past the group budget. The save locks until it adds up again.</p>
-            <div class="app-two"><div id="pace">
-          <div class="slide"><label for="b0">Brand</label><input id="b0" type="range" min="0" max="4000" step="100" value="1500"><output>$1,500</output></div>
-          <div class="slide"><label for="b1">Non-brand</label><input id="b1" type="range" min="0" max="4000" step="100" value="3000"><output>$3,000</output></div>
-          <div class="slide"><label for="b2">Competitor</label><input id="b2" type="range" min="0" max="4000" step="100" value="1200"><output>$1,200</output></div>
-              </div>
-              <div class="rec">
-          <div class="rec-head"><b>Search group</b><span class="pill" id="pc-pill">Within budget</span></div>
-          <div style="padding:20px">
-            <div class="meter"><span id="pc-bar"></span><i></i></div>
-            <ul class="sums" style="margin-top:14px">
-              <li><span>Group budget</span><span>$6,000</span></li>
-              <li><span>Campaigns add up to</span><span id="pc-sum"></span></li>
-              <li><span>Left to assign</span><span id="pc-left"></span></li>
-            </ul>
-            <button type="button" class="save" id="pc-save">Save budgets</button>
-            <p class="savenote" id="pc-note"></p>
-            </div>
-          </section>
-          <section data-scr="review" hidden>
-            <div class="app-h"><b>Client B, October report</b><span>Report review</span></div>
-            <p class="app-sub">The model wrote the slides. Code checked every number on them. One does not match.</p>
-            <ul class="rows2" id="rv">
-              <li><span><b>The month in one line</b><small>3 numbers, all match the data</small></span><span class="tag2 ok">Checked</span></li>
-              <li><span><b>Spend and leads by campaign</b><small>12 numbers, all match the data</small></span><span class="tag2 ok">Checked</span></li>
-              <li id="rv-bad"><span><b>Cost per lead</b><small id="rv-note">The slide says $45.00. The data says $50.00.</small></span><span class="tag2 bad" id="rv-tag">Does not match</span></li>
-              <li><span><b>What we changed, and what happened</b><small>4 numbers, all match the data</small></span><span class="tag2 ok">Checked</span></li>
-            </ul>
-            <div class="act"><button type="button" id="rv-fix">Use the number from the data</button><button type="button" class="go" id="rv-go">Approve and build</button><span id="rv-say">You can still build with a warning. The choice is the account lead's, and it is logged.</span></div>
-          </section>
-          <section data-scr="audit" hidden>
-            <div class="app-h"><b>Your clients, tracking audit</b><span id="au-count">4 open</span></div>
-            <p class="app-sub">Rules sweep every client's tags and consent setup. A person decides what each finding means.</p>
-            <ul class="rows2" id="au">
-              <li><span><b>Client A: a tag fires before consent is checked</b><small>Evidence: the tag has no consent setting</small></span><span class="btns"><button type="button" data-a="n">Not relevant</button><button type="button" data-a="w">Checked, it works</button></span></li>
-              <li><span><b>Client B: conversions equal clicks on one form</b><small>Evidence: 7 days of matching counts. The tag may be on the wrong page</small></span><span class="btns"><button type="button" data-a="n">Not relevant</button><button type="button" data-a="w">Checked, it works</button></span></li>
-              <li><span><b>Client C: no conversion upload in 9 days</b><small>Evidence: last file received 9 days ago</small></span><span class="btns"><button type="button" data-a="n">Not relevant</button><button type="button" data-a="w">Checked, it works</button></span></li>
-              <li><span><b>Client A: a key event is missing in analytics</b><small>Evidence: the event fires but is not marked as key</small></span><span class="btns"><button type="button" data-a="n">Not relevant</button><button type="button" data-a="w">Checked, it works</button></span></li>
-            </ul>
-          </section>
-        </div>
-      </div>
-    </div>
-    <p class="fine">An independent rebuild of three screens. Nothing here comes from the real system or a real client.</p>
+      <p class="sub">Four real screens, rebuilt for this page. Click around: edit a budget, approve a report, mark a tracking finding, change who is signed in.</p>
+$$APP$$
     </div>
 
     <div class="cs-block">
@@ -128,51 +73,3 @@ $$TILES$$
       </dl>
     </div>
   </div></main>
-  <script>
-    (function () {
-      var app = document.getElementById("app"); if (!app) return;
-      app.querySelectorAll(".app-nav button").forEach(function (b) {
-        b.addEventListener("click", function () {
-          app.querySelectorAll(".app-nav button").forEach(function (x) { x.setAttribute("aria-pressed", x === b); });
-          app.querySelectorAll(".app-main > section").forEach(function (s) { s.hidden = s.dataset.scr !== b.dataset.scr; });
-        });
-      });
-      var fixed = false;
-      document.getElementById("rv-fix").addEventListener("click", function () {
-        fixed = true; var t = document.getElementById("rv-tag"); t.textContent = "Checked"; t.className = "tag2 ok";
-        document.getElementById("rv-note").textContent = "Now says $50.00, the same as the data."; this.disabled = true;
-        document.getElementById("rv-say").textContent = "Every number now matches.";
-      });
-      document.getElementById("rv-go").addEventListener("click", function () {
-        this.disabled = true; document.getElementById("rv-fix").disabled = true;
-        document.getElementById("rv-say").textContent = fixed ? "Deck draft built. A person sends it, not the platform." : "Deck draft built with one warning, logged against your name. A person sends it.";
-      });
-      var open = 4;
-      document.querySelectorAll("#au button").forEach(function (b) {
-        b.addEventListener("click", function () {
-          var li = b.closest("li"); if (li.classList.contains("done")) return;
-          li.classList.add("done"); li.querySelector(".btns").innerHTML = '<span class="tag2 ok">' + (b.dataset.a === "n" ? "Not relevant" : "Checked, it works") + "</span>";
-          open--; document.getElementById("au-count").textContent = open ? open + " open" : "All reviewed";
-        });
-      });
-    })();
-  </script>
-  <script>
-    (function () {
-      // The pacing check, with made-up figures: a group budget of 6,000.
-      var GROUP = 6000, ins = document.querySelectorAll("#pace input");
-      function money(n) { return "$" + Math.abs(n).toLocaleString("en-US"); }
-      function pace() {
-        var sum = 0; ins.forEach(function (i) { sum += Number(i.value); i.parentNode.querySelector("output").textContent = money(Number(i.value)); });
-        var over = sum > GROUP, left = GROUP - sum;
-        document.getElementById("pc-sum").textContent = money(sum);
-        document.getElementById("pc-left").textContent = over ? money(left) + " over" : money(left);
-        document.getElementById("pc-bar").style.width = Math.min(100, sum / GROUP * 100 / 1.4) + "%";
-        document.querySelector(".meter").classList.toggle("over", over);
-        var pill = document.getElementById("pc-pill"); pill.textContent = over ? "Over budget" : "Within budget"; pill.classList.toggle("no", over);
-        var save = document.getElementById("pc-save"); save.disabled = over; save.textContent = over ? "Save is locked" : "Save budgets";
-        document.getElementById("pc-note").textContent = over ? "The campaigns are " + money(left) + " over the group. Bring one down to save." : "";
-      }
-      ins.forEach(function (i) { i.addEventListener("input", pace); }); pace();
-    })();
-  </script>

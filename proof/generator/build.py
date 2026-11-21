@@ -378,12 +378,20 @@ def build_pages():
 
     # The platform pages are written by hand in templates/platform/ and wrapped in the shared shell.
     platform_style = indent((GENERATOR / "templates" / "platform.css").read_text(encoding="utf-8").strip(), 4)
+    app_demo = (GENERATOR / "templates" / "platform" / "_app.html").read_text(encoding="utf-8").rstrip()
+    app_script = indent((GENERATOR / "templates" / "platform-app.js").read_text(encoding="utf-8").strip(), 4)
     for item in config["platform"]["pages"]:
         body = (GENERATOR / "templates" / "platform" / item["file"]).read_text(encoding="utf-8").rstrip()
         body = body.replace("$$COVER$$", cover("platform", grows=True))
         body = body.replace("$$TILES$$", indent(platform_tiles_html(config["platform"]), 10))
+        body = re.sub(
+            r"\$\$APP(?::(\w+))?\$\$",
+            lambda m: app_demo.replace("$$START$$", m.group(1) or "pacing").replace("$$ONLY$$", m.group(1) or ""),
+            body,
+        )
         pages[item["file"]] = template("platform-shell.html").substitute(
             style=style, platform_style=platform_style, script=script, title=e(item["title"]), file=item["file"], body=body,
+            app_script=app_script if 'id="app"' in body else "",
         )
 
     stops, journey = journey_html(project, builds, status_of)
