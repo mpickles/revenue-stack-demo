@@ -1062,6 +1062,8 @@
     .chose div p:nth-child(3){font-size:.875rem}
     .chose div p:nth-child(3) small{display:inline;margin:0 8px 0 0}
     @media (min-width:860px){.flow.n3{grid-template-columns:repeat(3,minmax(0,1fr))}.flow.par li::after,.flow.par li::before{display:none}}
+    .flow.dated small{display:block;font-family:var(--mono);font-size:.6875rem;color:var(--accent);margin-bottom:4px}
+    @media (max-width:859px){.flow.dated li{grid-template-rows:auto auto auto}.flow.dated svg{grid-row:1 / span 3}.flow.dated small,.flow.dated b,.flow.dated p{grid-column:2}}
   </style>
 </head>
 <body>
@@ -1122,7 +1124,7 @@
       </div>
     </div>
 
-    <div class="cs-block"><h2 class="cs-h">What I learned</h2><p class="sub">In July I had never shipped a production app. In October I ran the go-live. Three things I had to learn to get there.</p><div class="themes"><article><small>1</small><h3>Moving data cheaply</h3><p>Every query costs money, so the design has to read less.</p><ul><li>Rebuild only what changed. The morning build went from about 30 GB a day to about 7.5.</li><li>A quota refuses a query. An alert only tells you after.</li><li>Measure before cutting. My one guess missed.</li></ul></article><article><small>2</small><h3>Designing for the person using it</h3><p>I had to think like a product manager: what will they really do, and what happens at the edges.</p><ul><li>119 pages became 46 after the first pilot on real data.</li><li>A form for rerun requests was too technical. It became one button with plain names.</li><li>I assumed sane inputs. A budget was saved at 403% of its parent. Now it cannot be.</li></ul></article><article><small>3</small><h3>Directing an AI, strictly</h3><p>Claude wrote the code. My job was the specs, the rules and the checks it could not skip.</p><ul><li>Plan first, then build. A test for every behaviour.</li><li>Hooks, reviewers and branch rules, each added after something went wrong.</li><li>Never guess at a cause. Read the logs first.</li></ul></article></div><div class="how-w"><p class="how-l">How the way I work with Claude Code got stricter</p><ol class="how five"><li><small>Aug to Sept</small><p><b>Chat and file drops</b>One file overwrote another. Rule: every patch must match the old text exactly once.</p></li><li><small>Early Oct</small><p><b>Specs before code</b>A rules file, a plan I approve, a test for every behaviour, security tests first. A reviewer that did not write the code found 12 issues in one phase.</p></li><li><small>Mid Oct</small><p><b>Hooks and guardrails</b>Hooks format the code, block destructive commands and secret reads, and will not let a session end on a failing check. "Never delete or skip a test to pass."</p></li><li><small>Mid Oct</small><p><b>Parallel sessions</b>Sessions on separate branches collided. Rule: reserved ranges, a merge script, and nothing merges without my go. A read-only security reviewer, and a test fixer that never weakens a test.</p></li><li><small>Nov</small><p><b>Release branches</b>Main only moves forward. I found a linter had been stopping the checks before the real tests ever ran, and fixed it.</p></li></ol></div></div>
+    <div class="cs-block"><h2 class="cs-h">What I learned</h2><p class="sub">In July I had never shipped a production app. In October I ran the go-live. Three things I had to learn to get there.</p><div class="themes"><article><small>1</small><h3>Moving data cheaply</h3><p>Every query costs money, so the design has to read less.</p><ul><li>Rebuild only what changed. The morning build went from about 30 GB a day to about 7.5.</li><li>A quota refuses a query. An alert only tells you after.</li><li>Measure before cutting. My one guess missed.</li></ul></article><article><small>2</small><h3>Designing for the person using it</h3><p>I had to think like a product manager: what will they really do, and what happens at the edges.</p><ul><li>119 pages became 46 after the first pilot on real data.</li><li>A form for rerun requests was too technical. It became one button with plain names.</li><li>I assumed sane inputs. A budget was saved at 403% of its parent. Now it cannot be.</li></ul></article><article><small>3</small><h3>Directing an AI, strictly</h3><p>Claude wrote the code. My job was the specs, the rules and the checks it could not skip.</p><ul><li>Plan first, then build. A test for every behaviour.</li><li>Hooks, reviewers and branch rules, each added after something went wrong.</li><li>Never guess at a cause. Read the logs first.</li></ul></article></div><div class="how-w"><p class="how-l">How the way I work with Claude Code got stricter</p><ol class="flow n5 dated"><li><svg viewBox="0 0 48 48" aria-hidden="true"><rect class="i-b" x="16" y="8" width="22" height="26" rx="3"/><rect class="i-b" x="10" y="14" width="22" height="26" rx="3"/><path class="i-k" d="M15 22h12"/><path class="i-l" d="M15 28h12M15 34h7"/></svg><small>Aug to Sept</small><b>Chat and file drops</b><p>One file overwrote another. Rule: a patch must match the old text exactly once.</p></li><li><svg viewBox="0 0 48 48" aria-hidden="true"><path class="i-k" d="M10 14l3 3 5-6"/><path class="i-l" d="M24 14h14M10 25l3 3 5-6M24 25h14M12 36h4M24 36h14"/></svg><small>Early Oct</small><b>Specs before code</b><p>A plan I approve, a test for every behaviour. An outside reviewer found 12 issues in one phase.</p></li><li><svg viewBox="0 0 48 48" aria-hidden="true"><rect class="i-b" x="13" y="22" width="22" height="16" rx="3"/><path class="i-l" d="M18 22v-5a6 6 0 0 1 12 0v5"/><circle class="i-on" cx="24" cy="30" r="2.5"/></svg><small>Mid Oct</small><b>Hooks and guardrails</b><p>Hooks block destructive commands and secret reads. No session ends on a failing check.</p></li><li><svg viewBox="0 0 48 48" aria-hidden="true"><path class="i-l" d="M10 12h8l8 12M10 36h8l8-12M10 24h16"/><path class="i-k" d="M26 24h12"/><circle class="i-on" cx="38" cy="24" r="3"/></svg><small>Mid Oct</small><b>Parallel sessions</b><p>Branches collided. Rule: nothing merges without my go. A test fixer may never weaken a test.</p></li><li><svg viewBox="0 0 48 48" aria-hidden="true"><circle class="i-b" cx="24" cy="24" r="14"/><path class="i-k" d="M17 24l5 5 9-10"/></svg><small>Nov</small><b>Release branches</b><p>Main only moves forward. I found the checks had been stopping before the real tests ran.</p></li></ol></div></div>
 
     <div class="cs-block"><h2 class="cs-h">What went wrong, and what I do now</h2><dl class="shows learn"><div><dt><b>I promised time savings and timed nothing first.</b>Two reporting cycles went by and that baseline is gone.</dt><dd><i>Next time</i>Time the old way before writing any code. Every deck now logs the minutes spent editing it.</dd></div><div><dt><b>Three checks failed open or never ran.</b>The number checker, the automated tests and the backups. Each one said it was fine.</dt><dd><i>Fix</i>Prove a check can fail before trusting it. Plant an error. Restore a backup.</dd></div><div><dt><b>On the first full live day, fewer than half the decks built first time.</b>A missing file permission, a time limit that was too short, and a test run that had marked work as done.</dt><dd><i>Fix</i>Each cause fixed that day. Every deck rebuilt and checked by hand the next.</dd></div><div><dt><b>On launch day nobody could sign in.</b>The new sign-in stored each person's ID in a different form from the one the app looked up.</dt><dd><i>Fix</i>Both sides now use the same form. Patched the same day.</dd></div><div><dt><b>Production ran on old settings for a month.</b>A manual step nobody could see. I forgot one redeploy.</dt><dd><i>Fix</i>No step that lives in my head. Settings sit where the team can edit them.</dd></div></dl></div>
 
@@ -1147,88 +1149,6 @@
         <div><dt>Get it adopted</dt><dd>Training, help pages, and cutting what confused people</dd></div>
               <div><dt>Direct an AI to build software</dt><dd>Specs first, tests that it must pass, and checking its work before it ships</dd></div>
       </dl>
-    </div>
-
-    <div class="cs-block">
-      <h2 class="cs-h">Optional: try it yourself</h2>
-      <p class="sub">The same four screens, rebuilt so you can click. Edit a budget, approve a report, mark a tracking finding, change who is signed in.</p>
-<div class="ops-wrap">
-  <div class="ops-ctl" role="group" aria-label="Screen">
-    <button type="button" data-go="clients" aria-pressed="false">Clients</button>
-    <button type="button" data-go="pacing" aria-pressed="false">Pacing</button>
-    <button type="button" data-go="review" aria-pressed="false">Report review</button>
-    <button type="button" data-go="audit" aria-pressed="false">Audit</button>
-    <span class="ops-role" data-for="clients">Signed in as
-      <select aria-label="Signed in as"><option value="owner">Owner</option><option value="director">Director</option><option value="lead">Account lead</option><option value="viewer">Viewer</option></select>
-    </span>
-  </div>
-  <div class="ops-scroll" data-fade>
-  <div class="ops" id="app" data-start="pacing" data-only="">
-    <aside class="ops-side">
-      <b class="ops-mark">Upgrow Ops</b>
-      <nav aria-label="App">
-        <span>Home</span>
-        <button type="button" data-go="clients">Clients</button>
-        <button type="button" data-go="pacing">Pacing</button>
-        <button type="button" data-go="review">Reports</button>
-        <span>Inbox</span>
-        <span>Library</span>
-      </nav>
-      <span class="ops-help">Help</span>
-    </aside>
-    <div class="ops-main">
-      <div class="ops-top"><span class="ops-switch">Go to a client</span><i></i><span class="ops-search">Search <kbd>Ctrl K</kbd></span><span class="ops-dot" aria-hidden="true"></span><span class="ops-av" aria-hidden="true">P1</span></div>
-      <div class="ops-body">
-
-        <section data-screen="clients" hidden>
-          <div class="ops-ph"><h4>Clients</h4><p>Pacing as of Nov 20; spend and leads this month.</p><span class="ops-acts"><button type="button" class="o">What changed</button><button type="button" class="p" data-role-hide="lead viewer">Add client</button></span></div>
-          <div class="ops-tabs"><b>All</b><span>Board</span></div>
-          <div class="ops-filter"><span class="in">Search clients</span><span class="dd">Status</span><span class="dd">Pacing</span><i></i><span class="lk">Show gone (1)</span><span class="lk">Export</span></div>
-          <table class="ops-t"><thead><tr><th>Client</th><th>Status</th><th>Account Lead</th><th>Pacing</th><th class="r">Issues</th><th class="r">Budget</th><th>Last report</th></tr></thead><tbody id="ops-clients"></tbody></table>
-          <p class="ops-count" id="ops-count"></p>
-        </section>
-
-        <section data-screen="pacing" hidden>
-          <div class="ops-ch"><span class="ops-ic">A</span><h4>Client A</h4><span class="bd ok">Live</span><span class="mu">Account Lead Person 1</span></div>
-          <p class="ops-fresh">Data as of Nov 20 · next refresh about 6 AM · <u>Pull fresh</u></p>
-          <div class="ops-tabs"><span>Overview</span><span>Performance</span><b>Pacing</b><button type="button" data-go="review">Reports</button><span>SQRs</span><span>Meeting Notes</span><button type="button" data-go="audit">More</button></div>
-          <div class="ops-ph sm"><h5>November 2026, 10 days left</h5><span class="ops-acts"><span class="lk">Comments</span><button type="button" class="p" id="pc-edit">Edit budgets</button></span></div>
-          <div class="ops-bar" id="pc-bar" hidden><b id="pc-msg">Editing budgets</b><i></i><button type="button" class="g" id="pc-discard">Discard</button><button type="button" class="p" id="pc-save">Save</button></div>
-          <div class="ops-kpi"><div><small>Monthly budget</small><b>$10,000</b></div><div><small>Spent to date</small><b>$6,500</b></div><div><small>Left</small><b>$3,500</b></div><div><small>Projected</small><b>$9,900 <span class="bd ok">On track</span></b></div></div>
-          <table class="ops-t"><thead><tr><th>Channel / Campaign</th><th class="r">Monthly Budget</th><th>Check</th><th class="r">Month to Yesterday's Spend</th><th>Change</th></tr></thead><tbody id="ops-pacing"></tbody></table>
-        </section>
-
-        <section data-screen="review" hidden>
-          <div class="ops-ch"><span class="ops-ic">A</span><h4>Client A</h4><span class="bd ok">Live</span><span class="mu">Account Lead Person 1</span></div>
-          <div class="ops-tabs"><span>Overview</span><span>Performance</span><button type="button" data-go="pacing">Pacing</button><b>Reports</b><span>SQRs</span><span>Meeting Notes</span><button type="button" data-go="audit">More</button></div>
-          <p class="ops-back">← Back to reports in review</p>
-          <div class="ops-ph sm"><h5>Monthly report, October 2026 <span class="bd in" id="rv-status">In review</span> <span class="bd warn" id="rv-check">1 slide to check</span></h5><span class="ops-acts"><span class="lk">Versions</span><span class="lk">Files (2)</span><button type="button" class="p" id="rv-approve">Approve and build</button></span></div>
-          <div class="ops-story"><div><small>The story of this month <span class="bd warn">Draft, edit before approving</span></small><p>Spend held steady and leads rose. Search carried the month. One campaign needs a second look before this goes out.</p></div><div><small>Context for the story</small><p>Changes, meetings and tasks from the month.</p></div></div>
-          <table class="ops-t"><thead><tr><th class="r">#</th><th>Slide</th><th>What it will say</th><th>Key numbers</th><th>Your note</th><th>Lock</th><th></th></tr></thead><tbody id="ops-review"></tbody></table>
-          <div class="ops-sheet" id="rv-sheet" hidden><div><b>Approve and build</b><p>The kept, edited and added slides, in order, with the story and your notes, are what the deck is built from. Cut slides are left out. The deck is queued as soon as you approve.</p><p class="warn" id="rv-warn">1 slide has numbers to check. You can still approve.</p><span class="ops-acts"><button type="button" class="o" id="rv-cancel">Cancel</button><button type="button" class="p" id="rv-go">Approve and build</button></span></div></div>
-        </section>
-
-        <section data-screen="audit" hidden>
-          <div class="ops-ch"><span class="ops-ic">A</span><h4>Client A</h4><span class="bd ok">Live</span><span class="mu">Account Lead Person 1</span></div>
-          <div class="ops-tabs"><span>Overview</span><span>Performance</span><button type="button" data-go="pacing">Pacing</button><button type="button" data-go="review">Reports</button><span>SQRs</span><span>Meeting Notes</span><b>More: Audit</b></div>
-          <div class="ops-ph sm"><h5><span class="bd bad" id="au-b">2 Broken</span> <span class="bd warn" id="au-n">1 Needs a Look</span> <span class="bd ok" id="au-w">1 Working</span></h5><span class="ops-acts"><button type="button" class="o">Test Forms</button><button type="button" class="o">Ask Claude</button><button type="button" class="p" id="au-check">Check Now</button></span></div>
-          <h6>Is It Working?</h6>
-          <table class="ops-t"><thead><tr><th>Status</th><th>Conversion Action</th><th>Last Fired</th><th>What to Do</th><th>More</th></tr></thead><tbody id="ops-audit"></tbody></table>
-          <p class="ops-count" id="au-ignored"></p>
-          <h6>What's Wrong or New</h6>
-          <table class="ops-t"><thead><tr><th>Type</th><th>Impact</th><th>What</th><th>What to Do</th><th>State</th></tr></thead><tbody>
-            <tr><td>Action with no GTM tag</td><td><span class="bd bad">High</span></td><td><b>Demo form</b> <span class="mu">no tag sends to it</span></td><td>Add the tag</td><td><span class="bd warn">Open</span></td></tr>
-            <tr><td>Setting changed</td><td><span class="bd">Normal</span></td><td><b>Lead form</b> <span class="mu">count changed</span></td><td>Confirm with the client</td><td><span class="bd">Acknowledged</span></td></tr>
-          </tbody></table>
-        </section>
-
-      </div>
-      <div class="ops-toast" id="ops-toast" hidden><span></span><button type="button">Undo</button></div>
-    </div>
-  </div>
-  </div>
-  <p class="ops-note">Rebuilt from the real app: same layout, same labels, same colours. Every client, person and number here is made-up.</p>
-</div>
     </div>
   </div></main>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/gsap.min.js"></script>

@@ -241,11 +241,15 @@ class CommittedPages(unittest.TestCase):
     def test_the_project_has_its_own_drawing_on_the_home_page_and_it_opens_the_project_page(self):
         home = self.pages["index.html"]
         self.assertTrue((build.GENERATOR / "covers" / "project.svg").is_file())
-        card = home[home.index('<a class="proj-cover"'):]
+        self.assertEqual(home.count('<a class="proj-cover" href="project.html"'), 1)
+        card = home[home.index('<a class="proj-cover" href="project.html"'):]
         card = card[: card.index("</a>")]
-        self.assertIn('href="project.html"', card)
         self.assertIn("view-transition-name:cover-project", card)
         self.assertIn("view-transition-name:cover-project", self.pages["project.html"])
+
+    def test_the_home_page_leads_with_the_live_platform(self):
+        home = self.pages["index.html"]
+        self.assertLess(home.index('<a class="proj-cover" href="platform.html"'), home.index('<a class="proj-cover" href="project.html"'))
 
     def test_a_drawing_grows_from_its_card_into_the_page_it_opens(self):
         for item in self.config["builds"]:
@@ -301,8 +305,9 @@ class CommittedPages(unittest.TestCase):
         block = page[page.index("What I learned</h2>"):page.index("What went wrong, and what I do now</h2>")]
         for theme in ("Moving data cheaply", "Designing for the person using it", "Directing an AI, strictly"):
             self.assertEqual(block.count(f"<h3>{theme}</h3>"), 1, theme)
-        steps = block[block.index('<ol class="how five">'):block.index("</ol>")]
+        steps = block[block.index('<ol class="flow n5 dated">'):block.index("</ol>")]
         self.assertEqual(steps.count("<li>"), 5)
+        self.assertEqual(steps.count("<svg "), 5)
 
     def test_every_part_page_says_what_i_chose_and_what_i_turned_down(self):
         for part in self.config["platform"]["parts"]:
@@ -390,13 +395,12 @@ class CommittedPages(unittest.TestCase):
         }
         self.assertEqual(on_disk, set(self.pages))
 
-    def test_the_clickable_replica_is_only_on_the_platform_page_and_comes_last(self):
+    def test_real_screenshots_carry_the_platform_and_no_page_has_a_rebuilt_replica(self):
         page = self.pages["platform.html"]
-        self.assertIn('id="app" data-start="pacing" data-only=""', page)
-        for screen in ("clients", "pacing", "review", "audit"):
-            self.assertIn(f'data-screen="{screen}"', page)
-        self.assertGreater(page.index('id="app"'), page.index("What this shows I can do"))
         self.assertLess(page.index('id="shots"'), page.index("Why it is built the way it is"))
+        self.assertIn("data-shot", page)
+        self.assertIn('getElementById("shots")', page)
+        self.assertNotIn('id="app"', page)
         for part in self.config["platform"]["parts"]:
             self.assertNotIn('id="app"', self.pages[part["file"]], part["file"])
             self.assertIn('class="rshot-frame"', self.pages[part["file"]]) if part["slug"] in ("web-app", "reports", "audit", "spend") else None
@@ -425,7 +429,7 @@ class CommittedPages(unittest.TestCase):
         for shot in shots:
             self.assertIn(f'<img src="{shot}-dark.webp" class="d"', page)
             self.assertTrue((build.PROOF / f"{shot}-dark.webp").is_file(), shot)
-        self.assertIn("made-up", page[page.index('id="shots"'):page.index('id="app"')])
+        self.assertIn("made-up", page[page.index('id="shots"'):page.index("Why it is built the way it is")])
         for file in ("platform-spend.html", "platform-web-app.html", "platform-reports.html", "platform-audit.html"):
             self.assertIn('class="rshot-frame"', self.pages[file], file)
 

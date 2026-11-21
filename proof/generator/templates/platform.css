@@ -651,4 +651,6 @@ details.whole dd b{font-size:.9375rem}
 .chose div p:nth-child(3){font-size:.875rem}
 .chose div p:nth-child(3) small{display:inline;margin:0 8px 0 0}
 @media (min-width:860px){.flow.n3{grid-template-columns:repeat(3,minmax(0,1fr))}.flow.par li::after,.flow.par li::before{display:none}}
+.flow.dated small{display:block;font-family:var(--mono);font-size:.6875rem;color:var(--accent);margin-bottom:4px}
+@media (max-width:859px){.flow.dated li{grid-template-rows:auto auto auto}.flow.dated svg{grid-row:1 / span 3}.flow.dated small,.flow.dated b,.flow.dated p{grid-column:2}}
 
