@@ -382,5 +382,16 @@
         "file": "platform-spend.html"
       }
     ]
-  }
+  },
+  "notes": [
+    {
+      "title": "Why click IDs wait in memory until the visitor says yes"
+    },
+    {
+      "title": "Grading my own builds against an answer key"
+    },
+    {
+      "title": "Why the Flow sets the lead owner, not the assignment rules"
+    }
+  ]
 }
