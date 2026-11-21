@@ -257,6 +257,11 @@ class CommittedPages(unittest.TestCase):
         self.assertIn("view-transition-name:cover-project", card)
         self.assertIn("view-transition-name:cover-project", self.pages["project.html"])
 
+    def test_the_first_screen_has_one_button_into_the_platform(self):
+        home = self.pages["index.html"]
+        hero = home[home.index('<header class="hero">'):home.index("</header>")]
+        self.assertEqual(hero.count('<a class="see" href="platform.html">See the platform</a>'), 1)
+
     def test_the_home_page_leads_with_the_live_platform(self):
         home = self.pages["index.html"]
         self.assertLess(home.index('<a class="proj-cover" href="platform.html"'), home.index('<a class="proj-cover" href="project.html"'))
