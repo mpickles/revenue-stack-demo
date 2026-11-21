@@ -965,6 +965,17 @@
     .ops .ops-t{font:inherit;font-variant-numeric:tabular-nums}
     .ops .ops-t td{white-space:normal;padding-top:6px;padding-bottom:6px}
     .ops .ops-t td:first-child,.ops .ops-t td.r,.ops .ops-t td .bd{white-space:nowrap}
+
+    /* Real screenshots of the app. Light or dark follows the site. */
+    .rshot{margin-top:32px}
+    .rshot-frame{margin:0;border:1px solid var(--line);border-radius:12px;overflow:hidden;box-shadow:var(--lift);background:var(--panel)}
+    .rshot-frame.second{margin-top:20px}
+    .rshot-frame img,.rshot-frame video{display:block;width:100%;height:auto}
+    .rshot-frame .d{display:none}
+    :root[data-theme="dark"] .rshot-frame .l{display:none}:root[data-theme="dark"] .rshot-frame .d{display:block}
+    @media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .rshot-frame .l{display:none}:root:not([data-theme="light"]) .rshot-frame .d{display:block}}
+    .rshot-frame figcaption{padding:12px 16px;border-top:1px solid var(--line);font-size:.9375rem;color:var(--muted);background:var(--bg)}
+    .rshot-pane[hidden]{display:none}
   </style>
 </head>
 <body>
@@ -977,7 +988,7 @@
 <header class="writeup-head"><h1>Search terms and budgets</h1><p class="status is-active">Live at Upgrow</p></header>
 <p class="own">I built both workflows <b>myself</b>. They are the two that touch client money, so neither can spend a cent on its own.</p>
 <section class="sits" aria-label="Where this sits"><div class="sits-h"><span><b>Part 6 of 6</b> of the Upgrow operations platform</span><a href="platform.html#hub">Back to the platform map</a></div><div class="bstrip"><a href="platform-data-in.html"><small>1</small>Getting the data in</a><a href="platform-clean.html"><small>2</small>Cleaning and testing it</a><a href="platform-web-app.html"><small>3</small>The web app</a><a href="platform-reports.html"><small>4</small>Reports and notes</a><a href="platform-audit.html"><small>5</small>Tracking audit</a><a href="platform-spend.html" aria-current="page"><small>6</small>Search terms and budgets</a></div></section>
-<div class="nums" style="margin-top:0"><div><b>35<i>of</i>89</b><span>search terms excluded on the first run</span></div><div><b>0</b><span>terms that converted it will ever exclude</span></div><div><b>$0</b><span>it can spend without a person's yes</span></div></div><div class="cs-block"><h2 class="cs-h">Try it: go over the budget</h2><p class="sub">Press Edit budgets, then raise Campaign 1 past what its group has left. The check turns red and Save locks.</p><div class="ops-wrap">
+<div class="nums" style="margin-top:0"><div><b>35<i>of</i>89</b><span>search terms excluded on the first run</span></div><div><b>0</b><span>terms that converted it will ever exclude</span></div><div><b>$0</b><span>it can spend without a person's yes</span></div></div><div class="cs-block"><h2 class="cs-h">The real screen</h2><div class="rshot"><figure class="rshot-frame"><div class="rshot-pane" data-pane="2"><img src="img/platform/06-client-pacing-edit-over-parent-light.webp" class="l" alt="The pacing sheet mid-edit. One group is six thousand dollars over its parent, the check is red and Save is locked." width="1440" height="900" loading="lazy"><img src="img/platform/06-client-pacing-edit-over-parent-dark.webp" class="d" alt="The pacing sheet mid-edit. One group is six thousand dollars over its parent, the check is red and Save is locked. Dark mode." width="1440" height="900" loading="lazy"><figcaption>Budget pacing, mid-edit. Google is over its parent, so the check is red and Save is locked.</figcaption></div></figure><figure class="rshot-frame second"><video controls muted playsinline preload="none" width="1280" height="800" poster="img/platform/06-client-pacing-edit-over-parent-light.webp" aria-label="A recording of the pacing sheet: a budget is raised past its parent, the check turns red and Save locks, then it is lowered and saved"><source src="img/platform/pacing-edit.mp4" type="video/mp4"></video><figcaption>Twenty seconds of the real thing: raise a budget past its parent, watch Save lock, lower it, save.</figcaption></figure><p class="ops-note">A real screenshot of the app, running on made-up clients, people and numbers.</p></div></div><div class="cs-block"><h2 class="cs-h">Try it: go over the budget</h2><p class="sub">Press Edit budgets, then raise Campaign 1 past what its group has left. The check turns red and Save locks.</p><div class="ops-wrap">
   <div class="ops-ctl" role="group" aria-label="Screen">
     <button type="button" data-go="clients" aria-pressed="false">Clients</button>
     <button type="button" data-go="pacing" aria-pressed="false">Pacing</button>
@@ -1063,6 +1074,14 @@
   <script>
     // The app replica on the platform pages. Made-up clients; the layout and labels follow the real app.
     (function () {
+      // The screenshot switcher on the platform page.
+      var shots = document.getElementById("shots");
+      if (shots) shots.querySelectorAll("[data-shot]").forEach(function (b) {
+        b.addEventListener("click", function () {
+          shots.querySelectorAll("[data-shot]").forEach(function (x) { x.setAttribute("aria-pressed", x === b); });
+          shots.querySelectorAll("[data-pane]").forEach(function (p) { p.hidden = p.dataset.pane !== b.dataset.shot; });
+        });
+      });
       var app = document.getElementById("app"); if (!app) return;
       var wrap = app.closest(".ops-wrap"), only = app.dataset.only, toast = document.getElementById("ops-toast"), toastTimer = null;
       function $(id) { return document.getElementById(id); }

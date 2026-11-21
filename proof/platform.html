@@ -965,6 +965,17 @@
     .ops .ops-t{font:inherit;font-variant-numeric:tabular-nums}
     .ops .ops-t td{white-space:normal;padding-top:6px;padding-bottom:6px}
     .ops .ops-t td:first-child,.ops .ops-t td.r,.ops .ops-t td .bd{white-space:nowrap}
+
+    /* Real screenshots of the app. Light or dark follows the site. */
+    .rshot{margin-top:32px}
+    .rshot-frame{margin:0;border:1px solid var(--line);border-radius:12px;overflow:hidden;box-shadow:var(--lift);background:var(--panel)}
+    .rshot-frame.second{margin-top:20px}
+    .rshot-frame img,.rshot-frame video{display:block;width:100%;height:auto}
+    .rshot-frame .d{display:none}
+    :root[data-theme="dark"] .rshot-frame .l{display:none}:root[data-theme="dark"] .rshot-frame .d{display:block}
+    @media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .rshot-frame .l{display:none}:root:not([data-theme="light"]) .rshot-frame .d{display:block}}
+    .rshot-frame figcaption{padding:12px 16px;border-top:1px solid var(--line);font-size:.9375rem;color:var(--muted);background:var(--bg)}
+    .rshot-pane[hidden]{display:none}
   </style>
 </head>
 <body>
@@ -1008,7 +1019,17 @@
 
     <div class="cs-block">
       <h2 class="cs-h">What it looks like</h2>
-      <p class="sub">Four real screens, rebuilt for this page. Click around: edit a budget, approve a report, mark a tracking finding, change who is signed in.</p>
+      <p class="sub">The real app, in six screens.</p>
+      <div class="rshot" id="shots">
+        <div class="ops-ctl" role="group" aria-label="Screenshot"><button type="button" data-shot="0" aria-pressed="false">Clients</button><button type="button" data-shot="1" aria-pressed="false">One client</button><button type="button" data-shot="2" aria-pressed="true">Budget pacing</button><button type="button" data-shot="3" aria-pressed="false">Report review</button><button type="button" data-shot="4" aria-pressed="false">Audit</button><button type="button" data-shot="5" aria-pressed="false">Tracking QA</button></div>
+        <figure class="rshot-frame"><div class="rshot-pane" data-pane="0" hidden><img src="img/platform/02-clients-owner-light.webp" class="l" alt="The client list, signed in as an owner. Six clients with their status, lead, pacing, issues, budget and last report." width="1440" height="900" loading="lazy"><img src="img/platform/02-clients-owner-dark.webp" class="d" alt="The client list, signed in as an owner. Six clients with their status, lead, pacing, issues, budget and last report. Dark mode." width="1440" height="900" loading="lazy"><figcaption>The client list. Every lead sees only their own clients.</figcaption></div><div class="rshot-pane" data-pane="1" hidden><img src="img/platform/04-client-overview-light.webp" class="l" alt="One client page: pacing by platform, results by platform against the period before, and the client details." width="1440" height="900" loading="lazy"><img src="img/platform/04-client-overview-dark.webp" class="d" alt="One client page: pacing by platform, results by platform against the period before, and the client details. Dark mode." width="1440" height="900" loading="lazy"><figcaption>One client. Pacing, results by platform and everything about the account in one place.</figcaption></div><div class="rshot-pane" data-pane="2"><img src="img/platform/06-client-pacing-edit-over-parent-light.webp" class="l" alt="The pacing sheet mid-edit. One group is six thousand dollars over its parent, the check is red and Save is locked." width="1440" height="900" loading="lazy"><img src="img/platform/06-client-pacing-edit-over-parent-dark.webp" class="d" alt="The pacing sheet mid-edit. One group is six thousand dollars over its parent, the check is red and Save is locked. Dark mode." width="1440" height="900" loading="lazy"><figcaption>Budget pacing, mid-edit. Google is over its parent, so the check is red and Save is locked.</figcaption></div><div class="rshot-pane" data-pane="3" hidden><img src="img/platform/07-report-review-numbers-look-off-light.webp" class="l" alt="The report review screen. A slide-by-slide outline, with one slide flagged because its numbers look off." width="1440" height="900" loading="lazy"><img src="img/platform/07-report-review-numbers-look-off-dark.webp" class="d" alt="The report review screen. A slide-by-slide outline, with one slide flagged because its numbers look off. Dark mode." width="1440" height="900" loading="lazy"><figcaption>Report review. One slide is flagged "Numbers look off" before anyone approves.</figcaption></div><div class="rshot-pane" data-pane="4" hidden><img src="img/platform/09-audit-is-it-working-menu-light.webp" class="l" alt="The audit screen. Each conversion action has a status, and the row menu offers Not Relevant or Checked, It Works." width="1440" height="900" loading="lazy"><img src="img/platform/09-audit-is-it-working-menu-dark.webp" class="d" alt="The audit screen. Each conversion action has a status, and the row menu offers Not Relevant or Checked, It Works. Dark mode." width="1440" height="900" loading="lazy"><figcaption>The audit. Each conversion action gets a status, and a person marks what it means.</figcaption></div><div class="rshot-pane" data-pane="5" hidden><img src="img/platform/10-audit-tracking-qa-mid-run-light.webp" class="l" alt="A tracking QA run part of the way through: eleven of forty items done and three failing." width="1440" height="900" loading="lazy"><img src="img/platform/10-audit-tracking-qa-mid-run-dark.webp" class="d" alt="A tracking QA run part of the way through: eleven of forty items done and three failing. Dark mode." width="1440" height="900" loading="lazy"><figcaption>Tracking QA, mid-run. Nothing goes live until every item is green, ticked or excused with a reason.</figcaption></div></figure>
+        <p class="ops-note">Real screenshots of the app, running on made-up clients, people and numbers.</p>
+      </div>
+    </div>
+
+    <div class="cs-block">
+      <h2 class="cs-h">Try it yourself</h2>
+      <p class="sub">The same four screens, rebuilt so you can click. Edit a budget, approve a report, mark a tracking finding, change who is signed in.</p>
 <div class="ops-wrap">
   <div class="ops-ctl" role="group" aria-label="Screen">
     <button type="button" data-go="clients" aria-pressed="false">Clients</button>
@@ -1136,6 +1157,14 @@
   <script>
     // The app replica on the platform pages. Made-up clients; the layout and labels follow the real app.
     (function () {
+      // The screenshot switcher on the platform page.
+      var shots = document.getElementById("shots");
+      if (shots) shots.querySelectorAll("[data-shot]").forEach(function (b) {
+        b.addEventListener("click", function () {
+          shots.querySelectorAll("[data-shot]").forEach(function (x) { x.setAttribute("aria-pressed", x === b); });
+          shots.querySelectorAll("[data-pane]").forEach(function (p) { p.hidden = p.dataset.pane !== b.dataset.shot; });
+        });
+      });
       var app = document.getElementById("app"); if (!app) return;
       var wrap = app.closest(".ops-wrap"), only = app.dataset.only, toast = document.getElementById("ops-toast"), toastTimer = null;
       function $(id) { return document.getElementById(id); }
