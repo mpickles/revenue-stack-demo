@@ -366,3 +366,11 @@ details.full .prose{padding:0 22px 22px;margin-top:0}
 .wf-card .body b i{font-style:normal;color:var(--muted);margin-right:8px;font-variant-numeric:tabular-nums}
 .wf-card .line{display:block;margin-top:6px;color:var(--muted);font-size:.9375rem;line-height:1.4}
 
+/* Three lines at the top of a page, for the reader who has one minute: the problem, what I built, the result. */
+.tldr{display:grid;gap:0 40px;margin:36px 0 0;border-top:2px solid var(--accent)}
+@media (min-width:860px){.tldr{grid-template-columns:repeat(3,minmax(0,1fr))}}
+.tldr div{padding:18px 0 20px;border-bottom:1px solid var(--line)}
+.tldr dt{font-family:var(--mono);font-size:.75rem;color:var(--muted)}
+.tldr dd{margin:8px 0 0;font-size:1.0625rem;line-height:1.4;letter-spacing:-.01em;text-wrap:pretty}
+
+.tldr + .own{margin-top:36px}

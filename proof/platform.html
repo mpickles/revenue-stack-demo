@@ -390,6 +390,15 @@
     /* A platform tile: number, name, one line. Same as its box on the map. */
     .wf-card .body b i{font-style:normal;color:var(--muted);margin-right:8px;font-variant-numeric:tabular-nums}
     .wf-card .line{display:block;margin-top:6px;color:var(--muted);font-size:.9375rem;line-height:1.4}
+
+    /* Three lines at the top of a page, for the reader who has one minute: the problem, what I built, the result. */
+    .tldr{display:grid;gap:0 40px;margin:36px 0 0;border-top:2px solid var(--accent)}
+    @media (min-width:860px){.tldr{grid-template-columns:repeat(3,minmax(0,1fr))}}
+    .tldr div{padding:18px 0 20px;border-bottom:1px solid var(--line)}
+    .tldr dt{font-family:var(--mono);font-size:.75rem;color:var(--muted)}
+    .tldr dd{margin:8px 0 0;font-size:1.0625rem;line-height:1.4;letter-spacing:-.01em;text-wrap:pretty}
+
+    .tldr + .own{margin-top:36px}
     /* Styles for the platform pages only. Loaded after style.css. */
     "
 
@@ -990,13 +999,13 @@
       <h1>I built the operations platform a paid media team works in</h1>
       <p class="status is-active">Live at Upgrow</p>
     </header>
+    <dl class="tldr"><div><dt>Problem</dt><dd>A paid media team rebuilt the same reports, budgets and checks by hand, for every client, every month.</dd></div><div><dt>What I built</dt><dd>One platform: a tested warehouse, a web app and the workflows on top. A person approves everything.</dd></div><div><dt>Result</dt><dd>Hours saved per client, per month: <span class="slot">being measured</span></dd></div></dl>
     <p class="own">I designed it and built <b>every part of it myself</b>: the warehouse, the web app, the workflows and the connections to Claude.</p>
     <p class="own2">Claude wrote the code. I wrote the specs, made every design decision and ran it in production.</p>
 
     <dl class="cs-strip">
       <div><dt>Built with</dt><dd>BigQuery, dbt, Postgres, Cloud Run, the Claude API</dd></div>
       <div><dt>Team</dt><dd>One. Me</dd></div>
-      <div><dt>Result</dt><dd><span class="slot">Being measured</span></dd></div>
     </dl>
 
 
@@ -1028,7 +1037,48 @@
     </div>
 
     <div class="cs-block">
-      <h2 class="cs-h">Try it yourself</h2>
+      <h2 class="cs-h">Why it is built the way it is</h2>
+      <div class="why" data-stagger>
+        <article><div class="c"><small>Because</small><b>A model will state a wrong number with total confidence.</b></div><div class="d"><small>So</small><b>Code works out every number. The model only writes.</b><p>Each figure a report can quote is worked out in SQL first and handed over.</p></div></article>
+        <article><div class="c"><small>Because</small><b>Client money is on the line.</b></div><div class="d"><small>So</small><b>Nothing writes to an ad account.</b><p>Every change is a proposal a person approves. A wrong draft costs a minute. A wrong budget costs money.</p></div></article>
+        <article><div class="c"><small>Because</small><b>I was the only builder, with no engineering team behind me.</b></div><div class="d"><small>So</small><b>Tests block a bad load, so I am not the safety net.</b><p>I chose dbt because a failed test stops everything built on top of it by default.</p></div></article>
+      </div>
+    </div>
+
+    <div class="cs-block">
+      <h2 class="cs-h">What broke, and what I did about it</h2>
+      <div class="broke" data-stagger>
+        <div><b>A date was read as a number, and every draft was blocked.</b><p>The number checker read the "2026-08" in a date as the number 202 and rejected every report that month.</p><small><i>Fix</i>Dates are stripped out before numbers are checked, with a test for it.</small></div>
+        <div><b>On the first full live day, fewer than half the decks built first time.</b><p>A missing file permission, a time limit that was too short, and a test run that had marked work as already done.</p><small><i>Fix</i>Each cause fixed that day, and every deck rebuilt and checked by hand the next.</small></div>
+        <div><b>On launch day nobody could sign in.</b><p>The new sign-in stored each person's ID in a slightly different form from the one the app looked up.</p><small><i>Fix</i>Found and patched the same day.</small></div>
+      </div>
+    </div>
+
+    <div class="cs-block">
+      <h2 class="cs-h">What is next</h2>
+      <dl class="shows">
+        <div><dt>Reports built by the platform</dt><dd>Report building is moving from a spreadsheet-driven process to the platform. The first automated monthly cycle runs in December</dd></div>
+        <div><dt>An apply step for search terms</dt><dd>Adding approved negatives to a shared list, behind its own write test and a person's yes</dd></div>
+        <div><dt>Tag fixes as a draft</dt><dd>Proposed fixes land in a new workspace for a person to review. Never a publish</dd></div>
+        <div><dt>A second ad platform for search terms</dt><dd>Version one covers one platform only</dd></div>
+        <div><dt>Hours saved, measured</dt><dd>The before figure exists. The after is being logged</dd></div>
+      </dl>
+    </div>
+
+    <div class="cs-block">
+      <h2 class="cs-h">What this shows I can do</h2>
+      <dl class="shows">
+        <div><dt>Model data properly</dt><dd>One warehouse, tested tables, one definition of each number</dd></div>
+        <div><dt>Put AI to work safely</dt><dd>The model writes, code checks, a person decides</dd></div>
+        <div><dt>Build a real product</dt><dd>Sign-in, roles, permissions enforced in the database, an audit log, undo</dd></div>
+        <div><dt>Run what I build</dt><dd>Costs capped, failures found and fixed, every fix kept as a test</dd></div>
+        <div><dt>Get it adopted</dt><dd>Training, help pages, and cutting what confused people</dd></div>
+              <div><dt>Direct an AI to build software</dt><dd>Specs first, tests that it must pass, and checking its work before it ships</dd></div>
+      </dl>
+    </div>
+
+    <div class="cs-block">
+      <h2 class="cs-h">Optional: try it yourself</h2>
       <p class="sub">The same four screens, rebuilt so you can click. Edit a budget, approve a report, mark a tracking finding, change who is signed in.</p>
 <div class="ops-wrap">
   <div class="ops-ctl" role="group" aria-label="Screen">
@@ -1107,47 +1157,6 @@
   </div>
   <p class="ops-note">Rebuilt from the real app: same layout, same labels, same colours. Every client, person and number here is made-up.</p>
 </div>
-    </div>
-
-    <div class="cs-block">
-      <h2 class="cs-h">Why it is built the way it is</h2>
-      <div class="why" data-stagger>
-        <article><div class="c"><small>Because</small><b>A model will state a wrong number with total confidence.</b></div><div class="d"><small>So</small><b>Code works out every number. The model only writes.</b><p>Each figure a report can quote is worked out in SQL first and handed over.</p></div></article>
-        <article><div class="c"><small>Because</small><b>Client money is on the line.</b></div><div class="d"><small>So</small><b>Nothing writes to an ad account.</b><p>Every change is a proposal a person approves. A wrong draft costs a minute. A wrong budget costs money.</p></div></article>
-        <article><div class="c"><small>Because</small><b>I was the only builder, with no engineering team behind me.</b></div><div class="d"><small>So</small><b>Tests block a bad load, so I am not the safety net.</b><p>I chose dbt because a failed test stops everything built on top of it by default.</p></div></article>
-      </div>
-    </div>
-
-    <div class="cs-block">
-      <h2 class="cs-h">What broke, and what I did about it</h2>
-      <div class="broke" data-stagger>
-        <div><b>A date was read as a number, and every draft was blocked.</b><p>The number checker read the "2026-08" in a date as the number 202 and rejected every report that month.</p><small><i>Fix</i>Dates are stripped out before numbers are checked, with a test for it.</small></div>
-        <div><b>On the first full live day, fewer than half the decks built first time.</b><p>A missing file permission, a time limit that was too short, and a test run that had marked work as already done.</p><small><i>Fix</i>Each cause fixed that day, and every deck rebuilt and checked by hand the next.</small></div>
-        <div><b>On launch day nobody could sign in.</b><p>The new sign-in stored each person's ID in a slightly different form from the one the app looked up.</p><small><i>Fix</i>Found and patched the same day.</small></div>
-      </div>
-    </div>
-
-    <div class="cs-block">
-      <h2 class="cs-h">What is next</h2>
-      <dl class="shows">
-        <div><dt>Reports built by the platform</dt><dd>Report building is moving from a spreadsheet-driven process to the platform. The first automated monthly cycle runs in December</dd></div>
-        <div><dt>An apply step for search terms</dt><dd>Adding approved negatives to a shared list, behind its own write test and a person's yes</dd></div>
-        <div><dt>Tag fixes as a draft</dt><dd>Proposed fixes land in a new workspace for a person to review. Never a publish</dd></div>
-        <div><dt>A second ad platform for search terms</dt><dd>Version one covers one platform only</dd></div>
-        <div><dt>Hours saved, measured</dt><dd>The before figure exists. The after is being logged</dd></div>
-      </dl>
-    </div>
-
-    <div class="cs-block">
-      <h2 class="cs-h">What this shows I can do</h2>
-      <dl class="shows">
-        <div><dt>Model data properly</dt><dd>One warehouse, tested tables, one definition of each number</dd></div>
-        <div><dt>Put AI to work safely</dt><dd>The model writes, code checks, a person decides</dd></div>
-        <div><dt>Build a real product</dt><dd>Sign-in, roles, permissions enforced in the database, an audit log, undo</dd></div>
-        <div><dt>Run what I build</dt><dd>Costs capped, failures found and fixed, every fix kept as a test</dd></div>
-        <div><dt>Get it adopted</dt><dd>Training, help pages, and cutting what confused people</dd></div>
-              <div><dt>Direct an AI to build software</dt><dd>Specs first, tests that it must pass, and checking its work before it ships</dd></div>
-      </dl>
     </div>
   </div></main>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/gsap.min.js"></script>

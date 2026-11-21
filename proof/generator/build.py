@@ -406,6 +406,9 @@ def build_pages():
         parts=str(len(builds)),
         started=str(started),
         own=e(project["own"]),
+        tldr_problem=e(project["tldr"][0]),
+        tldr_built=e(project["tldr"][1]),
+        tldr_result=e(project["tldr"][2]) if project["tldr"][2] else '<span class="slot">To come once graded</span>',
         facts=indent("\n".join([
             f'<div><dt>Built with</dt><dd>{e(project["built_with"])}</dd></div>',
             "<div><dt>Team</dt><dd>One. Me</dd></div>",
