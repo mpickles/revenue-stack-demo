@@ -277,6 +277,43 @@ def contact_links_html(contact):
     return "".join(parts)
 
 
+def with_preview(path, text, config):
+    """What a link to this page shows when it is pasted somewhere: a line of description, a picture and a tab icon."""
+    e = html.escape
+    title = re.search(r"<title>(.*?)</title>", text, re.S).group(1)
+    parts = {p["file"]: p for p in config["platform"]["parts"]}
+    builds = {f'builds/{b["slug"]}.html': b for b in config["builds"]}
+    if path in parts:
+        line = f'{parts[path]["name"]}. {parts[path]["line"]}. Part of the operations platform I built at work.'
+    elif path == "platform.html":
+        line = config["platform"]["description"]
+    elif path == "project.html":
+        line = config["project"]["sentence"].split(". ")[0].rstrip(".") + "."  # the first sentence fits a preview
+    elif path in builds:
+        line = builds[path].get("card_title") or builds[path]["tile"]
+    elif path == "colophon.html":
+        line = "How this site was made: the type, the colour, the drawings and the build."
+    else:
+        line = config["description"]
+    site = config["site"].rstrip("/")
+    url = site + "/" + ("" if path == "index.html" else path)
+    tags = "\n".join([
+        f'  <meta name="description" content="{e(line)}">',
+        f'  <meta property="og:title" content="{title}">',
+        f'  <meta property="og:description" content="{e(line)}">',
+        '  <meta property="og:type" content="website">',
+        f'  <meta property="og:url" content="{e(url)}">',
+        f'  <meta property="og:image" content="{site}/img/og.png">',
+        '  <meta property="og:image:width" content="1200">',
+        '  <meta property="og:image:height" content="630">',
+        '  <meta name="twitter:card" content="summary_large_image">',
+        '  <link rel="icon" href="/favicon.svg" type="image/svg+xml">',
+    ])
+    head, sep, rest = text.partition("</title>\n")
+    assert sep, path
+    return head + sep + tags + "\n" + rest
+
+
 def build_pages():
     """Returns every page as {path inside proof/: HTML text}. Writes nothing."""
     config = load_config()
@@ -466,7 +503,7 @@ def build_pages():
 
     pages["colophon.html"] = template("colophon.html").substitute(style=style, script=script)
 
-    return {path: text.rstrip() + "\n" for path, text in pages.items()}
+    return {path: with_preview(path, text, config).rstrip() + "\n" for path, text in pages.items()}
 
 
 def out_of_date(pages):
