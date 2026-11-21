@@ -1040,6 +1040,28 @@
     .more-rows summary::before{content:"+";font-family:var(--mono);color:var(--accent);margin-right:10px}
     .more-rows[open] summary::before{content:"\2212"}
     .more-rows summary:hover{color:var(--ink)}
+
+    /* Flow: the steps as a drawn line of small pictures. A short name carries each step; the sentence is optional. */
+    .flow{list-style:none;margin:0;padding:0;display:grid;gap:28px 0}
+    .flow li{position:relative;padding:0 20px 0 0}
+    .flow svg{display:block;width:48px;height:48px;margin-bottom:14px;overflow:visible}
+    .flow b{display:block;font-weight:500;font-size:1.0625rem;letter-spacing:-.02em;line-height:1.25}
+    .flow p{margin:6px 0 0;font-size:.875rem;line-height:1.45;color:var(--muted);max-width:17rem}
+    .flow .i-b{fill:var(--panel);stroke:var(--muted);stroke-width:1.5}
+    .flow .i-l{fill:none;stroke:var(--muted);stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+    .flow .i-k{fill:none;stroke:var(--accent);stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round}
+    .flow .i-on{fill:var(--accent);stroke:none}
+    @media (min-width:860px){
+      .flow{grid-template-columns:repeat(4,minmax(0,1fr))}.flow.n5{grid-template-columns:repeat(5,minmax(0,1fr))}
+      .flow li:not(:last-child)::after{content:"";position:absolute;left:62px;right:14px;top:24px;border-top:1.5px dashed var(--line)}
+      .flow li:not(:last-child)::before{content:"";position:absolute;right:12px;top:20px;width:8px;height:8px;border-top:1.5px solid var(--muted);border-right:1.5px solid var(--muted);transform:rotate(45deg)}
+    }
+    @media (max-width:859px){.flow li{display:grid;grid-template-columns:48px 1fr;column-gap:16px;padding:0}.flow svg{grid-row:1 / span 2;margin:0}.flow b{align-self:end}.flow li:has(p) b{align-self:auto}.flow p{grid-column:2}.flow li:not(:has(p)) b{grid-row:1 / span 2;align-self:center}}
+    /* Choices, lighter: chosen and turned down side by side, the reason as one line under them. */
+    @media (min-width:860px){.chose div{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px 40px;padding:18px 0}.chose div p:nth-child(3){grid-column:1 / -1}}
+    .chose div p:nth-child(3){font-size:.875rem}
+    .chose div p:nth-child(3) small{display:inline;margin:0 8px 0 0}
+    @media (min-width:860px){.flow.n3{grid-template-columns:repeat(3,minmax(0,1fr))}.flow.par li::after,.flow.par li::before{display:none}}
   </style>
 </head>
 <body>
