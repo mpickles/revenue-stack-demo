@@ -595,6 +595,12 @@ class CommittedPages(unittest.TestCase):
         self.assertIn("It does not block.", page)
         self.assertNotIn("build anyway", page.lower())
 
+    def test_the_platform_screenshots_sit_in_the_dark_band(self):
+        page = self.pages["platform.html"]
+        block = page[:page.index('id="shots"')]
+        self.assertTrue(block.rstrip().endswith('<div class="rshot"'))
+        self.assertIn('<div class="cs-block band bleed">', block[block.rindex('<div class="cs-block'):])
+
     def test_the_platform_shows_real_screenshots_in_light_and_dark(self):
         page = self.pages["platform.html"]
         shots = re.findall(r'<img src="(img/platform/[^"]+)-light\.webp" class="l"', page)

@@ -1200,6 +1200,9 @@
     @media (min-width:860px){.flow.n3{grid-template-columns:repeat(3,minmax(0,1fr))}.flow.par li::after,.flow.par li::before{display:none}}
     .flow.dated small{display:block;font-family:var(--mono);font-size:.6875rem;color:var(--accent);margin-bottom:4px}
     @media (max-width:859px){.flow.dated li{grid-template-rows:auto auto auto}.flow.dated svg{grid-row:1 / span 3}.flow.dated small,.flow.dated b,.flow.dated p{grid-column:2}}
+    /* The screenshots sit in the same dark band as the home page's projects. The shadow paints it edge to edge without widening the page. */
+    .cs-block.bleed{padding:clamp(56px,7vw,96px) 0;box-shadow:0 0 0 100vmax var(--bg);clip-path:inset(0 -100vmax)}
+    .cs-block.bleed + .cs-block{margin-top:clamp(56px,7vw,96px)}
   </style>
 </head>
 <body>
@@ -1241,7 +1244,7 @@
       </div>
     </div>
 
-    <div class="cs-block">
+    <div class="cs-block band bleed">
       <h2 class="cs-h">What it looks like</h2>
       <p class="sub">The real app, in six screens.</p>
       <div class="rshot" id="shots">
