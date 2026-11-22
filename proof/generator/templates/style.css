@@ -24,7 +24,7 @@ h2{font-size:clamp(1.875rem,1.3rem + 2.4vw,3.25rem);line-height:1.02;max-width:2
 h2 .mask{display:block;overflow:hidden;padding-bottom:.12em;margin-bottom:-.12em}
 h2 .mask>span{display:block}
 .sub{margin:18px 0 0;color:var(--muted);max-width:38rem}
-.sec{padding:clamp(88px,12vw,168px) 0 0}
+.sec{padding:clamp(64px,7.5vw,104px) 0 0}
 
 /* Nav: floats, stops short of the screen edges */
 .nav{position:fixed;top:16px;left:50%;transform:translateX(-50%);z-index:20;width:min(calc(100% - 32px),42rem);display:flex;gap:8px 20px;align-items:center;justify-content:space-between;padding:8px 8px 8px 20px;background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(12px);border:1px solid var(--line);border-radius:16px;box-shadow:var(--lift);font-size:.9375rem}
