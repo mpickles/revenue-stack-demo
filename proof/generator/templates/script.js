@@ -115,20 +115,20 @@
       var text = h.textContent; h.setAttribute("aria-label", text); h.textContent = "";
       var mask = document.createElement("span"); mask.className = "mask"; mask.setAttribute("aria-hidden", "true");
       var inner = document.createElement("span"); inner.textContent = text; mask.appendChild(inner); h.appendChild(mask);
-      gsap.from(inner, { yPercent: 112, duration: 0.9, ease: "expo.out", scrollTrigger: { trigger: h, start: "top 88%" } });
+      gsap.from(inner, { yPercent: 112, duration: 0.35, ease: "expo.out", scrollTrigger: { trigger: h, start: "top 98%" } });
     });
 
     // Lists and cards arrive one after another.
     [".sys", ".proof li", "[data-stagger] > *"].forEach(function (group) {
       if (!document.querySelector(group)) return;
-      ScrollTrigger.batch(group, { start: "top 90%", once: true, onEnter: function (batch) {
-        gsap.from(batch, { opacity: 0, y: 28, duration: 0.7, stagger: 0.07, ease: "power3.out", clearProps: "opacity,transform" });
+      ScrollTrigger.batch(group, { start: "top 98%", once: true, onEnter: function (batch) {
+        gsap.from(batch, { opacity: 0, y: 10, duration: 0.22, stagger: 0.02, ease: "power2.out", clearProps: "opacity,transform" });
       } });
     });
 
     // Table rows wipe in from the left.
     $$("table[data-wipe]").forEach(function (table) {
-      gsap.from(table.querySelectorAll("tr"), { clipPath: "inset(0 100% 0 0)", duration: 0.6, stagger: 0.08, ease: "power2.out", scrollTrigger: { trigger: table, start: "top 82%" } });
+      gsap.from(table.querySelectorAll("tr"), { clipPath: "inset(0 100% 0 0)", duration: 0.25, stagger: 0.02, ease: "power2.out", scrollTrigger: { trigger: table, start: "top 98%" } });
     });
 
     // The routing scene: the page holds while the diagram draws itself.
