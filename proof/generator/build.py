@@ -363,6 +363,7 @@ def build_pages():
         platform_tiles=indent(platform_tiles_html(config["platform"]), 8),
         platform_count=str(len(config["platform"]["parts"])),
         project_cover=cover("project", grows=True),
+        project_cover_plain=cover("project"),
         contact=contact,
         portrait=portrait_html(),
         notes=notes_html(config.get("notes", [])),
