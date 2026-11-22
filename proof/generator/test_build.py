@@ -294,13 +294,15 @@ class CommittedPages(unittest.TestCase):
         self.assertIn("<dt>Learning now</dt>", hero)
         self.assertLess(hero.index("</h1>"), hero.index('<dl class="stats">'))
 
-    def test_the_first_project_card_shows_the_real_app_and_says_the_data_is_made_up(self):
+    def test_the_platform_card_is_its_drawing_so_it_grows_into_the_same_drawing_on_its_page(self):
         home = self.pages["index.html"]
-        card = home[home.index('<a class="proj-cover shot" href="platform.html"'):]
+        card = home[home.index('<a class="proj-cover" href="platform.html"'):]
         card = card[: card.index("</a>")]
-        self.assertIn("img/platform/04-client-overview-light.webp", card)
-        self.assertIn("img/platform/04-client-overview-dark.webp", card)
-        self.assertIn("Made-up clients and numbers", card)
+        self.assertIn("<svg", card)
+        self.assertIn("view-transition-name:cover-platform", card)
+        self.assertNotIn("<img", card)
+        banner = self.pages["platform.html"]
+        self.assertIn("view-transition-name:cover-platform", banner[: banner.index("<h1")])
 
     def test_a_client_case_study_names_no_client_and_follows_the_page_shape(self):
         home = self.pages["index.html"]
@@ -318,7 +320,7 @@ class CommittedPages(unittest.TestCase):
 
     def test_the_home_page_leads_with_the_live_platform(self):
         home = self.pages["index.html"]
-        self.assertLess(home.index('<a class="proj-cover shot" href="platform.html"'), home.index('<a class="proj-cover" href="project.html"'))
+        self.assertLess(home.index('<a class="proj-cover" href="platform.html"'), home.index('<a class="proj-cover" href="project.html"'))
 
     def test_a_drawing_grows_from_its_card_into_the_page_it_opens(self):
         for item in self.config["builds"]:
