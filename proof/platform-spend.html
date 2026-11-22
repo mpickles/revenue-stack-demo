@@ -425,6 +425,32 @@
     .under p .see{display:inline-block;margin-left:14px;vertical-align:2px;background:var(--ink);color:var(--bg);border:1px solid var(--ink);border-radius:8px;padding:8px 15px 9px;font-size:.9375rem;letter-spacing:0;text-decoration:none;transition:transform .16s var(--ease)}
     .under p .see:active{transform:scale(.96)}
     @media (max-width:520px){.under p .see{display:block;width:max-content;margin:14px 0 0}}
+
+    /* First screen, second version: what I do and three results, before the name. */
+    .hero.v2{min-height:0;justify-content:flex-start;padding:clamp(120px,14vw,168px) 0 clamp(32px,5vw,56px)}
+    .who{margin:0 0 18px;font-size:1.0625rem;font-weight:500;letter-spacing:-.01em}
+    .who span{margin-left:12px;font-weight:400;color:var(--muted)}
+    .hero.v2 h1.role{font-size:clamp(2.75rem,1rem + 6.4vw,6rem);line-height:.95;max-width:none}
+    .pitch{margin:22px 0 0;max-width:34rem;font-size:clamp(1.1875rem,1rem + .8vw,1.5rem);line-height:1.3;letter-spacing:-.015em}
+    .hero-acts{display:flex;flex-wrap:wrap;align-items:center;gap:10px 22px;margin:28px 0 0;font-size:1rem}
+    .hero-acts .see{background:var(--ink);color:var(--bg);border-radius:8px;padding:10px 18px 11px;text-decoration:none}
+    .stats{display:grid;gap:0 40px;margin:clamp(36px,5vw,56px) 0 0;border-top:2px solid var(--accent)}
+    @media (min-width:760px){.stats{grid-template-columns:repeat(3,minmax(0,1fr))}}
+    .stats div{padding:18px 0 20px;border-bottom:1px solid var(--line)}
+    .stats dd{margin:0;font-size:clamp(2rem,1.4rem + 2vw,3rem);font-weight:500;letter-spacing:-.04em;line-height:1;font-variant-numeric:tabular-nums}
+    .stats dt{margin-top:10px;color:var(--muted);font-size:.9375rem;line-height:1.4;max-width:17rem}
+    .hero.v2 .spec{border-top:0;margin-top:0}
+    @media (min-width:980px){.hero.v2 .spec{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:0 40px}.hero.v2 .spec div{display:block;border-bottom:0;padding:18px 0 0}.hero.v2 .spec dd{margin-top:4px}}
+    .proj-cover.shot{display:block;border:1px solid var(--line);border-radius:10px;overflow:hidden;background:var(--panel);box-shadow:var(--lift)}
+    .proj-cover.shot img{display:block;width:100%;height:auto}.proj-cover.shot .d{display:none}
+    :root[data-theme="dark"] .proj-cover.shot .l{display:none}:root[data-theme="dark"] .proj-cover.shot .d{display:block}
+    @media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .proj-cover.shot .l{display:none}:root:not([data-theme="light"]) .proj-cover.shot .d{display:block}}
+    .proj-cover.shot small{display:block;padding:10px 14px;border-top:1px solid var(--line);background:var(--bg);color:var(--muted);font-size:.8125rem}
+    .case-row{display:grid;gap:6px 32px;align-items:baseline;margin-top:32px;padding:26px 0;border-top:2px solid var(--accent);border-bottom:1px solid var(--line);background:none;text-decoration:none}
+    @media (min-width:760px){.case-row{grid-template-columns:9rem 1fr auto}}
+    .case-row small{font-family:var(--mono);font-size:.75rem;color:var(--muted)}
+    .case-row b{font-weight:500;font-size:clamp(1.25rem,1rem + 1vw,1.75rem);letter-spacing:-.025em;line-height:1.2}
+    .case-row span{color:var(--muted);text-decoration:underline;text-underline-offset:3px}
     /* Styles for the platform pages only. Loaded after style.css. */
     "
 

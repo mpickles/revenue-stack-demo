@@ -293,6 +293,8 @@ def with_preview(path, text, config):
         line = builds[path].get("card_title") or builds[path]["tile"]
     elif path == "colophon.html":
         line = "How this site was made: the type, the colour, the drawings and the build."
+    elif path in {c["file"]: c for c in config.get("cases", [])}:
+        line = next(c["description"] for c in config["cases"] if c["file"] == path)
     else:
         line = config["description"]
     site = config["site"].rstrip("/")
@@ -463,6 +465,12 @@ def build_pages():
         pages[item["file"]] = template("platform-shell.html").substitute(
             style=style, platform_style=platform_style, script=script, title=e(item["title"]), file=item["file"], body=body,
             app_script=app_script if 'id="app"' in body or 'id="shots"' in body else "",
+        )
+
+    for case in config.get("cases", []):  # client work, with no client named
+        body = (GENERATOR / "templates" / "cases" / case["file"]).read_text(encoding="utf-8")
+        pages[case["file"]] = template("platform-shell.html").substitute(
+            style=style, platform_style=platform_style, script=script, title=e(case["title"]), file="cases/" + case["file"], body=body, app_script="",
         )
 
     stops, journey = journey_html(project, builds, status_of)
