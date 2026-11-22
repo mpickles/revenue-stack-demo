@@ -134,7 +134,7 @@ th{font-weight:500;color:var(--muted);background:var(--panel)}
 .contact a:focus-visible,.contact button:focus-visible{outline-color:var(--on-accent)}
 .contact .mail{display:inline-block;margin-top:22px;font-weight:500;font-size:clamp(1.5rem,.6rem + 4.6vw,4.75rem);letter-spacing:-.045em;line-height:1.05;overflow-wrap:anywhere;background:linear-gradient(currentColor,currentColor) no-repeat left 100%/0 3px;padding-bottom:6px;transition:background-size .45s var(--ease)}
 .contact .mail:hover{opacity:1;background-size:100% 3px}
-.contact.slim{margin-top:clamp(64px,8vw,112px);padding:clamp(44px,6vw,72px) 0 40px}
+.contact.slim{margin-top:0;padding:clamp(44px,6vw,72px) 0 40px}
 .contact.slim .mail{margin-top:12px;font-size:clamp(1.375rem,.9rem + 2.2vw,2.5rem);letter-spacing:-.03em}
 .contact.slim .foot{margin-top:32px}
 .contact small{display:block;margin-top:14px;font-size:.9375rem;min-height:1.5em}
