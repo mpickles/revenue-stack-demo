@@ -130,10 +130,11 @@ class CommittedPages(unittest.TestCase):
         self.assertNotIn('<section class="scene"', home)
         self.assertNotIn("How it is graded", home)
 
-    def test_every_build_is_listed_on_the_home_page(self):
-        home = self.pages["index.html"]
+    def test_every_build_is_one_click_from_the_project_page_the_home_page_links_to(self):
+        self.assertIn('href="project.html"', self.pages["index.html"])
+        project = self.pages["project.html"]
         for item in self.config["builds"]:
-            self.assertIn(f'href="builds/{item["slug"]}.html"', home)
+            self.assertIn(f'href="builds/{item["slug"]}.html"', project)
 
     def test_no_proof_section_until_a_build_has_a_result(self):
         home = self.pages["index.html"]
@@ -174,13 +175,17 @@ class CommittedPages(unittest.TestCase):
         self.assertEqual("linkedin.com/in/" in home, bool(contact.get("linkedin")))
         self.assertEqual('href="#contact"' in home, bool(contact.get("email") or contact.get("linkedin")))
 
-    def test_every_part_has_a_card_with_its_cover_and_tools(self):
+    def test_the_home_page_shows_two_projects_and_sends_the_reader_to_each_map_for_the_parts(self):
         home = self.pages["index.html"]
-        self.assertEqual(home.count('class="cover-card'), len(self.config["builds"]))
+        self.assertEqual(home.count('class="cover-card'), 0, "part tiles live on the project pages, not the home page")
+        self.assertEqual(home.count("See the six on the map"), 2)
+        self.assertIn('href="platform.html#hub"', home)
+        self.assertIn('href="project.html#map"', home)
+        self.assertIn('id="hub"', self.pages["platform.html"])
+        self.assertIn('id="map"', self.pages["project.html"])
+        self.assertIn(f'{len(self.config["builds"])} parts.', home)
         for item in self.config["builds"]:
             self.assertTrue((build.GENERATOR / "covers" / f'{item["slug"]}.svg').is_file(), item["slug"])
-            self.assertIn(html.escape(item["card_title"]), home)
-            self.assertIn(html.escape(item["tools"]), home)
 
     def test_a_write_up_with_a_summary_leads_with_it_and_keeps_the_full_notes(self):
         for item in self.config["builds"]:
@@ -318,7 +323,6 @@ class CommittedPages(unittest.TestCase):
     def test_a_drawing_grows_from_its_card_into_the_page_it_opens(self):
         for item in self.config["builds"]:
             name = f'view-transition-name:cover-{item["slug"]}'
-            self.assertEqual(self.pages["index.html"].count(name), 1, item["slug"])
             self.assertEqual(self.pages["project.html"].count(name), 1, item["slug"])
             page = self.pages[f'builds/{item["slug"]}.html']
             self.assertEqual(page.count("view-transition-name:"), 1, item["slug"])
@@ -338,8 +342,7 @@ class CommittedPages(unittest.TestCase):
     def test_every_platform_tile_grows_into_the_drawing_on_top_of_its_page(self):
         for part in self.config["platform"]["parts"]:
             name = f'view-transition-name:cover-pf-{part["slug"]}'
-            for where in ("index.html", "platform.html"):
-                self.assertEqual(self.pages[where].count(name), 1, f'{where} {part["slug"]}')
+            self.assertEqual(self.pages["platform.html"].count(name), 1, part["slug"])
             page = self.pages[part["file"]]
             self.assertEqual(page.count("view-transition-name:"), 1, part["file"])
             self.assertLess(page.index(name), page.index("<h1"), part["file"])
@@ -422,7 +425,7 @@ class CommittedPages(unittest.TestCase):
         boxes = re.findall(r'<a class="rg" href="([^"]+)" aria-label="(\d)\. ([^"]+)"', page)
         self.assertEqual([(href, name) for href, _, name in boxes], [(part["file"], html.escape(part["name"])) for part in parts])
         self.assertEqual([number for _, number, _ in boxes], [str(i + 1) for i in range(len(parts))])
-        for where in ("index.html", "platform.html"):
+        for where in ("platform.html",):
             tiles = re.findall(r'<a class="wf-card cover-card" href="([^"]+)">.*?<b><i>(\d)</i>([^<]+)</b>', self.pages[where], re.S)
             self.assertEqual(tiles, [(part["file"], str(i + 1), html.escape(part["name"])) for i, part in enumerate(parts)], where)
         for part in parts:

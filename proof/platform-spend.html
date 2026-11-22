@@ -451,6 +451,14 @@
     .case-row small{font-family:var(--mono);font-size:.75rem;color:var(--muted)}
     .case-row b{font-weight:500;font-size:clamp(1.25rem,1rem + 1vw,1.75rem);letter-spacing:-.025em;line-height:1.2}
     .case-row span{color:var(--muted);text-decoration:underline;text-underline-offset:3px}
+    .parts-h a{margin-left:10px;color:var(--ink);text-decoration:underline;text-decoration-color:var(--line);text-underline-offset:3px;background:none}
+    /* Every part, as plain links under the map. Works with no script. */
+    .part-links{list-style:none;margin:28px 0 0;padding:0;display:grid;gap:0 32px;border-top:1px solid var(--line)}
+    @media (min-width:760px){.part-links{grid-template-columns:repeat(2,minmax(0,1fr))}}
+    @media (min-width:1100px){.part-links{grid-template-columns:repeat(3,minmax(0,1fr))}}
+    .part-links li{display:flex;justify-content:space-between;align-items:baseline;gap:16px;padding:13px 0;border-bottom:1px solid var(--line);font-size:.9375rem}
+    .part-links a{background:none;text-decoration:underline;text-decoration-color:var(--line);text-underline-offset:3px}
+    .part-links a i{font-style:normal;font-family:var(--mono);font-size:.75rem;color:var(--muted);margin-right:10px}
     /* Styles for the platform pages only. Loaded after style.css. */
     "
 
