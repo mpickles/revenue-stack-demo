@@ -113,6 +113,47 @@
       gsap.from(".under, .spec, .slot-box.portrait, .writeup-head .status, .headline", { opacity: 0, duration: 0.7, ease: "power2.out", delay: 0.65 });
     }
 
+    // Home page entrance. Nothing is held back behind a loader: the name is readable from the first frame,
+    // and the rest arrives around it in about a second. Shorter on a return visit in the same tab.
+    var name = document.querySelector(".hero.v2 h1.name");
+    if (name) {
+      var stop = name.querySelector("i"), firstVisit = true;
+      try { firstVisit = !sessionStorage.getItem("entered"); sessionStorage.setItem("entered", "1"); } catch (err) {}
+      var k = firstVisit ? 1 : 0.5;
+      var intro = gsap.timeline({ delay: 0.1 });
+      // The lead. One dot in the accent colour runs in from the left edge and lands as the full stop after my name.
+      if (stop) {
+        gsap.set(stop, { opacity: 0 });
+        intro.call(function () {
+          var box = stop.getBoundingClientRect(), style = getComputedStyle(stop);
+          var runner = stop.cloneNode(true);
+          runner.style.cssText = "position:fixed;margin:0;z-index:5;pointer-events:none;left:" + box.left + "px;top:" + box.top + "px;font:" + style.font + ";line-height:" + style.lineHeight + ";letter-spacing:0;color:" + style.color + ";transform-origin:100% 80%";
+          document.body.appendChild(runner);
+          gsap.fromTo(runner, { x: -(box.left + 60), scaleX: 3.2 }, { x: 0, scaleX: 1, duration: 0.6 * k, ease: "power3.inOut", onComplete: function () {
+            gsap.set(stop, { opacity: 1 });
+            runner.remove();
+            gsap.fromTo(stop, { scale: 1.7 }, { scale: 1, duration: 0.45, ease: "back.out(3)", transformOrigin: "50% 80%", display: "inline-block", clearProps: "transform,display" });
+          } });
+        }, null, 0.75 * k);
+        intro.call(function () { gsap.set(stop, { opacity: 1 }); }, null, 0.75 * k + 1.4);  // whatever happens, the dot ends up visible
+      }
+      intro.from(".role-line, .hero.v2 .pitch, .hero-acts", { opacity: 0, y: 14, duration: 0.45 * k, stagger: 0.07, ease: "power2.out", clearProps: "opacity,transform" }, 0.4 * k);
+      intro.from(".hero-work > *", { opacity: 0, y: 34, scale: 0.94, duration: 0.6 * k, stagger: 0.1, ease: "power3.out", clearProps: "opacity,transform" }, 0.5 * k);
+
+      // The two project cards lean toward the pointer.
+      if (window.matchMedia("(hover: hover) and (pointer: fine)").matches) {
+        $$(".hero-work .hw").forEach(function (card) {
+          gsap.set(card, { transformPerspective: 800 });
+          var rx = gsap.quickTo(card, "rotationX", { duration: 0.4, ease: "power3" }), ry = gsap.quickTo(card, "rotationY", { duration: 0.4, ease: "power3" }), lift = gsap.quickTo(card, "y", { duration: 0.4, ease: "power3" });
+          card.addEventListener("pointermove", function (e) {
+            var b = card.getBoundingClientRect();
+            ry((e.clientX - b.left) / b.width * 10 - 5); rx(5 - (e.clientY - b.top) / b.height * 10); lift(-4);
+          });
+          card.addEventListener("pointerleave", function () { rx(0); ry(0); lift(0); });
+        });
+      }
+    }
+
     // The name eases back as you scroll away from it.
     if (document.querySelector(".hero h1")) gsap.to(".hero h1", { yPercent: -12, opacity: 0.25, ease: "none", scrollTrigger: { trigger: ".hero", start: "top top", end: "bottom 15%", scrub: true } });
 
