@@ -284,15 +284,17 @@ class CommittedPages(unittest.TestCase):
             seen.add(line)
         self.assertGreater(len(seen), len(self.pages) // 2, "pages should not all share one description")
 
-    def test_the_first_screen_says_what_i_do_and_shows_three_results(self):
+    def test_the_first_screen_is_about_me_and_the_platform_numbers_sit_on_the_platform_card(self):
         home = self.pages["index.html"]
         hero = home[home.index('<header class="hero'):home.index("</header>")]
         self.assertIn("Marketing operations", hero[hero.index("<h1"):hero.index("</h1>")])
-        stats = hero[hero.index('<dl class="stats">'):]
-        stats = stats[: stats.index("</dl>")]
-        self.assertEqual(stats.count("<dd>"), 3)
         self.assertIn("<dt>Learning now</dt>", hero)
-        self.assertLess(hero.index("</h1>"), hero.index('<dl class="stats">'))
+        self.assertNotIn('class="stats"', hero)
+        for number in ("15 clients", "9:50 am", "$0 a month"):
+            self.assertNotIn(number, hero, number)
+        card = home[home.index('<a class="proj-cover shot" href="platform.html"'):home.index('<a class="proj-cover" href="project.html"')]
+        for number in ("15 clients", "9:50 am", "$0 a month"):
+            self.assertEqual(card.count(number), 1, number)
 
     def test_the_platform_card_and_its_page_banner_are_the_same_real_screen(self):
         home = self.pages["index.html"]

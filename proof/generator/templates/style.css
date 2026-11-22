@@ -404,7 +404,7 @@ img.portrait{aspect-ratio:4/5;width:100%;max-width:19rem;height:auto;object-fit:
 .stats div{padding:18px 0 20px;border-bottom:1px solid var(--line)}
 .stats dd{margin:0;font-size:clamp(2rem,1.4rem + 2vw,3rem);font-weight:500;letter-spacing:-.04em;line-height:1;font-variant-numeric:tabular-nums}
 .stats dt{margin-top:10px;color:var(--muted);font-size:.9375rem;line-height:1.4;max-width:17rem}
-.hero.v2 .spec{border-top:0;margin-top:0}
+.hero.v2 .spec{margin-top:clamp(36px,5vw,56px)}
 @media (min-width:980px){.hero.v2 .spec{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:0 40px}.hero.v2 .spec div{display:block;border-bottom:0;padding:18px 0 0}.hero.v2 .spec dd{margin-top:4px}}
 .proj-cover.shot{display:block;border:1px solid var(--line);border-radius:10px;overflow:hidden;background:var(--panel);box-shadow:var(--lift)}
 .proj-cover.shot img{display:block;width:100%;height:auto}.proj-cover.shot .d{display:none}
