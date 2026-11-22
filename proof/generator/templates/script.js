@@ -86,6 +86,18 @@
     size(); show(0, true);
   })();
 
+  // Two cards can open the same page. Whichever is clicked takes the shared name, so that one grows into the page.
+  document.addEventListener("click", function (e) {
+    var link = e.target.closest && e.target.closest("a");
+    var pic = link && link.querySelector("[data-vt-name]");
+    if (!pic) return;
+    var name = pic.getAttribute("data-vt-name");
+    Array.prototype.forEach.call(document.querySelectorAll('[style*="view-transition-name"]'), function (el) {
+      if (el.style.viewTransitionName === name) el.style.viewTransitionName = "none";
+    });
+    pic.style.viewTransitionName = name;
+  }, true);
+
   if (!motion) return;
 
   function start() {

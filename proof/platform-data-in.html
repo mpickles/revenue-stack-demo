@@ -465,6 +465,29 @@
     :root[data-theme="dark"] .shot-frame .l{display:none}:root[data-theme="dark"] .shot-frame .d{display:block}
     @media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .shot-frame .l{display:none}:root:not([data-theme="light"]) .shot-frame .d{display:block}}
     .page-cover .shot-frame img{aspect-ratio:16/6.4;object-fit:cover;object-position:top left}
+
+    /* First screen: what I do on the left, the work itself on the right. */
+    .hero-split{display:grid;gap:44px 64px;align-items:end}
+    @media (min-width:1000px){.hero-split{grid-template-columns:minmax(0,1fr) minmax(0,.92fr)}}
+    .hero-work{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+    .hw{display:block;background:none;text-decoration:none;border:1px solid var(--line);border-radius:12px;overflow:hidden;background:var(--bg);box-shadow:var(--lift);transition:transform .2s var(--ease),border-color .2s var(--ease)}
+    .hw:hover{transform:translateY(-3px);border-color:var(--muted)}
+    .hw-pic{display:block;aspect-ratio:16/10;overflow:hidden;background:var(--panel);border-bottom:1px solid var(--line)}
+    .hw-pic img{width:100%;height:100%;object-fit:cover;object-position:top left}
+    .hw-pic .art{display:block;width:100%;height:100%}
+    .hw b{display:block;padding:13px 14px 0;font-weight:500;font-size:1rem;letter-spacing:-.015em;line-height:1.25}
+    .hw-s{display:block;padding:6px 14px 14px}
+    .hw-row{grid-column:1 / -1;display:grid;grid-template-columns:auto 1fr auto;gap:14px;align-items:baseline;padding:14px;border:1px solid var(--line);border-radius:12px;background:var(--bg);text-decoration:none;transition:border-color .2s var(--ease)}
+    .hw-row:hover{border-color:var(--muted)}
+    .hw-row small{font-family:var(--mono);font-size:.6875rem;color:var(--accent)}
+    .hw-row b{font-weight:500;font-size:.9375rem;letter-spacing:-.01em}
+    .hw-row i{font-style:normal;font-size:.875rem;color:var(--muted);text-decoration:underline;text-underline-offset:3px}
+    @media (max-width:520px){.hw-row{grid-template-columns:1fr auto}.hw-row small{grid-column:1 / -1}}
+    .hero.v2 h1.role{font-size:clamp(2.75rem,1rem + 5.2vw,5.25rem)}
+    .hero.v2 h1.name{font-size:clamp(3.25rem,1rem + 7.6vw,7.25rem);line-height:.88;letter-spacing:-.055em;max-width:none;white-space:nowrap}
+    .role-line{margin:26px 0 0;font-size:clamp(1.375rem,1rem + 1.2vw,1.875rem);font-weight:500;letter-spacing:-.025em;line-height:1.15}
+    .role-line span{margin-left:14px;font-weight:400;color:var(--muted);font-size:.7em;letter-spacing:-.01em}
+    .hero.v2 .role-line + .pitch{margin-top:10px;color:var(--muted)}
     /* Styles for the platform pages only. Loaded after style.css. */
     "
 
@@ -1232,6 +1255,18 @@
         if (document.fonts && document.fonts.ready) document.fonts.ready.then(size);
         size(); show(0, true);
       })();
+
+      // Two cards can open the same page. Whichever is clicked takes the shared name, so that one grows into the page.
+      document.addEventListener("click", function (e) {
+        var link = e.target.closest && e.target.closest("a");
+        var pic = link && link.querySelector("[data-vt-name]");
+        if (!pic) return;
+        var name = pic.getAttribute("data-vt-name");
+        Array.prototype.forEach.call(document.querySelectorAll('[style*="view-transition-name"]'), function (el) {
+          if (el.style.viewTransitionName === name) el.style.viewTransitionName = "none";
+        });
+        pic.style.viewTransitionName = name;
+      }, true);
 
       if (!motion) return;
 

@@ -287,7 +287,9 @@ class CommittedPages(unittest.TestCase):
     def test_the_first_screen_is_about_me_and_the_platform_numbers_sit_on_the_platform_card(self):
         home = self.pages["index.html"]
         hero = home[home.index('<header class="hero'):home.index("</header>")]
-        self.assertIn("Marketing operations", hero[hero.index("<h1"):hero.index("</h1>")])
+        self.assertIn('aria-label="Max Pickard"', hero[hero.index("<h1"):hero.index("</h1>")])
+        self.assertIn('<p class="role-line">Marketing operations', hero)
+        self.assertLess(hero.index("</h1>"), hero.index('<p class="role-line">'))
         self.assertIn("<dt>Learning now</dt>", hero)
         self.assertNotIn('class="stats"', hero)
         for number in ("15 clients", "9:50 am", "$0 a month"):
@@ -323,6 +325,22 @@ class CommittedPages(unittest.TestCase):
             self.assertIn("What went wrong, and what I do now</h2>", page)
             self.assertNotIn("<img", page[page.index("<main"):page.index("</main>")], "no real screenshots on a client page")
             self.assertNotRegex(page[page.index("<main"):page.index("</main>")], r"\$\d", "no raw client money figures")
+
+    def test_the_first_screen_shows_the_work_as_links(self):
+        home = self.pages["index.html"]
+        hero = home[home.index('<header class="hero'):home.index("</header>")]
+        work = hero[hero.index('<div class="hero-work"'):]
+        for href in ("platform.html", "project.html"):
+            self.assertEqual(work.count(f'<a class="hw" href="{href}"'), 1, href)
+        for case in self.config["cases"]:
+            self.assertIn(f'href="{case["file"]}"', work)
+        # A card on the first screen and the card in Projects open the same page. Only one may carry the
+        # shared name in the HTML; the script hands it to whichever is clicked.
+        self.assertEqual(home.count("view-transition-name:cover-platform"), 1)
+        self.assertEqual(home.count("view-transition-name:cover-project"), 1)
+        self.assertEqual(work.count('data-vt-name="cover-platform"'), 1)
+        self.assertEqual(work.count('data-vt-name="cover-project"'), 1)
+        self.assertIn("data-vt-name", home[home.index("<script"):])
 
     def test_the_home_page_leads_with_the_live_platform(self):
         home = self.pages["index.html"]
