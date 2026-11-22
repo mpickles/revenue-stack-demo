@@ -123,7 +123,8 @@ class CommittedPages(unittest.TestCase):
         self.assertNotIn('class="slot"', facts)
         for item in self.config["builds"]:
             page = self.pages[f'builds/{item["slug"]}.html']
-            self.assertEqual("walkthrough to come" in page, not item.get("recording"), item["slug"])
+            self.assertNotIn("walkthrough to come", page, item["slug"])
+            self.assertEqual('class="recording"' in page, bool(item.get("recording")), item["slug"])
 
     def test_the_home_page_does_not_explain_how_a_build_works(self):
         home = self.pages["index.html"]
@@ -174,6 +175,20 @@ class CommittedPages(unittest.TestCase):
         self.assertEqual("mailto:" in home, bool(contact.get("email")))
         self.assertEqual("linkedin.com/in/" in home, bool(contact.get("linkedin")))
         self.assertEqual('href="#contact"' in home, bool(contact.get("email") or contact.get("linkedin")))
+
+    def test_every_page_ends_with_a_way_to_reach_me(self):
+        contact = self.config.get("contact") or {}
+        wanted = bool(contact.get("email") or contact.get("linkedin"))
+        for path, page in self.pages.items():
+            if not path.endswith(".html"):
+                continue
+            self.assertEqual(page.count('id="contact"'), int(wanted), path)
+            self.assertEqual('href="#contact"' in page, wanted, path)
+            if wanted:  # nothing but scripts comes after it
+                after = page[page.index('id="contact"'):]
+                after = after[after.index("</section>"):]
+                for tag in ("<h2", "<article", "<nav"):
+                    self.assertNotIn(tag, after, path)
 
     def test_the_home_page_shows_two_projects_and_sends_the_reader_to_each_map_for_the_parts(self):
         home = self.pages["index.html"]
@@ -227,6 +242,32 @@ class CommittedPages(unittest.TestCase):
         for step in journey:
             self.assertIn(html.escape(step["short"]), page)
         self.assertIn('href="project.html"', self.pages["index.html"])
+
+    def test_the_project_page_promises_a_result_once_and_shows_no_empty_section(self):
+        page = self.pages["project.html"]
+        self.assertLessEqual(page.count('class="slot"'), 1)
+        self.assertEqual(page.count("<dt>Result</dt>"), 2 if self.config["project"].get("headline") else 1)
+        self.assertNotIn("What broke, and what I did about it", page)
+
+    def test_no_page_tells_the_reader_what_the_work_shows(self):
+        for path, page in self.pages.items():
+            self.assertNotIn("What this shows I can do", page, path)
+
+    def test_a_wrong_address_gets_a_page_that_leads_back_to_the_work(self):
+        page = self.pages["404.html"]
+        self.assertIn('<base href="/">', page)
+        for href in ("index.html", "platform.html", "index.html#work"):
+            self.assertIn(f'href="{href}"', page)
+        self.assertIn("noindex", page)
+
+    def test_every_page_prints_without_the_site_chrome(self):
+        for path, page in self.pages.items():
+            if not path.endswith(".html"):
+                continue
+            self.assertEqual(page.count("@media print{"), 1, path)
+            rule = page[page.index("@media print{"):]
+            for hidden in (".nav", ".progress", ".cursor", ".contact", ".pager"):
+                self.assertIn(hidden, rule[:rule.index("display:none")], path)
 
     def test_the_project_page_works_before_any_script_runs(self):
         page = self.pages["project.html"]
@@ -569,6 +610,12 @@ class CommittedPages(unittest.TestCase):
         page = self.pages["platform-reports.html"]
         self.assertIn("It does not block.", page)
         self.assertNotIn("build anyway", page.lower())
+
+    def test_the_platform_screenshots_sit_in_the_dark_band(self):
+        page = self.pages["platform.html"]
+        block = page[:page.index('id="shots"')]
+        self.assertTrue(block.rstrip().endswith('<div class="rshot"'))
+        self.assertIn('<div class="cs-block band bleed">', block[block.rindex('<div class="cs-block'):])
 
     def test_the_platform_shows_real_screenshots_in_light_and_dark(self):
         page = self.pages["platform.html"]
