@@ -460,3 +460,52 @@ img.portrait{aspect-ratio:4/5;width:100%;max-width:19rem;height:auto;object-fit:
 }
 ::view-transition-group(title-platform),::view-transition-group(title-project){animation-duration:.45s}
 
+/* A status says how far along something is, so it gets its own colour and never the accent. */
+:root{--ok:#177245;--warn:#93600A}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--ok:#56D38B;--warn:#F0B44C}}
+:root[data-theme="dark"]{--ok:#56D38B;--warn:#F0B44C}
+.status.is-live,.rows .status.is-live{color:var(--ok)}.status.is-live::before{background:var(--ok);border-color:var(--ok)}
+.status.is-active,.rows .status.is-active{color:var(--warn)}.status.is-active::before{background:var(--warn);border-color:var(--warn)}
+
+/* First screen: the work is as big as the name. One large card, two half cards. */
+.hero-split{align-items:start}
+@media (min-width:1000px){.hero-split{grid-template-columns:minmax(0,.86fr) minmax(0,1fr)}}
+.hw.big{grid-column:1 / -1}
+.hw.big .hw-pic{aspect-ratio:16/8.2}
+.hw.big b{font-size:1.1875rem;padding-top:15px}
+.hw.note{display:flex;flex-direction:column;padding:16px 16px 16px;box-shadow:var(--lift)}
+.hw.note small{font-family:var(--mono);font-size:.6875rem;color:var(--accent)}
+.hw.note b{padding:10px 0 0;font-size:1.0625rem;line-height:1.25}
+.hw.note i{margin-top:auto;padding-top:18px;font-style:normal;font-size:.875rem;color:var(--muted);text-decoration:underline;text-underline-offset:3px}
+
+/* Projects: the one dark band on the page. The two projects sit large inside it, on alternate sides. */
+.band{--bg:#0E1012;--ink:#ECEDEE;--muted:#9BA1A8;--line:rgb(236 237 238/.14);--panel:#171A1D;--accent:var(--a-d);--on-accent:#101214;--ok:#56D38B;--warn:#F0B44C;
+  background:var(--bg);color:var(--ink);margin-top:clamp(64px,7.5vw,104px);padding:clamp(72px,8vw,112px) 0 clamp(72px,8vw,112px);color-scheme:dark}
+.band .sys:first-of-type{border-top:0;margin-top:40px;padding-top:0}
+.band .sys.second{border-top:1px solid var(--line);margin-top:72px;padding-top:72px}
+.band .shot-frame .l{display:none}.band .shot-frame .d{display:block}
+.band .proj-cover.shot small{background:var(--panel)}
+.band .facts div{grid-template-columns:5rem 1fr}
+.band .parts-h{margin-top:40px}
+@media (min-width:1000px){
+  .band .sys{grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:16px 64px;align-items:center}
+  .band .sys.second{grid-template-columns:minmax(0,1fr) minmax(0,1.3fr)}
+  .band .sys.second .proj-cover{order:2}
+}
+.band + .sec{padding-top:clamp(72px,8vw,112px)}
+
+/* Skills as four plain lines. */
+.skills{margin:40px 0 0;border-top:2px solid var(--accent)}
+.skills div{display:grid;gap:6px 40px;padding:20px 0;border-bottom:1px solid var(--line)}
+@media (min-width:760px){.skills div{grid-template-columns:14rem 1fr}}
+.skills dt{font-weight:500;font-size:1.0625rem;letter-spacing:-.015em}
+.skills dd{margin:0;line-height:1.45}
+.skills small{display:block;margin-top:6px;color:var(--muted);font-size:.875rem}
+
+/* About: the line people remember, large, with the rest beside it. */
+.about.two{max-width:none;display:grid;gap:32px 72px;align-items:start}
+@media (min-width:900px){.about.two{grid-template-columns:minmax(0,1.15fr) minmax(0,1fr)}}
+.about.two p.big{margin:0;font-size:clamp(1.75rem,1.2rem + 2.4vw,3.25rem);line-height:1.08;letter-spacing:-.035em;font-weight:500;text-wrap:balance}
+.about.two div p:first-of-type{font-size:1.125rem;line-height:1.5;letter-spacing:-.005em}
+.about.two img.portrait{margin-bottom:24px}
+

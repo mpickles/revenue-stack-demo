@@ -494,6 +494,55 @@
       .hw:hover .hw-pic > *,.hw:focus-visible .hw-pic > *{filter:none;opacity:1}
     }
     ::view-transition-group(title-platform),::view-transition-group(title-project){animation-duration:.45s}
+
+    /* A status says how far along something is, so it gets its own colour and never the accent. */
+    :root{--ok:#177245;--warn:#93600A}
+    @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--ok:#56D38B;--warn:#F0B44C}}
+    :root[data-theme="dark"]{--ok:#56D38B;--warn:#F0B44C}
+    .status.is-live,.rows .status.is-live{color:var(--ok)}.status.is-live::before{background:var(--ok);border-color:var(--ok)}
+    .status.is-active,.rows .status.is-active{color:var(--warn)}.status.is-active::before{background:var(--warn);border-color:var(--warn)}
+
+    /* First screen: the work is as big as the name. One large card, two half cards. */
+    .hero-split{align-items:start}
+    @media (min-width:1000px){.hero-split{grid-template-columns:minmax(0,.86fr) minmax(0,1fr)}}
+    .hw.big{grid-column:1 / -1}
+    .hw.big .hw-pic{aspect-ratio:16/8.2}
+    .hw.big b{font-size:1.1875rem;padding-top:15px}
+    .hw.note{display:flex;flex-direction:column;padding:16px 16px 16px;box-shadow:var(--lift)}
+    .hw.note small{font-family:var(--mono);font-size:.6875rem;color:var(--accent)}
+    .hw.note b{padding:10px 0 0;font-size:1.0625rem;line-height:1.25}
+    .hw.note i{margin-top:auto;padding-top:18px;font-style:normal;font-size:.875rem;color:var(--muted);text-decoration:underline;text-underline-offset:3px}
+
+    /* Projects: the one dark band on the page. The two projects sit large inside it, on alternate sides. */
+    .band{--bg:#0E1012;--ink:#ECEDEE;--muted:#9BA1A8;--line:rgb(236 237 238/.14);--panel:#171A1D;--accent:var(--a-d);--on-accent:#101214;--ok:#56D38B;--warn:#F0B44C;
+      background:var(--bg);color:var(--ink);margin-top:clamp(64px,7.5vw,104px);padding:clamp(72px,8vw,112px) 0 clamp(72px,8vw,112px);color-scheme:dark}
+    .band .sys:first-of-type{border-top:0;margin-top:40px;padding-top:0}
+    .band .sys.second{border-top:1px solid var(--line);margin-top:72px;padding-top:72px}
+    .band .shot-frame .l{display:none}.band .shot-frame .d{display:block}
+    .band .proj-cover.shot small{background:var(--panel)}
+    .band .facts div{grid-template-columns:5rem 1fr}
+    .band .parts-h{margin-top:40px}
+    @media (min-width:1000px){
+      .band .sys{grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:16px 64px;align-items:center}
+      .band .sys.second{grid-template-columns:minmax(0,1fr) minmax(0,1.3fr)}
+      .band .sys.second .proj-cover{order:2}
+    }
+    .band + .sec{padding-top:clamp(72px,8vw,112px)}
+
+    /* Skills as four plain lines. */
+    .skills{margin:40px 0 0;border-top:2px solid var(--accent)}
+    .skills div{display:grid;gap:6px 40px;padding:20px 0;border-bottom:1px solid var(--line)}
+    @media (min-width:760px){.skills div{grid-template-columns:14rem 1fr}}
+    .skills dt{font-weight:500;font-size:1.0625rem;letter-spacing:-.015em}
+    .skills dd{margin:0;line-height:1.45}
+    .skills small{display:block;margin-top:6px;color:var(--muted);font-size:.875rem}
+
+    /* About: the line people remember, large, with the rest beside it. */
+    .about.two{max-width:none;display:grid;gap:32px 72px;align-items:start}
+    @media (min-width:900px){.about.two{grid-template-columns:minmax(0,1.15fr) minmax(0,1fr)}}
+    .about.two p.big{margin:0;font-size:clamp(1.75rem,1.2rem + 2.4vw,3.25rem);line-height:1.08;letter-spacing:-.035em;font-weight:500;text-wrap:balance}
+    .about.two div p:first-of-type{font-size:1.125rem;line-height:1.5;letter-spacing:-.005em}
+    .about.two img.portrait{margin-bottom:24px}
     /* Styles for the platform pages only. Loaded after style.css. */
     "
 
@@ -1160,7 +1209,7 @@
 <main class="writeup"><div class="wrap">
 <nav class="crumb" aria-label="Breadcrumb"><a href="index.html#work">Work</a><span aria-hidden="true">/</span><a href="platform.html#hub">Upgrow operations platform</a><span aria-hidden="true">/</span><span aria-current="page">Part 3 of 6</span></nav>
 <div class="page-cover"><svg class="art" style="view-transition-name:cover-pf-web-app" viewBox="0 0 400 250" role="img" aria-label="An app window with a list. One row is in colour" xmlns="http://www.w3.org/2000/svg"><rect class="c-box" x="70" y="46" width="260" height="160" rx="10"/><path class="c-line" d="M70 76H330"/><circle class="c-dot" cx="88" cy="61" r="4"/><circle class="c-dot" cx="102" cy="61" r="4"/><circle class="c-dot" cx="116" cy="61" r="4"/><rect class="c-bar" x="86" y="92" width="52" height="98" rx="6"/><rect class="c-bar m-blink" style="--i:0" x="154" y="92" width="150" height="14" rx="4"/><rect class="c-on m-mark" style="--i:4" x="154" y="118" width="160" height="14" rx="4"/><rect class="c-bar m-blink" style="--i:6" x="154" y="144" width="120" height="14" rx="4"/><rect class="c-bar m-blink" style="--i:9" x="154" y="170" width="140" height="14" rx="4"/></svg></div>
-<header class="writeup-head"><h1>The web app</h1><p class="status is-active">Live at Upgrow</p></header>
+<header class="writeup-head"><h1>The web app</h1><p class="status is-live">Live at Upgrow</p></header>
 <dl class="tldr"><div><dt>Problem</dt><dd>Account leads must never see each other's clients.</dd></div><div><dt>What I built</dt><dd>An app where the database, not the screen, decides who sees what.</dd></div><div><dt>Result</dt><dd>Live at work. Each lead sees only their own clients.</dd></div></dl>
 <div class="nums" style="margin-top:0"><div><b>6</b><span>roles, from owner down to viewer</span></div><div><b>15</b><span>clients live in the app</span></div><div><b>26,838</b><span>tests passing on launch day</span></div></div><div class="cs-block"><h2 class="cs-h">The real screen</h2><div class="rshot"><figure class="rshot-frame"><div class="rshot-pane" data-pane="0"><img src="img/platform/02-clients-owner-light.webp" class="l" alt="The client list, signed in as an owner. Six clients with their status, lead, pacing, issues, budget and last report." width="1440" height="900" loading="lazy"><img src="img/platform/02-clients-owner-dark.webp" class="d" alt="The client list, signed in as an owner. Six clients with their status, lead, pacing, issues, budget and last report. Dark mode." width="1440" height="900" loading="lazy"><figcaption>The client list. Every lead sees only their own clients.</figcaption></div></figure><figure class="rshot-frame second"><div class="rshot-pane" data-pane="1"><img src="img/platform/04-client-overview-light.webp" class="l" alt="One client page: pacing by platform, results by platform against the period before, and the client details." width="1440" height="900" loading="lazy"><img src="img/platform/04-client-overview-dark.webp" class="d" alt="One client page: pacing by platform, results by platform against the period before, and the client details. Dark mode." width="1440" height="900" loading="lazy"><figcaption>One client. Pacing, results by platform and everything about the account in one place.</figcaption></div></figure><p class="ops-note">A real screenshot of the app, running on made-up clients, people and numbers.</p></div></div><div class="cs-block"><h2 class="cs-h">How the database decides</h2><div class="how-w"><p class="how-l">Every request, in this order</p><ol class="flow n4"><li><svg viewBox="0 0 48 48" aria-hidden="true"><rect class="i-b" x="13" y="22" width="22" height="16" rx="3"/><path class="i-l" d="M18 22v-5a6 6 0 0 1 12 0v5"/><circle class="i-on" cx="24" cy="30" r="2.5"/></svg><b>A role with no override</b><p>The app connects as a database role that cannot switch the rules off.</p></li><li><svg viewBox="0 0 48 48" aria-hidden="true"><circle class="i-on" cx="24" cy="17" r="6"/><path class="i-l" d="M12 38c0-7 5-11 12-11s12 4 12 11"/></svg><b>Who is asking</b><p>Set inside each request, in its own transaction.</p></li><li><svg viewBox="0 0 48 48" aria-hidden="true"><rect class="i-b" x="9" y="11" width="30" height="26" rx="3"/><rect class="i-on" x="9" y="20" width="30" height="8"/><path class="i-l" d="M9 20h30M9 28h30M20 11v26"/></svg><b>Deny by default</b><p>A table returns only that person's clients.</p></li><li><svg viewBox="0 0 48 48" aria-hidden="true"><circle class="i-b" cx="24" cy="24" r="14"/><path class="i-k" d="M17 24l5 5 9-10"/></svg><b>A test guards it</b><p>The build fails if any client table is missing the rule.</p></li></ol></div></div><div class="cs-block"><h2 class="cs-h">It also tracks its own use</h2><div class="more" style="margin-top:32px"><article id="usage"><svg class="art" viewBox="0 0 400 250" role="img" aria-label="Bars rising week by week" xmlns="http://www.w3.org/2000/svg"><rect class="c-bar m-pop" style="--i:0" x="110" y="140" width="24" height="30" rx="4"/><rect class="c-bar m-pop" style="--i:1" x="150" y="122" width="24" height="48" rx="4"/><rect class="c-bar m-pop" style="--i:2" x="190" y="126" width="24" height="44" rx="4"/><rect class="c-bar m-pop" style="--i:3" x="230" y="100" width="24" height="70" rx="4"/><rect class="c-on m-pop" style="--i:4" x="270" y="74" width="24" height="96" rx="4"/><path class="c-line" d="M96 176H316"/></svg><div><h3>Usage tracking</h3><p>Shows which features get used, and the hours saved.</p><p class="d">Hours saved is the number of runs times the minutes each run saves. Counts only. Groups of fewer than three people are hidden.</p></div></article></div></div><div class="cs-block"><h2 class="cs-h">What I chose, and what I turned down</h2><div class="chose"><div><p><small>Chose</small>The database decides who sees what, with the signed-in person set per transaction.</p><p><small>Turned down</small>Hiding clients in the screen, or filtering in app code.</p><p><small>Why</small>A bug in one screen must not leak a client. Cost: plain SQL, no ORM.</p></div><div><p><small>Chose</small>Two stores: Postgres for the app's own records, the warehouse for performance data.</p><p><small>Turned down</small>One store for everything.</p><p><small>Why</small>Small writes are instant. Cost: a sync job between the two.</p></div><div><p><small>Chose</small>A settings sync that is all or nothing.</p><p><small>Turned down</small>Applying the rows that pass.</p><p><small>Why</small>A half-applied change is worse than a stale one.</p></div><details class="more-rows"><summary>3 more choices</summary><div><p><small>Chose</small>The six roles the agency already has.</p><p><small>Turned down</small>Four generic roles.</p><p><small>Why</small>People should not have to learn my model of their company.</p></div><div><p><small>Chose</small>A log the app can add to and never edit or delete.</p><p><small>Turned down</small>A history table per feature.</p><p><small>Why</small>One place to answer who changed what.</p></div><div><p><small>Chose</small>A free server I run myself.</p><p><small>Turned down</small>A managed database at about $40 a month.</p><p><small>Why</small>The brief was $0. Cost: backups failed quietly for two days.</p></div></details></div></div><div class="cs-block"><h2 class="cs-h">What went wrong, and what I do now</h2><dl class="shows learn"><div><dt><b>On the day I changed sign-in, everyone was refused.</b>The check compared two forms of the same ID.</dt><dd><i>Fix</i>Both sides now use the same form. Patched the same day. Next time I switch one real account first.</dd></div><div><dt><b>On the first run with real data, screens showed $0.</b>Every date was being sent to the warehouse as empty.</dt><dd><i>Fix</i>Fixed before go-live.</dd></div><div><dt><b>One client page hung for over a minute.</b>It ran 173 database transactions.</dt><dd><i>Next time</i>Set a query budget per page from the first screen, and test against it.</dd></div><div><dt><b>The app felt overwhelming on real data.</b>I had built 119 pages.</dt><dd><i>Fix</i>Cut to 46. One screen per job.</dd></div></dl></div>
 

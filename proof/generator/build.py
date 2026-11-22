@@ -26,7 +26,7 @@ REPO_ROOT = PROOF.parent
 STATUSES = {
     "planned": ("Planned", "is-planned"),
     "in progress": ("In progress", "is-active"),
-    "live": ("Live", "is-active"),
+    "live": ("Live", "is-live"),
 }
 
 
@@ -232,7 +232,7 @@ def platform_tiles_html(platform):
     return "\n".join(
         f'<a class="wf-card cover-card" href="{e(part["file"])}">{cover("pf-" + part["slug"], grows=True)}'
         f'<span class="body"><b><i>{index + 1}</i>{e(part["name"])}</b><span class="line">{e(part["line"])}</span>'
-        f'<span class="meta"><span class="status is-active">Live</span><span>{e(part["tools"])}</span></span></span></a>'
+        f'<span class="meta"><span class="status is-live">Live</span><span>{e(part["tools"])}</span></span></span></a>'
         for index, part in enumerate(platform["parts"])
     )
 
