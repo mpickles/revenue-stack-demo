@@ -79,24 +79,6 @@
         "A wrong owner costs more than a short wait."
       ]
     ],
-    "shows": [
-      [
-        "Track with consent done properly",
-        "Nothing fires or is stored until the visitor agrees"
-      ],
-      [
-        "Wire a CRM end to end",
-        "Stage, campaign and owner set by rules, and the sale sent back to the ad platform"
-      ],
-      [
-        "Write decisions down",
-        "Every choice logged with what was given up for it"
-      ],
-      [
-        "Build to a spec",
-        "Each part is graded on checks written before it was built"
-      ]
-    ],
     "tldr": [
       "Most tracking setups lose the lead somewhere between the ad click and the report.",
       "One lead followed the whole way, on a made-up company, in six parts.",

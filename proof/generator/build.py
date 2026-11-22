@@ -527,7 +527,6 @@ def build_pages():
             f'<article><div class="c"><small>Because</small><b>{e(c)}</b></div><div class="d"><small>So</small><b>{e(d)}</b><p>{e(t)}</p></div></article>'
             for c, d, t in project["choices"]
         ), 8),
-        shows=indent("\n".join(f"<div><dt>{e(a)}</dt><dd>{e(b)}</dd></div>" for a, b in project["shows"]), 8),
     )
 
     pages["colophon.html"] = template("colophon.html").substitute(style=style, script=script, contact=inner_contact, contact_nav=inner_nav)

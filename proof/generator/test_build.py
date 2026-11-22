@@ -249,6 +249,10 @@ class CommittedPages(unittest.TestCase):
         self.assertEqual(page.count("<dt>Result</dt>"), 2 if self.config["project"].get("headline") else 1)
         self.assertNotIn("What broke, and what I did about it", page)
 
+    def test_no_page_tells_the_reader_what_the_work_shows(self):
+        for path, page in self.pages.items():
+            self.assertNotIn("What this shows I can do", page, path)
+
     def test_the_project_page_works_before_any_script_runs(self):
         page = self.pages["project.html"]
         first = self.config["project"]["journey"][0]
