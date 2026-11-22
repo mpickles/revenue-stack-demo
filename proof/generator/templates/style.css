@@ -3,7 +3,7 @@
 :root{
   --bg:#FAFAF9;--ink:#111417;--muted:#60666D;--line:rgb(17 20 23/.14);--panel:#F0F1F0;--a-l:#0F7B6C;--a-d:#3CC8B4;--accent:var(--a-l);--on-accent:#FAFAF9;
   --sans:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;--mono:"IBM Plex Mono",ui-monospace,Menlo,Consolas,monospace;
-  --ease:cubic-bezier(.23,1,.32,1);
+  --ease:cubic-bezier(.23,1,.32,1);--t-fast:.2s;--t-med:.35s;--t-slow:.5s;
   --lift:0 1px 1px rgb(17 20 23/.04),0 3px 6px rgb(17 20 23/.04),0 12px 24px rgb(17 20 23/.06);
 }
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#101214;--ink:#ECEDEE;--muted:#979DA4;--line:rgb(236 237 238/.13);--panel:#171A1D;--accent:var(--a-d);--on-accent:#101214;--lift:0 1px 1px rgb(0 0 0/.3),0 4px 8px rgb(0 0 0/.25),0 16px 32px rgb(0 0 0/.3);color-scheme:dark}}
@@ -435,8 +435,8 @@ img.portrait{aspect-ratio:4/5;width:100%;max-width:19rem;height:auto;object-fit:
 .hero-split{display:grid;gap:44px 64px;align-items:end}
 @media (min-width:1000px){.hero-split{grid-template-columns:minmax(0,1fr) minmax(0,.92fr)}}
 .hero-work{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
-.hw{display:block;background:none;text-decoration:none;border:1px solid var(--line);border-radius:12px;overflow:hidden;background:var(--bg);box-shadow:var(--lift);transition:transform .2s var(--ease),border-color .2s var(--ease)}
-.hw:hover{transform:translateY(-3px);border-color:var(--muted)}
+.hw{display:block;background:none;text-decoration:none;border:1px solid var(--line);border-radius:12px;overflow:hidden;background:var(--bg);box-shadow:var(--lift);transition:border-color var(--t-fast) var(--ease)}
+.hw:hover{border-color:var(--muted)}
 .hw-pic{display:block;aspect-ratio:16/10;overflow:hidden;background:var(--panel);border-bottom:1px solid var(--line)}
 .hw-pic img{width:100%;height:100%;object-fit:cover;object-position:top left}
 .hw-pic .art{display:block;width:100%;height:100%}
@@ -453,4 +453,10 @@ img.portrait{aspect-ratio:4/5;width:100%;max-width:19rem;height:auto;object-fit:
 .role-line{margin:26px 0 0;font-size:clamp(1.375rem,1rem + 1.2vw,1.875rem);font-weight:500;letter-spacing:-.025em;line-height:1.15}
 .role-line span{margin-left:14px;font-weight:400;color:var(--muted);font-size:.7em;letter-spacing:-.01em}
 .hero.v2 .role-line + .pitch{margin-top:10px;color:var(--muted)}
+/* Colour is the lead: a card on the first screen is grey until the pointer (or the keyboard) reaches it. */
+@media (hover:hover) and (pointer:fine){
+  .hw .hw-pic > *{filter:grayscale(1) contrast(.94);opacity:.82;transition:filter var(--t-med) var(--ease),opacity var(--t-med) var(--ease)}
+  .hw:hover .hw-pic > *,.hw:focus-visible .hw-pic > *{filter:none;opacity:1}
+}
+::view-transition-group(title-platform),::view-transition-group(title-project){animation-duration:.45s}
 

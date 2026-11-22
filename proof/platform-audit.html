@@ -38,7 +38,7 @@
     :root{
       --bg:#FAFAF9;--ink:#111417;--muted:#60666D;--line:rgb(17 20 23/.14);--panel:#F0F1F0;--a-l:#0F7B6C;--a-d:#3CC8B4;--accent:var(--a-l);--on-accent:#FAFAF9;
       --sans:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;--mono:"IBM Plex Mono",ui-monospace,Menlo,Consolas,monospace;
-      --ease:cubic-bezier(.23,1,.32,1);
+      --ease:cubic-bezier(.23,1,.32,1);--t-fast:.2s;--t-med:.35s;--t-slow:.5s;
       --lift:0 1px 1px rgb(17 20 23/.04),0 3px 6px rgb(17 20 23/.04),0 12px 24px rgb(17 20 23/.06);
     }
     @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#101214;--ink:#ECEDEE;--muted:#979DA4;--line:rgb(236 237 238/.13);--panel:#171A1D;--accent:var(--a-d);--on-accent:#101214;--lift:0 1px 1px rgb(0 0 0/.3),0 4px 8px rgb(0 0 0/.25),0 16px 32px rgb(0 0 0/.3);color-scheme:dark}}
@@ -470,8 +470,8 @@
     .hero-split{display:grid;gap:44px 64px;align-items:end}
     @media (min-width:1000px){.hero-split{grid-template-columns:minmax(0,1fr) minmax(0,.92fr)}}
     .hero-work{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
-    .hw{display:block;background:none;text-decoration:none;border:1px solid var(--line);border-radius:12px;overflow:hidden;background:var(--bg);box-shadow:var(--lift);transition:transform .2s var(--ease),border-color .2s var(--ease)}
-    .hw:hover{transform:translateY(-3px);border-color:var(--muted)}
+    .hw{display:block;background:none;text-decoration:none;border:1px solid var(--line);border-radius:12px;overflow:hidden;background:var(--bg);box-shadow:var(--lift);transition:border-color var(--t-fast) var(--ease)}
+    .hw:hover{border-color:var(--muted)}
     .hw-pic{display:block;aspect-ratio:16/10;overflow:hidden;background:var(--panel);border-bottom:1px solid var(--line)}
     .hw-pic img{width:100%;height:100%;object-fit:cover;object-position:top left}
     .hw-pic .art{display:block;width:100%;height:100%}
@@ -488,6 +488,12 @@
     .role-line{margin:26px 0 0;font-size:clamp(1.375rem,1rem + 1.2vw,1.875rem);font-weight:500;letter-spacing:-.025em;line-height:1.15}
     .role-line span{margin-left:14px;font-weight:400;color:var(--muted);font-size:.7em;letter-spacing:-.01em}
     .hero.v2 .role-line + .pitch{margin-top:10px;color:var(--muted)}
+    /* Colour is the lead: a card on the first screen is grey until the pointer (or the keyboard) reaches it. */
+    @media (hover:hover) and (pointer:fine){
+      .hw .hw-pic > *{filter:grayscale(1) contrast(.94);opacity:.82;transition:filter var(--t-med) var(--ease),opacity var(--t-med) var(--ease)}
+      .hw:hover .hw-pic > *,.hw:focus-visible .hw-pic > *{filter:none;opacity:1}
+    }
+    ::view-transition-group(title-platform),::view-transition-group(title-project){animation-duration:.45s}
     /* Styles for the platform pages only. Loaded after style.css. */
     "
 
@@ -1268,19 +1274,27 @@ draw();
         size(); show(0, true);
       })();
 
-      // Two cards can open the same page. Whichever is clicked takes the shared name, so that one grows into the page.
+      // Two cards can open the same page. Whichever is clicked takes the shared names, so its picture grows into
+      // the page's banner and its title becomes the page's title.
       document.addEventListener("click", function (e) {
         var link = e.target.closest && e.target.closest("a");
-        var pic = link && link.querySelector("[data-vt-name]");
-        if (!pic) return;
-        var name = pic.getAttribute("data-vt-name");
-        Array.prototype.forEach.call(document.querySelectorAll('[style*="view-transition-name"]'), function (el) {
-          if (el.style.viewTransitionName === name) el.style.viewTransitionName = "none";
+        if (!link) return;
+        Array.prototype.forEach.call(link.querySelectorAll("[data-vt-name]"), function (part) {
+          var name = part.getAttribute("data-vt-name");
+          Array.prototype.forEach.call(document.querySelectorAll('[style*="view-transition-name"]'), function (el) {
+            if (el.style.viewTransitionName === name) el.style.viewTransitionName = "none";
+          });
+          part.style.viewTransitionName = name;
         });
-        pic.style.viewTransitionName = name;
       }, true);
 
       if (!motion) return;
+
+      // One motion language for the whole site: one curve and three speeds. Nothing that moves takes longer than SLOW.
+      var EASE = "power3.out", FAST = 0.2, MED = 0.35, SLOW = 0.5;
+      // Arriving from another page of this site, the browser has just morphed that page into this one. Do not replay the title.
+      var morphedIn = false;
+      try { morphedIn = "onpagereveal" in window && !!document.referrer && new URL(document.referrer).origin === location.origin; } catch (err) {}
 
       function start() {
         // The page title rises line by line, once.
@@ -1288,11 +1302,39 @@ draw();
         if (title) {
           if (window.SplitText) {
             var split = SplitText.create(title, { type: "lines", mask: "lines", aria: "auto" });
-            gsap.from(split.lines, { yPercent: 105, duration: 0.95, stagger: 0.08, ease: "expo.out", delay: 0.1 });
-          } else {
-            gsap.from(title, { opacity: 0, y: 24, duration: 0.9, ease: "expo.out", delay: 0.1 });
+            if (!morphedIn) gsap.from(split.lines, { yPercent: 105, duration: SLOW, stagger: 0.06, ease: EASE, delay: 0.05 });
+          } else if (!morphedIn) {
+            gsap.from(title, { opacity: 0, y: 24, duration: SLOW, ease: EASE, delay: 0.05 });
           }
-          gsap.from(".under, .spec, .slot-box.portrait, .writeup-head .status, .headline", { opacity: 0, duration: 0.7, ease: "power2.out", delay: 0.65 });
+          gsap.from(".under, .spec, .slot-box.portrait, .writeup-head .status, .headline", { opacity: 0, duration: MED, ease: EASE, delay: 0.35 });
+        }
+
+        // Home page entrance. Nothing waits behind a loader: the name is readable from the first frame and the
+        // rest arrives around it inside a second. Half that on a return visit in the same tab.
+        var name = document.querySelector(".hero.v2 h1.name");
+        if (name) {
+          var stop = name.querySelector("i"), firstVisit = true;
+          try { firstVisit = !sessionStorage.getItem("entered"); sessionStorage.setItem("entered", "1"); } catch (err) {}
+          var k = firstVisit ? 1 : 0.5;
+          var intro = gsap.timeline({ delay: 0.05 });
+          // The lead. One dot in the accent colour runs in from the left edge and lands as the full stop after my name.
+          if (stop) {
+            gsap.set(stop, { opacity: 0 });
+            intro.call(function () {
+              var box = stop.getBoundingClientRect(), style = getComputedStyle(stop);
+              var runner = stop.cloneNode(true);
+              runner.style.cssText = "position:fixed;margin:0;z-index:5;pointer-events:none;left:" + box.left + "px;top:" + box.top + "px;font:" + style.font + ";line-height:" + style.lineHeight + ";letter-spacing:0;color:" + style.color + ";transform-origin:100% 80%";
+              document.body.appendChild(runner);
+              gsap.fromTo(runner, { x: -(box.left + 60), scaleX: 3.2 }, { x: 0, scaleX: 1, duration: 0.42 * k, ease: "power3.inOut", onComplete: function () {
+                gsap.set(stop, { opacity: 1 });
+                runner.remove();
+                gsap.fromTo(stop, { scale: 1.6 }, { scale: 1, duration: MED, ease: "back.out(3)", transformOrigin: "50% 80%", display: "inline-block", clearProps: "transform,display" });
+              } });
+            }, null, 0.4 * k);
+            intro.call(function () { gsap.set(stop, { opacity: 1 }); }, null, 0.4 * k + 1.2);  // whatever happens, the dot ends up visible
+          }
+          intro.from(".role-line, .hero.v2 .pitch, .hero-acts", { opacity: 0, y: 12, duration: MED * k, stagger: 0.05, ease: EASE, clearProps: "opacity,transform" }, 0.2 * k);
+          intro.from(".hero-work > *", { opacity: 0, y: 24, duration: MED * k, stagger: 0.07, ease: EASE, clearProps: "opacity,transform" }, 0.3 * k);
         }
 
         // The name eases back as you scroll away from it.
@@ -1309,20 +1351,20 @@ draw();
           var text = h.textContent; h.setAttribute("aria-label", text); h.textContent = "";
           var mask = document.createElement("span"); mask.className = "mask"; mask.setAttribute("aria-hidden", "true");
           var inner = document.createElement("span"); inner.textContent = text; mask.appendChild(inner); h.appendChild(mask);
-          gsap.from(inner, { yPercent: 112, duration: 0.35, ease: "expo.out", scrollTrigger: { trigger: h, start: "top 98%" } });
+          gsap.from(inner, { yPercent: 112, duration: MED, ease: EASE, scrollTrigger: { trigger: h, start: "top 98%" } });
         });
 
         // Lists and cards arrive one after another.
         [".sys", ".proof li", "[data-stagger] > *"].forEach(function (group) {
           if (!document.querySelector(group)) return;
           ScrollTrigger.batch(group, { start: "top 98%", once: true, onEnter: function (batch) {
-            gsap.from(batch, { opacity: 0, y: 10, duration: 0.22, stagger: 0.02, ease: "power2.out", clearProps: "opacity,transform" });
+            gsap.from(batch, { opacity: 0, y: 10, duration: FAST, stagger: 0.02, ease: EASE, clearProps: "opacity,transform" });
           } });
         });
 
         // Table rows wipe in from the left.
         $$("table[data-wipe]").forEach(function (table) {
-          gsap.from(table.querySelectorAll("tr"), { clipPath: "inset(0 100% 0 0)", duration: 0.25, stagger: 0.02, ease: "power2.out", scrollTrigger: { trigger: table, start: "top 98%" } });
+          gsap.from(table.querySelectorAll("tr"), { clipPath: "inset(0 100% 0 0)", duration: FAST, stagger: 0.02, ease: EASE, scrollTrigger: { trigger: table, start: "top 98%" } });
         });
 
         // The routing scene: the page holds while the diagram draws itself.
