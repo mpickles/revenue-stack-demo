@@ -33,27 +33,30 @@ $style
     <div><a href="#work">Work</a><a href="#experience">Experience</a><a href="#skills">Skills</a>$notes_nav$contact_nav<button type="button" data-theme-toggle>Dark</button></div>
   </nav>
   <main id="top">
-    <header class="hero"><div class="wrap">
+    <header class="hero v2"><div class="wrap">
+      <p class="who">Max Pickard<span>Chicago</span></p>
       <div class="hero-grid">
-        <h1 data-rise>Max Pickard<i aria-hidden="true">.</i></h1>
+        <h1 class="role" data-rise>Marketing operations<i aria-hidden="true">.</i></h1>
 $portrait      </div>
-      <dl class="spec">
-        <div><dt>Work</dt><dd>Analytics developer</dd></div>
-        <div><dt>Day job</dt><dd>Marketing operations at Upgrow</dd></div>
-        <div><dt>Based</dt><dd>Chicago</dd></div>
-        <div><dt>Trained in</dt><dd>Applied mathematics</dd></div>
-        <div><dt>Builds with</dt><dd>Claude Code, SQL, Salesforce, Tag Manager</dd></div>
+      <p class="pitch">I connect ads, tracking and CRM, and build the tools on top.</p>
+      <p class="hero-acts"><a class="see" href="platform.html">See the platform</a><a href="#work">All work</a>$contact_links</p>
+      <dl class="stats">
+        <div><dd>15</dd><dt>clients run on the platform I built at work</dt></div>
+        <div><dd>9:50 am</dd><dt>8 client reports drafted and with their leads, on report day</dt></div>
+        <div><dd>$$0</dd><dt>a month to host it</dt></div>
       </dl>
-      <div class="under">
-        <p>I build data systems. <a class="see" href="platform.html">See the platform</a></p>
-        <nav aria-label="Links"><a href="#work">Work</a><a href="#experience">Experience</a>$contact_links<a href="$repo">GitHub</a></nav>
-      </div>
+      <dl class="spec">
+        <div><dt>Day job</dt><dd>Marketing Operations Specialist at Upgrow</dd></div>
+        <div><dt>Trained in</dt><dd>Applied mathematics</dd></div>
+        <div><dt>Works in</dt><dd>Tag Manager, GA4, Salesforce, HubSpot, Claude Code</dd></div>
+        <div><dt>Learning now</dt><dd>SQL, dbt, Salesforce Flow</dd></div>
+      </dl>
     </div></header>
 $proof
     <section class="sec" id="work"><div class="wrap">
       <h2>Projects</h2>
       <article class="sys lead-in">
-        <a class="proj-cover" href="platform.html" aria-label="See the platform">$platform_cover</a>
+        <a class="proj-cover shot" href="platform.html" aria-label="See the platform" style="view-transition-name:cover-platform"><img class="l" src="img/platform/04-client-overview-light.webp" alt="The platform's client overview screen, shown with made-up clients" width="1600" height="1000" loading="lazy"><img class="d" src="img/platform/04-client-overview-dark.webp" alt="" width="1600" height="1000" loading="lazy"><small>Real screen. Made-up clients and numbers.</small></a>
         <div>
           <h3>Upgrow marketing operations platform</h3>
           <p>The internal platform I built for the paid media team at work. One warehouse pulls the ad, tag, task, meeting and CRM data. Workflows on top handle monthly reports, budget pacing, tracking audits and more. It never changes an account on its own.</p>
@@ -84,6 +87,12 @@ $project_facts
       <div class="covers" data-stagger>
 $covers
       </div>
+    </div></section>
+
+    <section class="sec" id="client-work"><div class="wrap">
+      <h2>Client work</h2>
+      <p class="sub">Real problems on real accounts. No client is named and every figure is a percentage.</p>
+      <a class="case-row lead-in" href="case-form-swap.html"><small>Diagnosis</small><b>A form swap cut paid leads in half. Finding the cause.</b><span>Read it</span></a>
     </div></section>
 
     <section class="sec" id="experience"><div class="wrap">

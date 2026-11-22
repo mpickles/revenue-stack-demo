@@ -1,0 +1,23 @@
+<main class="writeup"><div class="wrap">
+<nav class="crumb" aria-label="Breadcrumb"><a href="index.html#work">Work</a><span aria-hidden="true">/</span><span aria-current="page">Client work</span></nav>
+    <h1>A form swap cut paid leads in half. Finding the cause.</h1>
+    <p class="status is-active">Client work, 2026. Client not named</p>
+    <dl class="tldr"><div><dt>Problem</dt><dd>A B2B software client moved its site forms to a new marketing platform. Paid leads fell by about 60% from one day to the next.</dd></div><div><dt>What I did</dt><dd>Worked the drop from the ad click to the form until one cause was left: a submit button nobody could reach.</dd></div><div><dt>Result</dt><dd>The fix went out on every landing page. <span class="slot">Max: what did leads do in the month after?</span></dd></div></dl>
+    <p class="own">I ran the client's paid search and its conversion tracking. The client's web lead owned the forms. We found and fixed this together.</p>
+    <div class="nums"><div><b>60%</b><span>fewer paid leads a day, straight after the swap</span></div><div><b>2%</b><span>change in clicks. The traffic was fine</span></div><div><b>1</b><span>cause, in the end. Not tracking, not bids, not the ads</span></div></div>
+
+    <div class="cs-block"><h2 class="cs-h">How I found it</h2><div class="how-w"><p class="how-l">In this order</p><ol class="flow n5"><li><svg viewBox="0 0 48 48" aria-hidden="true"><circle class="i-b" cx="24" cy="24" r="14"/><path class="i-k" d="M24 15v9l6 4"/></svg><b>Date the drop</b><p>It started the day the forms changed. Nothing else changed that day.</p></li><li><svg viewBox="0 0 48 48" aria-hidden="true"><rect class="i-b" x="10" y="26" width="7" height="12" rx="1.5"/><rect class="i-b" x="20.5" y="19" width="7" height="19" rx="1.5"/><rect class="i-on" x="31" y="11" width="7" height="27" rx="1.5"/></svg><b>Rule out the traffic</b><p>Clicks were flat. The loss was after the click.</p></li><li><svg viewBox="0 0 48 48" aria-hidden="true"><path class="i-l" d="M38 12h-8l-8 12M38 36h-8l-8-12"/><path class="i-k" d="M10 24h12"/><circle class="i-on" cx="10" cy="24" r="3"/></svg><b>Split two problems</b><p>Fewer leads, and some leads arriving with no source. Different causes.</p></li><li><svg viewBox="0 0 48 48" aria-hidden="true"><circle class="i-on" cx="24" cy="17" r="6"/><path class="i-l" d="M12 38c0-7 5-11 12-11s12 4 12 11"/></svg><b>Use the page as a visitor</b><p>Fill the form in on a laptop, a phone, with and without an ad blocker.</p></li><li><svg viewBox="0 0 48 48" aria-hidden="true"><circle class="i-b" cx="21" cy="21" r="10"/><path class="i-k" d="M29 29l8 8"/><path class="i-l" d="M16 21h10"/></svg><b>Find it</b><p>The submit button was out of reach.</p></li></ol></div>
+      <p class="sub" style="margin-top:32px">The form sat inside a fixed-size block on each landing page. A script hid most fields until a visitor typed an email, then revealed the rest. The extra fields pushed the submit button below the bottom edge of the block, where it could not be seen or clicked.</p></div>
+
+    <div class="cs-block"><h2 class="cs-h">What I chose, and what I turned down</h2><div class="chose">
+      <div><p><small>Chose</small>Start from the date the drop began.</p><p><small>Turned down</small>Starting from bids and budgets.</p><p><small>Why</small>A drop that begins in one day has one cause. Bids drift.</p></div>
+      <div><p><small>Chose</small>Compare the rate of leads per click, before and after.</p><p><small>Turned down</small>Comparing lead counts.</p><p><small>Why</small>Counts move with traffic. The rate isolates the page.</p></div>
+      <div><p><small>Chose</small>A direct form embed with no tag manager in the path.</p><p><small>Turned down</small>Keeping the form injected by a tag.</p><p><small>Why</small>Ad blockers were stopping the tag. The direct embed also loaded faster.</p></div>
+    </div></div>
+
+    <div class="cs-block"><h2 class="cs-h">What went wrong, and what I do now</h2><dl class="shows learn">
+      <div><dt><b>My first read blamed one ad platform.</b>Its total had fallen most. Search leads had in fact fallen by about half on both. The other platform was cushioned by a different campaign type.</dt><dd><i>Fix</i>I compare like with like before naming a cause: the same campaign type on each platform.</dd></div>
+      <div><dt><b>The first fix had to be applied page by page.</b>The block the form sat in has a different ID on every page.</dt><dd><i>Fix</i>The direct embed replaced it, so there is no per-page patch to forget.</dd></div>
+      <div><dt><b>I changed every live page when the ask was one test page.</b></dt><dd><i>Next time</i>One test page first, even when the fix looks obvious.</dd></div>
+    </dl></div>
+  </div></main>

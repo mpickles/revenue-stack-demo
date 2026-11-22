@@ -396,5 +396,12 @@
     }
   ],
   "site": "https://maxpickard-revenue-stack.vercel.app",
-  "description": "Analytics developer in Chicago. I built the operations platform a paid media team works in, and I am building a full revenue stack in public."
+  "description": "Analytics developer in Chicago. I built the operations platform a paid media team works in, and I am building a full revenue stack in public.",
+  "cases": [
+    {
+      "file": "case-form-swap.html",
+      "title": "A form swap cut paid leads in half",
+      "description": "A form swap cut a client's paid leads by about 60% overnight. How I found the one cause."
+    }
+  ]
 }
