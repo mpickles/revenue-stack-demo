@@ -243,6 +243,12 @@ class CommittedPages(unittest.TestCase):
             self.assertIn(html.escape(step["short"]), page)
         self.assertIn('href="project.html"', self.pages["index.html"])
 
+    def test_the_project_page_promises_a_result_once_and_shows_no_empty_section(self):
+        page = self.pages["project.html"]
+        self.assertLessEqual(page.count('class="slot"'), 1)
+        self.assertEqual(page.count("<dt>Result</dt>"), 2 if self.config["project"].get("headline") else 1)
+        self.assertNotIn("What broke, and what I did about it", page)
+
     def test_the_project_page_works_before_any_script_runs(self):
         page = self.pages["project.html"]
         first = self.config["project"]["journey"][0]

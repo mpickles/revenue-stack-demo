@@ -512,7 +512,7 @@ def build_pages():
         facts=indent("\n".join([
             f'<div><dt>Built with</dt><dd>{e(project["built_with"])}</dd></div>',
             "<div><dt>Team</dt><dd>One. Me</dd></div>",
-            "<div><dt>Result</dt><dd>" + (e(project["headline"]) if project.get("headline") else '<span class="slot">To come once graded</span>') + "</dd></div>",
+            *([f'<div><dt>Result</dt><dd>{e(project["headline"])}</dd></div>'] if project.get("headline") else []),
         ]), 6),
         stops=indent(stops, 8),
         journey=journey,
