@@ -342,6 +342,30 @@ class CommittedPages(unittest.TestCase):
         self.assertEqual(work.count('data-vt-name="cover-project"'), 1)
         self.assertIn("data-vt-name", home[home.index("<script"):])
 
+    def test_a_first_screen_card_hands_its_picture_and_its_title_to_the_page_it_opens(self):
+        home = self.pages["index.html"]
+        hero = home[home.index('<header class="hero'):home.index("</header>")]
+        for name, page in (("platform", "platform.html"), ("project", "project.html")):
+            self.assertEqual(hero.count(f'data-vt-name="cover-{name}"'), 1, name)
+            self.assertEqual(hero.count(f'data-vt-name="title-{name}"'), 1, name)
+            target = self.pages[page]
+            title = target[target.index("<h1"):target.index("</h1>")]
+            self.assertIn(f"view-transition-name:title-{name}", title, page)
+            self.assertEqual(target.count(f"view-transition-name:title-{name}"), 1, page)
+            # On the home page the title's name is only ever given by the click, never written into the HTML.
+            self.assertNotIn(f"view-transition-name:title-{name}", home[: home.index("<script")])
+
+    def test_motion_speaks_one_language_and_the_first_screen_has_no_loader(self):
+        home = self.pages["index.html"]
+        script = home[home.rindex("<script"):]
+        self.assertIn('var EASE = "power3.out", FAST = 0.2, MED = 0.35, SLOW = 0.5;', script)
+        self.assertIn("--t-fast:.2s;--t-med:.35s;--t-slow:.5s", home)
+        for word in ("preloader", "loader", "splash"):
+            self.assertNotIn(f'class="{word}', home)
+        # The cards are grey only where there is a pointer to bring the colour, and never when motion is unwelcome.
+        self.assertIn("@media (hover:hover) and (pointer:fine){", home)
+        self.assertIn(".hw:hover .hw-pic > *,.hw:focus-visible .hw-pic > *{filter:none;opacity:1}", home)
+
     def test_the_home_page_leads_with_the_live_platform(self):
         home = self.pages["index.html"]
         self.assertLess(home.index('<a class="proj-cover shot" href="platform.html"'), home.index('<a class="proj-cover" href="project.html"'))
