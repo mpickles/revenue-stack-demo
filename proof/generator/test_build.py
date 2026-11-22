@@ -259,7 +259,7 @@ class CommittedPages(unittest.TestCase):
 
     def test_the_first_screen_has_one_button_into_the_platform(self):
         home = self.pages["index.html"]
-        hero = home[home.index('<header class="hero">'):home.index("</header>")]
+        hero = home[home.index('<header class="hero'):home.index("</header>")]
         self.assertEqual(hero.count('<a class="see" href="platform.html">See the platform</a>'), 1)
 
     def test_every_page_has_a_link_preview_and_a_tab_icon(self):
@@ -279,9 +279,41 @@ class CommittedPages(unittest.TestCase):
             seen.add(line)
         self.assertGreater(len(seen), len(self.pages) // 2, "pages should not all share one description")
 
+    def test_the_first_screen_says_what_i_do_and_shows_three_results(self):
+        home = self.pages["index.html"]
+        hero = home[home.index('<header class="hero'):home.index("</header>")]
+        self.assertIn("Marketing operations", hero[hero.index("<h1"):hero.index("</h1>")])
+        stats = hero[hero.index('<dl class="stats">'):]
+        stats = stats[: stats.index("</dl>")]
+        self.assertEqual(stats.count("<dd>"), 3)
+        self.assertIn("<dt>Learning now</dt>", hero)
+        self.assertLess(hero.index("</h1>"), hero.index('<dl class="stats">'))
+
+    def test_the_first_project_card_shows_the_real_app_and_says_the_data_is_made_up(self):
+        home = self.pages["index.html"]
+        card = home[home.index('<a class="proj-cover shot" href="platform.html"'):]
+        card = card[: card.index("</a>")]
+        self.assertIn("img/platform/04-client-overview-light.webp", card)
+        self.assertIn("img/platform/04-client-overview-dark.webp", card)
+        self.assertIn("Made-up clients and numbers", card)
+
+    def test_a_client_case_study_names_no_client_and_follows_the_page_shape(self):
+        home = self.pages["index.html"]
+        for case in self.config["cases"]:
+            page = self.pages[case["file"]]
+            self.assertIn(f'href="{case["file"]}"', home)
+            self.assertIn("Client not named", page)
+            for label in ("<dt>Problem</dt>", "<dt>What I did</dt>", "<dt>Result</dt>"):
+                self.assertEqual(page.count(label), 1, f'{case["file"]} {label}')
+            self.assertLess(page.index('<nav class="crumb"'), page.index("<h1"))
+            self.assertIn("What I chose, and what I turned down</h2>", page)
+            self.assertIn("What went wrong, and what I do now</h2>", page)
+            self.assertNotIn("<img", page[page.index("<main"):page.index("</main>")], "no real screenshots on a client page")
+            self.assertNotRegex(page[page.index("<main"):page.index("</main>")], r"\$\d", "no raw client money figures")
+
     def test_the_home_page_leads_with_the_live_platform(self):
         home = self.pages["index.html"]
-        self.assertLess(home.index('<a class="proj-cover" href="platform.html"'), home.index('<a class="proj-cover" href="project.html"'))
+        self.assertLess(home.index('<a class="proj-cover shot" href="platform.html"'), home.index('<a class="proj-cover" href="project.html"'))
 
     def test_a_drawing_grows_from_its_card_into_the_page_it_opens(self):
         for item in self.config["builds"]:
