@@ -474,9 +474,14 @@ def build_pages():
         )
 
     stops, journey = journey_html(project, builds, status_of)
+    part_links = "\n".join(
+        f'        <li><a href="builds/{e(step["slug"])}.html"><i>{n}</i>{e(step["short"])}</a><span class="status {STATUSES[status_of[step["slug"]]][1]}">{STATUSES[status_of[step["slug"]]][0]}</span></li>'
+        for n, step in enumerate(project["journey"], 1)
+    )
     first = project["journey"][0]
     first_text, first_class = STATUSES[status_of[first["slug"]]]
     pages["project.html"] = template("project.html").substitute(
+        part_links=part_links,
         style=style,
         script=script,
         repo=repo,

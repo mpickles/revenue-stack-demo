@@ -452,6 +452,13 @@
     .case-row b{font-weight:500;font-size:clamp(1.25rem,1rem + 1vw,1.75rem);letter-spacing:-.025em;line-height:1.2}
     .case-row span{color:var(--muted);text-decoration:underline;text-underline-offset:3px}
     .parts-h a{margin-left:10px;color:var(--ink);text-decoration:underline;text-decoration-color:var(--line);text-underline-offset:3px;background:none}
+    /* Every part, as plain links under the map. Works with no script. */
+    .part-links{list-style:none;margin:28px 0 0;padding:0;display:grid;gap:0 32px;border-top:1px solid var(--line)}
+    @media (min-width:760px){.part-links{grid-template-columns:repeat(2,minmax(0,1fr))}}
+    @media (min-width:1100px){.part-links{grid-template-columns:repeat(3,minmax(0,1fr))}}
+    .part-links li{display:flex;justify-content:space-between;align-items:baseline;gap:16px;padding:13px 0;border-bottom:1px solid var(--line);font-size:.9375rem}
+    .part-links a{background:none;text-decoration:underline;text-decoration-color:var(--line);text-underline-offset:3px}
+    .part-links a i{font-style:normal;font-family:var(--mono);font-size:.75rem;color:var(--muted);margin-right:10px}
   </style>
 </head>
 <body>
@@ -499,6 +506,14 @@
           <div><dt>Hands on</dt><dd id="s-out">A page that passed its checks</dd></div>
         </dl>
       </section>
+      <ol class="part-links" aria-label="All six parts">
+        <li><a href="builds/campaign-qa-agent.html"><i>1</i>Launch check</a><span class="status is-planned">Planned</span></li>
+        <li><a href="builds/tracked-site.html"><i>2</i>Tracked site</a><span class="status is-active">In progress</span></li>
+        <li><a href="builds/salesforce-routing.html"><i>3</i>Lead routing</a><span class="status is-active">In progress</span></li>
+        <li><a href="builds/lead-qualifier.html"><i>4</i>Lead scoring</a><span class="status is-planned">Planned</span></li>
+        <li><a href="builds/crm-cleanup.html"><i>5</i>Record cleanup</a><span class="status is-planned">Planned</span></li>
+        <li><a href="builds/funnel-and-reporting.html"><i>6</i>Funnel and report</a><span class="status is-planned">Planned</span></li>
+      </ol>
       <script type="application/json" id="journey">[{"slug": "campaign-qa-agent", "name": "The page gets checked", "why": "Everything after this depends on the tag firing. One bad page and the leads from it never get counted.", "gets": "A landing page that is about to go live", "out": "A page that passed its checks", "status": "Planned", "css": "is-planned"}, {"slug": "tracked-site", "name": "The visit is tracked, if the visitor agrees", "why": "Without the click ID, nobody later on can say which ad this lead came from.", "gets": "A visitor who clicked an ad", "out": "The form fill, the click ID and consent", "status": "In progress", "css": "is-active"}, {"slug": "salesforce-routing", "name": "The lead gets an owner", "why": "A lead nobody owns is a lead nobody calls. And the ad platform only learns if it hears which clicks became real leads.", "gets": "The form fill, with the click ID still attached", "out": "A lead with a stage, a campaign and an owner", "status": "In progress", "css": "is-active"}, {"slug": "lead-qualifier", "name": "The lead gets read and scored", "why": "Rules can sort by size. They cannot read a lead. This does, and it asks a person when it is unsure.", "gets": "The routed lead", "out": "A scored lead, with the reasons", "status": "Planned", "css": "is-planned"}, {"slug": "crm-cleanup", "name": "Duplicates get merged", "why": "The same person entered twice gets counted twice in every report after this.", "gets": "Every record in the CRM", "out": "One record per person and company", "status": "Planned", "css": "is-planned"}, {"slug": "funnel-and-reporting", "name": "It all gets added up", "why": "This is where a mistake anywhere earlier shows up. So the report refuses to publish a number it cannot prove.", "gets": "Clean CRM data", "out": "The funnel, ad credit and a checked report", "status": "Planned", "css": "is-planned"}]</script>
     </div>
 
