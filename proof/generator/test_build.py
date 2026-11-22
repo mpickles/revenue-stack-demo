@@ -326,6 +326,22 @@ class CommittedPages(unittest.TestCase):
             self.assertNotIn("<img", page[page.index("<main"):page.index("</main>")], "no real screenshots on a client page")
             self.assertNotRegex(page[page.index("<main"):page.index("</main>")], r"\$\d", "no raw client money figures")
 
+    def test_the_first_screen_shows_the_work_as_links(self):
+        home = self.pages["index.html"]
+        hero = home[home.index('<header class="hero'):home.index("</header>")]
+        work = hero[hero.index('<div class="hero-work"'):]
+        for href in ("platform.html", "project.html"):
+            self.assertEqual(work.count(f'<a class="hw" href="{href}"'), 1, href)
+        for case in self.config["cases"]:
+            self.assertIn(f'href="{case["file"]}"', work)
+        # A card on the first screen and the card in Projects open the same page. Only one may carry the
+        # shared name in the HTML; the script hands it to whichever is clicked.
+        self.assertEqual(home.count("view-transition-name:cover-platform"), 1)
+        self.assertEqual(home.count("view-transition-name:cover-project"), 1)
+        self.assertEqual(work.count('data-vt-name="cover-platform"'), 1)
+        self.assertEqual(work.count('data-vt-name="cover-project"'), 1)
+        self.assertIn("data-vt-name", home[home.index("<script"):])
+
     def test_the_home_page_leads_with_the_live_platform(self):
         home = self.pages["index.html"]
         self.assertLess(home.index('<a class="proj-cover shot" href="platform.html"'), home.index('<a class="proj-cover" href="project.html"'))
