@@ -459,6 +459,12 @@
     .part-links li{display:flex;justify-content:space-between;align-items:baseline;gap:16px;padding:13px 0;border-bottom:1px solid var(--line);font-size:.9375rem}
     .part-links a{background:none;text-decoration:underline;text-decoration-color:var(--line);text-underline-offset:3px}
     .part-links a i{font-style:normal;font-family:var(--mono);font-size:.75rem;color:var(--muted);margin-right:10px}
+    /* A real screen as a cover: the card on the home page and the banner on its page are the same picture. */
+    .shot-frame{display:block;overflow:hidden}
+    .shot-frame img{display:block;width:100%;height:auto}.shot-frame .d{display:none}
+    :root[data-theme="dark"] .shot-frame .l{display:none}:root[data-theme="dark"] .shot-frame .d{display:block}
+    @media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .shot-frame .l{display:none}:root:not([data-theme="light"]) .shot-frame .d{display:block}}
+    .page-cover .shot-frame img{aspect-ratio:16/6.4;object-fit:cover;object-position:top left}
     /* Styles for the platform pages only. Loaded after style.css. */
     "
 
@@ -1123,7 +1129,7 @@
     <div><a href="index.html#work">Work</a><a href="platform.html">Platform</a><button type="button" data-theme-toggle>Dark</button></div>
   </nav>
 <main class="writeup"><div class="wrap">
-    <div class="page-cover"><svg class="art" style="view-transition-name:cover-platform" viewBox="0 0 400 250" role="img" aria-label="Five sources feed one store, which feeds three outputs. One source is in colour" xmlns="http://www.w3.org/2000/svg"><rect class="c-box" x="46" y="43" width="46" height="22" rx="5"/><path class="c-line" d="M92 54C140 54 140 125 176 125"/><rect class="c-on-box m-fill" style="--i:0" x="46" y="77" width="46" height="22" rx="5"/><path class="c-on-line m-draw" style="--i:2" pathLength="1" d="M92 88C140 88 140 125 176 125"/><rect class="c-box" x="46" y="111" width="46" height="22" rx="5"/><path class="c-line" d="M92 122C140 122 140 125 176 125"/><rect class="c-box" x="46" y="145" width="46" height="22" rx="5"/><path class="c-line" d="M92 156C140 156 140 125 176 125"/><rect class="c-box" x="46" y="179" width="46" height="22" rx="5"/><path class="c-line" d="M92 190C140 190 140 125 176 125"/><rect class="c-on-box m-fill" style="--i:9" x="176" y="86" width="64" height="78" rx="10"/><path class="c-on-line m-draw" style="--i:12" pathLength="1" d="M240 125C276 125 276 74 308 74"/><rect class="c-box m-pop" style="--i:17" x="308" y="61" width="50" height="26" rx="5"/><path class="c-on-line m-draw" style="--i:13" pathLength="1" d="M240 125C276 125 276 125 308 125"/><rect class="c-box m-pop" style="--i:18" x="308" y="112" width="50" height="26" rx="5"/><path class="c-on-line m-draw" style="--i:14" pathLength="1" d="M240 125C276 125 276 176 308 176"/><rect class="c-box m-pop" style="--i:19" x="308" y="163" width="50" height="26" rx="5"/></svg></div>
+    <div class="page-cover"><span class="shot-frame" style="view-transition-name:cover-platform"><img class="l" src="img/platform/04-client-overview-light.webp" alt="The platform's client overview screen, shown with made-up clients" width="1600" height="1000"><img class="d" src="img/platform/04-client-overview-dark.webp" alt="The platform's client overview screen in dark mode, shown with made-up clients" width="1600" height="1000"></span></div>
     <header class="writeup-head">
       <h1>I built the operations platform a paid media team works in</h1>
       <p class="status is-active">Live at Upgrow</p>

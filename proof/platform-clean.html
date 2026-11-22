@@ -459,6 +459,12 @@
     .part-links li{display:flex;justify-content:space-between;align-items:baseline;gap:16px;padding:13px 0;border-bottom:1px solid var(--line);font-size:.9375rem}
     .part-links a{background:none;text-decoration:underline;text-decoration-color:var(--line);text-underline-offset:3px}
     .part-links a i{font-style:normal;font-family:var(--mono);font-size:.75rem;color:var(--muted);margin-right:10px}
+    /* A real screen as a cover: the card on the home page and the banner on its page are the same picture. */
+    .shot-frame{display:block;overflow:hidden}
+    .shot-frame img{display:block;width:100%;height:auto}.shot-frame .d{display:none}
+    :root[data-theme="dark"] .shot-frame .l{display:none}:root[data-theme="dark"] .shot-frame .d{display:block}
+    @media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .shot-frame .l{display:none}:root:not([data-theme="light"]) .shot-frame .d{display:block}}
+    .page-cover .shot-frame img{aspect-ratio:16/6.4;object-fit:cover;object-position:top left}
     /* Styles for the platform pages only. Loaded after style.css. */
     "
 

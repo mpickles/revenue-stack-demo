@@ -277,6 +277,15 @@ def contact_links_html(contact):
     return "".join(parts)
 
 
+# The platform's banner is the same real screen as its card on the home page, so the card grows into it.
+PLATFORM_SHOT = (
+    '<span class="shot-frame" style="view-transition-name:cover-platform">'
+    '<img class="l" src="img/platform/04-client-overview-light.webp" alt="The platform\'s client overview screen, shown with made-up clients" width="1600" height="1000">'
+    '<img class="d" src="img/platform/04-client-overview-dark.webp" alt="The platform\'s client overview screen in dark mode, shown with made-up clients" width="1600" height="1000">'
+    "</span>"
+)
+
+
 def with_preview(path, text, config):
     """What a link to this page shows when it is pasted somewhere: a line of description, a picture and a tab icon."""
     e = html.escape
@@ -438,7 +447,7 @@ def build_pages():
     app_script = indent((GENERATOR / "templates" / "platform-app.js").read_text(encoding="utf-8").strip(), 4)
     for item in config["platform"]["pages"]:
         body = (GENERATOR / "templates" / "platform" / item["file"]).read_text(encoding="utf-8").rstrip()
-        body = body.replace("$$COVER$$", cover("platform", grows=True))
+        body = body.replace("$$COVER$$", PLATFORM_SHOT)
         part = next((p for p in config["platform"]["parts"] if p["file"] == item["file"]), None)
         if part:  # a part page opens with its own drawing, the one its tile grows into
             head = '<main class="writeup"><div class="wrap">\n'
