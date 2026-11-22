@@ -449,4 +449,8 @@ img.portrait{aspect-ratio:4/5;width:100%;max-width:19rem;height:auto;object-fit:
 .hw-row i{font-style:normal;font-size:.875rem;color:var(--muted);text-decoration:underline;text-underline-offset:3px}
 @media (max-width:520px){.hw-row{grid-template-columns:1fr auto}.hw-row small{grid-column:1 / -1}}
 .hero.v2 h1.role{font-size:clamp(2.75rem,1rem + 5.2vw,5.25rem)}
+.hero.v2 h1.name{font-size:clamp(3.25rem,1rem + 7.6vw,7.25rem);line-height:.88;letter-spacing:-.055em;max-width:none;white-space:nowrap}
+.role-line{margin:26px 0 0;font-size:clamp(1.375rem,1rem + 1.2vw,1.875rem);font-weight:500;letter-spacing:-.025em;line-height:1.15}
+.role-line span{margin-left:14px;font-weight:400;color:var(--muted);font-size:.7em;letter-spacing:-.01em}
+.hero.v2 .role-line + .pitch{margin-top:10px;color:var(--muted)}
 

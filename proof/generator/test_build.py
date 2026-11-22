@@ -287,7 +287,9 @@ class CommittedPages(unittest.TestCase):
     def test_the_first_screen_is_about_me_and_the_platform_numbers_sit_on_the_platform_card(self):
         home = self.pages["index.html"]
         hero = home[home.index('<header class="hero'):home.index("</header>")]
-        self.assertIn("Marketing operations", hero[hero.index("<h1"):hero.index("</h1>")])
+        self.assertIn('aria-label="Max Pickard"', hero[hero.index("<h1"):hero.index("</h1>")])
+        self.assertIn('<p class="role-line">Marketing operations', hero)
+        self.assertLess(hero.index("</h1>"), hero.index('<p class="role-line">'))
         self.assertIn("<dt>Learning now</dt>", hero)
         self.assertNotIn('class="stats"', hero)
         for number in ("15 clients", "9:50 am", "$0 a month"):
