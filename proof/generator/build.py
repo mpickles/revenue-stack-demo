@@ -386,7 +386,7 @@ def build_pages():
             f'      <p class="headline-value">{e(value)}</p>\n    </div>'
         )
 
-        recording = '    <div class="recording"><div class="slot-box wide"><span>Two-minute walkthrough to come</span></div></div>'
+        recording = ""  # nothing is shown until a recording exists
         if build.get("recording"):
             recording = (
                 f'    <div class="recording">\n      <video controls preload="metadata" src="{e(build["recording"])}"></video>\n    </div>'

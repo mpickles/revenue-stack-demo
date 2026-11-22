@@ -123,7 +123,8 @@ class CommittedPages(unittest.TestCase):
         self.assertNotIn('class="slot"', facts)
         for item in self.config["builds"]:
             page = self.pages[f'builds/{item["slug"]}.html']
-            self.assertEqual("walkthrough to come" in page, not item.get("recording"), item["slug"])
+            self.assertNotIn("walkthrough to come", page, item["slug"])
+            self.assertEqual('class="recording"' in page, bool(item.get("recording")), item["slug"])
 
     def test_the_home_page_does_not_explain_how_a_build_works(self):
         home = self.pages["index.html"]
