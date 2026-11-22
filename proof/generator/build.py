@@ -248,12 +248,12 @@ def proof_html(builds):
     )
 
 
-def contact_html(contact):
-    """Shown only once an email or a LinkedIn address is set in builds.json."""
+def contact_html(contact, slim=False):
+    """Shown only once an email or a LinkedIn address is set in builds.json. Inner pages get the slim one."""
     e = html.escape
     if not (contact.get("email") or contact.get("linkedin")):
         return ""
-    lines = ['', '    <section class="contact" id="contact"><div class="wrap">', "      <h2>Say hello</h2>"]
+    lines = ['', f'    <section class="contact{" slim" if slim else ""}" id="contact"><div class="wrap">', "      <h2>Say hello</h2>"]
     if contact.get("email"):
         lines.append(f'      <a class="mail" href="mailto:{e(contact["email"])}">{e(contact["email"])}</a>')
         lines.append(f'      <small><button type="button" class="copy" data-copy="{e(contact["email"])}">Copy the address</button> <span id="copied" aria-live="polite"></span></small>')
@@ -343,6 +343,8 @@ def build_pages():
     pages = {}
     contact_config = config.get("contact") or {}
     contact = contact_html(contact_config)
+    inner_contact = contact_html(contact_config, slim=True)
+    inner_nav = '<a href="#contact">Contact</a>' if inner_contact else ""
     status_of = {b["slug"]: r["status"] for b, r in zip(builds, rendered)}
     project = config["project"]
     cards = [card_html(b, status_of[b["slug"]]) for b in builds]
@@ -440,6 +442,8 @@ def build_pages():
             banner=banner,
             sections="\n".join(s for s in sections if s),
             pager=indent("\n".join(pager), 6),
+            contact=inner_contact,
+            contact_nav=inner_nav,
         )
 
     # The platform pages are written by hand in templates/platform/ and wrapped in the shared shell.
@@ -473,14 +477,14 @@ def build_pages():
             body,
         )
         pages[item["file"]] = template("platform-shell.html").substitute(
-            style=style, platform_style=platform_style, script=script, title=e(item["title"]), file=item["file"], body=body,
+            style=style, platform_style=platform_style, script=script, title=e(item["title"]), file=item["file"], body=body, contact=inner_contact, contact_nav=inner_nav,
             app_script=app_script if 'id="app"' in body or 'id="shots"' in body else "",
         )
 
     for case in config.get("cases", []):  # client work, with no client named
         body = (GENERATOR / "templates" / "cases" / case["file"]).read_text(encoding="utf-8")
         pages[case["file"]] = template("platform-shell.html").substitute(
-            style=style, platform_style=platform_style, script=script, title=e(case["title"]), file="cases/" + case["file"], body=body, app_script="",
+            style=style, platform_style=platform_style, script=script, title=e(case["title"]), file="cases/" + case["file"], body=body, app_script="", contact=inner_contact, contact_nav=inner_nav,
         )
 
     stops, journey = journey_html(project, builds, status_of)
@@ -492,6 +496,8 @@ def build_pages():
     first_text, first_class = STATUSES[status_of[first["slug"]]]
     pages["project.html"] = template("project.html").substitute(
         part_links=part_links,
+        contact=inner_contact,
+        contact_nav=inner_nav,
         style=style,
         script=script,
         repo=repo,
@@ -524,7 +530,7 @@ def build_pages():
         shows=indent("\n".join(f"<div><dt>{e(a)}</dt><dd>{e(b)}</dd></div>" for a, b in project["shows"]), 8),
     )
 
-    pages["colophon.html"] = template("colophon.html").substitute(style=style, script=script)
+    pages["colophon.html"] = template("colophon.html").substitute(style=style, script=script, contact=inner_contact, contact_nav=inner_nav)
 
     return {path: with_preview(path, text, config).rstrip() + "\n" for path, text in pages.items()}
 

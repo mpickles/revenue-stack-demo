@@ -175,6 +175,20 @@ class CommittedPages(unittest.TestCase):
         self.assertEqual("linkedin.com/in/" in home, bool(contact.get("linkedin")))
         self.assertEqual('href="#contact"' in home, bool(contact.get("email") or contact.get("linkedin")))
 
+    def test_every_page_ends_with_a_way_to_reach_me(self):
+        contact = self.config.get("contact") or {}
+        wanted = bool(contact.get("email") or contact.get("linkedin"))
+        for path, page in self.pages.items():
+            if not path.endswith(".html"):
+                continue
+            self.assertEqual(page.count('id="contact"'), int(wanted), path)
+            self.assertEqual('href="#contact"' in page, wanted, path)
+            if wanted:  # nothing but scripts comes after it
+                after = page[page.index('id="contact"'):]
+                after = after[after.index("</section>"):]
+                for tag in ("<h2", "<article", "<nav"):
+                    self.assertNotIn(tag, after, path)
+
     def test_the_home_page_shows_two_projects_and_sends_the_reader_to_each_map_for_the_parts(self):
         home = self.pages["index.html"]
         self.assertEqual(home.count('class="cover-card'), 0, "part tiles live on the project pages, not the home page")
