@@ -330,8 +330,9 @@ class CommittedPages(unittest.TestCase):
         home = self.pages["index.html"]
         hero = home[home.index('<header class="hero'):home.index("</header>")]
         work = hero[hero.index('<div class="hero-work"'):]
-        for href in ("platform.html", "project.html"):
-            self.assertEqual(work.count(f'<a class="hw" href="{href}"'), 1, href)
+        self.assertEqual(work.count('<a class="hw big" href="platform.html"'), 1)
+        self.assertEqual(work.count('<a class="hw" href="project.html"'), 1)
+        self.assertLess(work.index('href="platform.html"'), work.index('href="project.html"'), "the live platform is the large card")
         for case in self.config["cases"]:
             self.assertIn(f'href="{case["file"]}"', work)
         # A card on the first screen and the card in Projects open the same page. Only one may carry the
@@ -365,6 +366,36 @@ class CommittedPages(unittest.TestCase):
         # The cards are grey only where there is a pointer to bring the colour, and never when motion is unwelcome.
         self.assertIn("@media (hover:hover) and (pointer:fine){", home)
         self.assertIn(".hw:hover .hw-pic > *,.hw:focus-visible .hw-pic > *{filter:none;opacity:1}", home)
+
+    def test_a_status_has_its_own_colour_and_never_the_accent(self):
+        for path, page in self.pages.items():
+            self.assertNotRegex(page, r'class="status is-active">\s*Live', f"{path}: Live must be green, not the in-progress colour")
+        style = self.pages["index.html"]
+        self.assertIn(".status.is-live,.rows .status.is-live{color:var(--ok)}", style)
+        self.assertIn(".status.is-active,.rows .status.is-active{color:var(--warn)}", style)
+        self.assertIn('<span class="status is-live">Live at work</span>', self.pages["index.html"])
+        self.assertIn('class="status is-live">Live at Upgrow', self.pages["platform.html"])
+
+    def test_projects_is_the_one_dark_band_and_the_two_projects_alternate(self):
+        home = self.pages["index.html"]
+        self.assertEqual(home.count('<section class="sec band"'), 1)
+        self.assertIn('<section class="sec band" id="work">', home)
+        band = home[home.index('<section class="sec band" id="work">'):]
+        band = band[: band.index("</section>")]
+        self.assertEqual(band.count('<article class="sys'), 2)
+        self.assertIn(".band .sys.second .proj-cover{order:2}", home)
+        platform = band[: band.index('<article class="sys second')]
+        self.assertEqual(platform.count("<dt>"), 3, "three facts, not a table")
+
+    def test_skills_are_plain_lines_and_about_leads_with_the_line_people_remember(self):
+        home = self.pages["index.html"]
+        skills = home[home.index('id="skills"'):home.index('id="about"')]
+        self.assertNotIn("<table", skills)
+        self.assertEqual(skills.count("<dt>"), 4)
+        about = home[home.index('id="about"'):]
+        about = about[: about.index("</section>")]
+        self.assertIn('<p class="big">Before any of this I worked on an alpaca ranch and cooked for a sorority house.</p>', about)
+        self.assertIn("applied mathematics", about)
 
     def test_the_home_page_leads_with_the_live_platform(self):
         home = self.pages["index.html"]

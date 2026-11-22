@@ -483,7 +483,6 @@ img.portrait{aspect-ratio:4/5;width:100%;max-width:19rem;height:auto;object-fit:
   background:var(--bg);color:var(--ink);margin-top:clamp(64px,7.5vw,104px);padding:clamp(72px,8vw,112px) 0 clamp(72px,8vw,112px);color-scheme:dark}
 .band .sys:first-of-type{border-top:0;margin-top:40px;padding-top:0}
 .band .sys.second{border-top:1px solid var(--line);margin-top:72px;padding-top:72px}
-.band .shot-frame .l{display:none}.band .shot-frame .d{display:block}
 .band .proj-cover.shot small{background:var(--panel)}
 .band .facts div{grid-template-columns:5rem 1fr}
 .band .parts-h{margin-top:40px}
