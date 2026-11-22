@@ -546,6 +546,20 @@
     .about.two p.big{margin:0;font-size:clamp(1.75rem,1.2rem + 2.4vw,3.25rem);line-height:1.08;letter-spacing:-.035em;font-weight:500;text-wrap:balance}
     .about.two div p:first-of-type{font-size:1.125rem;line-height:1.5;letter-spacing:-.005em}
     .about.two img.portrait{margin-bottom:24px}
+
+
+    /* Print and save-as-PDF: the words and pictures only, on white, with nothing left hidden by an animation. */
+    @media print{
+      :root,.band{--bg:#fff;--ink:#111;--muted:#444;--line:#ccc;--panel:#f4f4f4;color-scheme:light}
+      .nav,.progress,.cursor,canvas.grid,.pager,.contact,.ops-ctl,.ctl,.crumb,[data-theme-toggle],.more-rows>summary{display:none!important}
+      *{opacity:1!important;transform:none!important;animation:none!important;transition:none!important;box-shadow:none!important;clip-path:none!important}
+      body{background:#fff}
+      .writeup{padding:0}
+      details.more-rows>*{display:block}
+      .cs-block,.tldr,.flow li,.chose>*,figure,img,svg{break-inside:avoid}
+      h2,h3{break-after:avoid}
+      a{text-decoration:none;color:inherit}
+    }
     /* Styles for the platform pages only. Loaded after style.css. */
     "
 

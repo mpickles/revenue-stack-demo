@@ -260,6 +260,15 @@ class CommittedPages(unittest.TestCase):
             self.assertIn(f'href="{href}"', page)
         self.assertIn("noindex", page)
 
+    def test_every_page_prints_without_the_site_chrome(self):
+        for path, page in self.pages.items():
+            if not path.endswith(".html"):
+                continue
+            self.assertEqual(page.count("@media print{"), 1, path)
+            rule = page[page.index("@media print{"):]
+            for hidden in (".nav", ".progress", ".cursor", ".contact", ".pager"):
+                self.assertIn(hidden, rule[:rule.index("display:none")], path)
+
     def test_the_project_page_works_before_any_script_runs(self):
         page = self.pages["project.html"]
         first = self.config["project"]["journey"][0]
