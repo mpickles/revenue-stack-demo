@@ -253,6 +253,13 @@ class CommittedPages(unittest.TestCase):
         for path, page in self.pages.items():
             self.assertNotIn("What this shows I can do", page, path)
 
+    def test_a_wrong_address_gets_a_page_that_leads_back_to_the_work(self):
+        page = self.pages["404.html"]
+        self.assertIn('<base href="/">', page)
+        for href in ("index.html", "platform.html", "index.html#work"):
+            self.assertIn(f'href="{href}"', page)
+        self.assertIn("noindex", page)
+
     def test_the_project_page_works_before_any_script_runs(self):
         page = self.pages["project.html"]
         first = self.config["project"]["journey"][0]

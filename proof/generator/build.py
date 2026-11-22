@@ -531,6 +531,14 @@ def build_pages():
 
     pages["colophon.html"] = template("colophon.html").substitute(style=style, script=script, contact=inner_contact, contact_nav=inner_nav)
 
+    # Vercel serves 404.html for any address that does not exist. It can be reached at any depth, so its links start from the root.
+    missing = template("platform-shell.html").substitute(
+        style=style, platform_style=platform_style, script=script, title="Page not found", file="notfound.html",
+        body=(GENERATOR / "templates" / "notfound.html").read_text(encoding="utf-8").rstrip(),
+        app_script="", contact=inner_contact, contact_nav=inner_nav,
+    )
+    pages["404.html"] = missing.replace("<head>", '<head>\n  <base href="/">', 1)
+
     return {path: with_preview(path, text, config).rstrip() + "\n" for path, text in pages.items()}
 
 
