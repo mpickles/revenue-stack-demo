@@ -86,19 +86,27 @@
     size(); show(0, true);
   })();
 
-  // Two cards can open the same page. Whichever is clicked takes the shared name, so that one grows into the page.
+  // Two cards can open the same page. Whichever is clicked takes the shared names, so its picture grows into
+  // the page's banner and its title becomes the page's title.
   document.addEventListener("click", function (e) {
     var link = e.target.closest && e.target.closest("a");
-    var pic = link && link.querySelector("[data-vt-name]");
-    if (!pic) return;
-    var name = pic.getAttribute("data-vt-name");
-    Array.prototype.forEach.call(document.querySelectorAll('[style*="view-transition-name"]'), function (el) {
-      if (el.style.viewTransitionName === name) el.style.viewTransitionName = "none";
+    if (!link) return;
+    Array.prototype.forEach.call(link.querySelectorAll("[data-vt-name]"), function (part) {
+      var name = part.getAttribute("data-vt-name");
+      Array.prototype.forEach.call(document.querySelectorAll('[style*="view-transition-name"]'), function (el) {
+        if (el.style.viewTransitionName === name) el.style.viewTransitionName = "none";
+      });
+      part.style.viewTransitionName = name;
     });
-    pic.style.viewTransitionName = name;
   }, true);
 
   if (!motion) return;
+
+  // One motion language for the whole site: one curve and three speeds. Nothing that moves takes longer than SLOW.
+  var EASE = "power3.out", FAST = 0.2, MED = 0.35, SLOW = 0.5;
+  // Arriving from another page of this site, the browser has just morphed that page into this one. Do not replay the title.
+  var morphedIn = false;
+  try { morphedIn = "onpagereveal" in window && !!document.referrer && new URL(document.referrer).origin === location.origin; } catch (err) {}
 
   function start() {
     // The page title rises line by line, once.
@@ -106,21 +114,21 @@
     if (title) {
       if (window.SplitText) {
         var split = SplitText.create(title, { type: "lines", mask: "lines", aria: "auto" });
-        gsap.from(split.lines, { yPercent: 105, duration: 0.95, stagger: 0.08, ease: "expo.out", delay: 0.1 });
-      } else {
-        gsap.from(title, { opacity: 0, y: 24, duration: 0.9, ease: "expo.out", delay: 0.1 });
+        if (!morphedIn) gsap.from(split.lines, { yPercent: 105, duration: SLOW, stagger: 0.06, ease: EASE, delay: 0.05 });
+      } else if (!morphedIn) {
+        gsap.from(title, { opacity: 0, y: 24, duration: SLOW, ease: EASE, delay: 0.05 });
       }
-      gsap.from(".under, .spec, .slot-box.portrait, .writeup-head .status, .headline", { opacity: 0, duration: 0.7, ease: "power2.out", delay: 0.65 });
+      gsap.from(".under, .spec, .slot-box.portrait, .writeup-head .status, .headline", { opacity: 0, duration: MED, ease: EASE, delay: 0.35 });
     }
 
-    // Home page entrance. Nothing is held back behind a loader: the name is readable from the first frame,
-    // and the rest arrives around it in about a second. Shorter on a return visit in the same tab.
+    // Home page entrance. Nothing waits behind a loader: the name is readable from the first frame and the
+    // rest arrives around it inside a second. Half that on a return visit in the same tab.
     var name = document.querySelector(".hero.v2 h1.name");
     if (name) {
       var stop = name.querySelector("i"), firstVisit = true;
       try { firstVisit = !sessionStorage.getItem("entered"); sessionStorage.setItem("entered", "1"); } catch (err) {}
       var k = firstVisit ? 1 : 0.5;
-      var intro = gsap.timeline({ delay: 0.1 });
+      var intro = gsap.timeline({ delay: 0.05 });
       // The lead. One dot in the accent colour runs in from the left edge and lands as the full stop after my name.
       if (stop) {
         gsap.set(stop, { opacity: 0 });
@@ -129,29 +137,16 @@
           var runner = stop.cloneNode(true);
           runner.style.cssText = "position:fixed;margin:0;z-index:5;pointer-events:none;left:" + box.left + "px;top:" + box.top + "px;font:" + style.font + ";line-height:" + style.lineHeight + ";letter-spacing:0;color:" + style.color + ";transform-origin:100% 80%";
           document.body.appendChild(runner);
-          gsap.fromTo(runner, { x: -(box.left + 60), scaleX: 3.2 }, { x: 0, scaleX: 1, duration: 0.6 * k, ease: "power3.inOut", onComplete: function () {
+          gsap.fromTo(runner, { x: -(box.left + 60), scaleX: 3.2 }, { x: 0, scaleX: 1, duration: 0.42 * k, ease: "power3.inOut", onComplete: function () {
             gsap.set(stop, { opacity: 1 });
             runner.remove();
-            gsap.fromTo(stop, { scale: 1.7 }, { scale: 1, duration: 0.45, ease: "back.out(3)", transformOrigin: "50% 80%", display: "inline-block", clearProps: "transform,display" });
+            gsap.fromTo(stop, { scale: 1.6 }, { scale: 1, duration: MED, ease: "back.out(3)", transformOrigin: "50% 80%", display: "inline-block", clearProps: "transform,display" });
           } });
-        }, null, 0.75 * k);
-        intro.call(function () { gsap.set(stop, { opacity: 1 }); }, null, 0.75 * k + 1.4);  // whatever happens, the dot ends up visible
+        }, null, 0.4 * k);
+        intro.call(function () { gsap.set(stop, { opacity: 1 }); }, null, 0.4 * k + 1.2);  // whatever happens, the dot ends up visible
       }
-      intro.from(".role-line, .hero.v2 .pitch, .hero-acts", { opacity: 0, y: 14, duration: 0.45 * k, stagger: 0.07, ease: "power2.out", clearProps: "opacity,transform" }, 0.4 * k);
-      intro.from(".hero-work > *", { opacity: 0, y: 34, scale: 0.94, duration: 0.6 * k, stagger: 0.1, ease: "power3.out", clearProps: "opacity,transform" }, 0.5 * k);
-
-      // The two project cards lean toward the pointer.
-      if (window.matchMedia("(hover: hover) and (pointer: fine)").matches) {
-        $$(".hero-work .hw").forEach(function (card) {
-          gsap.set(card, { transformPerspective: 800 });
-          var rx = gsap.quickTo(card, "rotationX", { duration: 0.4, ease: "power3" }), ry = gsap.quickTo(card, "rotationY", { duration: 0.4, ease: "power3" }), lift = gsap.quickTo(card, "y", { duration: 0.4, ease: "power3" });
-          card.addEventListener("pointermove", function (e) {
-            var b = card.getBoundingClientRect();
-            ry((e.clientX - b.left) / b.width * 10 - 5); rx(5 - (e.clientY - b.top) / b.height * 10); lift(-4);
-          });
-          card.addEventListener("pointerleave", function () { rx(0); ry(0); lift(0); });
-        });
-      }
+      intro.from(".role-line, .hero.v2 .pitch, .hero-acts", { opacity: 0, y: 12, duration: MED * k, stagger: 0.05, ease: EASE, clearProps: "opacity,transform" }, 0.2 * k);
+      intro.from(".hero-work > *", { opacity: 0, y: 24, duration: MED * k, stagger: 0.07, ease: EASE, clearProps: "opacity,transform" }, 0.3 * k);
     }
 
     // The name eases back as you scroll away from it.
@@ -168,20 +163,20 @@
       var text = h.textContent; h.setAttribute("aria-label", text); h.textContent = "";
       var mask = document.createElement("span"); mask.className = "mask"; mask.setAttribute("aria-hidden", "true");
       var inner = document.createElement("span"); inner.textContent = text; mask.appendChild(inner); h.appendChild(mask);
-      gsap.from(inner, { yPercent: 112, duration: 0.35, ease: "expo.out", scrollTrigger: { trigger: h, start: "top 98%" } });
+      gsap.from(inner, { yPercent: 112, duration: MED, ease: EASE, scrollTrigger: { trigger: h, start: "top 98%" } });
     });
 
     // Lists and cards arrive one after another.
     [".sys", ".proof li", "[data-stagger] > *"].forEach(function (group) {
       if (!document.querySelector(group)) return;
       ScrollTrigger.batch(group, { start: "top 98%", once: true, onEnter: function (batch) {
-        gsap.from(batch, { opacity: 0, y: 10, duration: 0.22, stagger: 0.02, ease: "power2.out", clearProps: "opacity,transform" });
+        gsap.from(batch, { opacity: 0, y: 10, duration: FAST, stagger: 0.02, ease: EASE, clearProps: "opacity,transform" });
       } });
     });
 
     // Table rows wipe in from the left.
     $$("table[data-wipe]").forEach(function (table) {
-      gsap.from(table.querySelectorAll("tr"), { clipPath: "inset(0 100% 0 0)", duration: 0.25, stagger: 0.02, ease: "power2.out", scrollTrigger: { trigger: table, start: "top 98%" } });
+      gsap.from(table.querySelectorAll("tr"), { clipPath: "inset(0 100% 0 0)", duration: FAST, stagger: 0.02, ease: EASE, scrollTrigger: { trigger: table, start: "top 98%" } });
     });
 
     // The routing scene: the page holds while the diagram draws itself.
