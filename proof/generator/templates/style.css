@@ -416,4 +416,5 @@ img.portrait{aspect-ratio:4/5;width:100%;max-width:19rem;height:auto;object-fit:
 .case-row small{font-family:var(--mono);font-size:.75rem;color:var(--muted)}
 .case-row b{font-weight:500;font-size:clamp(1.25rem,1rem + 1vw,1.75rem);letter-spacing:-.025em;line-height:1.2}
 .case-row span{color:var(--muted);text-decoration:underline;text-underline-offset:3px}
+.parts-h a{margin-left:10px;color:var(--ink);text-decoration:underline;text-decoration-color:var(--line);text-underline-offset:3px;background:none}
 
