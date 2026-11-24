@@ -38,6 +38,8 @@ New text for Consent Given after the relabel:
 | WBRAID | Text 255 | Google click ID used for some iPhone web ad clicks. Set by the site form. Do not edit by hand. | Google click ID for some iPhone ad clicks. |
 | MSCLKID | Text 255 | Microsoft Advertising click ID. Set by the site form. Do not edit by hand. | Microsoft Ads click ID. |
 | LI_FAT_ID | Text 255 | LinkedIn click ID. Set by the site form. Do not edit by hand. | LinkedIn Ads click ID. |
+| Referring Domain | Text 255 | Domain of the page the visitor came from, such as www.google.com. Set by the site form. Blank for a direct visit. The Lead Flow reads it to pick the channel when there is no UTM. | The website this person came from. Blank means they came direct. |
+| Landing Page | Text 255 | Path of the first page the visitor landed on, such as /pricing. Set by the site form. | The first page this person saw on the site. |
 | Ad Personalization Consent | Checkbox, default unchecked | Ticked when the visitor accepted ad personalization on the cookie banner. Sent with the conversion upload. | Did this person agree to personalized ads? |
 | Ad Consent Timestamp | Date/Time | When the visitor made their cookie banner choice. Set by the site form. | When consent was given or refused. |
 

@@ -97,6 +97,17 @@ One list, used by the Salesforce Flow, the campaign QA tool and the funnel model
 
 UTM values are compared in lower case.
 
+Where the visitor came from is the Referring Domain field on the lead. The site form fills it with the domain of the page the visitor came from, and leaves it blank for a direct visit. It is compared in lower case. It only decides the channel when there is no UTM.
+
+| Referring Domain | Counts as |
+|---|---|
+| Is one of chatgpt.com, perplexity.ai, gemini.google.com, copilot.microsoft.com or claude.ai, or ends with a dot and one of them | An AI assistant |
+| Has google, bing, duckduckgo, yahoo, ecosia or brave as one whole part between dots, as in www.google.com or search.brave.com | A search engine |
+| Anything else that is not blank | Another website |
+| Blank | No referring site |
+
+The AI assistant list is checked first, because gemini.google.com also has google in it.
+
 The channel is written to the standard Lead Source field. In Salesforce, each channel is a parent campaign that holds no members. Under it sits one campaign per marketing effort, named exactly as its utm_campaign value, plus one catch-all per channel for leads whose utm_campaign matches nothing. A lead is added to one campaign, once, with the status Responded.
 
 ## 7. Consent
@@ -122,7 +133,7 @@ The qualified lead's value is its expected annual value. A row is only written i
 
 | Writer | May write | Never writes |
 |---|---|---|
-| The site form | Name, email, company, fleet size, UTM values, click IDs, the three consent fields | Stage, segment, owner |
+| The site form | Name, email, company, fleet size, Referring Domain, Landing Page, UTM values, click IDs, the three consent fields | Stage, segment, owner |
 | The Salesforce Flow | Lifecycle Stage, Stage Reason, Segment, Expected Annual Value, Lead Source, the stage dates, Lead Email Copy, Owner (a queue) | The AI score fields |
 | A rep | Stage (Working, SQL, Nurture, Disqualified), Stage Reason, Owner (a person), Lead Status | The click ID, UTM and consent fields |
 | The AI lead qualifier | Its own four score fields. It may move the owner off a queue | Lifecycle Stage. A field a person edited |
