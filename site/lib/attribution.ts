@@ -1,4 +1,4 @@
-import { ATTRIBUTION_KEYS, parseClickIds } from "./clickIds";
+import { ATTRIBUTION_KEYS, CLICK_ID_KEYS, parseClickIds } from "./clickIds";
 import type { ConsentChoice } from "./consent";
 import { VISIT_KEYS, landingPath, referringDomain } from "./referrer";
 
@@ -12,7 +12,7 @@ export type StoredAttribution = Partial<Record<StoredKey, string>>;
 export type LandingPage = { referrer: string; host: string; path: string };
 
 // A landing has a source when it carries a click ID, a UTM value or a
-// referring domain. Only a landing with a source may replace a stored set.
+// referring domain. Only a landing with a source may change a stored set.
 type Landing = { values: StoredAttribution; sourced: boolean };
 
 export const ATTRIBUTION_COOKIE = "rw_attrib";
@@ -33,14 +33,28 @@ function deleteCookie(): void {
   document.cookie = `${ATTRIBUTION_COOKIE}=; Max-Age=0; Path=/; SameSite=Lax`;
 }
 
+// The stored set has two groups. The click IDs are replaced, as a group, only
+// by a landing that carries a click ID: the conversion upload needs them, and
+// a later visit with no click ID says nothing about which ad was clicked.
+// Everything else (UTM values, referring domain, landing page) is the latest
+// touch and is replaced by any landing with a source.
 function store(landing: Landing): void {
-  if (!landing.sourced && Object.keys(readAttribution()).length > 0) return;
-  writeCookie(landing.values);
+  const stored = readAttribution();
+  if (!landing.sourced) {
+    if (Object.keys(stored).length === 0) writeCookie(landing.values);
+    return;
+  }
+  const next: StoredAttribution = { ...landing.values };
+  if (!CLICK_ID_KEYS.some((key) => landing.values[key])) {
+    for (const key of CLICK_ID_KEYS) {
+      if (stored[key]) next[key] = stored[key];
+    }
+  }
+  writeCookie(next);
 }
 
-// Call once per page load. A landing with a source replaces the whole stored
-// set. A landing without one leaves a stored set alone, and stores its
-// landing page only when nothing is stored yet.
+// Call once per page load. A landing without a source leaves a stored set
+// alone, and stores its landing page only when nothing is stored yet.
 export function captureLanding(search: string, consent: ConsentChoice | null, page?: LandingPage): void {
   const values: StoredAttribution = parseClickIds(search);
   const domain = page ? referringDomain(page.referrer, page.host) : "";

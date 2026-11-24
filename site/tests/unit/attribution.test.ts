@@ -180,8 +180,8 @@ describe("consent gate for the referring domain and the landing page", () => {
     expect(readAttribution()).toEqual({ gclid: "FIRST", referring_domain: "search.example", landing_page: "/" });
   });
 
-  it("replaces the whole stored set when a later landing has a referring domain", () => {
-    captureLanding("?gclid=FIRST&utm_source=google", "granted", landing("https://search.example/", "/"));
+  it("replaces the latest touch group when a later landing has a referring domain", () => {
+    captureLanding("?utm_source=news&utm_medium=email", "granted", landing("https://mail.example/", "/"));
     captureLanding("", "granted", landing("https://assistant.example/chat", "/pricing"));
     expect(readAttribution()).toEqual({ referring_domain: "assistant.example", landing_page: "/pricing" });
   });
@@ -194,6 +194,87 @@ describe("consent gate for the referring domain and the landing page", () => {
 
   it("does not read a referring domain or landing page from the query string", () => {
     captureLanding("?referring_domain=fake.example&landing_page=/fake", "granted");
+    expect(readAttribution()).toEqual({});
+  });
+});
+
+describe("click IDs are kept until a newer click ID arrives", () => {
+  const PAID = "?gclid=PAID1&gbraid=GB1&utm_source=google&utm_medium=cpc&utm_campaign=spring";
+  const paidClick = () => captureLanding(PAID, "granted", landing("https://ads.example/", "/demo"));
+
+  it("paid click, then a return from a search engine: the click ID is kept and the latest touch is updated", () => {
+    paidClick();
+    captureLanding("", "granted", landing("https://search.example/results", "/pricing"));
+    expect(readAttribution()).toEqual({
+      gclid: "PAID1",
+      gbraid: "GB1",
+      referring_domain: "search.example",
+      landing_page: "/pricing",
+    });
+  });
+
+  it("paid click, then a landing with UTM values and no click ID: the click ID is kept and the UTM group is replaced", () => {
+    paidClick();
+    captureLanding("?utm_source=news&utm_medium=email", "granted", landing("", "/"));
+    expect(readAttribution()).toEqual({
+      gclid: "PAID1",
+      gbraid: "GB1",
+      utm_source: "news",
+      utm_medium: "email",
+      landing_page: "/",
+    });
+  });
+
+  it("paid click, then a second paid click: the click IDs are replaced as a group", () => {
+    paidClick();
+    captureLanding("?msclkid=PAID2&utm_source=bing&utm_medium=cpc", "granted", landing("https://ads2.example/", "/"));
+    expect(readAttribution()).toEqual({
+      msclkid: "PAID2",
+      utm_source: "bing",
+      utm_medium: "cpc",
+      referring_domain: "ads2.example",
+      landing_page: "/",
+    });
+  });
+
+  it("paid click, then a second paid click with only a click ID: both groups are replaced", () => {
+    paidClick();
+    captureLanding("?gclid=PAID2", "granted", landing("", "/pricing"));
+    expect(readAttribution()).toEqual({ gclid: "PAID2", landing_page: "/pricing" });
+  });
+
+  it("paid click, then a direct landing: nothing changes", () => {
+    paidClick();
+    const before = readAttribution();
+    const writesBefore = attributionWrites().length;
+
+    captureLanding("", "granted", landing("", "/pricing"));
+    captureLanding("?plan=pro", "granted", landing(`https://${OWN}/pricing`, "/demo"));
+
+    expect(readAttribution()).toEqual(before);
+    expect(readAttribution().gclid).toBe("PAID1");
+    expect(attributionWrites()).toHaveLength(writesBefore);
+  });
+
+  it("keeps the click ID when the search engine return gets consent later in the visit", () => {
+    paidClick();
+    captureLanding("", null, landing("https://search.example/", "/pricing"));
+    expect(readAttribution().referring_domain).toBe("ads.example");
+
+    applyConsent("granted");
+
+    expect(readAttribution()).toEqual({
+      gclid: "PAID1",
+      gbraid: "GB1",
+      referring_domain: "search.example",
+      landing_page: "/pricing",
+    });
+  });
+
+  it("still deletes the click ID when consent is changed to denied", () => {
+    paidClick();
+    captureLanding("", "granted", landing("https://search.example/", "/pricing"));
+    applyConsent("denied");
     expect(readAttribution()).toEqual({});
   });
 });
