@@ -35,6 +35,12 @@ export default function Privacy() {
             stored and an existing cookie is deleted.
           </li>
           <li>
+            <strong>Where you came from.</strong> The domain of the site that
+            linked you here, if there was one, and the path of the first page
+            you opened. Both are kept in the same <code>rw_attrib</code> cookie
+            under the same rule: only after Accept all, deleted on Reject all.
+          </li>
+          <li>
             <strong>Google Analytics client ID.</strong> A random ID from the{" "}
             <code>_ga</code> cookie, read only after Accept all, so a form
             submission can be matched to the same visit in Google Analytics.
@@ -45,8 +51,9 @@ export default function Privacy() {
           </li>
         </ul>
         <p>
-          The click IDs, campaign tags and Google Analytics client ID are sent
-          with the form as hidden fields, and only when you have accepted.
+          The click IDs, campaign tags, referring domain, landing page and
+          Google Analytics client ID are sent with the form as hidden fields,
+          and only when you have accepted.
         </p>
 
         <h2>Where it is sent</h2>

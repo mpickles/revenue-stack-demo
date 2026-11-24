@@ -37,6 +37,8 @@ Internal names must match exactly.
 | utm_term      | UTM term         | Single-line text           | |
 | utm_content   | UTM content      | Single-line text           | |
 | ga_client_id  | GA client ID     | Single-line text           | |
+| referring_domain | Referring domain | Single-line text        | |
+| landing_page  | Landing page     | Single-line text           | |
 
 Empty values are not sent, so a repeat lead without a click ID keeps the
 value already on the contact.

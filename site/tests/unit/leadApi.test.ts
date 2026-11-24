@@ -140,6 +140,16 @@ describe("POST /api/lead validation", () => {
     expect((await res.json()).errors).toEqual(["gclid"]);
   });
 
+  it("rejects a referring domain or landing page that is too long or not text", async () => {
+    const long = await post(validLead({ landing_page: "/" + "x".repeat(501) }));
+    expect(long.status).toBe(400);
+    expect((await long.json()).errors).toEqual(["landing_page"]);
+
+    const notText = await post(validLead({ referring_domain: 42 }));
+    expect(notText.status).toBe(400);
+    expect((await notText.json()).errors).toEqual(["referring_domain"]);
+  });
+
   it("rejects a body that is not JSON", async () => {
     const res = await post("{not json");
     expect(res.status).toBe(400);
@@ -191,6 +201,27 @@ describe("POST /api/lead with HUBSPOT_TOKEN", () => {
         },
       ],
     });
+  });
+
+  const sentProperties = async (lead: Record<string, unknown>) => {
+    fetchMock.mockResolvedValue(new Response("{}", { status: 200 }));
+    expect((await post(lead)).status).toBe(200);
+    const [, init] = fetchMock.mock.calls.at(-1) as [string, RequestInit];
+    return JSON.parse(init.body as string).inputs[0].properties as Record<string, string>;
+  };
+
+  it("sends the referring domain and the landing page to HubSpot", async () => {
+    const properties = await sentProperties(
+      validLead({ referring_domain: "Search.Example", landing_page: "/pricing" }),
+    );
+    expect(properties.referring_domain).toBe("search.example");
+    expect(properties.landing_page).toBe("/pricing");
+  });
+
+  it("leaves an empty referring domain and landing page out of the upsert", async () => {
+    const properties = await sentProperties(validLead({ referring_domain: "", landing_page: "" }));
+    expect(properties).not.toHaveProperty("referring_domain");
+    expect(properties).not.toHaveProperty("landing_page");
   });
 
   it("returns 502 and logs only the status when HubSpot fails", async () => {

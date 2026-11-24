@@ -58,7 +58,8 @@ export function validateLead(input: unknown): LeadResult {
   for (const name of HIDDEN_FIELD_NAMES) {
     const raw = body[name];
     if (raw === undefined || raw === null) continue;
-    const value = text(raw);
+    // Domains are compared in lower case downstream, so store them that way.
+    const value = name === "referring_domain" ? text(raw).toLowerCase() : text(raw);
     if (typeof raw !== "string" || value.length > HIDDEN_FIELD_MAX) errors.push(name);
     else if (value) hidden[name] = value;
   }
