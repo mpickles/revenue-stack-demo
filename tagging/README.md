@@ -42,7 +42,7 @@ The full list, one line each, is in [`docs/decisions.md`](../docs/decisions.md).
 
 ## Tests
 
-Six unit test files and one browser test are in [`site/tests/`](../site/tests). GitHub runs the type check and the unit tests on every pull request that touches the site.
+Nine unit test files and three browser tests are in [`site/tests/`](../site/tests). GitHub runs the type check and the unit tests on every pull request that touches the site.
 
 ## Limits
 
