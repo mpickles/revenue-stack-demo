@@ -1,9 +1,8 @@
-import { readAttribution } from "./attribution";
-import { ATTRIBUTION_KEYS } from "./clickIds";
+import { STORED_KEYS, readAttribution } from "./attribution";
 import { readConsent } from "./consent";
 import { readGaClientId } from "./gaClientId";
 
-export const HIDDEN_FIELD_NAMES = [...ATTRIBUTION_KEYS, "ga_client_id"] as const;
+export const HIDDEN_FIELD_NAMES = [...STORED_KEYS, "ga_client_id"] as const;
 export type HiddenFieldName = (typeof HIDDEN_FIELD_NAMES)[number];
 
 // Read fresh each call. Empty unless the visitor has granted consent.

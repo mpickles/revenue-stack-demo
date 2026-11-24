@@ -3,7 +3,8 @@ import { createRoot, type Root } from "react-dom/client";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import { AttributionCapture } from "@/components/AttributionCapture";
 import { HiddenAttributionFields } from "@/components/HiddenAttributionFields";
-import { resetPendingForTests } from "@/lib/attribution";
+import { applyConsent, resetPendingForTests } from "@/lib/attribution";
+import { setConsent } from "@/lib/consent";
 import { HIDDEN_FIELD_NAMES } from "@/lib/hiddenFields";
 
 (globalThis as { IS_REACT_ACT_ENVIRONMENT?: boolean }).IS_REACT_ACT_ENVIRONMENT = true;
@@ -15,7 +16,7 @@ let container: HTMLDivElement;
 let root: Root;
 
 function clearCookies() {
-  for (const name of ["rw_consent", "rw_attrib", "_ga"]) {
+  for (const name of ["rw_consent", "rw_consent_at", "rw_attrib", "_ga"]) {
     document.cookie = `${name}=; Max-Age=0; Path=/`;
   }
 }
@@ -33,7 +34,27 @@ afterEach(() => {
   clearCookies();
   resetPendingForTests();
   window.history.replaceState(null, "", "/");
+  delete (document as { referrer?: string }).referrer;
 });
+
+// jsdom has no referrer. This stands in for arriving from another page.
+function arriveFrom(referrer: string) {
+  Object.defineProperty(document, "referrer", { configurable: true, get: () => referrer });
+}
+
+// What the banner does on a click, without rendering it.
+function choose(choice: "granted" | "denied") {
+  window.dataLayer = window.dataLayer ?? [];
+  setConsent(choice);
+  applyConsent(choice);
+}
+
+const LandedForm = () => (
+  <>
+    <TestForm />
+    <AttributionCapture />
+  </>
+);
 
 function render(ui: React.ReactNode) {
   act(() => root.render(ui));
@@ -139,5 +160,65 @@ describe("HiddenAttributionFields", () => {
 
     document.cookie = "rw_consent=denied; Path=/";
     expect(submit(form).gclid).toBe("");
+  });
+});
+
+describe("referring domain and landing page in the hidden fields", () => {
+  it("are empty before any consent choice", () => {
+    arriveFrom("https://search.example/results?q=fleet");
+    window.history.replaceState(null, "", "/pricing");
+    const form = render(<LandedForm />);
+
+    const carried = submit(form);
+    expect(carried.referring_domain).toBe("");
+    expect(carried.landing_page).toBe("");
+  });
+
+  it("are present after the visitor accepts", () => {
+    arriveFrom("https://Search.Example/results?q=fleet");
+    window.history.replaceState(null, "", "/pricing?plan=pro");
+    const form = render(<LandedForm />);
+    expect(submit(form).referring_domain).toBe("");
+
+    choose("granted");
+
+    const carried = submit(form);
+    expect(carried.referring_domain).toBe("search.example");
+    expect(carried.landing_page).toBe("/pricing");
+  });
+
+  it("stay empty after the visitor rejects", () => {
+    arriveFrom("https://search.example/");
+    window.history.replaceState(null, "", "/pricing");
+    const form = render(<LandedForm />);
+
+    choose("denied");
+
+    const carried = submit(form);
+    expect(carried.referring_domain).toBe("");
+    expect(carried.landing_page).toBe("");
+  });
+
+  it("are cleared on a later submit after consent is withdrawn", () => {
+    arriveFrom("https://search.example/");
+    const form = render(<LandedForm />);
+    choose("granted");
+    expect(submit(form).referring_domain).toBe("search.example");
+
+    choose("denied");
+    const carried = submit(form);
+    expect(carried.referring_domain).toBe("");
+    expect(carried.landing_page).toBe("");
+  });
+
+  it("never carry the site's own domain as a referrer", () => {
+    arriveFrom(`${window.location.origin}/pricing`);
+    window.history.replaceState(null, "", "/demo");
+    const form = render(<LandedForm />);
+    choose("granted");
+
+    const carried = submit(form);
+    expect(carried.referring_domain).toBe("");
+    expect(carried.landing_page).toBe("/demo");
   });
 });

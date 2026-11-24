@@ -23,7 +23,7 @@ export default function Privacy() {
         <ul>
           <li>
             <strong>Form fields.</strong> On the demo form: first name, last name,
-            work email, company and number of employees, plus the plan you came
+            work email, company and fleet size in vehicles, plus the plan you came
             from on the pricing page.
           </li>
           <li>
@@ -35,18 +35,30 @@ export default function Privacy() {
             stored and an existing cookie is deleted.
           </li>
           <li>
+            <strong>Where you came from.</strong> The domain of the site that
+            linked you here, if there was one, and the path of the first page
+            you opened. Both are kept in the same <code>rw_attrib</code> cookie
+            under the same rule: only after Accept all, deleted on Reject all.
+          </li>
+          <li>
             <strong>Google Analytics client ID.</strong> A random ID from the{" "}
             <code>_ga</code> cookie, read only after Accept all, so a form
             submission can be matched to the same visit in Google Analytics.
           </li>
           <li>
             <strong>Your cookie choice.</strong> Stored in <code>rw_consent</code>{" "}
-            for 180 days so the banner does not ask again.
+            for 180 days so the banner does not ask again. The time you chose
+            is stored beside it in <code>rw_consent_at</code>. Both are kept
+            whether you accept or reject, because they are the record of your
+            choice.
           </li>
         </ul>
         <p>
-          The click IDs, campaign tags and Google Analytics client ID are sent
-          with the form as hidden fields, and only when you have accepted.
+          The click IDs, campaign tags, referring domain, landing page and
+          Google Analytics client ID are sent with the form as hidden fields,
+          and only when you have accepted. Your cookie choice and the time
+          you made it are always sent with the form, so the record shows
+          whether your details may be shared with ad platforms.
         </p>
 
         <h2>Where it is sent</h2>

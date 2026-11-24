@@ -3,7 +3,8 @@
 import { useEffect, useRef } from "react";
 import { HIDDEN_FIELD_NAMES, readHiddenFieldValues } from "@/lib/hiddenFields";
 
-// Hidden inputs for click IDs, UTMs and the GA client ID. Values are filled
+// Hidden inputs for click IDs, UTMs, the referring domain, the landing page
+// and the GA client ID. Values are filled
 // on submit, not on render: capture runs after hydration, and consent can
 // change while the form is open. The native submit listener on the form runs
 // before React's onSubmit, so the handler sees the fresh values.

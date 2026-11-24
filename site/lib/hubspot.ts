@@ -11,13 +11,20 @@ export function toHubSpotProperties(lead: Lead): Record<string, string> {
     firstname: lead.first_name,
     lastname: lead.last_name,
     company: lead.company,
-    employees: lead.employees,
+    fleet_size: lead.fleet_size,
     form_id: lead.form_id,
   };
   if (lead.plan) properties.plan = lead.plan;
   for (const name of HIDDEN_FIELD_NAMES) {
     const value = lead[name];
     if (value) properties[name] = value;
+  }
+  // The three consent values are written together, and only when the visitor
+  // made a choice. A lead with no choice leaves the stored consent alone.
+  if (lead.ad_consent_timestamp) {
+    properties.ad_user_data_consent = String(lead.ad_user_data_consent);
+    properties.ad_personalization_consent = String(lead.ad_personalization_consent);
+    properties.ad_consent_timestamp = lead.ad_consent_timestamp;
   }
   return properties;
 }
