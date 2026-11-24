@@ -2,21 +2,13 @@
 
 import { useEffect, useState } from "react";
 import { applyConsent } from "@/lib/attribution";
-import {
-  CONSENT_OPEN_EVENT,
-  readConsent,
-  readConsentTime,
-  setConsent,
-  type ConsentChoice,
-} from "@/lib/consent";
+import { CONSENT_OPEN_EVENT, readConsent, setConsent, type ConsentChoice } from "@/lib/consent";
 
 export function ConsentBanner() {
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
-    // A choice saved before its time was recorded is asked again, so every
-    // stored choice has a time.
-    if (readConsent() === null || readConsentTime() === "") setOpen(true);
+    if (readConsent() === null) setOpen(true);
     const reopen = () => setOpen(true);
     window.addEventListener(CONSENT_OPEN_EVENT, reopen);
     return () => window.removeEventListener(CONSENT_OPEN_EVENT, reopen);

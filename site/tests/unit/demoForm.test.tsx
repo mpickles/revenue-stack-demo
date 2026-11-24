@@ -227,8 +227,26 @@ describe("the consent banner and the time of the choice", () => {
     expect(banner()).toBeNull();
   });
 
-  it("asks again for a saved choice that has no saved time", () => {
+  it.each(["granted", "denied"])("stays closed for a saved %s choice that has no saved time", (choice) => {
+    document.cookie = `rw_consent=${choice}; Path=/`;
+    renderPage();
+    expect(banner()).toBeNull();
+  });
+
+  it("sends a saved choice with no saved time as the saved booleans and an empty timestamp", async () => {
     document.cookie = "rw_consent=granted; Path=/";
+    renderPage();
+    const payload = await fillAndSubmit();
+
+    expect(payload.ad_user_data_consent).toBe(true);
+    expect(payload.ad_personalization_consent).toBe(true);
+    expect(payload.ad_consent_timestamp).toBe("");
+    // The saved choice still applies to the consent gate.
+    expect(payload.gclid).toBe("TEST123");
+    expect(document.cookie).not.toContain("rw_consent_at");
+  });
+
+  it("opens when there is no saved choice", () => {
     renderPage();
     expect(banner()).not.toBeNull();
   });
