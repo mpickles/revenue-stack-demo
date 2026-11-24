@@ -23,7 +23,7 @@ export default function Privacy() {
         <ul>
           <li>
             <strong>Form fields.</strong> On the demo form: first name, last name,
-            work email, company and number of employees, plus the plan you came
+            work email, company and fleet size in vehicles, plus the plan you came
             from on the pricing page.
           </li>
           <li>

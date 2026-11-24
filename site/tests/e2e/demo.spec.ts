@@ -17,7 +17,7 @@ test("demo form sends the gclid to /api/lead and pushes generate_lead", async ({
   await page.getByLabel("Last name").fill("Fake");
   await page.getByLabel("Work email").fill(" Dana.Fake@Example-Fleet.test ");
   await page.getByLabel("Company").fill("Example Fleet Co");
-  await page.getByLabel("Employees").selectOption("50-199");
+  await page.getByLabel("Fleet size (vehicles)").selectOption("50-199");
   await page.getByRole("button", { name: "Book my demo" }).click();
 
   await expect(page).toHaveURL(/\/thanks$/);
@@ -30,7 +30,7 @@ test("demo form sends the gclid to /api/lead and pushes generate_lead", async ({
     first_name: "Dana",
     last_name: "Fake",
     company: "Example Fleet Co",
-    employees: "50-199",
+    fleet_size: "50-199",
     gclid: "TEST123",
   });
   expect((payload!.email as string).toLowerCase()).toBe("dana.fake@example-fleet.test");

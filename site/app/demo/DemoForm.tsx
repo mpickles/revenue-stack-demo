@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState, type FormEvent } from "react";
 import { HiddenAttributionFields } from "@/components/HiddenAttributionFields";
 import { push } from "@/lib/dataLayer";
-import { EMPLOYEE_BANDS } from "@/lib/employees";
+import { FLEET_SIZE_BANDS } from "@/lib/fleetSize";
 import type { PlanId } from "@/lib/plans";
 
 const FORM_ID = "demo";
@@ -15,7 +15,7 @@ const FIELD_LABELS: Record<string, string> = {
   last_name: "last name",
   email: "work email",
   company: "company",
-  employees: "employees",
+  fleet_size: "fleet size",
 };
 
 type Status = { kind: "idle" } | { kind: "sending" } | { kind: "error"; message: string };
@@ -127,18 +127,18 @@ export function DemoForm({ plan }: { plan: PlanId | null }) {
         <span className="field-error-text">Enter your company name.</span>
       </div>
       <div className="field">
-        <label htmlFor="employees">Employees</label>
-        <select id="employees" name="employees" required defaultValue="">
+        <label htmlFor="fleet_size">Fleet size (vehicles)</label>
+        <select id="fleet_size" name="fleet_size" required defaultValue="">
           <option value="" disabled>
             Choose a range
           </option>
-          {EMPLOYEE_BANDS.map((band) => (
-            <option key={band.value} value={band.value}>
-              {band.label}
+          {FLEET_SIZE_BANDS.map((band) => (
+            <option key={band} value={band}>
+              {band}
             </option>
           ))}
         </select>
-        <span className="field-error-text">Choose a range.</span>
+        <span className="field-error-text">Choose a fleet size.</span>
       </div>
       <HiddenAttributionFields />
       {status.kind === "error" && (

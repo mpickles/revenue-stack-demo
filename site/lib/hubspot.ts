@@ -11,7 +11,7 @@ export function toHubSpotProperties(lead: Lead): Record<string, string> {
     firstname: lead.first_name,
     lastname: lead.last_name,
     company: lead.company,
-    employees: lead.employees,
+    fleet_size: lead.fleet_size,
     form_id: lead.form_id,
   };
   if (lead.plan) properties.plan = lead.plan;

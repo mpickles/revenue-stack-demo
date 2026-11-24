@@ -22,7 +22,7 @@ Internal names must match exactly.
 
 | Internal name | Label            | Field type                 | Options (internal value = label unless shown) |
 |---------------|------------------|----------------------------|------------------|
-| employees     | Employees        | Dropdown select            | 1-49 (1–49), 50-199 (50–199), 200-999 (200–999), 1000-4999 (1,000–4,999), 5000+ (5,000+) |
+| fleet_size    | Fleet size (vehicles) | Dropdown select       | 1-19, 20-49, 50-199, 200-499, 500-999, 1,000+ |
 | plan          | Plan of interest | Dropdown select            | core (Core), pro (Pro), enterprise (Enterprise) |
 | form_id       | Lead form        | Single-line text           | |
 | gclid         | gclid            | Single-line text           | |
@@ -40,6 +40,11 @@ Internal names must match exactly.
 
 Empty values are not sent, so a repeat lead without a click ID keeps the
 value already on the contact.
+
+`fleet_size` replaces the earlier `employees` property, which the site no
+longer sends. If `employees` was already created in the portal, archive it.
+The six `fleet_size` options must be typed exactly as shown, comma included
+in `1,000+`, or HubSpot rejects the value.
 
 Private app scopes needed for HUBSPOT_TOKEN: `crm.objects.contacts.write`
 (and `crm.objects.contacts.read`, which upsert needs to match on email).

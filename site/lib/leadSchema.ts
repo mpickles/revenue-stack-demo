@@ -1,4 +1,4 @@
-import { EMPLOYEE_BANDS, type EmployeeBand } from "./employees";
+import { isFleetSizeBand, type FleetSizeBand } from "./fleetSize";
 import { HIDDEN_FIELD_NAMES, type HiddenFieldName } from "./hiddenFields";
 import { PLAN_IDS, type PlanId } from "./plans";
 
@@ -11,7 +11,7 @@ export type Lead = {
   last_name: string;
   email: string;
   company: string;
-  employees: EmployeeBand;
+  fleet_size: FleetSizeBand;
   plan: PlanId | null;
 } & Partial<Record<HiddenFieldName, string>>;
 
@@ -44,8 +44,8 @@ export function validateLead(input: unknown): LeadResult {
 
   const company = required("company", 200);
 
-  const employees = text(body.employees);
-  if (!EMPLOYEE_BANDS.some((band) => band.value === employees)) errors.push("employees");
+  const fleetSize = text(body.fleet_size);
+  if (!isFleetSizeBand(fleetSize)) errors.push("fleet_size");
 
   const rawPlan = body.plan;
   let plan: PlanId | null = null;
@@ -72,7 +72,7 @@ export function validateLead(input: unknown): LeadResult {
       last_name: lastName,
       email,
       company,
-      employees: employees as EmployeeBand,
+      fleet_size: fleetSize as FleetSizeBand,
       plan,
       ...hidden,
     },

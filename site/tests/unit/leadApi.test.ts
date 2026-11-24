@@ -1,6 +1,7 @@
 // @vitest-environment node
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { POST } from "@/app/api/lead/route";
+import { FLEET_SIZE_BANDS } from "@/lib/fleetSize";
 
 const EMAIL = "Dana.Fake@Example-Fleet.test";
 
@@ -10,7 +11,7 @@ const validLead = (overrides: Record<string, unknown> = {}) => ({
   last_name: "Fake",
   email: EMAIL,
   company: "Example Fleet Co",
-  employees: "50-199",
+  fleet_size: "50-199",
   plan: "pro",
   gclid: "TEST123",
   utm_source: "google",
@@ -74,13 +75,45 @@ describe("POST /api/lead validation", () => {
   it("lists every missing required field", async () => {
     const res = await post({ form_id: "demo" });
     expect(res.status).toBe(400);
-    expect((await res.json()).errors).toEqual(["first_name", "last_name", "email", "company", "employees"]);
+    expect((await res.json()).errors).toEqual(["first_name", "last_name", "email", "company", "fleet_size"]);
   });
 
-  it("rejects an employees value that is not on the list", async () => {
-    const res = await post(validLead({ employees: "lots" }));
+  it("has exactly the six fleet size bands from the company brief", () => {
+    expect([...FLEET_SIZE_BANDS]).toEqual(["1-19", "20-49", "50-199", "200-499", "500-999", "1,000+"]);
+  });
+
+  it.each([...FLEET_SIZE_BANDS])("accepts the fleet size band %s", async (band) => {
+    const res = await post(validLead({ fleet_size: band }));
+    expect(res.status).toBe(200);
+  });
+
+  it("rejects a fleet size value that is not on the list", async () => {
+    const res = await post(validLead({ fleet_size: "lots" }));
     expect(res.status).toBe(400);
-    expect((await res.json()).errors).toEqual(["employees"]);
+    expect((await res.json()).errors).toEqual(["fleet_size"]);
+  });
+
+  it.each(["1000+", "1-49", "5000+", "20", "", 50])("rejects the fleet size %j", async (value) => {
+    const res = await post(validLead({ fleet_size: value }));
+    expect(res.status).toBe(400);
+    expect((await res.json()).errors).toEqual(["fleet_size"]);
+  });
+
+  it("rejects a lead that still sends employees and no fleet size", async () => {
+    const { fleet_size: _omit, ...old } = validLead();
+    const res = await post({ ...old, employees: "50-199" });
+    expect(res.status).toBe(400);
+    expect((await res.json()).errors).toEqual(["fleet_size"]);
+  });
+
+  it("sends the 1,000+ band to HubSpot exactly as written", async () => {
+    process.env.HUBSPOT_TOKEN = "fake-token-for-tests";
+    fetchMock.mockResolvedValue(new Response("{}", { status: 200 }));
+    await post(validLead({ fleet_size: "1,000+" }));
+    const [, init] = fetchMock.mock.calls[0] as [string, RequestInit];
+    const { properties } = JSON.parse(init.body as string).inputs[0];
+    expect(properties.fleet_size).toBe("1,000+");
+    expect(properties).not.toHaveProperty("employees");
   });
 
   it("rejects a plan that is not core, pro or enterprise", async () => {
@@ -148,7 +181,7 @@ describe("POST /api/lead with HUBSPOT_TOKEN", () => {
             firstname: "Dana",
             lastname: "Fake",
             company: "Example Fleet Co",
-            employees: "50-199",
+            fleet_size: "50-199",
             plan: "pro",
             form_id: "demo",
             gclid: "TEST123",
