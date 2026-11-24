@@ -34,7 +34,7 @@ Six builds, in the order a lead moves through them. Each has a write-up on [my p
 | Build | Folders | Status |
 |---|---|---|
 | Tracked site: consent, click IDs, hidden fields, lead API, Tag Manager and GA4 | `site/`, [`tagging/`](tagging) | In progress. The site code is live |
-| Salesforce routing: lead to campaign Flow, queues, validation rules, and the conversion upload file for Google Ads | [`crm/salesforce/`](crm/salesforce), `pipelines/offline_conversions/` | In progress |
+| Salesforce routing: lead to campaign Flows, queues, one validation rule, and the conversion upload file for Google Ads | [`crm/salesforce/`](crm/salesforce), `pipelines/offline_conversions/` | In progress |
 | Campaign QA agent: checks pages for tags, events, UTMs and consent before launch | [`agents/tracking_qa/`](agents/tracking_qa) | Planned |
 | Lead qualifier agent: scores a lead, writes back to Salesforce, routes it | [`agents/lead_classifier/`](agents/lead_classifier) | Planned |
 | Funnel and attribution in SQL, and a reporting agent with a number check | `pipelines/synthetic/`, [`warehouse/`](warehouse), `agents/analyst/` | Planned |
