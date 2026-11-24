@@ -75,7 +75,7 @@
       ],
       [
         "An unknown company size is not a small company.",
-        "Leads with no employee count go to a review queue.",
+        "Leads with no fleet size go to a review queue.",
         "A wrong owner costs more than a short wait."
       ]
     ],
@@ -152,8 +152,8 @@
       "slug": "salesforce-routing",
       "tile": "Salesforce routing and conversions",
       "readme": "crm/salesforce/README.md",
-      "sentence": "Leads from the form get a stage, a campaign and an owner in Salesforce. Conversions go back to Google Ads.",
-      "graded_on": "37 test leads with an answer key: the right stage, campaign and owner for each, and every junk lead blocked.",
+      "sentence": "Leads from the form get a stage, a campaign and an owner in Salesforce. No lead is blocked. Conversions go back to Google Ads.",
+      "graded_on": "37 test leads with an answer key: the right stage, reason, segment, channel, campaign and owner for each. Not run yet.",
       "headline": null,
       "recording": null,
       "links": [
@@ -185,13 +185,13 @@
           "Routing built by clicking is hard to review and easy to break."
         ],
         "built": [
-          "Two rules block leads that should not get in.",
-          "One Flow sets the stage, the campaign and the owner queue.",
+          "Every lead is saved. One that does not fit gets a stage and a reason.",
+          "Two Flows set the stage, the campaign and the owner queue from fleet size.",
           "A script writes the Google Ads upload file and checks every row."
         ],
         "choices": [
-          "Leads with no company size go to a review queue. Unknown is not small.",
-          "The UTM value is lowercased inside the Flow, because other forms and imports create leads too.",
+          "Fleet size, not employee count. The price is per vehicle.",
+          "No lead is ever blocked. A blocked web lead is never created, so nobody can review it.",
           "The setup is saved as files, so a change shows up as a diff."
         ]
       }

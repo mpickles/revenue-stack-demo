@@ -1,26 +1,26 @@
-test_id,first_name,last_name,email,company,employees,utm_source,utm_medium,utm_campaign,gclid,consent_given,expected_result,expected_lifecycle_stage,expected_campaign,expected_owner_queue,expected_block_reason
-T01,Ava,Lindqvist,ava.lindqvist@northpost.example.com,Northpost Couriers,340,google,cpc,brand_search,TEST-G-001,TRUE,created,MQL,Paid Search,Enterprise Queue,
-T02,Marcus,Oyelaran,marcus.oyelaran@brightline.example.com,Brightline Plumbing,62,google,cpc,fleet_tracking,TEST-G-002,TRUE,created,MQL,Paid Search,Mid-market Queue,
-T03,Priya,Raman,priya.raman@harbor.example.com,Harbor Linen Service,18,google,cpc,fleet_tracking,TEST-G-003,TRUE,created,New,Paid Search,Small Business Queue,
-T04,Tomas,Vrabel,tomas.vrabel@cedar.example.com,Cedar Ridge HVAC,125,bing,cpc,competitor,TEST-M-004,TRUE,created,MQL,Paid Search,Mid-market Queue,
-T05,Elena,Sokolova,elena.sokolova@metro.example.com,Metro Parcel Group,1200,bing,cpc,brand_search,TEST-M-005,TRUE,created,MQL,Paid Search,Enterprise Queue,
-T06,Jordan,Achebe,jordan.achebe@sunfield.example.com,Sunfield Landscaping,35,linkedin,paid_social,ops_leaders,TEST-L-006,TRUE,created,New,Paid Social,Small Business Queue,
-T07,Hana,Kobayashi,hana.kobayashi@tidewater.example.com,Tidewater Delivery,210,linkedin,paid_social,ops_leaders,TEST-L-007,TRUE,created,MQL,Paid Social,Enterprise Queue,
-T08,Diego,Marchetti,diego.marchetti@pioneer.example.com,Pioneer Pest Control,88,linkedin,paid_social,safety_scores,TEST-L-008,TRUE,created,MQL,Paid Social,Mid-market Queue,
-T09,Nora,Fitzgerald,nora.fitzgerald@summit.example.com,Summit Courier Co,47,,,,,TRUE,created,New,Organic and Direct,Small Business Queue,
-T10,Samir,Haddad,samir.haddad@ironbridge.example.com,Ironbridge Logistics,560,,,,,TRUE,created,MQL,Organic and Direct,Enterprise Queue,
-T11,Lucy,Okafor,lucy.okafor@greenway.example.com,Greenway Waste Services,150,newsletter,email,october_issue,,TRUE,created,MQL,Organic and Direct,Mid-market Queue,
-T12,Caleb,Whitlock,caleb.whitlock@lakeshore.example.com,Lakeshore Electric,22,google,organic,,,TRUE,created,New,Organic and Direct,Small Business Queue,
-T13,Mei,Tanaka,mei.tanaka@atlas.example.com,Atlas Field Services,75,google,cpc,maintenance_alerts,TEST-G-013,TRUE,created,MQL,Paid Search,Mid-market Queue,
-T14,Rafael,Duarte,rafael.duarte@coastal.example.com,Coastal Catering Fleet,49,google,cpc,maintenance_alerts,TEST-G-014,TRUE,created,New,Paid Search,Small Business Queue,
-T15,Ingrid,Halvorsen,ingrid.halvorsen@polar.example.com,Polar Freight Lines,2000,google,ppc,enterprise,TEST-G-015,TRUE,created,MQL,Paid Search,Enterprise Queue,
-T16,Owen,Castellanos,owen.castellanos@riverbend.example.com,Riverbend Movers,50,bing,cpc,fleet_tracking,TEST-M-016,TRUE,created,MQL,Paid Search,Mid-market Queue,
-T17,Zara,Mbeki,zara.mbeki@crestline.example.com,Crestline Glass Repair,199,linkedin,paid_social,safety_scores,TEST-L-017,TRUE,created,MQL,Paid Social,Mid-market Queue,
-T18,Felix,Novak,felix.novak@union.example.com,Union Square Florists,20,,,,,TRUE,created,New,Organic and Direct,Small Business Queue,
-T19,Amara,Bello,amara.bello@trailhead.example.com,Trailhead Bus Charter,200,google,cpc,enterprise,TEST-G-019,TRUE,created,MQL,Paid Search,Enterprise Queue,
-T20,Leo,Barros,leo.barros@quickdrop.example.com,Quickdrop Grocery Vans,310,partner,referral,fleet_summit,,TRUE,created,MQL,Organic and Direct,Enterprise Queue,
-J01,Pat,Nolan,pat.nolan@northgate.example.com,Northgate Haulage,400,google,cpc,enterprise,TEST-G-J01,FALSE,blocked,,,,consent not given
-J02,Kim,Reyes,kim.reyes@gmail.com,Reyes Transport Group,650,google,cpc,enterprise,TEST-G-J02,TRUE,blocked,,,,free email on a 200+ employee company
-J03,Sam,Ortiz,sam.ortiz@yahoo.com,Ortiz Enterprises,250,bing,cpc,brand_search,TEST-M-J03,TRUE,blocked,,,,free email on a 200+ employee company
-J04,Alex,Brandt,alex.brandt@velofleet.example.com,Velo Fleet,90,linkedin,paid_social,ops_leaders,TEST-L-J04,FALSE,blocked,,,,consent not given
-J05,Dana,Ives,dana.ives@outlook.com,Ives Regional Freight,1500,,,,,FALSE,blocked,,,,consent not given and free email
+test_id,first_name,last_name,email,company,fleet_size,utm_source,utm_medium,utm_campaign,gclid,referring_domain,consent_given,expected_result,expected_lifecycle_stage,expected_stage_reason,expected_segment,expected_annual_value,expected_lead_source,expected_campaign,expected_owner_queue
+T01,Ava,Lindqvist,ava.lindqvist@northpost.example.com,Northpost Couriers,200-499,google,cpc,brand_search,TEST-G-001,www.google.com,TRUE,created,MQL,,Mid-Market,45600,Paid Search,brand_search,Mid-market Queue
+T02,Marcus,Oyelaran,marcus.oyelaran@brightline.example.com,Brightline Plumbing,50-199,google,cpc,fleet_tracking,TEST-G-002,www.google.com,TRUE,created,MQL,,Mid-Market,11400,Paid Search,fleet_tracking,Mid-market Queue
+T03,Priya,Raman,priya.raman@harbor.example.com,Harbor Linen Service,1-19,google,cpc,fleet_tracking,TEST-G-003,www.google.com,TRUE,created,Nurture,Below fleet threshold,Below Threshold,,Paid Search,fleet_tracking,Nurture Queue
+T04,Tomas,Vrabel,tomas.vrabel@cedar.example.com,Cedar Ridge HVAC,50-199,bing,cpc,competitor,TEST-M-004,www.bing.com,TRUE,created,MQL,,Mid-Market,11400,Paid Search,competitor,Mid-market Queue
+T05,Elena,Sokolova,elena.sokolova@metro.example.com,Metro Parcel Group,"1,000+",bing,cpc,brand_search,TEST-M-005,www.bing.com,TRUE,created,MQL,,Enterprise,228000,Paid Search,brand_search,Enterprise Queue
+T06,Jordan,Achebe,jordan.achebe@sunfield.example.com,Sunfield Landscaping,20-49,linkedin,paid_social,ops_leaders,TEST-L-006,www.linkedin.com,TRUE,created,MQL,,Small Business,4560,Paid Social,ops_leaders,Small Business Queue
+T07,Hana,Kobayashi,hana.kobayashi@tidewater.example.com,Tidewater Delivery,200-499,linkedin,paid_social,ops_leaders,TEST-L-007,www.linkedin.com,TRUE,created,MQL,,Mid-Market,45600,Paid Social,ops_leaders,Mid-market Queue
+T08,Diego,Marchetti,diego.marchetti@pioneer.example.com,Pioneer Pest Control,50-199,linkedin,paid_social,safety_scores,TEST-L-008,www.linkedin.com,TRUE,created,MQL,,Mid-Market,11400,Paid Social,safety_scores,Mid-market Queue
+T09,Nora,Fitzgerald,nora.fitzgerald@summit.example.com,Summit Courier Co,20-49,,,,,www.google.com,TRUE,created,MQL,,Small Business,4560,Organic Search,Organic Search - Other,Small Business Queue
+T10,Samir,Haddad,samir.haddad@ironbridge.example.com,Ironbridge Logistics,500-999,,,,,,TRUE,created,MQL,,Enterprise,114000,Direct,Direct - Other,Enterprise Queue
+T11,Lucy,Okafor,lucy.okafor@greenway.example.com,Greenway Waste Services,50-199,newsletter,email,october_issue,,,TRUE,created,MQL,,Mid-Market,11400,Email,october_issue,Mid-market Queue
+T12,Caleb,Whitlock,caleb.whitlock@lakeshore.example.com,Lakeshore Electric,20-49,google,organic,,,www.google.com,TRUE,created,MQL,,Small Business,4560,Other,Other - Other,Small Business Queue
+T13,Mei,Tanaka,mei.tanaka@atlas.example.com,Atlas Field Services,50-199,google,cpc,maintenance_alerts,TEST-G-013,www.google.com,TRUE,created,MQL,,Mid-Market,11400,Paid Search,maintenance_alerts,Mid-market Queue
+T14,Rafael,Duarte,rafael.duarte@coastal.example.com,Coastal Catering Fleet,20-49,google,cpc,maintenance_alerts,TEST-G-014,www.google.com,TRUE,created,MQL,,Small Business,4560,Paid Search,maintenance_alerts,Small Business Queue
+T15,Ingrid,Halvorsen,ingrid.halvorsen@polar.example.com,Polar Freight Lines,"1,000+",google,ppc,enterprise,TEST-G-015,www.google.com,TRUE,created,MQL,,Enterprise,228000,Paid Search,enterprise,Enterprise Queue
+T16,Owen,Castellanos,owen.castellanos@riverbend.example.com,Riverbend Movers,50-199,bing,cpc,fleet_tracking,TEST-M-016,www.bing.com,TRUE,created,MQL,,Mid-Market,11400,Paid Search,fleet_tracking,Mid-market Queue
+T17,Zara,Mbeki,zara.mbeki@crestline.example.com,Crestline Glass Repair,50-199,linkedin,paid_social,safety_scores,TEST-L-017,www.linkedin.com,TRUE,created,MQL,,Mid-Market,11400,Paid Social,safety_scores,Mid-market Queue
+T18,Felix,Novak,felix.novak@union.example.com,Union Square Florists,20-49,,,,,www.perplexity.ai,TRUE,created,MQL,,Small Business,4560,AI Search,AI Search - Other,Small Business Queue
+T19,Amara,Bello,amara.bello@trailhead.example.com,Trailhead Bus Charter,200-499,google,cpc,enterprise,TEST-G-019,www.google.com,TRUE,created,MQL,,Mid-Market,45600,Paid Search,enterprise,Mid-market Queue
+T20,Leo,Barros,leo.barros@quickdrop.example.com,Quickdrop Grocery Vans,200-499,partner,referral,fleet_summit,,fleetsummit.example.org,TRUE,created,MQL,,Mid-Market,45600,Referral,fleet_summit,Mid-market Queue
+J01,Pat,Nolan,pat.nolan@northgate.example.com,Northgate Haulage,200-499,google,cpc,enterprise,TEST-G-J01,www.google.com,FALSE,created,MQL,,Mid-Market,45600,Paid Search,enterprise,Mid-market Queue
+J02,Kim,Reyes,kim.reyes@gmail.com,Reyes Transport Group,500-999,google,cpc,enterprise,TEST-G-J02,www.google.com,TRUE,created,New,Free email needs review,Enterprise,114000,Paid Search,enterprise,Needs Review Queue
+J03,Sam,Ortiz,sam.ortiz@yahoo.com,Ortiz Enterprises,200-499,bing,cpc,brand_search,TEST-M-J03,www.bing.com,TRUE,created,New,Free email needs review,Mid-Market,45600,Paid Search,brand_search,Needs Review Queue
+J04,Alex,Brandt,alex.brandt@velofleet.example.com,Velo Fleet,50-199,linkedin,paid_social,ops_leaders,TEST-L-J04,www.linkedin.com,FALSE,created,MQL,,Mid-Market,11400,Paid Social,ops_leaders,Mid-market Queue
+J05,Dana,Ives,dana.ives@outlook.com,Ives Regional Freight,"1,000+",,,,,vanowners.example.org,FALSE,created,New,Free email needs review,Enterprise,228000,Referral,Referral - Other,Needs Review Queue
