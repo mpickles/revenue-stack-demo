@@ -1,24 +1,56 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<!-- What to pull from the Salesforce account. Edit a name here if yours differs. -->
+<!-- What to pull from the Salesforce account. The fields are the ones in ../fields.md. Edit a name here if yours differs. -->
 <Package xmlns="http://soap.sforce.com/2006/04/metadata">
     <types>
         <members>Lead.UTM_Source__c</members>
         <members>Lead.UTM_Medium__c</members>
         <members>Lead.UTM_Campaign__c</members>
+        <members>Lead.UTM_Term__c</members>
+        <members>Lead.UTM_Content__c</members>
         <members>Lead.GCLID__c</members>
+        <members>Lead.GBRAID__c</members>
+        <members>Lead.WBRAID__c</members>
+        <members>Lead.MSCLKID__c</members>
+        <members>Lead.LI_FAT_ID__c</members>
+        <members>Lead.Referring_Domain__c</members>
+        <members>Lead.Landing_Page__c</members>
         <members>Lead.Consent_Given__c</members>
-        <members>Lead.Lifecycle_Stage__c</members>
+        <members>Lead.Ad_Personalization_Consent__c</members>
+        <members>Lead.Ad_Consent_Timestamp__c</members>
         <members>Lead.Lead_Email_Copy__c</members>
+        <members>Lead.Fleet_Size__c</members>
+        <members>Lead.Segment__c</members>
+        <members>Lead.Expected_Annual_Value__c</members>
+        <members>Lead.Lifecycle_Stage__c</members>
+        <members>Lead.Stage_Reason__c</members>
+        <members>Lead.First_MQL_Date__c</members>
+        <members>Lead.Latest_MQL_Date__c</members>
+        <members>Lead.MQL_Count__c</members>
+        <members>Lead.SQL_Date__c</members>
+        <members>Lead.Disqualified_Date__c</members>
+        <members>Lead.First_Response_Date__c</members>
         <members>Opportunity.UTM_Source__c</members>
         <members>Opportunity.UTM_Medium__c</members>
         <members>Opportunity.UTM_Campaign__c</members>
+        <members>Opportunity.UTM_Term__c</members>
+        <members>Opportunity.UTM_Content__c</members>
         <members>Opportunity.GCLID__c</members>
+        <members>Opportunity.GBRAID__c</members>
+        <members>Opportunity.WBRAID__c</members>
+        <members>Opportunity.MSCLKID__c</members>
+        <members>Opportunity.LI_FAT_ID__c</members>
+        <members>Opportunity.Ad_User_Data_Consent__c</members>
+        <members>Opportunity.Ad_Personalization_Consent__c</members>
+        <members>Opportunity.Ad_Consent_Timestamp__c</members>
         <members>Opportunity.Lead_Email__c</members>
+        <members>Opportunity.Fleet_Size__c</members>
+        <members>Opportunity.Segment__c</members>
+        <members>Opportunity.Expected_Annual_Value__c</members>
+        <members>Opportunity.First_MQL_Date__c</members>
         <name>CustomField</name>
     </types>
     <types>
-        <members>Lead.Consent_Required</members>
-        <members>Lead.Free_Email_Enterprise</members>
+        <members>Lead.Stage_Reason_Required</members>
         <name>ValidationRule</name>
     </types>
     <types>
