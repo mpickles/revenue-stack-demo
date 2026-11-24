@@ -16,7 +16,7 @@ let container: HTMLDivElement;
 let root: Root;
 
 function clearCookies() {
-  for (const name of ["rw_consent", "rw_attrib", "_ga"]) {
+  for (const name of ["rw_consent", "rw_consent_at", "rw_attrib", "_ga"]) {
     document.cookie = `${name}=; Max-Age=0; Path=/`;
   }
 }

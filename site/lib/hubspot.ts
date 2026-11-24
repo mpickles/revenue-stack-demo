@@ -19,6 +19,13 @@ export function toHubSpotProperties(lead: Lead): Record<string, string> {
     const value = lead[name];
     if (value) properties[name] = value;
   }
+  // The three consent values are written together, and only when the visitor
+  // made a choice. A lead with no choice leaves the stored consent alone.
+  if (lead.ad_consent_timestamp) {
+    properties.ad_user_data_consent = String(lead.ad_user_data_consent);
+    properties.ad_personalization_consent = String(lead.ad_personalization_consent);
+    properties.ad_consent_timestamp = lead.ad_consent_timestamp;
+  }
   return properties;
 }
 

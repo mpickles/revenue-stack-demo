@@ -5,6 +5,8 @@ import { FLEET_SIZE_BANDS } from "@/lib/fleetSize";
 
 const EMAIL = "Dana.Fake@Example-Fleet.test";
 
+const CHOSEN_AT = "2026-11-23T18:04:05.000Z";
+
 const validLead = (overrides: Record<string, unknown> = {}) => ({
   form_id: "demo",
   first_name: "Dana",
@@ -150,6 +152,39 @@ describe("POST /api/lead validation", () => {
     expect((await notText.json()).errors).toEqual(["referring_domain"]);
   });
 
+  it("accepts consent booleans and an ISO consent timestamp", async () => {
+    for (const granted of [true, false]) {
+      const res = await post(
+        validLead({
+          ad_user_data_consent: granted,
+          ad_personalization_consent: granted,
+          ad_consent_timestamp: CHOSEN_AT,
+        }),
+      );
+      expect(res.status).toBe(200);
+    }
+  });
+
+  it("accepts a lead with no consent values, as a lead with no consent", async () => {
+    expect((await post(validLead())).status).toBe(200);
+    expect((await post(validLead({ ad_consent_timestamp: "" }))).status).toBe(200);
+  });
+
+  it.each(["true", "false", 1, 0, "granted", {}])("rejects the consent value %j", async (value) => {
+    const res = await post(validLead({ ad_user_data_consent: value, ad_personalization_consent: value }));
+    expect(res.status).toBe(400);
+    expect((await res.json()).errors).toEqual(["ad_user_data_consent", "ad_personalization_consent"]);
+  });
+
+  it.each(["yesterday", "2026-11-23", 1732385045, "2026-13-45T99:99:99Z"])(
+    "rejects the consent timestamp %j",
+    async (value) => {
+      const res = await post(validLead({ ad_consent_timestamp: value }));
+      expect(res.status).toBe(400);
+      expect((await res.json()).errors).toEqual(["ad_consent_timestamp"]);
+    },
+  );
+
   it("rejects a body that is not JSON", async () => {
     const res = await post("{not json");
     expect(res.status).toBe(400);
@@ -222,6 +257,57 @@ describe("POST /api/lead with HUBSPOT_TOKEN", () => {
     const properties = await sentProperties(validLead({ referring_domain: "", landing_page: "" }));
     expect(properties).not.toHaveProperty("referring_domain");
     expect(properties).not.toHaveProperty("landing_page");
+  });
+
+  it("sends the consent values and the time to HubSpot on the accept path", async () => {
+    const properties = await sentProperties(
+      validLead({ ad_user_data_consent: true, ad_personalization_consent: true, ad_consent_timestamp: CHOSEN_AT }),
+    );
+    expect(properties.ad_user_data_consent).toBe("true");
+    expect(properties.ad_personalization_consent).toBe("true");
+    expect(properties.ad_consent_timestamp).toBe(CHOSEN_AT);
+    expect(properties.gclid).toBe("TEST123");
+  });
+
+  it("sends the consent values and the time to HubSpot on the reject path", async () => {
+    const properties = await sentProperties(
+      validLead({
+        ad_user_data_consent: false,
+        ad_personalization_consent: false,
+        ad_consent_timestamp: CHOSEN_AT,
+        gclid: "",
+        utm_source: "",
+        ga_client_id: "",
+      }),
+    );
+    expect(properties).toEqual({
+      email: "dana.fake@example-fleet.test",
+      firstname: "Dana",
+      lastname: "Fake",
+      company: "Example Fleet Co",
+      fleet_size: "50-199",
+      plan: "pro",
+      form_id: "demo",
+      ad_user_data_consent: "false",
+      ad_personalization_consent: "false",
+      ad_consent_timestamp: CHOSEN_AT,
+    });
+  });
+
+  it("sends the consent timestamp to HubSpot in UTC", async () => {
+    const properties = await sentProperties(
+      validLead({ ad_user_data_consent: true, ad_personalization_consent: true, ad_consent_timestamp: "2026-11-23T12:04:05-06:00" }),
+    );
+    expect(properties.ad_consent_timestamp).toBe(CHOSEN_AT);
+  });
+
+  it("leaves the consent properties out when the visitor made no choice", async () => {
+    const properties = await sentProperties(
+      validLead({ ad_user_data_consent: false, ad_personalization_consent: false, ad_consent_timestamp: "" }),
+    );
+    expect(properties).not.toHaveProperty("ad_user_data_consent");
+    expect(properties).not.toHaveProperty("ad_personalization_consent");
+    expect(properties).not.toHaveProperty("ad_consent_timestamp");
   });
 
   it("returns 502 and logs only the status when HubSpot fails", async () => {

@@ -1,3 +1,4 @@
+import { toConsentTimestamp } from "./consent";
 import { isFleetSizeBand, type FleetSizeBand } from "./fleetSize";
 import { HIDDEN_FIELD_NAMES, type HiddenFieldName } from "./hiddenFields";
 import { PLAN_IDS, type PlanId } from "./plans";
@@ -13,6 +14,10 @@ export type Lead = {
   company: string;
   fleet_size: FleetSizeBand;
   plan: PlanId | null;
+  ad_user_data_consent: boolean;
+  ad_personalization_consent: boolean;
+  // ISO 8601 UTC. Empty when the visitor made no banner choice.
+  ad_consent_timestamp: string;
 } & Partial<Record<HiddenFieldName, string>>;
 
 export type LeadResult = { ok: true; lead: Lead } | { ok: false; errors: string[] };
@@ -64,6 +69,25 @@ export function validateLead(input: unknown): LeadResult {
     else if (value) hidden[name] = value;
   }
 
+  // A missing consent value is the safe one: false. A lead is never blocked
+  // for having no consent, only for sending something that is not a boolean.
+  const consentFlag = (name: string): boolean => {
+    const raw = body[name];
+    if (raw === undefined || raw === null) return false;
+    if (typeof raw !== "boolean") errors.push(name);
+    return raw === true;
+  };
+  const adUserData = consentFlag("ad_user_data_consent");
+  const adPersonalization = consentFlag("ad_personalization_consent");
+
+  let consentTimestamp = "";
+  const rawTimestamp = body.ad_consent_timestamp;
+  if (rawTimestamp !== undefined && rawTimestamp !== null && rawTimestamp !== "") {
+    const parsed = typeof rawTimestamp === "string" ? toConsentTimestamp(rawTimestamp.trim()) : null;
+    if (parsed) consentTimestamp = parsed;
+    else errors.push("ad_consent_timestamp");
+  }
+
   if (errors.length > 0) return { ok: false, errors };
   return {
     ok: true,
@@ -75,6 +99,9 @@ export function validateLead(input: unknown): LeadResult {
       company,
       fleet_size: fleetSize as FleetSizeBand,
       plan,
+      ad_user_data_consent: adUserData,
+      ad_personalization_consent: adPersonalization,
+      ad_consent_timestamp: consentTimestamp,
       ...hidden,
     },
   };

@@ -3,6 +3,7 @@
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState, type FormEvent } from "react";
 import { HiddenAttributionFields } from "@/components/HiddenAttributionFields";
+import { readConsentState } from "@/lib/consent";
 import { push } from "@/lib/dataLayer";
 import { FLEET_SIZE_BANDS } from "@/lib/fleetSize";
 import type { PlanId } from "@/lib/plans";
@@ -48,6 +49,9 @@ export function DemoForm({ plan }: { plan: PlanId | null }) {
     // Hidden attribution fields were filled by their own submit listener,
     // which runs before this handler.
     const fields = Object.fromEntries(new FormData(event.currentTarget)) as Record<string, string>;
+    // The consent values are read at submit time and always sent. They go to
+    // the lead API only, never to the data layer.
+    const consent = readConsentState();
     setStatus({ kind: "sending" });
 
     let res: Response;
@@ -55,7 +59,7 @@ export function DemoForm({ plan }: { plan: PlanId | null }) {
       res = await fetch("/api/lead", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...fields, form_id: FORM_ID, plan }),
+        body: JSON.stringify({ ...fields, ...consent, form_id: FORM_ID, plan }),
       });
     } catch {
       setStatus({ kind: "error", message: "Could not reach the server. Please try again." });

@@ -39,9 +39,18 @@ Internal names must match exactly.
 | ga_client_id  | GA client ID     | Single-line text           | |
 | referring_domain | Referring domain | Single-line text        | |
 | landing_page  | Landing page     | Single-line text           | |
+| ad_user_data_consent | Ad user data consent | Single checkbox     | true (Yes), false (No) |
+| ad_personalization_consent | Ad personalization consent | Single checkbox | true (Yes), false (No) |
+| ad_consent_timestamp | Ad consent timestamp | Date and time picker | |
 
 Empty values are not sent, so a repeat lead without a click ID keeps the
 value already on the contact.
+
+The three consent properties are sent together, and only when the visitor
+made a banner choice. A rejection is sent as `false`, with its time, so a
+later rejection replaces an earlier acceptance. A lead sent before any choice
+leaves the consent already on the contact alone. `ad_consent_timestamp` is
+sent as an ISO 8601 UTC time, for example `2026-11-23T18:04:05.000Z`.
 
 `fleet_size` replaces the earlier `employees` property, which the site no
 longer sends. If `employees` was already created in the portal, archive it.

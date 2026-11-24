@@ -47,13 +47,18 @@ export default function Privacy() {
           </li>
           <li>
             <strong>Your cookie choice.</strong> Stored in <code>rw_consent</code>{" "}
-            for 180 days so the banner does not ask again.
+            for 180 days so the banner does not ask again. The time you chose
+            is stored beside it in <code>rw_consent_at</code>. Both are kept
+            whether you accept or reject, because they are the record of your
+            choice.
           </li>
         </ul>
         <p>
           The click IDs, campaign tags, referring domain, landing page and
           Google Analytics client ID are sent with the form as hidden fields,
-          and only when you have accepted.
+          and only when you have accepted. Your cookie choice and the time
+          you made it are always sent with the form, so the record shows
+          whether your details may be shared with ad platforms.
         </p>
 
         <h2>Where it is sent</h2>
