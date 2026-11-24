@@ -79,6 +79,13 @@ Every form lead is a demo request, which is the strongest signal of interest the
 | The same person sends the form again | One lead. The repeat is logged, not saved as a second lead | Two records for one person split their history |
 | Someone at a company that is already a customer | Saved and judged like any other lead. The person who spots it sets the reason "Existing customer" and moves it to the Needs Review Queue | Their account owner should answer, not a new-business rep. Nothing detects this automatically yet |
 | UTM medium that matches no channel | Channel "Other" | A typo should be visible, not hidden inside a real channel |
+| Free email address with under 20 vehicles | The fleet size rule wins. Stage Nurture, reason "Below fleet threshold", Nurture Queue | The lead is too small whatever its email address, so nobody needs to review it |
+| Free email address with no fleet size | Stage New, Needs Review Queue, no reason | The free email rule needs 20 or more vehicles, and a blank is not 20 or more. The lead is already waiting for a person |
+| No fleet size | Stage New, Needs Review Queue, no reason | The reason list has none for a missing answer, and the blank field says it already |
+
+When more than one rule applies, the order is: no fleet size first, then under 20 vehicles, then a free email address. A free email address is one that ends in @gmail.com, @yahoo.com, @hotmail.com or @outlook.com, compared in lower case.
+
+Segment and expected annual value follow fleet size whatever the stage. A free email lead held in New still has both.
 
 ## 6. Channels
 
@@ -95,7 +102,7 @@ One list, used by the Salesforce Flow, the campaign QA tool and the funnel model
 | Direct | no UTM and no referring site |
 | Other | a utm_medium that is none of the above |
 
-UTM values are compared in lower case.
+UTM values are compared in lower case. "No UTM" means utm_medium is blank. The channel is read from utm_medium alone, so a lead with a utm_source and no utm_medium is judged by where it came from. When there is a utm_medium, it decides the channel and the Referring Domain is ignored.
 
 Where the visitor came from is the Referring Domain field on the lead. The site form fills it with the domain of the page the visitor came from, and leaves it blank for a direct visit. It is compared in lower case. It only decides the channel when there is no UTM.
 
@@ -109,6 +116,8 @@ Where the visitor came from is the Referring Domain field on the lead. The site 
 The AI assistant list is checked first, because gemini.google.com also has google in it.
 
 The channel is written to the standard Lead Source field. In Salesforce, each channel is a parent campaign that holds no members. Under it sits one campaign per marketing effort, named exactly as its utm_campaign value, plus one catch-all per channel for leads whose utm_campaign matches nothing. A lead is added to one campaign, once, with the status Responded.
+
+The catch-all is named after its channel and the word Other, as in "Paid Search - Other". A campaign is found by its name alone, using the utm_campaign value in lower case. So a lead with a mistyped utm_medium still lands in its real campaign, while its Lead Source says Other. A lead with no utm_campaign goes to its channel's catch-all.
 
 ## 7. Consent
 
