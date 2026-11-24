@@ -54,8 +54,9 @@ Consent
 - The banner has one Accept all and one Reject all. So both booleans always
  take the same value: true after Accept all, false after Reject all.
 - Before any choice both booleans are false and the timestamp is empty.
-- A saved choice with no saved time (made before the time was recorded) still
- applies, and the banner asks again so the time can be recorded.
+- A saved choice with no saved time (made before the time was recorded) is
+ kept. The banner stays hidden. The lead goes out with the saved booleans and
+ an empty timestamp.
 
 Click IDs
 - On landing, read gclid, gbraid, wbraid, fbclid, li_fat_id, msclkid and the
@@ -74,11 +75,25 @@ Referrer and landing page
 - Both follow the same consent gate as the click IDs and UTM values. Before
  consent they are held in memory only. They are stored (in the same 90-day
  cookie) and sent only after ad storage is granted. Rejecting deletes them.
-- A landing has a source when it carries a click ID, a UTM value or a
- referring domain. A landing with a source replaces the whole stored set:
- click IDs, UTM values, referring_domain and landing_page together.
-- A landing with no source leaves a stored set alone. When nothing is stored
- yet, it stores landing_page on its own.
+- The stored set has two groups, and each has its own rule.
+ - The click ID group: gclid, gbraid, wbraid, fbclid, li_fat_id, msclkid.
+  It is replaced only when the new landing carries at least one click ID,
+  and then the whole group is replaced. A landing with no click ID never
+  removes a stored click ID.
+ - The latest touch group: the five UTM values, referring_domain and
+  landing_page. It is replaced as a whole by any landing that has a source.
+  A landing has a source when it carries a click ID, a UTM value or a
+  referring domain.
+- So a visitor who clicks an ad and later comes back from a search engine
+ keeps the stored click ID, and gets the new referring_domain, landing_page
+ and UTM values (none, in that case). The click ID and the UTM values on one
+ lead can then come from different visits.
+- A second ad click replaces the click ID group and the latest touch group.
+- A direct landing (no click ID, no UTM value, no referring domain) changes
+ nothing that is stored. When nothing is stored yet, it stores landing_page
+ on its own.
+- The same rules apply when consent comes later in the visit and the values
+ held in memory are stored then.
 - Every form carries both as hidden fields, empty unless consent was given.
 - The site does not decide the channel. The CRM does, from utm_medium first
  and referring_domain second (docs/roadwren-brief.md, section 6).
@@ -112,6 +127,10 @@ Tests
 - Unit tests for the click ID parser and the consent gate.
 - Unit tests for fleet size: each of the six bands validates, and a value
  that is not a band is rejected.
+- Unit tests for the two groups: an ad click then a return from a search
+ engine keeps the click ID and updates the latest touch group. A second ad
+ click replaces the click IDs. An ad click then a direct landing changes
+ nothing.
 - Unit tests for the referrer and landing page: empty before consent and
  after a rejection, present after consent, and the site's own domain is
  never sent as a referrer.
