@@ -580,22 +580,22 @@
     </dl>
     <div class="headline">
       <p class="headline-label">Not graded yet. It will be graded on</p>
-      <p class="headline-value">37 test leads with an answer key: the right stage, campaign and owner for each, and every junk lead blocked.</p>
+      <p class="headline-value">37 test leads with an answer key: the right stage, reason, segment, channel, campaign and owner for each. Not run yet.</p>
     </div>
     <div class="cs-cols" data-stagger>
       <section><h2>The problem</h2><ul><li>A lead with the wrong owner, or no owner, waits.</li><li>Ad platforms only learn which clicks became real leads if someone sends that back.</li><li>Routing built by clicking is hard to review and easy to break.</li></ul></section>
-      <section><h2>What I built</h2><ul><li>Two rules block leads that should not get in.</li><li>One Flow sets the stage, the campaign and the owner queue.</li><li>A script writes the Google Ads upload file and checks every row.</li></ul></section>
-      <section><h2>Three choices</h2><ul><li>Leads with no company size go to a review queue. Unknown is not small.</li><li>The UTM value is lowercased inside the Flow, because other forms and imports create leads too.</li><li>The setup is saved as files, so a change shows up as a diff.</li></ul></section>
+      <section><h2>What I built</h2><ul><li>Every lead is saved. One that does not fit gets a stage and a reason.</li><li>Two Flows set the stage, the campaign and the owner queue from fleet size.</li><li>A script writes the Google Ads upload file and checks every row.</li></ul></section>
+      <section><h2>Three choices</h2><ul><li>Fleet size, not employee count. The price is per vehicle.</li><li>No lead is ever blocked. A blocked web lead is never created, so nobody can review it.</li><li>The setup is saved as files, so a change shows up as a diff.</li></ul></section>
     </div>
     <section class="scene" aria-label="How the routing build works">
       <div class="pin">
         <h2>How it works</h2>
         <p class="sub">One lead, from the form to Google Ads. Scroll to draw it.</p>
-        <svg viewBox="0 0 1200 330" role="img" aria-label="A form submit passes two rules that block junk, becomes a Salesforce lead, is routed by a Flow, converts with its click ID kept, is written to a checked upload file, and reaches Google Ads.">
+        <svg viewBox="0 0 1200 330" role="img" aria-label="A form submit is always saved as a Salesforce lead, is judged on fleet size and routed by two Flows, converts with its click ID kept, is written to a checked upload file, and reaches Google Ads.">
           <g data-step="A visitor submits the form, with a click ID from the ad."><rect class="box" x="20" y="30" width="230" height="78" rx="4"/><text x="135" y="64">Form submit</text><text class="s" x="135" y="88">click ID, UTMs, consent</text></g>
-          <g data-step="Two rules block junk: no consent, or a free email at a big company."><path class="wire" d="M250 69 H320"/><rect class="box" x="320" y="30" width="230" height="78" rx="4"/><text x="435" y="64">Rules block junk</text><text class="s" x="435" y="88">2 validation rules</text></g>
-          <g data-step="The lead lands in Salesforce with its click ID attached."><path class="wire" d="M550 69 H620"/><rect class="box" x="620" y="30" width="230" height="78" rx="4"/><text x="735" y="64">Salesforce lead</text><text class="s" x="735" y="88">7 custom fields</text></g>
-          <g data-step="One Flow sets the stage, adds the campaign and assigns the owner."><path class="wire" d="M850 69 H920"/><rect class="box" x="920" y="30" width="260" height="78" rx="4"/><text x="1050" y="64">Flow routes the lead</text><text class="s" x="1050" y="88">stage, campaign, owner</text></g>
+          <g data-step="Nothing is blocked. Every lead is saved, even one that does not fit."><path class="wire" d="M250 69 H320"/><rect class="box" x="320" y="30" width="230" height="78" rx="4"/><text x="435" y="64">Nothing is blocked</text><text class="s" x="435" y="88">every lead is saved</text></g>
+          <g data-step="The lead lands in Salesforce with its click ID attached."><path class="wire" d="M550 69 H620"/><rect class="box" x="620" y="30" width="230" height="78" rx="4"/><text x="735" y="64">Salesforce lead</text><text class="s" x="735" y="88">fleet size, click IDs, UTMs</text></g>
+          <g data-step="Two Flows set the stage from fleet size, add the campaign and assign the owner."><path class="wire" d="M850 69 H920"/><rect class="box" x="920" y="30" width="260" height="78" rx="4"/><text x="1050" y="64">Flows route the lead</text><text class="s" x="1050" y="88">stage, campaign, owner</text></g>
           <g data-step="When the lead converts, the click ID carries over to the opportunity."><path class="wire" d="M1050 108 V222"/><rect class="box" x="920" y="222" width="260" height="78" rx="4"/><text x="1050" y="256">Lead converts</text><text class="s" x="1050" y="280">click ID kept on the opportunity</text></g>
           <g data-step="A script writes the conversion upload file and rejects every bad row."><path class="wire" d="M920 261 H850"/><rect class="box" x="620" y="222" width="230" height="78" rx="4"/><text x="735" y="256">Upload file, checked</text><text class="s" x="735" y="280">bad rows rejected</text></g>
           <g data-step="Google Ads learns which clicks became pipeline."><path class="wire" d="M620 261 H550"/><rect class="box end" x="320" y="222" width="230" height="78" rx="4"/><text x="435" y="256">Google Ads</text><text class="s" x="435" y="280">bidding learns from pipeline</text></g>
@@ -609,13 +609,78 @@
       <p>Status: in progress. The Salesforce account is a free Developer Edition. Every lead in it is made up.</p>
       <h2>What this part does</h2>
       <ol>
-      <li>The Roadwren demo form sends a lead into Salesforce with its UTM values, click ID and consent choice.</li>
-      <li>Two validation rules block leads that should not get in.</li>
-      <li>One record-triggered Flow sets the lifecycle stage, adds the lead to the right campaign and assigns it to a queue.</li>
-      <li>When a lead converts, the click ID and UTM values carry over to the opportunity.</li>
-      <li>A script writes the Google Ads conversion upload file for qualified leads and checks every row.</li>
+      <li>The Roadwren demo form sends a lead into Salesforce with its fleet size, UTM values, click IDs, referring domain and consent choice.</li>
+      <li>No lead is ever blocked. A lead that does not fit is saved with a stage and a reason that say why.</li>
+      <li>Two record-triggered Flows judge the lead. One runs before the lead is saved and sets the fields on the lead. One runs after it is saved and adds the lead to its campaign. Between them they set the lifecycle stage, the stage reason, the segment, the expected annual value, the Lead Source, the campaign and the owner queue.</li>
+      <li>One validation rule, <code>Stage_Reason_Required</code>, stops a lead being moved to Nurture or Disqualified without a reason.</li>
+      <li>When a lead converts, the click IDs, UTM values and consent fields carry over to the opportunity.</li>
+      <li>A script writes the Google Ads conversion upload file for qualified leads and checks every row. It leaves out anyone without Ad User Data Consent.</li>
       </ol>
+      <p>The rules come from <a href="https://github.com/mpickles/revenue-stack-demo/blob/main/docs/roadwren-brief.md"><code>docs/roadwren-brief.md</code></a>. The fields are listed in <a href="https://github.com/mpickles/revenue-stack-demo/blob/main/crm/salesforce/fields.md"><code>fields.md</code></a>.</p>
       <h2>The rules</h2>
+      <p>The qualifying question is fleet size, in vehicles. The form offers six bands.</p>
+      <div class="tw"><table>
+      <thead>
+      <tr>
+      <th>Fleet size</th>
+      <th>Stage</th>
+      <th>Segment</th>
+      <th>Owner queue</th>
+      <th>Expected annual value</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr>
+      <td>1-19</td>
+      <td>Nurture, reason &quot;Below fleet threshold&quot;</td>
+      <td>Below Threshold</td>
+      <td>Nurture Queue</td>
+      <td>blank</td>
+      </tr>
+      <tr>
+      <td>20-49</td>
+      <td>MQL</td>
+      <td>Small Business</td>
+      <td>Small Business Queue</td>
+      <td>$4,560</td>
+      </tr>
+      <tr>
+      <td>50-199</td>
+      <td>MQL</td>
+      <td>Mid-Market</td>
+      <td>Mid-market Queue</td>
+      <td>$11,400</td>
+      </tr>
+      <tr>
+      <td>200-499</td>
+      <td>MQL</td>
+      <td>Mid-Market</td>
+      <td>Mid-market Queue</td>
+      <td>$45,600</td>
+      </tr>
+      <tr>
+      <td>500-999</td>
+      <td>MQL</td>
+      <td>Enterprise</td>
+      <td>Enterprise Queue</td>
+      <td>$114,000</td>
+      </tr>
+      <tr>
+      <td>1,000+</td>
+      <td>MQL</td>
+      <td>Enterprise</td>
+      <td>Enterprise Queue</td>
+      <td>$228,000</td>
+      </tr>
+      <tr>
+      <td>blank</td>
+      <td>New, no reason</td>
+      <td>blank</td>
+      <td>Needs Review Queue</td>
+      <td>blank</td>
+      </tr>
+      </tbody>
+      </table></div>
       <div class="tw"><table>
       <thead>
       <tr>
@@ -625,40 +690,53 @@
       </thead>
       <tbody>
       <tr>
-      <td>Lifecycle stage</td>
-      <td>50 or more employees with consent given is MQL. Everything else is New</td>
+      <td>Free email</td>
+      <td>A gmail, yahoo, hotmail or outlook address with 20 or more vehicles is saved as New, reason &quot;Free email needs review&quot;, in the Needs Review Queue. It keeps its segment and value. Capitals make no difference</td>
+      </tr>
+      <tr>
+      <td>Order</td>
+      <td>No fleet size is checked first, then under 20 vehicles, then free email. So a free email under 20 vehicles is Nurture, not New</td>
+      </tr>
+      <tr>
+      <td>Consent</td>
+      <td>Consent never changes the stage or the owner. It only decides whether the lead may be sent to an ad platform</td>
+      </tr>
+      <tr>
+      <td>Channel, with a UTM</td>
+      <td>utm_medium of cpc or ppc is Paid Search. paid_social is Paid Social. email is Email. referral is Referral. Any other value is Other. Upper and lower case are treated the same</td>
+      </tr>
+      <tr>
+      <td>Channel, no UTM</td>
+      <td>Read from the Referring Domain: a search engine is Organic Search, an AI assistant is AI Search, another website is Referral, blank is Direct</td>
+      </tr>
+      <tr>
+      <td>Lead Source</td>
+      <td>The channel is written to the standard Lead Source field</td>
       </tr>
       <tr>
       <td>Campaign</td>
-      <td>utm_medium of cpc or ppc goes to Paid Search. paid_social goes to Paid Social. Anything else goes to Organic and Direct. Upper and lower case are treated the same</td>
+      <td>Each channel is a parent campaign with no members. The lead joins the child campaign named as its utm_campaign value. With no utm_campaign it joins the channel's catch-all, such as &quot;Direct - Other&quot;</td>
       </tr>
       <tr>
-      <td>Owner</td>
-      <td>200 or more employees goes to the Enterprise Queue. 50 to 199 goes to the Mid-market Queue. 1 to 49 goes to the Small Business Queue</td>
-      </tr>
-      <tr>
-      <td>Owner, size unknown</td>
-      <td>No employee count, or a count of 0, goes to the Needs Review Queue. An unknown size is not a small company</td>
-      </tr>
-      <tr>
-      <td>Blocked: no consent</td>
-      <td>A lead with Consent Given unchecked is rejected</td>
-      </tr>
-      <tr>
-      <td>Blocked: free email</td>
-      <td>A lead from a company of 200 or more employees using a gmail, yahoo, hotmail or outlook address is rejected</td>
+      <td>Stage reason</td>
+      <td>Required on Nurture and Disqualified</td>
       </tr>
       </tbody>
       </table></div>
       <h2>The answer keys</h2>
-      <p>Two files. Each row states the result it should get: lifecycle stage, campaign, owner queue, or the reason it is blocked. The build is graded against these files.</p>
+      <p>Two files. Each row states the result it should get: stage, stage reason, segment, expected annual value, Lead Source, campaign and owner queue. The build is graded against these files.</p>
+      <p>The expected columns are not typed by hand. <a href="https://github.com/mpickles/revenue-stack-demo/blob/main/crm/salesforce/make_answer_keys.py"><code>make_answer_keys.py</code></a> works them out from the rules in the brief. To change a test lead, edit its input columns and run the script again.</p>
+      <pre><code>python crm/salesforce/make_answer_keys.py
+      python crm/salesforce/make_answer_keys.py --check
+      </code></pre>
+      <p>The first command rewrites both files. The second changes nothing and fails if a file no longer matches the rules.</p>
       <div class="tw"><table>
       <thead>
       <tr>
       <th>File</th>
       <th>Rows</th>
-      <th>Should be created</th>
-      <th>Should be blocked</th>
+      <th>Expected &quot;created&quot;</th>
+      <th>Not confirmed</th>
       <th>Load order</th>
       </tr>
       </thead>
@@ -666,20 +744,113 @@
       <tr>
       <td><code>test_leads.csv</code></td>
       <td>25</td>
-      <td>20</td>
-      <td>5</td>
+      <td>25</td>
+      <td>0</td>
       <td>First</td>
       </tr>
       <tr>
       <td><code>test_leads_edge_cases.csv</code></td>
       <td>12</td>
-      <td>9</td>
-      <td>3</td>
+      <td>10</td>
+      <td>2</td>
       <td>Second, after the first file is in</td>
       </tr>
       </tbody>
       </table></div>
       <p>The second file has to load after the first because two of its rows repeat leads from the first file.</p>
+      <p>Across the 35 rows with an expected outcome:</p>
+      <div class="tw"><table>
+      <thead>
+      <tr>
+      <th>Expected stage</th>
+      <th>Rows</th>
+      <th></th>
+      <th>Expected owner queue</th>
+      <th>Rows</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr>
+      <td>MQL</td>
+      <td>24</td>
+      <td></td>
+      <td>Mid-market Queue</td>
+      <td>16</td>
+      </tr>
+      <tr>
+      <td>New</td>
+      <td>9</td>
+      <td></td>
+      <td>Needs Review Queue</td>
+      <td>9</td>
+      </tr>
+      <tr>
+      <td>Nurture</td>
+      <td>2</td>
+      <td></td>
+      <td>Small Business Queue</td>
+      <td>5</td>
+      </tr>
+      <tr>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td>Enterprise Queue</td>
+      <td>3</td>
+      </tr>
+      <tr>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td>Nurture Queue</td>
+      <td>2</td>
+      </tr>
+      </tbody>
+      </table></div>
+      <h3>Campaigns to create first</h3>
+      <p>The keys expect these campaigns to exist in your Salesforce account before the leads are loaded. The eight parents hold no members.</p>
+      <div class="tw"><table>
+      <thead>
+      <tr>
+      <th>Parent (channel)</th>
+      <th>Child campaigns</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr>
+      <td>Paid Search</td>
+      <td>brand_search, fleet_tracking, competitor, maintenance_alerts, enterprise, Paid Search - Other</td>
+      </tr>
+      <tr>
+      <td>Paid Social</td>
+      <td>ops_leaders, safety_scores, Paid Social - Other</td>
+      </tr>
+      <tr>
+      <td>Email</td>
+      <td>october_issue, Email - Other</td>
+      </tr>
+      <tr>
+      <td>Referral</td>
+      <td>fleet_summit, Referral - Other</td>
+      </tr>
+      <tr>
+      <td>Organic Search</td>
+      <td>Organic Search - Other</td>
+      </tr>
+      <tr>
+      <td>AI Search</td>
+      <td>AI Search - Other</td>
+      </tr>
+      <tr>
+      <td>Direct</td>
+      <td>Direct - Other</td>
+      </tr>
+      <tr>
+      <td>Other</td>
+      <td>Other - Other</td>
+      </tr>
+      </tbody>
+      </table></div>
       <h3>What the edge cases test</h3>
       <div class="tw"><table>
       <thead>
@@ -692,43 +863,48 @@
       <tbody>
       <tr>
       <td>R01, R02</td>
-      <td>No employee count</td>
-      <td>Created as New, sent to the Needs Review Queue</td>
+      <td>No fleet size, with a UTM and without</td>
+      <td>New, no reason, Needs Review Queue. Segment and value are blank</td>
       </tr>
       <tr>
       <td>R03</td>
-      <td>Employee count of 0</td>
-      <td>Same as no count</td>
+      <td>No fleet size, no UTM, came from gemini.google.com</td>
+      <td>Channel AI Search. The AI assistant list is checked before the search engine list</td>
       </tr>
       <tr>
       <td>R04</td>
-      <td>Free email with no employee count</td>
-      <td>Created. The free email rule only applies at 200 or more, and a blank count is not 200 or more</td>
+      <td>Free email with no fleet size</td>
+      <td>New, no reason. The free email rule needs 20 or more vehicles, and a blank is not 20 or more</td>
       </tr>
       <tr>
       <td>C01, C02</td>
       <td>utm_medium typed as <code>CPC</code> and <code>Paid_Social</code></td>
-      <td>Routed the same as lower case</td>
+      <td>Same channel as lower case</td>
       </tr>
       <tr>
       <td>C03</td>
       <td>utm_medium misspelled as <code>paidsocial</code></td>
-      <td>Falls to Organic and Direct. This is a known limit: the Flow cannot guess a typo. The campaign QA agent (Build 2) is the guard for it</td>
+      <td>Channel Other, so the typo shows. The lead still joins its real campaign, because a campaign is found by name</td>
       </tr>
       <tr>
-      <td>B01, B02</td>
-      <td>Free email at exactly 200 and at 199 employees</td>
-      <td>200 is blocked, 199 is created</td>
+      <td>B01</td>
+      <td>Free email at 20-49 vehicles, the lowest band the rule covers</td>
+      <td>New, reason &quot;Free email needs review&quot;, Needs Review Queue</td>
+      </tr>
+      <tr>
+      <td>B02</td>
+      <td>Free email at 1-19 vehicles</td>
+      <td>Nurture, reason &quot;Below fleet threshold&quot;. The fleet size rule wins</td>
       </tr>
       <tr>
       <td>B03</td>
       <td>Free email typed in capitals</td>
-      <td>Blocked. The rule lowercases the address first</td>
+      <td>Same as lower case</td>
       </tr>
       <tr>
       <td>D01</td>
       <td>Same person as T01, sent again</td>
-      <td>Blocked as a duplicate</td>
+      <td>Not confirmed, see below</td>
       </tr>
       <tr>
       <td>D02</td>
@@ -737,17 +913,20 @@
       </tr>
       </tbody>
       </table></div>
+      <p>The first file covers the rest: every fleet band, consent refused with a click ID present (J01, J04), free email at 20 or more vehicles (J02, J03, J05), and a lead with no UTM from a search engine (T09), an AI assistant (T18), another website (J05) and nowhere (T10).</p>
       <h2>Duplicates</h2>
-      <p>Salesforce ships with a Standard Lead Duplicate Rule. Check it is active: Setup, search Duplicate Rules.</p>
-      <p>What Salesforce's own help page says about the form: when a duplicate rule is set to Block, or to Allow with an alert, a matching Web-to-Lead submission is blocked. The form cannot show the alert to anyone, so the lead is not created. That means the same person sending the Roadwren form twice can lose the second lead. Salesforce's fix is a separate duplicate rule for the Web-to-Lead user set to Allow and Report, which creates the lead and logs the match.</p>
-      <p>Two things are not confirmed from Salesforce's own pages and need a real run:</p>
+      <p>The brief's rule: the same person sending the form again is one lead, and the repeat is logged. How Salesforce gets there is not confirmed. It is tested by hand in Part M of the build, the step for repeat leads. Until then D01 and D02 say &quot;not confirmed, see Part M&quot; and their other expected columns are blank. Nothing here claims an outcome.</p>
+      <p>What is known so far. Salesforce ships with a Standard Lead Duplicate Rule. Check it is active: Setup, search Duplicate Rules.</p>
+      <p>What Salesforce's own help page says about the form: when a duplicate rule is set to Block, or to Allow with an alert, a matching Web-to-Lead submission is blocked. The form cannot show the alert to anyone, so the lead is not created. That would lose the repeat, which breaks the rule that no lead is blocked. Salesforce's fix is a separate duplicate rule for the Web-to-Lead user set to Allow and Report, which creates the lead and logs the match. That gives two lead records, not one, so it does not meet the brief on its own either.</p>
+      <p>Not confirmed, and needing a real run:</p>
       <ul>
-      <li>D01 through the Data Import Wizard. Other sources say an alert rule acts as a block on import and the row fails with a duplicate error. Expected: blocked.</li>
-      <li>D02. Sources disagree on whether the standard rule matches on email alone. Expected here: created. If it is blocked instead, write that down as the result.</li>
+      <li>D01 through the Data Import Wizard. Other sources say an alert rule acts as a block on import and the row fails with a duplicate error.</li>
+      <li>D02. Sources disagree on whether the standard rule matches on email alone.</li>
+      <li>One repeat submit through the live form.</li>
       </ul>
-      <p>Record the outcome of both rows, and of one repeat submit through the live form, under Results.</p>
+      <p>Record the outcome of all three under Results, then fill in the two rows of the answer key.</p>
       <h2>The setup, saved as files</h2>
-      <p>Fields, validation rules, the Flow, its tests, the queues and the lead field mapping are pulled out of Salesforce as files with the Salesforce CLI, so the build can be read and compared without logging in.</p>
+      <p>Fields, the validation rule, both Flows, their tests, the queues and the lead field mapping are pulled out of Salesforce as files with the Salesforce CLI, so the build can be read and compared without logging in.</p>
       <p>One-time setup on Windows:</p>
       <ol>
       <li>Install the Salesforce CLI from https://developer.salesforce.com/tools/salesforcecli (the Windows installer).</li>
@@ -758,9 +937,9 @@
       sf project retrieve start --manifest manifest/package.xml
       </code></pre>
       <p>The first command opens a browser to log in. The login is stored on the computer, outside this repo. The second command writes the files into <code>force-app/</code>.</p>
-      <p><code>manifest/package.xml</code> lists what to pull. The field names in it are the ones this build uses. If a name in Salesforce is different, edit the file to match. The manifest has not been run yet.</p>
+      <p><code>manifest/package.xml</code> lists what to pull: every custom field in <a href="https://github.com/mpickles/revenue-stack-demo/blob/main/crm/salesforce/fields.md"><code>fields.md</code></a>, the validation rule <code>Lead.Stage_Reason_Required</code>, the Flows and their tests, the queues, the duplicate rules and the lead field mapping. A field's name is its label with underscores and <code>__c</code> on the end. Two are different: the Lead's consent checkbox keeps its first name, <code>Consent_Given__c</code>, and the Opportunity's is <code>Ad_User_Data_Consent__c</code>. If a name in your Salesforce account is different, edit the file to match. Campaigns are records, not setup, so the manifest does not pull them. The manifest has not been run yet.</p>
       <h2>Flow tests</h2>
-      <p>The Flow has saved tests, one per path, so a change to the Flow can be re-checked in one click.</p>
+      <p>The Flows get saved tests, one per path, so a change can be re-checked in one click. These are the planned tests. None has been run.</p>
       <div class="tw"><table>
       <thead>
       <tr>
@@ -772,23 +951,38 @@
       <tbody>
       <tr>
       <td>MQL, enterprise</td>
-      <td>340 employees, consent given</td>
-      <td>Lifecycle Stage is MQL, owner is the Enterprise Queue</td>
+      <td>Fleet size 500-999, business email</td>
+      <td>Stage is MQL, segment is Enterprise, value is 114,000, owner is the Enterprise Queue</td>
       </tr>
       <tr>
-      <td>New, small</td>
-      <td>18 employees</td>
-      <td>Lifecycle Stage is New, owner is the Small Business Queue</td>
+      <td>MQL, small business</td>
+      <td>Fleet size 20-49, business email</td>
+      <td>Stage is MQL, segment is Small Business, owner is the Small Business Queue</td>
       </tr>
       <tr>
-      <td>Size unknown</td>
-      <td>No employee count</td>
-      <td>Owner is the Needs Review Queue</td>
+      <td>Below threshold</td>
+      <td>Fleet size 1-19</td>
+      <td>Stage is Nurture, reason is &quot;Below fleet threshold&quot;, owner is the Nurture Queue</td>
+      </tr>
+      <tr>
+      <td>Free email</td>
+      <td>Fleet size 20-49, gmail address</td>
+      <td>Stage is New, reason is &quot;Free email needs review&quot;, owner is the Needs Review Queue</td>
+      </tr>
+      <tr>
+      <td>No fleet size</td>
+      <td>Fleet size blank</td>
+      <td>Stage is New, no reason, owner is the Needs Review Queue</td>
       </tr>
       <tr>
       <td>Mixed case</td>
       <td>utm_medium <code>CPC</code></td>
-      <td>Follows the Paid Search path</td>
+      <td>Lead Source is Paid Search</td>
+      </tr>
+      <tr>
+      <td>No UTM</td>
+      <td>Referring domain <code>gemini.google.com</code></td>
+      <td>Lead Source is AI Search</td>
       </tr>
       </tbody>
       </table></div>
@@ -798,13 +992,13 @@
       </code></pre>
       <h2>Three choices</h2>
       <ul>
-      <li>A Needs Review Queue for leads with no employee count, over letting them fall into Small Business. An unknown size is not a small company, and a wrong owner costs more than a short wait.</li>
-      <li>UTM medium is lowercased inside the Flow, not only on the site. Imports and other forms create leads too.</li>
+      <li>Fleet size over employee count as the one qualifying question. The price is per vehicle, so vehicles decide what a deal is worth.</li>
+      <li>No lead is ever blocked. A lead that does not fit gets a stage and a reason, because a blocked web lead is never created and nobody can review it.</li>
       <li>The Salesforce setup is saved as files with the Salesforce CLI, not as screenshots. A reviewer can read the Flow and the rules, and a change shows up as a diff.</li>
       </ul>
       <p>The full list, one line each, is in <a href="https://github.com/mpickles/revenue-stack-demo/blob/main/docs/decisions.md"><code>docs/decisions.md</code></a>.</p>
       <h2>Results</h2>
-      <p>Added once the runs are done: leads routed, how many matched each answer key, what happened to the duplicates, and what broke.</p>
+      <p>Nothing has been run yet. Added once the runs are done: how many leads matched each answer key, what happened to the repeat leads, and what broke.</p>
       <h2>In the repo</h2>
       <ul class="repo-links">
         <li><a href="https://github.com/mpickles/revenue-stack-demo/tree/main/crm/salesforce">Build folder</a></li>
