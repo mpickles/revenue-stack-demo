@@ -115,7 +115,9 @@ Where the visitor came from is the Referring Domain field on the lead. The site 
 
 The AI assistant list is checked first, because gemini.google.com also has google in it.
 
-The channel is written to the standard Lead Source field. In Salesforce, each channel is a parent campaign that holds no members. Under it sits one campaign per marketing effort, named exactly as its utm_campaign value, plus one catch-all per channel for leads whose utm_campaign matches nothing. A lead is added to one campaign, once, with the status Responded.
+The channel is written to the standard Lead Source field. In Salesforce the campaigns sit in three levels. One campaign for the year, "2026 Demand Gen", is at the top. Each channel is a campaign under it. Neither level holds members. Under each channel sits one campaign per marketing effort, named exactly as its utm_campaign value, plus one catch-all per channel for leads whose utm_campaign matches nothing. A lead is added to one campaign, once, with the status Responded.
+
+Every campaign has a Type, a Status and a Start Date. The Type of a channel campaign and of the campaigns under it is the channel's name, so a report can group by channel without the hierarchy. The year campaign has the Type Program. Cost fields are left blank until ad spend is loaded in the warehouse build.
 
 The catch-all is named after its channel and the word Other, as in "Paid Search - Other". A campaign is found by its name alone, using the utm_campaign value in lower case. So a lead with a mistyped utm_medium still lands in its real campaign, while its Lead Source says Other. A lead with no utm_campaign goes to its channel's catch-all.
 
