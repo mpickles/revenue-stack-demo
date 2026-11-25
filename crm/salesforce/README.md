@@ -134,7 +134,7 @@ sf project retrieve start --manifest manifest/package.xml
 
 The first command opens a browser to log in. The login is stored on the computer, outside this repo. The second command writes the files into `force-app/`.
 
-`manifest/package.xml` lists what to pull: every custom field in [`fields.md`](fields.md), the validation rule `Lead.Stage_Reason_Required`, the Flows and their tests, the queues, the duplicate rules and the lead field mapping. A field's name is its label with underscores and `__c` on the end. Two are different: the Lead's consent checkbox keeps its first name, `Consent_Given__c`, and the Opportunity's is `Ad_User_Data_Consent__c`. If a name in your Salesforce account is different, edit the file to match. Campaigns are records, not setup, so the manifest does not pull them. The manifest has not been run yet.
+`manifest/package.xml` lists what to pull: every custom field in [`fields.md`](fields.md), the validation rule `Lead.Stage_Reason_Required`, the Flows and their tests, the queues, the duplicate rules, the lead field mapping and the campaign Type list, which holds the channel names. A field's name is its label with underscores and `__c` on the end. Two are different: the Lead's consent checkbox keeps its first name, `Consent_Given__c`, and the Opportunity's is `Ad_User_Data_Consent__c`. If a name in your Salesforce account is different, edit the file to match. Campaigns are records, not setup, so the manifest does not pull them. Only their Type list comes across. The manifest has not been run yet.
 
 ## Flow tests
 
