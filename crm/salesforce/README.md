@@ -35,7 +35,7 @@ The qualifying question is fleet size, in vehicles. The form offers six bands.
 | Channel, with a UTM | utm_medium of cpc or ppc is Paid Search. paid_social is Paid Social. email is Email. referral is Referral. Any other value is Other. Upper and lower case are treated the same |
 | Channel, no UTM | Read from the Referring Domain: a search engine is Organic Search, an AI assistant is AI Search, another website is Referral, blank is Direct |
 | Lead Source | The channel is written to the standard Lead Source field |
-| Campaign | Each channel is a parent campaign with no members. The lead joins the child campaign named as its utm_campaign value. With no utm_campaign it joins the channel's catch-all, such as "Direct - Other" |
+| Campaign | Each channel is a parent campaign with no members. The lead joins the child campaign named as its utm_campaign value. A channel campaign is never matched, even when a utm_campaign has its name. With no utm_campaign it joins the channel's catch-all, such as "Direct - Other" |
 | Stage reason | Required on Nurture and Disqualified |
 
 ## The answer keys
@@ -70,7 +70,7 @@ Across the 35 rows with an expected outcome:
 
 ### Campaigns to create first
 
-The keys expect these campaigns to exist in your Salesforce account before the leads are loaded. The eight parents hold no members.
+The keys expect these campaigns to exist in your Salesforce account before the leads are loaded. The eight parents hold no members. Set Type to the channel's name on each parent and its children, and a Status and Start Date on all of them. There is no campaign for the year: these campaigns are always on, and a period is a date filter on the report.
 
 | Parent (channel) | Child campaigns |
 |---|---|
@@ -134,7 +134,7 @@ sf project retrieve start --manifest manifest/package.xml
 
 The first command opens a browser to log in. The login is stored on the computer, outside this repo. The second command writes the files into `force-app/`.
 
-`manifest/package.xml` lists what to pull: every custom field in [`fields.md`](fields.md), the validation rule `Lead.Stage_Reason_Required`, the Flows and their tests, the queues, the duplicate rules and the lead field mapping. A field's name is its label with underscores and `__c` on the end. Two are different: the Lead's consent checkbox keeps its first name, `Consent_Given__c`, and the Opportunity's is `Ad_User_Data_Consent__c`. If a name in your Salesforce account is different, edit the file to match. Campaigns are records, not setup, so the manifest does not pull them. The manifest has not been run yet.
+`manifest/package.xml` lists what to pull: every custom field in [`fields.md`](fields.md), the validation rule `Lead.Stage_Reason_Required`, the Flows and their tests, the queues, the duplicate rules, the lead field mapping and the campaign Type list, which holds the channel names. A field's name is its label with underscores and `__c` on the end. Two are different: the Lead's consent checkbox keeps its first name, `Consent_Given__c`, and the Opportunity's is `Ad_User_Data_Consent__c`. If a name in your Salesforce account is different, edit the file to match. Campaigns are records, not setup, so the manifest does not pull them. Only their Type list comes across. The manifest has not been run yet.
 
 ## Flow tests
 

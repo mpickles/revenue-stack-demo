@@ -115,9 +115,13 @@ Where the visitor came from is the Referring Domain field on the lead. The site 
 
 The AI assistant list is checked first, because gemini.google.com also has google in it.
 
-The channel is written to the standard Lead Source field. In Salesforce, each channel is a parent campaign that holds no members. Under it sits one campaign per marketing effort, named exactly as its utm_campaign value, plus one catch-all per channel for leads whose utm_campaign matches nothing. A lead is added to one campaign, once, with the status Responded.
+The channel is written to the standard Lead Source field. In Salesforce the campaigns sit in two levels. Each channel is a parent campaign that holds no members. Under it sits one campaign per marketing effort, named exactly as its utm_campaign value, plus one catch-all per channel for leads whose utm_campaign matches nothing. A lead is added to one campaign, once, with the status Responded.
 
-The catch-all is named after its channel and the word Other, as in "Paid Search - Other". A campaign is found by its name alone, using the utm_campaign value in lower case. So a lead with a mistyped utm_medium still lands in its real campaign, while its Lead Source says Other. A lead with no utm_campaign goes to its channel's catch-all.
+Every campaign has a Type, a Status and a Start Date. The Type of a channel campaign and of the campaigns under it is the channel's name, so a report can group by channel without the hierarchy. Cost fields are left blank until ad spend is loaded in the warehouse build.
+
+The campaigns are always on. There is no level for the year and no new set each January, because an ad campaign keeps its utm_campaign value across years and the Flow finds a campaign by that name. A question about a period is answered with a date filter on the report, using the date the lead joined the campaign. A one-off effort, such as a single newsletter issue, has an End Date.
+
+The catch-all is named after its channel and the word Other, as in "Paid Search - Other". A campaign is found by its name alone, using the utm_campaign value in lower case. Only a campaign that has a parent can be found this way, so a utm_campaign of email or direct never puts a lead on a channel campaign. It goes to the catch-all. So a lead with a mistyped utm_medium still lands in its real campaign, while its Lead Source says Other. A lead with no utm_campaign goes to its channel's catch-all.
 
 ## 7. Consent
 

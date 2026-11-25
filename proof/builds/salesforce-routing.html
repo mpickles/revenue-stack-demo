@@ -715,7 +715,7 @@
       </tr>
       <tr>
       <td>Campaign</td>
-      <td>Each channel is a parent campaign with no members. The lead joins the child campaign named as its utm_campaign value. With no utm_campaign it joins the channel's catch-all, such as &quot;Direct - Other&quot;</td>
+      <td>Each channel is a parent campaign with no members. The lead joins the child campaign named as its utm_campaign value. A channel campaign is never matched, even when a utm_campaign has its name. With no utm_campaign it joins the channel's catch-all, such as &quot;Direct - Other&quot;</td>
       </tr>
       <tr>
       <td>Stage reason</td>
@@ -808,7 +808,7 @@
       </tbody>
       </table></div>
       <h3>Campaigns to create first</h3>
-      <p>The keys expect these campaigns to exist in your Salesforce account before the leads are loaded. The eight parents hold no members.</p>
+      <p>The keys expect these campaigns to exist in your Salesforce account before the leads are loaded. The eight parents hold no members. Set Type to the channel's name on each parent and its children, and a Status and Start Date on all of them. There is no campaign for the year: these campaigns are always on, and a period is a date filter on the report.</p>
       <div class="tw"><table>
       <thead>
       <tr>
@@ -937,7 +937,7 @@
       sf project retrieve start --manifest manifest/package.xml
       </code></pre>
       <p>The first command opens a browser to log in. The login is stored on the computer, outside this repo. The second command writes the files into <code>force-app/</code>.</p>
-      <p><code>manifest/package.xml</code> lists what to pull: every custom field in <a href="https://github.com/mpickles/revenue-stack-demo/blob/main/crm/salesforce/fields.md"><code>fields.md</code></a>, the validation rule <code>Lead.Stage_Reason_Required</code>, the Flows and their tests, the queues, the duplicate rules and the lead field mapping. A field's name is its label with underscores and <code>__c</code> on the end. Two are different: the Lead's consent checkbox keeps its first name, <code>Consent_Given__c</code>, and the Opportunity's is <code>Ad_User_Data_Consent__c</code>. If a name in your Salesforce account is different, edit the file to match. Campaigns are records, not setup, so the manifest does not pull them. The manifest has not been run yet.</p>
+      <p><code>manifest/package.xml</code> lists what to pull: every custom field in <a href="https://github.com/mpickles/revenue-stack-demo/blob/main/crm/salesforce/fields.md"><code>fields.md</code></a>, the validation rule <code>Lead.Stage_Reason_Required</code>, the Flows and their tests, the queues, the duplicate rules, the lead field mapping and the campaign Type list, which holds the channel names. A field's name is its label with underscores and <code>__c</code> on the end. Two are different: the Lead's consent checkbox keeps its first name, <code>Consent_Given__c</code>, and the Opportunity's is <code>Ad_User_Data_Consent__c</code>. If a name in your Salesforce account is different, edit the file to match. Campaigns are records, not setup, so the manifest does not pull them. Only their Type list comes across. The manifest has not been run yet.</p>
       <h2>Flow tests</h2>
       <p>The Flows get saved tests, one per path, so a change can be re-checked in one click. These are the planned tests. None has been run.</p>
       <div class="tw"><table>

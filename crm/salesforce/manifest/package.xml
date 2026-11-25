@@ -73,5 +73,9 @@
         <members>LeadConvertSettings</members>
         <name>LeadConvertSettings</name>
     </types>
+    <types>
+        <members>CampaignType</members>
+        <name>StandardValueSet</name>
+    </types>
     <version>66.0</version>
 </Package>
