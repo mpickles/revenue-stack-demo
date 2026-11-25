@@ -134,9 +134,12 @@ Then, from this folder (`crm/salesforce`):
 ```
 sf org login web --alias roadwren-dev --set-default
 sf project retrieve start --manifest manifest/package.xml
+python strip_queue_members.py
 ```
 
-The first command opens a browser to log in. The login is stored on the computer, outside this repo. The second command writes the files into `force-app/`.
+The first command opens a browser to log in. The login is stored on the computer, outside this repo. The second command writes the files into `force-app/`. The third takes the queue members back out of the queue files. A pull writes them in as Salesforce usernames, this repo is public, and a username only exists in one account, so who sits in each queue is set by hand in each account. `python strip_queue_members.py --check` changes nothing and fails if a queue file still has members.
+
+If the installer says it could not update PATH, add `C:\Program Files\sf\bin` to the user PATH by hand and open a new terminal. If the account is opened with a Google sign-in, the browser page still wants the Salesforce username and password.
 
 `manifest/package.xml` lists what to pull: every custom field in [`fields.md`](fields.md), the three validation rules, the off switch permission and its permission set, the Flows and their tests, the queues, the duplicate rules, the lead field mapping, the Fleet Band type with its six records, and the campaign Type and Lead Source lists, which hold the channel names. A field's name is its label with underscores and `__c` on the end. The consent checkbox is `Ad_User_Data_Consent__c` on both the Lead and the Opportunity. If a name in your Salesforce account is different, edit the file to match. Campaigns are records, not setup, so the manifest does not pull them. Only their Type list comes across. The manifest was first run on Nov 25, 2026. It found one wrong name, the Lead's consent checkbox, which this file had as `Consent_Given__c`. Everything not built yet comes back as a "cannot be found" warning, and the rest still downloads.
 
