@@ -35,7 +35,7 @@ The qualifying question is fleet size, in vehicles. The form offers six bands.
 | Channel, with a UTM | utm_medium of cpc or ppc is Paid Search. paid_social is Paid Social. email is Email. referral is Referral. Any other value is Other. Upper and lower case are treated the same |
 | Channel, no UTM | Read from the Referring Domain: a search engine is Organic Search, an AI assistant is AI Search, another website is Referral, blank is Direct |
 | Lead Source | The channel is written to the standard Lead Source field |
-| Campaign | Each channel is a parent campaign with no members, under one campaign for the year. The lead joins the child campaign named as its utm_campaign value. With no utm_campaign it joins the channel's catch-all, such as "Direct - Other" |
+| Campaign | Each channel is a parent campaign with no members. The lead joins the child campaign named as its utm_campaign value. With no utm_campaign it joins the channel's catch-all, such as "Direct - Other" |
 | Stage reason | Required on Nurture and Disqualified |
 
 ## The answer keys
@@ -70,7 +70,7 @@ Across the 35 rows with an expected outcome:
 
 ### Campaigns to create first
 
-The keys expect these campaigns to exist in your Salesforce account before the leads are loaded. The eight channel campaigns hold no members. All eight sit under one top campaign, "2026 Demand Gen", which also holds none. Set Type to the channel's name on each channel campaign and its children, Type Program on the top campaign, and a Status and Start Date on all of them.
+The keys expect these campaigns to exist in your Salesforce account before the leads are loaded. The eight parents hold no members. Set Type to the channel's name on each parent and its children, and a Status and Start Date on all of them. There is no campaign for the year: these campaigns are always on, and a period is a date filter on the report.
 
 | Parent (channel) | Child campaigns |
 |---|---|
