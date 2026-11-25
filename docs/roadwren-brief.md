@@ -1,6 +1,6 @@
 # Roadwren company brief
 
-Version 1, November 23, 2026. Roadwren is made up. This page is the one place that says who it sells to and how a lead is judged. Every build in this repo reads its rules from here. If a rule changes, it changes here first, then in the build.
+Version 2, November 24, 2026. Roadwren is made up. This page is the one place that says who it sells to and how a lead is judged. Every build in this repo reads its rules from here. If a rule changes, it changes here first, then in the build.
 
 Review it whenever a threshold, a stage or a channel name changes, and bump the version.
 
@@ -47,6 +47,8 @@ Why: the price is per vehicle, so vehicles decide what a deal is worth. Real fle
 
 **Expected annual value** is the lowest fleet size in the band, times $19, times 12. It is the lowest the deal could be, on the cheapest plan. The midpoint of the band is the other defensible rule. The floor was chosen because a value that is too low is safer to bid on than one that is too high.
 
+In Salesforce this table is six records of a custom metadata type, Fleet Band, one for each fleet size on the form. The Flows look a lead's band up there. A threshold, a queue or a value is changed in a record, not in a Flow.
+
 Employee count stays as Salesforce's standard field. Nothing on the form fills it. An enrichment step can.
 
 ## 4. Lead stages
@@ -56,7 +58,7 @@ One custom field on the Lead, Lifecycle Stage, holds marketing's view of the lea
 | Stage | Means | Who sets it | How a lead gets in | How it leaves |
 |---|---|---|---|---|
 | New | Saved, not yet judged, or missing what is needed to judge it | The Flow | No fleet size, or a free email address that needs a look | A person fills the gap, then MQL, Nurture or Disqualified |
-| MQL | Asked for a demo, runs 20 or more vehicles, used a business email | The Flow | All three are true when the lead is created or updated | A rep picks it up: Working |
+| MQL | Asked for a demo, runs 20 or more vehicles, used a business email | The Flow, or a person releasing a lead from review | All three are true when the lead is created or updated | A rep picks it up: Working |
 | Working | A rep owns it and has replied | The rep | The rep takes it from the queue and makes first contact | SQL, Nurture or Disqualified |
 | SQL | A rep confirmed it on a call | The rep | All of: runs 20 or more vehicles, has a problem Roadwren solves, agreed to a next step | Converted to an opportunity |
 | Nurture | Real, but not now or too small | The Flow or the rep | Under 20 vehicles, or the rep found no timing or budget. A reason is required | Comes back as MQL if they ask again and now fit |
@@ -68,13 +70,13 @@ Every form lead is a demo request, which is the strongest signal of interest the
 
 **Dates the Flow stamps:** First MQL Date (never overwritten), Latest MQL Date, MQL Count, SQL Date, Disqualified Date, First Response Date (when the stage first becomes Working).
 
-**Response target:** a rep replies to an MQL within one business day. It is measured from Latest MQL Date to First Response Date.
+**Response target:** a rep replies to an MQL within one business day. It is measured from Latest MQL Date to First Response Date. A lead still in MQL one day after its Latest MQL Date gets Response Overdue ticked and an alert is sent. The tick is never removed, so it stays as a record of the miss.
 
 ## 5. Rules for odd cases
 
 | Case | Rule | Why |
 |---|---|---|
-| Free email address (gmail, yahoo, hotmail, outlook) with 20 or more vehicles | Saved. Stage New, reason "Free email needs review", Needs Review Queue | Small fleet owners often use personal email. Blocking would lose real buyers, and a blocked web lead is never created at all |
+| Free email address (gmail, yahoo, hotmail, outlook) with 20 or more vehicles | Saved. Stage New, reason "Free email needs review", Needs Review Queue. A person who decides the lead is real sets the stage to MQL by hand. The Flow then clears the reason and sends the lead to its segment's queue | Small fleet owners often use personal email. Blocking would lose real buyers, and a blocked web lead is never created at all |
 | The visitor rejected cookies | Saved and judged like any other lead. Click IDs and UTM values are blank. Never sent to an ad platform | Cookie consent is permission to track and to share data for ads. It is not permission to be a lead |
 | The same person sends the form again | One lead. The repeat is logged, not saved as a second lead | Two records for one person split their history |
 | Someone at a company that is already a customer | Saved and judged like any other lead. The person who spots it sets the reason "Existing customer" and moves it to the Needs Review Queue | Their account owner should answer, not a new-business rep. Nothing detects this automatically yet |
@@ -84,6 +86,8 @@ Every form lead is a demo request, which is the strongest signal of interest the
 | No fleet size | Stage New, Needs Review Queue, no reason | The reason list has none for a missing answer, and the blank field says it already |
 
 When more than one rule applies, the order is: no fleet size first, then under 20 vehicles, then a free email address. A free email address is one that ends in @gmail.com, @yahoo.com, @hotmail.com or @outlook.com, compared in lower case.
+
+The free email check runs once, when the lead is created. A later change of Fleet Size skips it, because by then a person has looked at the lead.
 
 Segment and expected annual value follow fleet size whatever the stage. A free email lead held in New still has both.
 
@@ -147,8 +151,8 @@ The qualified lead's value is its expected annual value. A row is only written i
 | Writer | May write | Never writes |
 |---|---|---|
 | The site form | Name, email, company, fleet size, Referring Domain, Landing Page, UTM values, click IDs, the three consent fields | Stage, segment, owner |
-| The Salesforce Flow | Lifecycle Stage, Stage Reason, Segment, Expected Annual Value, Lead Source, the stage dates, Lead Email Copy, Owner (a queue) | The AI score fields |
-| A rep | Stage (Working, SQL, Nurture, Disqualified), Stage Reason, Owner (a person), Lead Status | The click ID, UTM and consent fields |
+| The Salesforce Flow | Lifecycle Stage, Stage Reason, Segment, Expected Annual Value, Lead Source, the stage dates, Response Overdue, Lead Email Copy, Owner (a queue) | The AI score fields |
+| A rep | Stage (Working, SQL, Nurture, Disqualified, and MQL only to release a lead held in New), Stage Reason, Owner (a person), Lead Status | The click ID, UTM and consent fields |
 | The AI lead qualifier | Its own four score fields. It may move the owner off a queue | Lifecycle Stage. A field a person edited |
 
 ## 10. Known limits
@@ -157,4 +161,5 @@ The qualified lead's value is its expected annual value. A row is only written i
 - MQL is a rule, not a score. There is no behavior scoring because the only thing a visitor can do is ask for a demo.
 - No lookup of whether a lead's company is already an account. The "Existing customer" reason is set by a person.
 - Expected annual value uses the bottom of the band and the cheapest plan.
+- The response alert counts one day as 24 hours by the clock, weekends included. The target itself is one business day.
 - The 20-vehicle floor and the 500-vehicle Enterprise line are choices. Real vendors draw both lines in different places.

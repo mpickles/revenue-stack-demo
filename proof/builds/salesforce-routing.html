@@ -611,9 +611,10 @@
       <ol>
       <li>The Roadwren demo form sends a lead into Salesforce with its fleet size, UTM values, click IDs, referring domain and consent choice.</li>
       <li>No lead is ever blocked. A lead that does not fit is saved with a stage and a reason that say why.</li>
-      <li>Two record-triggered Flows judge the lead. One runs before the lead is saved and sets the fields on the lead. One runs after it is saved and adds the lead to its campaign. Between them they set the lifecycle stage, the stage reason, the segment, the expected annual value, the Lead Source, the campaign and the owner queue.</li>
+      <li>Two record-triggered Flows judge the lead. One runs before the lead is saved and sets the fields on the lead. One runs after it is saved, sets the owner queue and adds the lead to its campaign. The fleet size rules are not typed into either Flow. They are six records of a custom metadata type, Fleet Band, that the Flows look up. Between them they set the lifecycle stage, the stage reason, the segment, the expected annual value, the Lead Source, the campaign and the owner queue.</li>
       <li>One validation rule, <code>Stage_Reason_Required</code>, stops a lead being moved to Nurture or Disqualified without a reason.</li>
       <li>When a lead converts, the click IDs, UTM values and consent fields carry over to the opportunity.</li>
+      <li>A third Flow waits one day after a lead becomes MQL. If the lead is still MQL, it ticks Response Overdue and sends an alert.</li>
       <li>A script writes the Google Ads conversion upload file for qualified leads and checks every row. It leaves out anyone without Ad User Data Consent.</li>
       </ol>
       <p>The rules come from <a href="https://github.com/mpickles/revenue-stack-demo/blob/main/docs/roadwren-brief.md"><code>docs/roadwren-brief.md</code></a>. The fields are listed in <a href="https://github.com/mpickles/revenue-stack-demo/blob/main/crm/salesforce/fields.md"><code>fields.md</code></a>.</p>
@@ -720,6 +721,14 @@
       <tr>
       <td>Stage reason</td>
       <td>Required on Nurture and Disqualified</td>
+      </tr>
+      <tr>
+      <td>Owner</td>
+      <td>Set after the save, by the second Flow. Salesforce runs its own lead assignment after a before-save Flow and a Web-to-Lead lead always goes through it, so an owner set before the save would be overwritten. A lead a rep has taken is never pulled back to a queue</td>
+      </tr>
+      <tr>
+      <td>Free email release</td>
+      <td>A person sets the stage to MQL by hand. The first Flow clears the reason and the second sends the lead to its segment's queue. The free email check itself runs only when the lead is created</td>
       </tr>
       </tbody>
       </table></div>
@@ -937,7 +946,7 @@
       sf project retrieve start --manifest manifest/package.xml
       </code></pre>
       <p>The first command opens a browser to log in. The login is stored on the computer, outside this repo. The second command writes the files into <code>force-app/</code>.</p>
-      <p><code>manifest/package.xml</code> lists what to pull: every custom field in <a href="https://github.com/mpickles/revenue-stack-demo/blob/main/crm/salesforce/fields.md"><code>fields.md</code></a>, the validation rule <code>Lead.Stage_Reason_Required</code>, the Flows and their tests, the queues, the duplicate rules, the lead field mapping and the campaign Type list, which holds the channel names. A field's name is its label with underscores and <code>__c</code> on the end. Two are different: the Lead's consent checkbox keeps its first name, <code>Consent_Given__c</code>, and the Opportunity's is <code>Ad_User_Data_Consent__c</code>. If a name in your Salesforce account is different, edit the file to match. Campaigns are records, not setup, so the manifest does not pull them. Only their Type list comes across. The manifest has not been run yet.</p>
+      <p><code>manifest/package.xml</code> lists what to pull: every custom field in <a href="https://github.com/mpickles/revenue-stack-demo/blob/main/crm/salesforce/fields.md"><code>fields.md</code></a>, the validation rule <code>Lead.Stage_Reason_Required</code>, the Flows and their tests, the queues, the duplicate rules, the lead field mapping, the Fleet Band type with its six records, and the campaign Type and Lead Source lists, which hold the channel names. A field's name is its label with underscores and <code>__c</code> on the end. Two are different: the Lead's consent checkbox keeps its first name, <code>Consent_Given__c</code>, and the Opportunity's is <code>Ad_User_Data_Consent__c</code>. If a name in your Salesforce account is different, edit the file to match. Campaigns are records, not setup, so the manifest does not pull them. Only their Type list comes across. The manifest has not been run yet.</p>
       <h2>Flow tests</h2>
       <p>The Flows get saved tests, one per path, so a change can be re-checked in one click. These are the planned tests. None has been run.</p>
       <div class="tw"><table>
@@ -952,27 +961,27 @@
       <tr>
       <td>MQL, enterprise</td>
       <td>Fleet size 500-999, business email</td>
-      <td>Stage is MQL, segment is Enterprise, value is 114,000, owner is the Enterprise Queue</td>
+      <td>Stage is MQL, segment is Enterprise, value is 114,000</td>
       </tr>
       <tr>
       <td>MQL, small business</td>
       <td>Fleet size 20-49, business email</td>
-      <td>Stage is MQL, segment is Small Business, owner is the Small Business Queue</td>
+      <td>Stage is MQL, segment is Small Business</td>
       </tr>
       <tr>
       <td>Below threshold</td>
       <td>Fleet size 1-19</td>
-      <td>Stage is Nurture, reason is &quot;Below fleet threshold&quot;, owner is the Nurture Queue</td>
+      <td>Stage is Nurture, reason is &quot;Below fleet threshold&quot;</td>
       </tr>
       <tr>
       <td>Free email</td>
       <td>Fleet size 20-49, gmail address</td>
-      <td>Stage is New, reason is &quot;Free email needs review&quot;, owner is the Needs Review Queue</td>
+      <td>Stage is New, reason is &quot;Free email needs review&quot;</td>
       </tr>
       <tr>
       <td>No fleet size</td>
       <td>Fleet size blank</td>
-      <td>Stage is New, no reason, owner is the Needs Review Queue</td>
+      <td>Stage is New, no reason</td>
       </tr>
       <tr>
       <td>Mixed case</td>
@@ -986,7 +995,7 @@
       </tr>
       </tbody>
       </table></div>
-      <p>Limits of Flow tests, from Salesforce: up to 200 tests per flow, only paths that run immediately, and a test can only check the lead itself. So a test cannot confirm the campaign member was created. That part is checked by the answer keys.</p>
+      <p>Limits of Flow tests, from Salesforce: up to 200 tests per flow, only paths that run immediately, and a test can only check the lead itself. So a test cannot confirm the campaign member was created. The owner is set after the save, so a test of the first Flow cannot see it either. Both are checked by the answer keys.</p>
       <p>Run them from the terminal:</p>
       <pre><code>sf flow run test --target-org roadwren-dev --test-level RunLocalTests
       </code></pre>

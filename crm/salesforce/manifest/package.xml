@@ -29,6 +29,7 @@
         <members>Lead.SQL_Date__c</members>
         <members>Lead.Disqualified_Date__c</members>
         <members>Lead.First_Response_Date__c</members>
+        <members>Lead.Response_Overdue__c</members>
         <members>Opportunity.UTM_Source__c</members>
         <members>Opportunity.UTM_Medium__c</members>
         <members>Opportunity.UTM_Campaign__c</members>
@@ -48,6 +49,14 @@
         <members>Opportunity.Expected_Annual_Value__c</members>
         <members>Opportunity.First_MQL_Date__c</members>
         <name>CustomField</name>
+    </types>
+    <types>
+        <members>Fleet_Band__mdt</members>
+        <name>CustomObject</name>
+    </types>
+    <types>
+        <members>Fleet_Band.*</members>
+        <name>CustomMetadata</name>
     </types>
     <types>
         <members>Lead.Stage_Reason_Required</members>
@@ -75,6 +84,7 @@
     </types>
     <types>
         <members>CampaignType</members>
+        <members>LeadSource</members>
         <name>StandardValueSet</name>
     </types>
     <version>66.0</version>
