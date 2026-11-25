@@ -33,9 +33,9 @@
                 <label>SQL</label>
             </value>
             <value>
-                <fullName>Nuture</fullName>
+                <fullName>Nurture</fullName>
                 <default>false</default>
-                <label>Nuture</label>
+                <label>Nurture</label>
             </value>
             <value>
                 <fullName>Disqualified</fullName>
