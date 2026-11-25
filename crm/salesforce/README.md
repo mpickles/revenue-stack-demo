@@ -4,10 +4,10 @@ Status: in progress. The Salesforce account is a free Developer Edition. Every l
 
 ## What this part does
 
-1. The Roadwren demo form sends a lead into Salesforce with its fleet size, UTM values, click IDs, referring domain and consent choice.
+1. The Roadwren demo form sends a lead into Salesforce with its fleet size, UTM values, click IDs, referring domain and consent choice. It goes through the Salesforce API, signed in as an integration user that can create and edit leads and nothing else. Web-to-Lead is not used, because it never tells the site whether a lead was saved. A repeat form fill updates the open lead with the same email.
 2. No lead is ever blocked. A lead that does not fit is saved with a stage and a reason that say why.
 3. Two record-triggered Flows judge the lead. One runs before the lead is saved and sets the fields on the lead. One runs after it is saved, sets the owner queue and adds the lead to its campaign. The fleet size rules are not typed into either Flow. They are six records of a custom metadata type, Fleet Band, that the Flows look up. Between them they set the lifecycle stage, the stage reason, the segment, the expected annual value, the Lead Source, the campaign and the owner queue.
-4. One validation rule, `Stage_Reason_Required`, stops a lead being moved to Nurture or Disqualified without a reason.
+4. Three validation rules guard what a person does by hand. `Stage_Reason_Required` stops a move to Nurture or Disqualified without a reason. `MQL_Needs_Fleet_Size` stops a lead being released to MQL with no fleet size or below the floor. `Convert_Only_From_SQL` stops a conversion from any stage but SQL. None of them can stop a form lead. A custom permission, Bypass Lead Automation, is the off switch for the rules and the Flows during a bulk load.
 5. When a lead converts, the click IDs, UTM values and consent fields carry over to the opportunity.
 6. A third Flow waits one day after a lead becomes MQL. If the lead is still MQL, it ticks Response Overdue and sends an alert.
 7. A script writes the Google Ads conversion upload file for qualified leads and checks every row. It leaves out anyone without Ad User Data Consent.
@@ -105,19 +105,20 @@ The first file covers the rest: every fleet band, consent refused with a click I
 
 ## Duplicates
 
-The brief's rule: the same person sending the form again is one lead, and the repeat is logged. How Salesforce gets there is not confirmed. It is tested by hand in Part M of the build, the step for repeat leads. Until then D01 and D02 say "not confirmed, see Part M" and their other expected columns are blank. Nothing here claims an outcome.
+The brief's rule: the same person sending the form again is one lead, and the repeat is logged.
 
-What is known so far. Salesforce ships with a Standard Lead Duplicate Rule. Check it is active: Setup, search Duplicate Rules.
+The form meets it in the site, not in Salesforce. Before it creates a lead, the site looks for a lead with the same email that is not converted. If it finds one it updates that lead with the latest values, adds 1 to Form Fill Count and stamps Latest Form Fill Date.
 
-What Salesforce's own help page says about the form: when a duplicate rule is set to Block, or to Allow with an alert, a matching Web-to-Lead submission is blocked. The form cannot show the alert to anyone, so the lead is not created. That would lose the repeat, which breaks the rule that no lead is blocked. Salesforce's fix is a separate duplicate rule for the Web-to-Lead user set to Allow and Report, which creates the lead and logs the match. That gives two lead records, not one, so it does not meet the brief on its own either.
+The Standard Lead Duplicate Rule is set to Allow, with Report ticked and Alert unticked. It matches on more than the email, so set to Block or Alert it could refuse a real second person who comes in through the API. With Allow and Report the lead is saved and the pair is listed under Duplicate Record Sets.
 
 Not confirmed, and needing a real run:
 
-- D01 through the Data Import Wizard. Other sources say an alert rule acts as a block on import and the row fails with a duplicate error.
-- D02. Sources disagree on whether the standard rule matches on email alone.
-- One repeat submit through the live form.
+- D01 and D02 through the Data Import Wizard, using "Add new and update existing records" matched on Email.
+- What the wizard does with D02, which has the same email as T02 and a different name.
 
-Record the outcome of all three under Results, then fill in the two rows of the answer key.
+Until then D01 and D02 say "not confirmed, see Part M" and their other expected columns are blank. Record the outcome under Results, then fill in the two rows of the answer key.
+
+Limit: a repeat is matched on the exact email. The same person using a second address becomes a second lead.
 
 ## The setup, saved as files
 
@@ -137,7 +138,7 @@ sf project retrieve start --manifest manifest/package.xml
 
 The first command opens a browser to log in. The login is stored on the computer, outside this repo. The second command writes the files into `force-app/`.
 
-`manifest/package.xml` lists what to pull: every custom field in [`fields.md`](fields.md), the validation rule `Lead.Stage_Reason_Required`, the Flows and their tests, the queues, the duplicate rules, the lead field mapping, the Fleet Band type with its six records, and the campaign Type and Lead Source lists, which hold the channel names. A field's name is its label with underscores and `__c` on the end. Two are different: the Lead's consent checkbox keeps its first name, `Consent_Given__c`, and the Opportunity's is `Ad_User_Data_Consent__c`. If a name in your Salesforce account is different, edit the file to match. Campaigns are records, not setup, so the manifest does not pull them. Only their Type list comes across. The manifest has not been run yet.
+`manifest/package.xml` lists what to pull: every custom field in [`fields.md`](fields.md), the three validation rules, the off switch permission and its permission set, the Flows and their tests, the queues, the duplicate rules, the lead field mapping, the Fleet Band type with its six records, and the campaign Type and Lead Source lists, which hold the channel names. A field's name is its label with underscores and `__c` on the end. Two are different: the Lead's consent checkbox keeps its first name, `Consent_Given__c`, and the Opportunity's is `Ad_User_Data_Consent__c`. If a name in your Salesforce account is different, edit the file to match. Campaigns are records, not setup, so the manifest does not pull them. Only their Type list comes across. The manifest has not been run yet.
 
 ## Flow tests
 

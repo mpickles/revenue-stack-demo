@@ -66,6 +66,8 @@ One custom field on the Lead, Lifecycle Stage, holds marketing's view of the lea
 
 Every form lead is a demo request, which is the strongest signal of interest there is. So the MQL rule is "asked for a demo and fits", not a score.
 
+A lead is converted to an opportunity only from SQL. A rule refuses the conversion from any other stage, so every deal has passed through Working and SQL and has both dates.
+
 **Reasons** (required on Nurture and Disqualified, and set by the Flow on New when it applies): Below fleet threshold, Not a fleet operator, Competitor, Student or personal, Spam or test, Duplicate, Existing customer, No response, No budget or timing, Free email needs review, Other.
 
 **Dates the Flow stamps:** First MQL Date (never overwritten), Latest MQL Date, MQL Count, SQL Date, Disqualified Date, First Response Date (when the stage first becomes Working).
@@ -78,7 +80,7 @@ Every form lead is a demo request, which is the strongest signal of interest the
 |---|---|---|
 | Free email address (gmail, yahoo, hotmail, outlook) with 20 or more vehicles | Saved. Stage New, reason "Free email needs review", Needs Review Queue. A person who decides the lead is real sets the stage to MQL by hand. The Flow then clears the reason and sends the lead to its segment's queue | Small fleet owners often use personal email. Blocking would lose real buyers, and a blocked web lead is never created at all |
 | The visitor rejected cookies | Saved and judged like any other lead. Click IDs and UTM values are blank. Never sent to an ad platform | Cookie consent is permission to track and to share data for ads. It is not permission to be a lead |
-| The same person sends the form again | One lead. The repeat is logged, not saved as a second lead | Two records for one person split their history |
+| The same person sends the form again | One lead. The repeat is logged, not saved as a second lead. Before it creates a lead, the site looks for one with the same email that is not converted. If it finds one it updates that lead with the latest values, adds 1 to Form Fill Count and stamps Latest Form Fill Date | Two records for one person split their history |
 | Someone at a company that is already a customer | Saved and judged like any other lead. The person who spots it sets the reason "Existing customer" and moves it to the Needs Review Queue | Their account owner should answer, not a new-business rep. Nothing detects this automatically yet |
 | UTM medium that matches no channel | Channel "Other" | A typo should be visible, not hidden inside a real channel |
 | Free email address with under 20 vehicles | The fleet size rule wins. Stage Nurture, reason "Below fleet threshold", Nurture Queue | The lead is too small whatever its email address, so nobody needs to review it |
@@ -150,7 +152,7 @@ The qualified lead's value is its expected annual value. A row is only written i
 
 | Writer | May write | Never writes |
 |---|---|---|
-| The site form | Name, email, company, fleet size, Referring Domain, Landing Page, UTM values, click IDs, the three consent fields | Stage, segment, owner |
+| The site form, through the Salesforce API as the integration user | Name, email, company, fleet size, Referring Domain, Landing Page, UTM values, click IDs, the three consent fields, Form Fill Count, Latest Form Fill Date | Stage, segment, owner |
 | The Salesforce Flow | Lifecycle Stage, Stage Reason, Segment, Expected Annual Value, Lead Source, the stage dates, Response Overdue, Lead Email Copy, Owner (a queue) | The AI score fields |
 | A rep | Stage (Working, SQL, Nurture, Disqualified, and MQL only to release a lead held in New), Stage Reason, Owner (a person), Lead Status | The click ID, UTM and consent fields |
 | The AI lead qualifier | Its own four score fields. It may move the owner off a queue | Lifecycle Stage. A field a person edited |
@@ -161,5 +163,8 @@ The qualified lead's value is its expected annual value. A row is only written i
 - MQL is a rule, not a score. There is no behavior scoring because the only thing a visitor can do is ask for a demo.
 - No lookup of whether a lead's company is already an account. The "Existing customer" reason is set by a person.
 - Expected annual value uses the bottom of the band and the cheapest plan.
+- A repeat is matched on the exact email. The same person using a second address becomes a second lead, and only the duplicate report catches it.
+- The site writes each lead to HubSpot and to Salesforce separately. A larger setup would sync the two.
+- Every user can see and edit every lead until lead sharing is set to Private, which is done last, with made-up users to test it.
 - The response alert counts one day as 24 hours by the clock, weekends included. The target itself is one business day.
 - The 20-vehicle floor and the 500-vehicle Enterprise line are choices. Real vendors draw both lines in different places.
