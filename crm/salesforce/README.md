@@ -162,6 +162,25 @@ Run them from the terminal:
 sf flow run test --target-org roadwren-dev --test-level RunLocalTests
 ```
 
+## What the tests show, and what they do not
+
+Roadwren, the test leads and the answer keys are all made up, and I made them. So a match between the build and the keys proves some things and not others.
+
+What it shows:
+
+- The build does what the written rules say. The rules are in the [company brief](../../docs/roadwren-brief.md). The keys are worked out from the brief by a script, before the Flows exist.
+- Two separate builds of the same rules agree. A Python script writes the keys and a Salesforce Flow does the routing. A rule misread in one of them shows up as a row that does not match.
+- The cases that break routing are covered: no fleet size, a free email address on a large fleet, a UTM medium in capitals, a mistyped medium, the same person twice.
+- You can check it yourself. Read the brief, pick any test lead, predict its result, and compare it with the key.
+
+What it does not show:
+
+- That these are the right rules for a real company.
+- That the build holds up on real, messy data at volume. The test files are a few dozen rows.
+- Any business result. No revenue moved.
+
+The rows that did not match on the first run, and what was done about each, go in Results below. They are the most useful part of this page.
+
 ## Three choices
 
 - Fleet size over employee count as the one qualifying question. The price is per vehicle, so vehicles decide what a deal is worth.
