@@ -35,7 +35,7 @@ The qualifying question is fleet size, in vehicles. The form offers six bands.
 | Channel, with a UTM | utm_medium of cpc or ppc is Paid Search. paid_social is Paid Social. email is Email. referral is Referral. Any other value is Other. Upper and lower case are treated the same |
 | Channel, no UTM | Read from the Referring Domain: a search engine is Organic Search, an AI assistant is AI Search, another website is Referral, blank is Direct |
 | Lead Source | The channel is written to the standard Lead Source field |
-| Campaign | Each channel is a parent campaign with no members. The lead joins the child campaign named as its utm_campaign value. With no utm_campaign it joins the channel's catch-all, such as "Direct - Other" |
+| Campaign | Each channel is a parent campaign with no members. The lead joins the child campaign named as its utm_campaign value. A channel campaign is never matched, even when a utm_campaign has its name. With no utm_campaign it joins the channel's catch-all, such as "Direct - Other" |
 | Stage reason | Required on Nurture and Disqualified |
 
 ## The answer keys
