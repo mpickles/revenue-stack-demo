@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Latest_MQL_Date__c</fullName>
+    <description>Stamped by the Lead Flow every time the stage becomes MQL. Response time is measured from here.</description>
+    <inlineHelpText>When this lead most recently qualified.</inlineHelpText>
+    <label>Latest MQL Date</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>DateTime</type>
+</CustomField>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>SQL_Date__c</fullName>
+    <description>Stamped by the Lead Flow when the stage becomes SQL.</description>
+    <inlineHelpText>When a rep confirmed this lead.</inlineHelpText>
+    <label>SQL Date</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>DateTime</type>
+</CustomField>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>UTM_Medium__c</fullName>
+    <description>Filled by the website lead form from the utm_medium URL parameter. Not edited by hand. The lead Flow reads this to choose the campaign: cpc or ppc is Paid Search, paid_social is Paid Social, anything else is Organic and Direct. Mapped to the Opportunity on conversion.</description>
+    <externalId>false</externalId>
+    <inlineHelpText>The type of traffic that sent this lead, for example cpc, paid_social or email. Set automatically by the website form.</inlineHelpText>
+    <label>UTM Medium</label>
+    <length>255</length>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

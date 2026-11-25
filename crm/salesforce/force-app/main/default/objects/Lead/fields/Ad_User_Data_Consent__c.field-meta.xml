@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Ad_User_Data_Consent__c</fullName>
+    <defaultValue>false</defaultValue>
+    <description>Ticked when the visitor accepted the cookie banner, which covers sending their data to ad platforms. The conversion upload leaves out any lead where this is unticked. Never blocks a lead.</description>
+    <inlineHelpText>Did this person agree to their data being used for ads? Unticked means never send them to an ad platform.</inlineHelpText>
+    <label>Ad User Data Consent</label>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Checkbox</type>
+</CustomField>

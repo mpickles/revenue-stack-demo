@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Ad_Personalization_Consent__c</fullName>
+    <defaultValue>false</defaultValue>
+    <description>Copied from the Lead&apos;s Ad Personalization Consent at conversion by Map Lead Fields.</description>
+    <inlineHelpText>Did the person who clicked agree to personalized ads?</inlineHelpText>
+    <label>Ad Personalization Consent</label>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackTrending>false</trackTrending>
+    <type>Checkbox</type>
+</CustomField>

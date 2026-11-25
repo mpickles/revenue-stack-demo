@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Ad_Personalization_Consent__c</fullName>
+    <defaultValue>false</defaultValue>
+    <description>Ticked when the visitor accepted ad personalization on the cookie banner. Sent with the conversion upload.</description>
+    <inlineHelpText>Did this person agree to personalized ads?</inlineHelpText>
+    <label>Ad Personalization Consent</label>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Checkbox</type>
+</CustomField>

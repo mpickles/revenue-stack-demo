@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>GCLID__c</fullName>
+    <description>Copied from the Lead&apos;s GCLID at conversion by Map Lead Fields. The Google Ads conversion upload reads it. Do not edit by hand.</description>
+    <externalId>false</externalId>
+    <inlineHelpText>The Google click ID from the ad click that brought in this deal&apos;s lead.</inlineHelpText>
+    <label>GCLID</label>
+    <length>255</length>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>
