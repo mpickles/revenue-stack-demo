@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Stage_Reason_Required</fullName>
+    <active>true</active>
+    <description>A lead cannot be moved to Nurture or Disqualified without a Stage Reason.</description>
+    <errorConditionFormula>AND(
+  OR(
+    ISPICKVAL(Lifecycle_Stage__c, &quot;Nurture&quot;),
+    ISPICKVAL(Lifecycle_Stage__c, &quot;Disqualified&quot;)
+  ),
+  ISBLANK(TEXT(Stage_Reason__c))
+)</errorConditionFormula>
+    <errorDisplayField>Stage_Reason__c</errorDisplayField>
+    <errorMessage>Pick a Stage Reason before moving a lead to Nurture or Disqualified.</errorMessage>
+</ValidationRule>

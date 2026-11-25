@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Lead_Email_Copy__c</fullName>
+    <description>A copy of the standard Email field, filled by the lead Flow on creation. Exists because the standard Email field cannot be mapped to an Opportunity. Mapped to Lead Email on the Opportunity on conversion. Used to match offline conversions when there is no click ID.</description>
+    <externalId>false</externalId>
+    <inlineHelpText>A copy of this lead&apos;s email, kept so it carries over to the deal. Set automatically. Do not edit.</inlineHelpText>
+    <label>Lead Email Copy</label>
+    <length>255</length>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>WBRAID__c</fullName>
+    <description>Google click ID used for some iPhone web ad clicks. Set by the site form. Do not edit by hand.</description>
+    <externalId>false</externalId>
+    <inlineHelpText>Google click ID for some iPhone ad clicks.</inlineHelpText>
+    <label>WBRAID</label>
+    <length>255</length>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

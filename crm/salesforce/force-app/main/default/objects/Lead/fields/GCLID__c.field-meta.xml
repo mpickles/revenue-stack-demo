@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>GCLID__c</fullName>
+    <description>Google Ads click ID. Filled by the website lead form from the gclid URL parameter. Not edited by hand. Used in the offline conversions upload to tell Google Ads which click became a qualified lead. Mapped to the Opportunity on conversion. Never trim or change the case of this value.</description>
+    <externalId>false</externalId>
+    <inlineHelpText>Google&apos;s ID for the ad click that brought this lead. Blank if the lead did not come from a Google ad. Do not edit.</inlineHelpText>
+    <label>GCLID</label>
+    <length>255</length>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>
