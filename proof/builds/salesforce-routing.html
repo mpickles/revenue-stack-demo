@@ -728,7 +728,7 @@
       </tr>
       <tr>
       <td>Free email release</td>
-      <td>A person sets the stage to MQL by hand. The first Flow clears the reason and the second sends the lead to its segment's queue. The free email check itself runs only when the lead is created</td>
+      <td>A person sets the stage to MQL by hand. The first Flow clears the reason and the second sends the lead to its segment's queue. The free email check runs every time the first Flow judges the stage, on creation and on a Fleet Size change, unless the lead is already MQL. So a lead held for review stays held when the form is sent again, and a released lead is not sent back</td>
       </tr>
       </tbody>
       </table></div>

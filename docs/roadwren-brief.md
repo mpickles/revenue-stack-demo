@@ -1,6 +1,6 @@
 # Roadwren company brief
 
-Version 2, November 24, 2026. Roadwren is made up. This page is the one place that says who it sells to and how a lead is judged. Every build in this repo reads its rules from here. If a rule changes, it changes here first, then in the build.
+Version 3, November 25, 2026. Roadwren is made up. This page is the one place that says who it sells to and how a lead is judged. Every build in this repo reads its rules from here. If a rule changes, it changes here first, then in the build.
 
 Review it whenever a threshold, a stage or a channel name changes, and bump the version.
 
@@ -89,7 +89,7 @@ A lead is converted to an opportunity only from SQL. A rule refuses the conversi
 
 When more than one rule applies, the order is: no fleet size first, then under 20 vehicles, then a free email address. A free email address is one that ends in @gmail.com, @yahoo.com, @hotmail.com or @outlook.com, compared in lower case.
 
-The free email check runs once, when the lead is created. A later change of Fleet Size skips it, because by then a person has looked at the lead.
+The free email check runs every time the Flow judges the stage: when the lead is created, and when its Fleet Size changes. The one exception is a lead that is already MQL. A free email lead can only be MQL because a person released it, so correcting its Fleet Size does not send it back to review. A lead still held in New stays held when the same person sends the form again with a different fleet size, because the site made that change and nobody has looked at the lead yet.
 
 Segment and expected annual value follow fleet size whatever the stage. A free email lead held in New still has both.
 
