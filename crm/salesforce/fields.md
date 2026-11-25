@@ -43,7 +43,45 @@ New text for Consent Given after the relabel:
 | Ad Personalization Consent | Checkbox, default unchecked | Ticked when the visitor accepted ad personalization on the cookie banner. Sent with the conversion upload. | Did this person agree to personalized ads? |
 | Ad Consent Timestamp | Date/Time | When the visitor made their cookie banner choice. Set by the site form. | When consent was given or refused. |
 
+Added Nov 24, create these three:
+
+| Label | Type | Description | Help Text |
+|---|---|---|---|
+| Response Overdue | Checkbox, default unchecked | Ticked by the response alert Flow when the lead was still MQL one day after it qualified. Never unticked, so it stays as a record of the miss. | Did this lead wait more than a day for a first reply? |
+| Form Fill Count | Number (3, 0) | Set by the site. 1 when the lead is created, raised by one each time the same email sends the demo form again. | How many times this person has sent the demo form. |
+| Latest Form Fill Date | Date/Time | Set by the site each time the same email sends the demo form again. | When this person last sent the demo form. |
+
 Wait for the lead qualifier build: AI Fit Score, AI Score Status, AI Score Reason, AI Score Version.
+
+## Custom permission: Bypass Lead Automation
+
+The off switch. Label Bypass Lead Automation, held in a permission set of the same name that is assigned to nobody. Every Lead Flow starts by checking it and ends if the person saving has it. Each validation rule has `NOT($Permission.Bypass_Lead_Automation)` in its formula. A person doing a bulk load or a data fix assigns themselves the permission set, does the work and removes it. The integration user never gets it.
+
+## Lead Source, values to add
+
+The Lead Flow writes the channel to the standard Lead Source field. Add these values to its list: Paid Search, Paid Social, Email, Referral, Organic Search, AI Search, Direct. Other is already there.
+
+## Custom metadata type: Fleet Band
+
+The table in section 3 of the brief, held as records so the Flows look it up and no threshold is typed into a Flow. Label Fleet Band, plural Fleet Bands.
+
+| Field | Type | Holds |
+|---|---|---|
+| Fleet Size | Text 20 | The Lead picklist value, exactly as written |
+| Segment | Text 40 | The segment for that band |
+| Queue Name | Text 80 | The label of the queue an MQL in that band goes to |
+| Expected Annual Value | Number (16, 2) | Lowest fleet size in the band, times $19, times 12 |
+
+Six records:
+
+| Fleet Size | Segment | Queue Name | Expected Annual Value |
+|---|---|---|---|
+| 1-19 | Below Threshold | Nurture Queue | blank |
+| 20-49 | Small Business | Small Business Queue | 4560 |
+| 50-199 | Mid-Market | Mid-market Queue | 11400 |
+| 200-499 | Mid-Market | Mid-market Queue | 45600 |
+| 500-999 | Enterprise | Enterprise Queue | 114000 |
+| 1,000+ | Enterprise | Enterprise Queue | 228000 |
 
 ## Opportunity, already created
 

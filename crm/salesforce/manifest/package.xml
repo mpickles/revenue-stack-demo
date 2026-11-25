@@ -29,6 +29,9 @@
         <members>Lead.SQL_Date__c</members>
         <members>Lead.Disqualified_Date__c</members>
         <members>Lead.First_Response_Date__c</members>
+        <members>Lead.Response_Overdue__c</members>
+        <members>Lead.Form_Fill_Count__c</members>
+        <members>Lead.Latest_Form_Fill_Date__c</members>
         <members>Opportunity.UTM_Source__c</members>
         <members>Opportunity.UTM_Medium__c</members>
         <members>Opportunity.UTM_Campaign__c</members>
@@ -50,7 +53,25 @@
         <name>CustomField</name>
     </types>
     <types>
+        <members>Bypass_Lead_Automation</members>
+        <name>CustomPermission</name>
+    </types>
+    <types>
+        <members>Bypass_Lead_Automation</members>
+        <name>PermissionSet</name>
+    </types>
+    <types>
+        <members>Fleet_Band__mdt</members>
+        <name>CustomObject</name>
+    </types>
+    <types>
+        <members>Fleet_Band.*</members>
+        <name>CustomMetadata</name>
+    </types>
+    <types>
         <members>Lead.Stage_Reason_Required</members>
+        <members>Lead.MQL_Needs_Fleet_Size</members>
+        <members>Lead.Convert_Only_From_SQL</members>
         <name>ValidationRule</name>
     </types>
     <types>
@@ -75,6 +96,7 @@
     </types>
     <types>
         <members>CampaignType</members>
+        <members>LeadSource</members>
         <name>StandardValueSet</name>
     </types>
     <version>66.0</version>
