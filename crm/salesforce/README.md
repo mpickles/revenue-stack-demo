@@ -39,7 +39,7 @@ The qualifying question is fleet size, in vehicles. The form offers six bands.
 | Campaign | Each channel is a parent campaign with no members. The lead joins the child campaign named as its utm_campaign value. A channel campaign is never matched, even when a utm_campaign has its name. With no utm_campaign it joins the channel's catch-all, such as "Direct - Other" |
 | Stage reason | Required on Nurture and Disqualified |
 | Owner | Set after the save, by the second Flow. Salesforce runs its own lead assignment after a before-save Flow and a Web-to-Lead lead always goes through it, so an owner set before the save would be overwritten. A lead a rep has taken is never pulled back to a queue |
-| Free email release | A person sets the stage to MQL by hand. The first Flow clears the reason and the second sends the lead to its segment's queue. The free email check itself runs only when the lead is created |
+| Free email release | A person sets the stage to MQL by hand. The first Flow clears the reason and the second sends the lead to its segment's queue. The free email check runs every time the first Flow judges the stage, on creation and on a Fleet Size change, unless the lead is already MQL. So a lead held for review stays held when the form is sent again, and a released lead is not sent back |
 
 ## The answer keys
 
