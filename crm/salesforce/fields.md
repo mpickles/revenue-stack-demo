@@ -11,7 +11,7 @@ Leave Required, Unique and External ID unticked on all of them. Text fields are 
 | UTM Source, UTM Medium, UTM Campaign | Text 255 |
 | GCLID | Text 255 |
 | Lead Email Copy | Text 255 |
-| Consent Given | Checkbox. Relabel to Ad User Data Consent. Keep the API name `Consent_Given__c` |
+| Consent Given | Checkbox. Relabeled to Ad User Data Consent. Its API name in the account is `Ad_User_Data_Consent__c`, the same as the Opportunity field. Confirmed by the first pull on Nov 25 |
 | Lifecycle Stage | Picklist, restricted. Add the values Working and Nurture |
 
 New text for Consent Given after the relabel:
