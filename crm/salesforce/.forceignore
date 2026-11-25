@@ -1,0 +1,3 @@
+# Files the pull should not write into the repo.
+# Flows that ship with every Salesforce account. They are not part of this build.
+**/flows/sfdc_default_*
