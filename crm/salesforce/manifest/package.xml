@@ -14,7 +14,7 @@
         <members>Lead.LI_FAT_ID__c</members>
         <members>Lead.Referring_Domain__c</members>
         <members>Lead.Landing_Page__c</members>
-        <members>Lead.Consent_Given__c</members>
+        <members>Lead.Ad_User_Data_Consent__c</members>
         <members>Lead.Ad_Personalization_Consent__c</members>
         <members>Lead.Ad_Consent_Timestamp__c</members>
         <members>Lead.Lead_Email_Copy__c</members>
