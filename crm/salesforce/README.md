@@ -109,7 +109,7 @@ The brief's rule: the same person sending the form again is one lead, and the re
 
 The form meets it in the site, not in Salesforce. Before it creates a lead, the site looks for a lead with the same email that is not converted. If it finds one it updates that lead with the latest values, adds 1 to Form Fill Count and stamps Latest Form Fill Date.
 
-The Standard Lead Duplicate Rule is set to Allow, with Report ticked and Alert unticked. It matches on more than the email, so set to Block or Alert it could refuse a real second person who comes in through the API. With Allow and Report the lead is saved and the pair is listed under Duplicate Record Sets.
+The Standard Lead Duplicate Rule has to be set to Allow, with Report ticked and Alert unticked, before the form is connected. As pulled on Nov 25 it still had Alert ticked, and through the API an alert refuses the lead. It matches on more than the email, so set to Block or Alert it could refuse a real second person who comes in through the API. With Allow and Report the lead is saved and the pair is listed under Duplicate Record Sets.
 
 Not confirmed, and needing a real run:
 
@@ -119,6 +119,8 @@ Not confirmed, and needing a real run:
 Until then D01 and D02 say "not confirmed, see Part M" and their other expected columns are blank. Record the outcome under Results, then fill in the two rows of the answer key.
 
 Limit: a repeat is matched on the exact email. The same person using a second address becomes a second lead.
+
+A Nurture lead who sends the form again is judged again by the first Flow, which watches Form Fill Count. A repeat only replaces a click ID or UTM value when the new form fill carries one. The upload dates the click from Latest Form Fill Date when there is one, and leaves out a conversion that happened before that click.
 
 ## The setup, saved as files
 
