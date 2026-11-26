@@ -926,7 +926,7 @@
       <h2>Duplicates</h2>
       <p>The brief's rule: the same person sending the form again is one lead, and the repeat is logged.</p>
       <p>The form meets it in the site, not in Salesforce. Before it creates a lead, the site looks for a lead with the same email that is not converted. If it finds one it updates that lead with the latest values, adds 1 to Form Fill Count and stamps Latest Form Fill Date.</p>
-      <p>The Standard Lead Duplicate Rule is set to Allow, with Report ticked and Alert unticked. It matches on more than the email, so set to Block or Alert it could refuse a real second person who comes in through the API. With Allow and Report the lead is saved and the pair is listed under Duplicate Record Sets.</p>
+      <p>The Standard Lead Duplicate Rule has to be set to Allow, with Report ticked and Alert unticked, before the form is connected. As pulled on Nov 25 it still had Alert ticked, and through the API an alert refuses the lead. It matches on more than the email, so set to Block or Alert it could refuse a real second person who comes in through the API. With Allow and Report the lead is saved and the pair is listed under Duplicate Record Sets.</p>
       <p>Not confirmed, and needing a real run:</p>
       <ul>
       <li>D01 and D02 through the Data Import Wizard, using &quot;Add new and update existing records&quot; matched on Email.</li>
@@ -934,6 +934,7 @@
       </ul>
       <p>Until then D01 and D02 say &quot;not confirmed, see Part M&quot; and their other expected columns are blank. Record the outcome under Results, then fill in the two rows of the answer key.</p>
       <p>Limit: a repeat is matched on the exact email. The same person using a second address becomes a second lead.</p>
+      <p>A Nurture lead who sends the form again is judged again by the first Flow, which watches Form Fill Count. A repeat only replaces a click ID or UTM value when the new form fill carries one. The upload dates the click from Latest Form Fill Date when there is one, and leaves out a conversion that happened before that click.</p>
       <h2>The setup, saved as files</h2>
       <p>Fields, the validation rule, both Flows, their tests, the queues and the lead field mapping are pulled out of Salesforce as files with the Salesforce CLI, so the build can be read and compared without logging in.</p>
       <p>One-time setup on Windows:</p>
