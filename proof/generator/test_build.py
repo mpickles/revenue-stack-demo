@@ -628,6 +628,34 @@ class CommittedPages(unittest.TestCase):
         for file in ("platform-spend.html", "platform-web-app.html", "platform-reports.html", "platform-audit.html"):
             self.assertIn('class="rshot-frame"', self.pages[file], file)
 
+    def test_the_platform_shows_the_team_screens_and_the_detailed_diagram(self):
+        page = self.pages["platform.html"]
+        block = page[page.index('id="shots2"'):page.index('id="shots"')]
+        shots = re.findall(r'<img src="(img/platform/[^"]+\.webp)" alt="[^"]+"', block)
+        self.assertEqual(len(shots), 4)
+        self.assertEqual(block.count("data-shot="), 4)
+        self.assertEqual(block.count("(demo data)"), 4)
+        self.assertIn("made up", block)
+        diagram = "img/platform/00-architecture.webp"
+        self.assertEqual(page.count(f'<img src="{diagram}"'), 1)
+        self.assertLess(page.index(diagram), page.index('id="shots2"'))
+        for shot in shots + [diagram]:
+            self.assertTrue((build.PROOF / shot).is_file(), shot)
+        self.assertIn('getElementById("shots2")', page)
+
+    def test_the_job_history_matches_the_dates_on_my_profile(self):
+        home = self.pages["index.html"]
+        jobs = home[home.index('id="experience"'):home.index('id="skills"')]
+        rows = re.findall(r'<span class="when">([^<]+)</span>\s*<div><b>([^<]+)</b>', jobs)
+        self.assertEqual(rows[:4], [
+            ("Jul 2026 to now", "Marketing Operations Specialist"),
+            ("Nov 2024 to Jun 2026", "PPC and SEO Specialist"),
+            ("May 2024 to Oct 2024", "SEO Intern"),
+            ("Jun 2023 to May 2024", "Webmaster"),
+        ])
+        about = home[home.index('id="about"'):]
+        self.assertIn("data science, optimization and machine learning", about)
+
     def test_a_recording_on_a_page_is_a_file_that_exists(self):
         for path, text in self.pages.items():
             for src in re.findall(r'<source src="([^"]+)"', text):
