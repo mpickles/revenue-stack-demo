@@ -4,7 +4,7 @@
       <h1 style="view-transition-name:title-platform">I built the operations platform a paid media team works in</h1>
       <p class="status is-live">Live at Upgrow</p>
     </header>
-    <dl class="tldr"><div><dt>Problem</dt><dd>A paid media team rebuilt the same reports, budgets and checks by hand, for every client, every month.</dd></div><div><dt>What I built</dt><dd>One platform: a tested warehouse, a web app and the workflows on top. A person approves everything.</dd></div><div><dt>Result</dt><dd>On report day, 8 client reports were drafted and with their account leads by 9:50 am. It costs $0 a month to host.</dd></div></dl>
+    <dl class="tldr"><div><dt>Problem</dt><dd>A paid media team rebuilt the same reports, budgets and checks by hand, for every client, every month.</dd></div><div><dt>What I built</dt><dd>One internal web app on a tested warehouse, with the workflows, alerts and a timeline for every client on top. A person approves everything.</dd></div><div><dt>Result</dt><dd>On report day, 8 client reports were drafted and with their account leads by 9:50 am. It costs $0 a month to host.</dd></div></dl>
     <p class="own">I designed it and built <b>every part of it myself</b>: the warehouse, the web app, the workflows and the connections to Claude.</p>
     <p class="own2">Claude wrote the code. I wrote the specs, made every design decision and ran it in production.</p>
 
@@ -23,6 +23,17 @@
         <div class="covers ptiles" data-stagger>
 $$TILES$$
         </div>
+      </div>
+      <figure class="rshot-frame second" id="arch"><img src="img/platform/00-architecture.webp" alt="The whole platform in five columns: data sources, the BigQuery warehouse built by dbt, the web app, the workflows and the Claude connector. Live sources are marked green and paused ones grey." width="1600" height="960" loading="lazy"><figcaption>The same system in more detail, drawn from the code. Green sources load every day. Grey ones are built and paused.</figcaption></figure>
+    </div>
+
+    <div class="cs-block">
+      <h2 class="cs-h">Running the accounts, and the team</h2>
+      <p class="sub">It is built like a product, not a set of scripts. Every client has an account lead and a specialist, and each person sees only their own clients.</p>
+      <div class="rshot" id="shots2">
+        <div class="ops-ctl" role="group" aria-label="Screenshot"><button type="button" data-shot="0" aria-pressed="true">Portfolio</button><button type="button" data-shot="1" aria-pressed="false">Timeline</button><button type="button" data-shot="2" aria-pressed="false">Alerts</button><button type="button" data-shot="3" aria-pressed="false">Workflows</button></div>
+        <figure class="rshot-frame"><div class="rshot-pane" data-pane="0"><img src="img/platform/11-portfolio-health.webp" alt="The portfolio screen. Two rings show how many of ten clients are rated Good, Meh or Bad this week for performance and for the relationship, with twelve weeks of history under each." width="1440" height="900" loading="lazy"><figcaption>The portfolio view (demo data). Every Monday each client is rated Good, Meh or Bad, once for performance and once for the relationship.</figcaption></div><div class="rshot-pane" data-pane="1" hidden><img src="img/platform/12-client-timeline.webp" alt="One client's timeline. Calls, alerts, finished tasks, milestones and bidding changes sit in one list, newest first, with filters for each kind." width="1440" height="900" loading="lazy"><figcaption>One timeline per client (demo data). Calls, tasks, account changes, alerts and milestones in one list, so a change in the numbers can be read against what the team did.</figcaption></div><div class="rshot-pane" data-pane="2" hidden><img src="img/platform/13-client-alerts.webp" alt="One client's open alerts. Two critical alerts say lead tracking looks broken, with the usual rate beside the current one, and one trend alert says non-brand search is losing share." width="1440" height="484" loading="lazy"><figcaption>Alerts (demo data). Watchers compare each account with its own normal. Here leads have stopped for nine days on an account that usually gets one a day.</figcaption></div><div class="rshot-pane" data-pane="3" hidden><img src="img/platform/14-workflows.webp" alt="The Run screen. Seven jobs a person can start, each with what it produces, its last run and its next one, above a table of recent runs." width="1440" height="900" loading="lazy"><figcaption>Workflows (demo data). The jobs a lead can start, what each one hands back, and every run with who started it.</figcaption></div></figure>
+        <p class="ops-note">Real screenshots of the app in demo mode. The clients, people and numbers are made up.</p>
       </div>
     </div>
 

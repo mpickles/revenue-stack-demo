@@ -1231,7 +1231,7 @@
       <h1 style="view-transition-name:title-platform">I built the operations platform a paid media team works in</h1>
       <p class="status is-live">Live at Upgrow</p>
     </header>
-    <dl class="tldr"><div><dt>Problem</dt><dd>A paid media team rebuilt the same reports, budgets and checks by hand, for every client, every month.</dd></div><div><dt>What I built</dt><dd>One platform: a tested warehouse, a web app and the workflows on top. A person approves everything.</dd></div><div><dt>Result</dt><dd>On report day, 8 client reports were drafted and with their account leads by 9:50 am. It costs $0 a month to host.</dd></div></dl>
+    <dl class="tldr"><div><dt>Problem</dt><dd>A paid media team rebuilt the same reports, budgets and checks by hand, for every client, every month.</dd></div><div><dt>What I built</dt><dd>One internal web app on a tested warehouse, with the workflows, alerts and a timeline for every client on top. A person approves everything.</dd></div><div><dt>Result</dt><dd>On report day, 8 client reports were drafted and with their account leads by 9:50 am. It costs $0 a month to host.</dd></div></dl>
     <p class="own">I designed it and built <b>every part of it myself</b>: the warehouse, the web app, the workflows and the connections to Claude.</p>
     <p class="own2">Claude wrote the code. I wrote the specs, made every design decision and ran it in production.</p>
 
@@ -1255,6 +1255,17 @@
           <a class="wf-card cover-card" href="platform-audit.html"><svg class="art" style="view-transition-name:cover-pf-audit" viewBox="0 0 400 250" role="img" aria-label="A map of connected points with one path in colour" xmlns="http://www.w3.org/2000/svg"><path class="c-line m-draw" style="--i:0" pathLength="1" d="M90 80L200 60"/><path class="c-line m-draw" style="--i:1" pathLength="1" d="M90 80L200 125"/><path class="c-line m-draw" style="--i:2" pathLength="1" d="M90 170L200 125"/><path class="c-line m-draw" style="--i:3" pathLength="1" d="M90 170L200 190"/><path class="c-line m-draw" style="--i:4" pathLength="1" d="M200 60L310 100"/><path class="c-line m-draw" style="--i:5" pathLength="1" d="M200 125L310 100"/><path class="c-on-line m-draw" style="--i:6" pathLength="1" d="M200 125L310 160"/><path class="c-line m-draw" style="--i:7" pathLength="1" d="M200 190L310 160"/><circle class="c-node" style="--i:6" cx="90" cy="80" r="11"/><circle class="c-node" style="--i:7" cx="90" cy="170" r="11"/><circle class="c-node" style="--i:8" cx="200" cy="60" r="11"/><circle class="c-on m-pop" style="--i:9" cx="200" cy="125" r="11"/><circle class="c-node" style="--i:10" cx="200" cy="190" r="11"/><circle class="c-node" style="--i:11" cx="310" cy="100" r="11"/><circle class="c-on m-pop" style="--i:12" cx="310" cy="160" r="11"/></svg><span class="body"><b><i>5</i>Tracking audit</b><span class="line">Found consent was blocking every tag</span><span class="meta"><span class="status is-live">Live</span><span>Tag Manager</span></span></span></a>
           <a class="wf-card cover-card" href="platform-spend.html"><svg class="art" style="view-transition-name:cover-pf-spend" viewBox="0 0 400 250" role="img" aria-label="A budget meter with a limit line and daily bars" xmlns="http://www.w3.org/2000/svg"><rect class="c-box" x="70" y="112" width="260" height="26" rx="13"/><rect class="c-on m-grow" style="--i:0" x="74" y="116" width="170" height="18" rx="9"/><rect class="c-gate" x="262" y="96" width="4" height="58" rx="2"/><rect class="c-bar m-pop" style="--i:2" x="84" y="196" width="18" height="18" rx="3"/><rect class="c-bar m-pop" style="--i:3" x="118" y="188" width="18" height="26" rx="3"/><rect class="c-bar m-pop" style="--i:4" x="152" y="192" width="18" height="22" rx="3"/><rect class="c-bar m-pop" style="--i:5" x="186" y="180" width="18" height="34" rx="3"/><rect class="c-bar m-pop" style="--i:6" x="220" y="184" width="18" height="30" rx="3"/><rect class="c-bar m-pop" style="--i:7" x="254" y="174" width="18" height="40" rx="3"/><rect class="c-bar m-pop" style="--i:8" x="288" y="178" width="18" height="36" rx="3"/></svg><span class="body"><b><i>6</i>Search terms and budgets</b><span class="line">Nothing is spent without a person&#x27;s yes</span><span class="meta"><span class="status is-live">Live</span><span>Google Ads</span></span></span></a>
         </div>
+      </div>
+      <figure class="rshot-frame second" id="arch"><img src="img/platform/00-architecture.webp" alt="The whole platform in five columns: data sources, the BigQuery warehouse built by dbt, the web app, the workflows and the Claude connector. Live sources are marked green and paused ones grey." width="1600" height="960" loading="lazy"><figcaption>The same system in more detail, drawn from the code. Green sources load every day. Grey ones are built and paused.</figcaption></figure>
+    </div>
+
+    <div class="cs-block">
+      <h2 class="cs-h">Running the accounts, and the team</h2>
+      <p class="sub">It is built like a product, not a set of scripts. Every client has an account lead and a specialist, and each person sees only their own clients.</p>
+      <div class="rshot" id="shots2">
+        <div class="ops-ctl" role="group" aria-label="Screenshot"><button type="button" data-shot="0" aria-pressed="true">Portfolio</button><button type="button" data-shot="1" aria-pressed="false">Timeline</button><button type="button" data-shot="2" aria-pressed="false">Alerts</button><button type="button" data-shot="3" aria-pressed="false">Workflows</button></div>
+        <figure class="rshot-frame"><div class="rshot-pane" data-pane="0"><img src="img/platform/11-portfolio-health.webp" alt="The portfolio screen. Two rings show how many of ten clients are rated Good, Meh or Bad this week for performance and for the relationship, with twelve weeks of history under each." width="1440" height="900" loading="lazy"><figcaption>The portfolio view (demo data). Every Monday each client is rated Good, Meh or Bad, once for performance and once for the relationship.</figcaption></div><div class="rshot-pane" data-pane="1" hidden><img src="img/platform/12-client-timeline.webp" alt="One client's timeline. Calls, alerts, finished tasks, milestones and bidding changes sit in one list, newest first, with filters for each kind." width="1440" height="900" loading="lazy"><figcaption>One timeline per client (demo data). Calls, tasks, account changes, alerts and milestones in one list, so a change in the numbers can be read against what the team did.</figcaption></div><div class="rshot-pane" data-pane="2" hidden><img src="img/platform/13-client-alerts.webp" alt="One client's open alerts. Two critical alerts say lead tracking looks broken, with the usual rate beside the current one, and one trend alert says non-brand search is losing share." width="1440" height="484" loading="lazy"><figcaption>Alerts (demo data). Watchers compare each account with its own normal. Here leads have stopped for nine days on an account that usually gets one a day.</figcaption></div><div class="rshot-pane" data-pane="3" hidden><img src="img/platform/14-workflows.webp" alt="The Run screen. Seven jobs a person can start, each with what it produces, its last run and its next one, above a table of recent runs." width="1440" height="900" loading="lazy"><figcaption>Workflows (demo data). The jobs a lead can start, what each one hands back, and every run with who started it.</figcaption></div></figure>
+        <p class="ops-note">Real screenshots of the app in demo mode. The clients, people and numbers are made up.</p>
       </div>
     </div>
 
@@ -1307,11 +1318,12 @@
     // The app replica on the platform pages. Made-up clients; the layout and labels follow the real app.
     (function () {
       // The screenshot switcher on the platform page.
-      var shots = document.getElementById("shots");
-      if (shots) shots.querySelectorAll("[data-shot]").forEach(function (b) {
-        b.addEventListener("click", function () {
-          shots.querySelectorAll("[data-shot]").forEach(function (x) { x.setAttribute("aria-pressed", x === b); });
-          shots.querySelectorAll("[data-pane]").forEach(function (p) { p.hidden = p.dataset.pane !== b.dataset.shot; });
+      [document.getElementById("shots"), document.getElementById("shots2")].forEach(function (shots) {
+        if (shots) shots.querySelectorAll("[data-shot]").forEach(function (b) {
+          b.addEventListener("click", function () {
+            shots.querySelectorAll("[data-shot]").forEach(function (x) { x.setAttribute("aria-pressed", x === b); });
+            shots.querySelectorAll("[data-pane]").forEach(function (p) { p.hidden = p.dataset.pane !== b.dataset.shot; });
+          });
         });
       });
       var app = document.getElementById("app"); if (!app) return;
