@@ -163,7 +163,8 @@
         <locationX>0</locationX>
         <locationY>0</locationY>
         <defaultConnector>
-            <targetReference>Route_the_owner</targetReference>
+            <isGoTo>true</isGoTo>
+            <targetReference>Email_the_error</targetReference>
         </defaultConnector>
         <defaultConnectorLabel>No campaign</defaultConnectorLabel>
         <rules>
@@ -237,6 +238,10 @@
         <label>Queue found?</label>
         <locationX>0</locationX>
         <locationY>0</locationY>
+        <defaultConnector>
+            <isGoTo>true</isGoTo>
+            <targetReference>Email_the_owner_error</targetReference>
+        </defaultConnector>
         <defaultConnectorLabel>No queue</defaultConnectorLabel>
         <rules>
             <name>Yes_queue_found</name>
