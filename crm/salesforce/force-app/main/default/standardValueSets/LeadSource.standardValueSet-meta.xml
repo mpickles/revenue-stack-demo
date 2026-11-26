@@ -26,4 +26,39 @@
         <default>false</default>
         <label>Other</label>
     </standardValue>
+    <standardValue>
+        <fullName>Paid Search</fullName>
+        <default>false</default>
+        <label>Paid Search</label>
+    </standardValue>
+    <standardValue>
+        <fullName>Paid Social</fullName>
+        <default>false</default>
+        <label>Paid Social</label>
+    </standardValue>
+    <standardValue>
+        <fullName>Email</fullName>
+        <default>false</default>
+        <label>Email</label>
+    </standardValue>
+    <standardValue>
+        <fullName>Referral</fullName>
+        <default>false</default>
+        <label>Referral</label>
+    </standardValue>
+    <standardValue>
+        <fullName>Organic Search</fullName>
+        <default>false</default>
+        <label>Organic Search</label>
+    </standardValue>
+    <standardValue>
+        <fullName>AI Search</fullName>
+        <default>false</default>
+        <label>AI Search</label>
+    </standardValue>
+    <standardValue>
+        <fullName>Direct</fullName>
+        <default>false</default>
+        <label>Direct</label>
+    </standardValue>
 </StandardValueSet>

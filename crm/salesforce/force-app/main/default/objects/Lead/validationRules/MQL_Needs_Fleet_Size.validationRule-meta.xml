@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>MQL_Needs_Fleet_Size</fullName>
+    <active>true</active>
+    <description>A person cannot set a lead to MQL when it has no segment or is below the fleet threshold. Cannot stop a form lead: the Lead Flow sets the stage first and never sets MQL on such a lead.</description>
+    <errorConditionFormula>AND(
+  ISPICKVAL(Lifecycle_Stage__c, &quot;MQL&quot;),
+  OR(
+    ISBLANK(TEXT(Segment__c)),
+    ISPICKVAL(Segment__c, &quot;Below Threshold&quot;)
+  ),
+  NOT($Permission.Bypass_Lead_Automation)
+)</errorConditionFormula>
+    <errorDisplayField>Lifecycle_Stage__c</errorDisplayField>
+    <errorMessage>A lead needs a fleet size of 20 or more to be MQL.</errorMessage>
+</ValidationRule>

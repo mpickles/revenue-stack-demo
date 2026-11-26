@@ -8,7 +8,8 @@
     ISPICKVAL(Lifecycle_Stage__c, &quot;Nurture&quot;),
     ISPICKVAL(Lifecycle_Stage__c, &quot;Disqualified&quot;)
   ),
-  ISBLANK(TEXT(Stage_Reason__c))
+  ISBLANK(TEXT(Stage_Reason__c)),
+  NOT($Permission.Bypass_Lead_Automation)
 )</errorConditionFormula>
     <errorDisplayField>Stage_Reason__c</errorDisplayField>
     <errorMessage>Pick a Stage Reason before moving a lead to Nurture or Disqualified.</errorMessage>
