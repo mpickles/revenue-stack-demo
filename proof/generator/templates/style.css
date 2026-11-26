@@ -524,3 +524,6 @@ img.portrait{aspect-ratio:4/5;width:100%;max-width:19rem;height:auto;object-fit:
   h2,h3{break-after:avoid}
   a{text-decoration:none;color:inherit}
 }
+/* A part of the page switched off in builds.json stays off, whatever its own display rule says. */
+.hw[hidden],.sys[hidden],.parts-h[hidden]{display:none!important}
+.hw[hidden] + .hw.note{grid-column:1 / -1}

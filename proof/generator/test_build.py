@@ -643,6 +643,19 @@ class CommittedPages(unittest.TestCase):
             self.assertTrue((build.PROOF / shot).is_file(), shot)
         self.assertIn('getElementById("shots2")', page)
 
+    def test_the_second_project_shows_on_the_home_page_only_when_it_is_switched_on(self):
+        home = self.pages["index.html"]
+        off = bool(self.config["project"].get("hidden"))
+        for opening in ('<a class="hw" href="project.html"', '<article class="sys second lead-in"'):
+            tag = home[home.index(opening):]
+            tag = tag[: tag.index(">") + 1]
+            self.assertEqual(tag.endswith(" hidden>"), off, opening)
+        line = home[: home.index('href="project.html#map"')]
+        line = line[line.rindex("<p"):]
+        self.assertEqual('<p class="parts-h" hidden>' in line, off)
+        self.assertIn(".hw[hidden],.sys[hidden],.parts-h[hidden]{display:none!important}", home)
+        self.assertIn("project.html", self.pages)
+
     def test_the_job_history_matches_the_dates_on_my_profile(self):
         home = self.pages["index.html"]
         jobs = home[home.index('id="experience"'):home.index('id="skills"')]
