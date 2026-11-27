@@ -1294,7 +1294,6 @@
     /* While the six screens are pinned, the screenshot is capped so the whole block fits on the screen. */
     .rshot.fit .rshot-pane img{width:auto;max-width:100%;max-height:calc(100svh - 300px);margin-inline:auto}
 
-    <<<<<<< HEAD
     /* Layout mock, platform page only. Three ideas: a title that stays put beside its section, one picture
        that runs edge to edge, and long lists that open on request. */
     .shows.fold:not(.open)>div:nth-child(n+3){display:none}
@@ -1320,13 +1319,11 @@
         .themes li:last-child{padding-bottom:0}
       }
     }
-    =======
     /* Screenshots sit at a reading size, not the full width of the page. */
     .rshot-frame{max-width:58rem}
     /* The detailed diagram is drawn on white. On a dark page it is flipped so it does not glare. */
     :root[data-theme="dark"] #arch img{filter:invert(1) hue-rotate(180deg)}
     @media (prefers-color-scheme:dark){:root:not([data-theme="light"]) #arch img{filter:invert(1) hue-rotate(180deg)}}
-    >>>>>>> motion-layer
   </style>
 </head>
 <body>
