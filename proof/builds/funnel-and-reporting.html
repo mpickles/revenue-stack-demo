@@ -17,10 +17,10 @@
   <link rel="icon" href="/favicon.svg" type="image/svg+xml">
   <!-- Made by proof/generator/build.py from warehouse/README.md. Do not edit by hand. -->
   <script>
-    // Runs before the page paints. Applies the saved light or dark choice, and picks one accent
-    // colour per visit: teal, cobalt, red, orange or plum. Each pair is [light mode, dark mode].
+    // Runs before the page paints. Applies the saved light or dark choice, and sets the one accent
+    // colour, indigo. The pair is [light mode, dark mode].
     (function () {
-      var el = document.documentElement, pairs = [["#0F7B6C", "#3CC8B4"], ["#2348E8", "#7C93FF"], ["#C4261D", "#FF6B5E"], ["#C2500C", "#FF8A3D"], ["#8A2A6B", "#E58FCA"]];
+      var el = document.documentElement, pairs = [["#263A9B", "#9DACFF"]];
       var pick = Math.floor(Math.random() * pairs.length);
       try {
         var theme = localStorage.getItem("theme"); if (theme) el.dataset.theme = theme;
@@ -31,7 +31,7 @@
     })();
   </script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,400..800&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
   <style>
     /* Technical direction. Named tokens, light and dark. IBM Plex Sans for reading,
        IBM Plex Mono only where something is data: tables, statuses, diagram notes. */
@@ -550,7 +550,7 @@
     /* Print and save-as-PDF: the words and pictures only, on white, with nothing left hidden by an animation. */
     @media print{
       :root,.band{--bg:#fff;--ink:#111;--muted:#444;--line:#ccc;--panel:#f4f4f4;color-scheme:light}
-      .nav,.progress,.cursor,canvas.grid,.pager,.contact,.ops-ctl,.ctl,.crumb,[data-theme-toggle],.more-rows>summary{display:none!important}
+      .rail,.nav,.progress,.cursor,canvas.grid,.pager,.contact,.ops-ctl,.ctl,.crumb,[data-theme-toggle],.more-rows>summary{display:none!important}
       *{opacity:1!important;transform:none!important;animation:none!important;transition:none!important;box-shadow:none!important;clip-path:none!important}
       body{background:#fff}
       .writeup{padding:0}
@@ -562,6 +562,88 @@
     /* A part of the page switched off in builds.json stays off, whatever its own display rule says. */
     .hw[hidden],.sys[hidden],.parts-h[hidden]{display:none!important}
     .hw[hidden] + .hw.note{grid-column:1 / -1}
+
+    /* ------------------------------------------------------------------
+       Direction, Nov 27. Washi ground, sumi ink, one indigo, one persimmon dot.
+       Bricolage Grotesque, set narrow, for anything that is a title.
+       The dot after the name is the same dot that rides the rail down the page.
+       ------------------------------------------------------------------ */
+    :root{--bg:#ECEEE9;--ink:#12161A;--muted:#565E5B;--line:rgb(18 22 26/.17);--panel:#E1E4DE;--paper:#F6F7F3;--signal:#E25822;--on-accent:#F6F7F3;
+      --display:"Bricolage Grotesque","IBM Plex Sans",system-ui,sans-serif;--code:"IBM Plex Mono",ui-monospace,Menlo,Consolas,monospace;--mono:var(--sans);
+      --lift:0 0 0 1px var(--line)}
+    @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0C0F22;--ink:#E8EBF4;--muted:#9AA1B8;--line:rgb(232 235 244/.15);--panel:#161A38;--paper:#141833;--signal:#FF7A45;--on-accent:#0C0F22;--lift:0 0 0 1px var(--line)}}
+    :root[data-theme="dark"]{--bg:#0C0F22;--ink:#E8EBF4;--muted:#9AA1B8;--line:rgb(232 235 244/.15);--panel:#161A38;--paper:#141833;--signal:#FF7A45;--on-accent:#0C0F22;--lift:0 0 0 1px var(--line)}
+    pre,code,kbd,.snip,.snip *{font-family:var(--code)}
+    ::selection{background:var(--signal);color:#fff}
+    h1,h2,h3{font-family:var(--display);font-weight:600;font-stretch:84%;letter-spacing:-.012em}
+    h2{font-size:clamp(2.25rem,1.2rem + 4.2vw,4.75rem);line-height:.94;font-stretch:80%;letter-spacing:-.012em}
+    .progress{display:none}
+
+    /* Nav: an ink pill */
+    .nav{background:var(--ink);color:var(--bg);border:0;box-shadow:none;border-radius:999px;padding:7px 7px 7px 22px;backdrop-filter:none}
+    .nav .nav-name{font-family:var(--display);font-stretch:82%;font-weight:600;letter-spacing:-.02em;font-size:1.0625rem;color:var(--bg)}
+    .nav .nav-name:hover{color:var(--bg)}
+    .nav div a{color:color-mix(in srgb,var(--bg) 66%,var(--ink))}
+    .nav div a:hover{color:var(--bg)}
+    .nav button{border-color:color-mix(in srgb,var(--bg) 30%,transparent);color:var(--bg);border-radius:999px;padding:5px 14px 6px}
+    .nav button:hover{background:color-mix(in srgb,var(--bg) 14%,transparent)}
+
+    /* The rail and its dot */
+    .rail{position:fixed;z-index:15;top:0;bottom:0;left:clamp(9px,2.3vw,30px);width:1px;background:rgb(128 132 140/.5);transform-origin:top;pointer-events:none}
+    .rail b{position:absolute;left:-3px;width:7px;height:1px;background:rgb(128 132 140/.8);transition:width .3s var(--ease),left .3s var(--ease)}
+    .rail b.past{width:13px;left:-6px}
+    .rail i{position:absolute;left:-5px;top:0;width:11px;height:11px;margin-top:-5px;border-radius:50%;background:var(--signal);will-change:transform}
+    @media (prefers-reduced-motion:no-preference){
+      .rail{animation:rail-in 1.1s var(--ease) .55s both}
+      .rail i{animation:dot-in .5s cubic-bezier(.34,1.56,.64,1) 1.35s both}
+    }
+    @keyframes rail-in{from{transform:scaleY(0)}to{transform:scaleY(1)}}
+    @keyframes dot-in{from{scale:0}to{scale:1}}
+
+    /* Hero: the name runs the full width, the work sits under it */
+    .hero.v2{padding:clamp(104px,11vw,150px) 0 clamp(32px,5vw,56px)}
+    .hero.v2 .wrap{container-type:inline-size}
+    .hero-split{grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr);gap:clamp(28px,4vw,56px) clamp(32px,5vw,72px);align-items:start}
+    .hero.v2 h1.name{grid-column:1 / -1;font-size:clamp(3.4rem,19.6cqw,17rem);font-weight:700;font-stretch:75%;line-height:.8;letter-spacing:-.012em;white-space:nowrap;margin:0 0 0 -.03em;padding-bottom:.06em}
+    .hero.v2 h1.name i{display:inline-block;width:.165em;height:.165em;margin-left:.035em;border-radius:50%;background:var(--signal);color:transparent;overflow:hidden;vertical-align:baseline;line-height:1}
+    .hero-say{padding-top:6px}
+    .hero.v2 .role-line{font-family:var(--display);font-stretch:82%;font-weight:600;font-size:clamp(1.5rem,1.1rem + 1.4vw,2.125rem);letter-spacing:-.025em;line-height:1.05;margin:0}
+    .hero.v2 .role-line span{display:block;font-family:var(--sans);font-weight:400;font-size:1rem;letter-spacing:0;color:var(--muted);margin:8px 0 0}
+    .hero.v2 .pitch{font-size:clamp(1.125rem,1rem + .5vw,1.3125rem);line-height:1.4;max-width:24rem;margin-top:22px}
+    .hero-acts .see{border-radius:999px;padding:12px 22px 13px;background:var(--accent);color:var(--on-accent)}
+    .hero-acts .see:hover{color:var(--on-accent);background:var(--ink)}
+    .hw{border:0;border-radius:0;box-shadow:none;background:none;overflow:visible}
+    .hw-pic{border:1px solid var(--line);border-radius:10px;background:var(--paper)}
+    .hw .hw-pic > *{filter:none;opacity:1}
+    .hw.big .hw-pic{aspect-ratio:16/8.6;transition:transform var(--t-slow) var(--ease)}
+    .hw.big:hover .hw-pic{transform:translateY(-4px)}
+    .hw b,.hw.big b{font-family:var(--display);font-stretch:82%;font-weight:600;font-size:1.375rem;letter-spacing:-.025em;padding:16px 0 0}
+    .hw-s{padding:6px 0 0}
+    .hw.note{padding:18px 0 0;margin-top:6px;border-top:1px solid var(--ink);box-shadow:none}
+    .hw.note small{font-size:.875rem;color:var(--muted)}
+    .hw.note b{font-size:1.25rem;padding-top:6px}
+    .hw.note i{padding-top:10px;color:var(--ink)}
+    .hero.v2 .spec{border-top:1px solid var(--ink);margin-top:clamp(40px,6vw,72px)}
+    .hero.v2 .spec dt{font-size:.875rem;color:var(--muted)}
+
+    /* The Projects band is an indigo field */
+    .band{--bg:#1A2468;--ink:#F3F4F8;--muted:#B4BCE4;--line:rgb(243 244 248/.2);--panel:#232E7C;--paper:#232E7C;--accent:#C3CCFF;--on-accent:#1A2468}
+    .band h2{font-size:clamp(3rem,1.2rem + 8vw,8rem);font-stretch:76%;font-weight:700;line-height:.86;letter-spacing:-.008em}
+    .band .sys h3{font-size:clamp(1.875rem,1.2rem + 2.4vw,3rem);line-height:.98}
+
+    /* Lists and lines carry an ink rule, not a tint */
+    .xp b{font-family:var(--display);font-stretch:82%;font-weight:600}
+    .status,.when,.tags li{font-family:var(--sans)}
+    .tags li{border-radius:999px}
+    .nums b{font-family:var(--display);font-stretch:75%;font-weight:700;letter-spacing:-.04em}
+
+    @media (max-width:860px){
+      .hero-split{grid-template-columns:minmax(0,1fr)}
+      .hero.v2 h1.name{font-size:clamp(3.4rem,20.5cqw,17rem)}
+    }
+    .mail,.about.two p.big{font-family:var(--display);font-stretch:84%;font-weight:600;letter-spacing:-.012em}
+    .mail{font-size:clamp(1.75rem,.6rem + 5.4vw,5.5rem);font-stretch:78%;line-height:1}
+    .about.two p.big{font-size:clamp(2rem,1.2rem + 3.2vw,4rem);line-height:.98}
   </style>
 </head>
 <body>
@@ -1019,6 +1101,51 @@
       })();
 
       if (document.fonts && document.fonts.ready) document.fonts.ready.then(start); else start();
+    })();
+
+    // The rail: one line down the left edge, a tick where each section starts, and the dot
+    // from the name riding it as the page scrolls. Drawn by this script, so with it off there is no rail.
+    (function () {
+      var main = document.querySelector("main");
+      if (!main || document.querySelector(".rail")) return;
+      var rail = document.createElement("div"), dot = document.createElement("i"), ticks = [];
+      rail.className = "rail"; rail.setAttribute("aria-hidden", "true");
+      var stops = Array.prototype.slice.call(document.querySelectorAll("main section[id], main .cs-block, main article.sys, #contact"));
+      if (window.matchMedia("(max-width: 860px)").matches) stops = [];  // a phone gets the line and the dot, no ticks
+      stops.forEach(function () { var t = document.createElement("b"); rail.appendChild(t); ticks.push(t); });
+      rail.appendChild(dot); document.body.appendChild(rail);
+      var top = 84, pad = 28, queued = false;
+      function place() {
+        queued = false;
+        var h = window.innerHeight, max = document.documentElement.scrollHeight - h, run = h - top - pad;
+        var at = max > 0 ? Math.min(1, Math.max(0, window.scrollY / max)) : 0;
+        dot.style.transform = "translateY(" + (top + at * run) + "px)";
+        stops.forEach(function (el, i) {
+          var y = el.getBoundingClientRect().top + window.scrollY, f = max > 0 ? Math.min(1, y / max) : 0;
+          ticks[i].style.top = (top + f * run) + "px";
+          ticks[i].classList.toggle("past", f <= at + 0.002);
+        });
+      }
+      function ask() { if (!queued) { queued = true; requestAnimationFrame(place); } }
+      window.addEventListener("scroll", ask, { passive: true });
+      window.addEventListener("resize", ask);
+      window.addEventListener("load", ask);
+      place();
+    })();
+
+    // The name fills the width of the page, whatever font has loaded.
+    (function () {
+      var name = document.querySelector(".hero.v2 h1.name");
+      if (!name) return;
+      function fit() {
+        name.style.fontSize = ""; name.style.width = "max-content";
+        var wide = name.getBoundingClientRect().width, room = name.parentNode.clientWidth;
+        name.style.width = "";
+        if (wide > 0 && room > 0) name.style.fontSize = (parseFloat(getComputedStyle(name).fontSize) * room / wide * 0.985) + "px";
+      }
+      fit();
+      if (document.fonts && document.fonts.ready) document.fonts.ready.then(fit);
+      window.addEventListener("resize", fit);
     })();
   </script>
 </body>

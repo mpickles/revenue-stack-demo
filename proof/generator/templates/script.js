@@ -292,3 +292,48 @@
 
   if (document.fonts && document.fonts.ready) document.fonts.ready.then(start); else start();
 })();
+
+// The rail: one line down the left edge, a tick where each section starts, and the dot
+// from the name riding it as the page scrolls. Drawn by this script, so with it off there is no rail.
+(function () {
+  var main = document.querySelector("main");
+  if (!main || document.querySelector(".rail")) return;
+  var rail = document.createElement("div"), dot = document.createElement("i"), ticks = [];
+  rail.className = "rail"; rail.setAttribute("aria-hidden", "true");
+  var stops = Array.prototype.slice.call(document.querySelectorAll("main section[id], main .cs-block, main article.sys, #contact"));
+  if (window.matchMedia("(max-width: 860px)").matches) stops = [];  // a phone gets the line and the dot, no ticks
+  stops.forEach(function () { var t = document.createElement("b"); rail.appendChild(t); ticks.push(t); });
+  rail.appendChild(dot); document.body.appendChild(rail);
+  var top = 84, pad = 28, queued = false;
+  function place() {
+    queued = false;
+    var h = window.innerHeight, max = document.documentElement.scrollHeight - h, run = h - top - pad;
+    var at = max > 0 ? Math.min(1, Math.max(0, window.scrollY / max)) : 0;
+    dot.style.transform = "translateY(" + (top + at * run) + "px)";
+    stops.forEach(function (el, i) {
+      var y = el.getBoundingClientRect().top + window.scrollY, f = max > 0 ? Math.min(1, y / max) : 0;
+      ticks[i].style.top = (top + f * run) + "px";
+      ticks[i].classList.toggle("past", f <= at + 0.002);
+    });
+  }
+  function ask() { if (!queued) { queued = true; requestAnimationFrame(place); } }
+  window.addEventListener("scroll", ask, { passive: true });
+  window.addEventListener("resize", ask);
+  window.addEventListener("load", ask);
+  place();
+})();
+
+// The name fills the width of the page, whatever font has loaded.
+(function () {
+  var name = document.querySelector(".hero.v2 h1.name");
+  if (!name) return;
+  function fit() {
+    name.style.fontSize = ""; name.style.width = "max-content";
+    var wide = name.getBoundingClientRect().width, room = name.parentNode.clientWidth;
+    name.style.width = "";
+    if (wide > 0 && room > 0) name.style.fontSize = (parseFloat(getComputedStyle(name).fontSize) * room / wide * 0.985) + "px";
+  }
+  fit();
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(fit);
+  window.addEventListener("resize", fit);
+})();
