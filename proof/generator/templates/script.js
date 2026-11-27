@@ -574,4 +574,13 @@
     entries.forEach(function (en) { if (en.isIntersecting) { en.target.classList.add("seen"); io.unobserve(en.target); } });
   }, { threshold: 0.35 });
   figs.forEach(function (fig) { io.observe(fig); });
+  // A client work card plays its picture again when the pointer comes back to it.
+  Array.prototype.slice.call(document.querySelectorAll(".case-card")).forEach(function (card) {
+    var pic = card.querySelector("[data-reveal]");
+    if (!pic) return;
+    card.addEventListener("pointerenter", function () {
+      if (!pic.classList.contains("seen")) return;
+      pic.classList.remove("seen"); void pic.offsetWidth; pic.classList.add("seen");
+    });
+  });
 })();

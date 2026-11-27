@@ -456,13 +456,15 @@
     :root[data-theme="dark"] .proj-cover.shot .l{display:none}:root[data-theme="dark"] .proj-cover.shot .d{display:block}
     @media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .proj-cover.shot .l{display:none}:root:not([data-theme="light"]) .proj-cover.shot .d{display:block}}
     .proj-cover.shot small{display:block;padding:10px 14px;border-top:1px solid var(--line);background:var(--bg);color:var(--muted);font-size:.8125rem}
-    .case-cards{display:grid;gap:0 clamp(20px,2.4vw,32px);margin-top:36px}
-    @media (min-width:820px){.case-cards{grid-template-columns:repeat(3,minmax(0,1fr))}}
-    .case-card{display:grid;grid-template-rows:subgrid;grid-row:span 4;gap:0;padding:0 0 28px;background:none;text-decoration:none}
-    .case-card small{margin-top:16px;font-family:var(--mono);font-size:.75rem;color:var(--muted)}
-    .case-card b{margin-top:6px;font-weight:500;font-size:clamp(1.125rem,1rem + .5vw,1.375rem);letter-spacing:-.02em;line-height:1.25}
-    .case-card .go{margin-top:10px;color:var(--muted);text-decoration:underline;text-underline-offset:3px}
-    .case-card .cs-hero.thumb{display:block;margin:0;max-width:none;padding:12px;transition:border-color var(--t-fast) var(--ease)}
+    .case-cards{display:grid;gap:0;margin-top:36px;border-top:1px solid var(--line)}
+    .case-card{display:grid;gap:18px 56px;align-items:center;padding:28px 0;border-bottom:1px solid var(--line);background:none;text-decoration:none}
+    @media (min-width:820px){.case-card{grid-template-columns:minmax(0,1.5fr) minmax(0,1fr)}}
+    .case-card .cc-t{display:block}
+    .case-card small{display:block;font-family:var(--mono);font-size:.75rem;color:var(--muted)}
+    .case-card b{display:block;margin-top:8px;font-weight:500;font-size:clamp(1.375rem,1.1rem + 1.1vw,2rem);letter-spacing:-.03em;line-height:1.15}
+    .case-card .go{display:inline-block;margin-top:16px;color:var(--muted);text-decoration:underline;text-underline-offset:3px}
+    .case-card .cs-hero.thumb{display:block;margin:0;max-width:none;padding:clamp(10px,1.6vw,18px);transition:border-color var(--t-fast) var(--ease)}
+    .case-card .cs-hero.thumb svg{max-height:min(44svh,17rem)}
     .case-card:hover .cs-hero.thumb,.case-card:focus-visible .cs-hero.thumb{border-color:var(--accent)}
     .parts-h a{margin-left:10px;color:var(--ink);text-decoration:underline;text-decoration-color:var(--line);text-underline-offset:3px;background:none}
     /* Every part, as plain links under the map. Works with no script. */
@@ -1355,6 +1357,15 @@
         entries.forEach(function (en) { if (en.isIntersecting) { en.target.classList.add("seen"); io.unobserve(en.target); } });
       }, { threshold: 0.35 });
       figs.forEach(function (fig) { io.observe(fig); });
+      // A client work card plays its picture again when the pointer comes back to it.
+      Array.prototype.slice.call(document.querySelectorAll(".case-card")).forEach(function (card) {
+        var pic = card.querySelector("[data-reveal]");
+        if (!pic) return;
+        card.addEventListener("pointerenter", function () {
+          if (!pic.classList.contains("seen")) return;
+          pic.classList.remove("seen"); void pic.offsetWidth; pic.classList.add("seen");
+        });
+      });
     })();
   </script>
 </body>

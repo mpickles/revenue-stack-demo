@@ -435,11 +435,13 @@ class CommittedPages(unittest.TestCase):
         for case in self.config["cases"]:
             card = block[block.index(f'<a class="case-card" href="{case["file"]}"'):]
             card = card[:card.index("</a>")]
-            self.assertEqual(card.count('<span class="cs-hero thumb"><svg viewBox="0 0 720 250" aria-hidden="true">'), 1, "the page's own picture, small")
+            self.assertEqual(card.count('<span class="cs-hero thumb" data-reveal><svg viewBox="0 0 720 250" aria-hidden="true">'), 1, "the page's own picture, drawn in as it comes on screen")
             self.assertIn(f'<small>{case["kind"]}</small>', card)
             self.assertNotIn("<img", card)
         self.assertNotIn('<p class="sub">', block, "no subheading: the cards speak for themselves")
-        self.assertIn(".case-card{display:grid;grid-template-rows:subgrid;grid-row:span 4", home, "the cards line up row by row")
+        self.assertIn("@media (min-width:820px){.case-card{grid-template-columns:minmax(0,1.5fr) minmax(0,1fr)}}", home, "one card a row, the picture the larger half")
+        self.assertIn(".case-card .cs-hero.thumb svg{max-height:min(44svh,17rem)}", home, "never taller than the screen")
+        self.assertIn('card.addEventListener("pointerenter"', home, "the picture plays again on hover")
 
     def test_the_first_screen_shows_the_work_as_links(self):
         home = self.pages["index.html"]

@@ -102,7 +102,7 @@ def case_cards_html(cases):
         start = body.index("<svg", body.index('<figure class="cs-hero"'))
         svg = body[start:body.index("</svg>", start) + 6]
         svg = re.sub(r' role="img" aria-label="[^"]*"', ' aria-hidden="true"', svg, count=1)
-        out.append(f'  <a class="case-card" href="{case["file"]}"><span class="cs-hero thumb">{svg}</span><small>{html.escape(case["kind"])}</small><b>{html.escape(case["card"], quote=False)}</b><span class="go">Read it</span></a>')
+        out.append(f'  <a class="case-card" href="{case["file"]}"><span class="cs-hero thumb" data-reveal>{svg}</span><span class="cc-t"><small>{html.escape(case["kind"])}</small><b>{html.escape(case["card"], quote=False)}</b><span class="go">Read it</span></span></a>')
     out.append("</div>")
     return "\n".join(out)
 
