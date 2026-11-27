@@ -686,3 +686,9 @@ details.whole dd b{font-size:.9375rem}
 
 /* While the six screens are pinned, the screenshot is capped so the whole block fits on the screen. */
 .rshot.fit .rshot-pane img{width:auto;max-width:100%;max-height:calc(100svh - 300px);margin-inline:auto}
+
+/* Screenshots sit at a reading size, not the full width of the page. */
+.rshot-frame{max-width:58rem}
+/* The detailed diagram is drawn on white. On a dark page it is flipped so it does not glare. */
+:root[data-theme="dark"] #arch img{filter:invert(1) hue-rotate(180deg)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) #arch img{filter:invert(1) hue-rotate(180deg)}}

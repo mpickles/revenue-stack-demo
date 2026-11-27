@@ -602,6 +602,10 @@
       .tour-steps li{padding:9px 0}
       .tour-steps b{font-size:1.0625rem}
     }
+
+    /* A dark band always shows the dark screenshot, whatever the page's own theme. */
+    .band .rshot-frame .l,.band .proj-cover.shot .l,.band .tour-stage .l,.band .shot-frame .l{display:none}
+    .band .rshot-frame .d,.band .proj-cover.shot .d,.band .tour-stage .d,.band .shot-frame .d{display:block}
     /* Styles for the platform pages only. Loaded after style.css. */
     "
 
@@ -1290,6 +1294,12 @@
 
     /* While the six screens are pinned, the screenshot is capped so the whole block fits on the screen. */
     .rshot.fit .rshot-pane img{width:auto;max-width:100%;max-height:calc(100svh - 300px);margin-inline:auto}
+
+    /* Screenshots sit at a reading size, not the full width of the page. */
+    .rshot-frame{max-width:58rem}
+    /* The detailed diagram is drawn on white. On a dark page it is flipped so it does not glare. */
+    :root[data-theme="dark"] #arch img{filter:invert(1) hue-rotate(180deg)}
+    @media (prefers-color-scheme:dark){:root:not([data-theme="light"]) #arch img{filter:invert(1) hue-rotate(180deg)}}
   </style>
 </head>
 <body>
