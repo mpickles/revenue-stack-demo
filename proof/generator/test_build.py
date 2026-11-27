@@ -620,7 +620,7 @@ class CommittedPages(unittest.TestCase):
     def test_the_platform_shows_real_screenshots_in_light_and_dark(self):
         page = self.pages["platform.html"]
         shots = re.findall(r'<img src="(img/platform/[^"]+)-light\.webp" class="l"', page)
-        self.assertEqual(len(shots), 6)
+        self.assertEqual(len(shots), 10)
         for shot in shots:
             self.assertIn(f'<img src="{shot}-dark.webp" class="d"', page)
             self.assertTrue((build.PROOF / f"{shot}-dark.webp").is_file(), shot)
@@ -631,8 +631,9 @@ class CommittedPages(unittest.TestCase):
     def test_the_platform_shows_the_team_screens_and_the_detailed_diagram(self):
         page = self.pages["platform.html"]
         block = page[page.index('id="shots2"'):page.index('id="shots"')]
-        shots = re.findall(r'<img src="(img/platform/[^"]+\.webp)" alt="[^"]+"', block)
-        self.assertEqual(len(shots), 4)
+        shots = re.findall(r'<img src="(img/platform/[^"]+\.webp)" class="[ld]" alt="[^"]+"', block)
+        self.assertEqual(len(shots), 8, "four screens, each in light and dark")
+        self.assertEqual(sum(1 for shot in shots if shot.endswith("-dark.webp")), 4)
         self.assertEqual(block.count("data-shot="), 4)
         self.assertEqual(block.count("(demo data)"), 4)
         self.assertIn("made up", block)
