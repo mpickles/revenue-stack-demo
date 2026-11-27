@@ -1400,6 +1400,45 @@
     /* The one link out on a published case study. */
     .writeup p.acts a.see{display:inline-block;background:var(--ink);color:var(--bg);border-radius:8px;padding:10px 18px 11px;text-decoration:none;font-size:1rem}
     .writeup p.acts a.see:hover{background:var(--accent);color:var(--on-accent)}
+
+    /* Case study visuals: a line of steps, result bars, a line chart, and the link to the published source. */
+    .flowfig[data-flow="chain"]{display:block}
+    .flowfig[data-flow="chain"] .flow-stage{height:116px}
+    .src-link{margin:14px 0 0;font-size:1rem}
+    .resbars{margin:28px 0 0;max-width:46rem}
+    .resbars figcaption{color:var(--muted);font-size:.875rem;margin-bottom:14px}
+    .resbars>div{display:grid;grid-template-columns:11rem minmax(0,1fr) 4rem;gap:14px;align-items:center;padding:12px 0;border-top:1px solid var(--line)}
+    .resbars>div>span{font-weight:500}
+    .resbars p{margin:0;display:grid;gap:5px}
+    .resbars p i,.resbars p b{display:block;height:10px;border-radius:3px;width:var(--w);transform-origin:left}
+    .resbars p i{background:var(--muted);opacity:.45}
+    .resbars p b{background:var(--accent);height:16px}
+    .resbars em{font-style:normal;font-weight:500;font-size:1.25rem;letter-spacing:-.02em;text-align:right;font-variant-numeric:tabular-nums}
+    .resbars small{display:flex;gap:8px;align-items:center;margin-top:12px;color:var(--muted);font-size:.8125rem}
+    .resbars small i,.resbars small b{display:inline-block;width:14px;height:8px;border-radius:2px;background:var(--muted);opacity:.45}
+    .resbars small b{background:var(--accent);opacity:1;margin-left:12px}
+    .resbars.armed p i,.resbars.armed p b{transform:scaleX(0)}
+    .resbars.seen p i{transform:scaleX(1);transition:transform .5s var(--ease)}
+    .resbars.seen p b{transform:scaleX(1);transition:transform .9s var(--ease) .25s}
+    .linefig{margin:28px 0 0;max-width:46rem;border:1px solid var(--line);border-radius:12px;background:var(--panel);padding:18px 18px 12px}
+    .linefig svg{display:block;width:100%;height:auto;max-height:min(46svh,20rem)}
+    .linefig figcaption{margin-top:8px;color:var(--muted);font-size:.8125rem}
+    .linefig .ax{stroke:var(--line);stroke-width:1.5}
+    .linefig .mk{stroke:var(--muted);stroke-width:1;stroke-dasharray:4 4;opacity:.7}
+    .linefig .mt,.linefig .lt{fill:var(--muted);font:13px var(--sans)}
+    .linefig .lt.strong{fill:var(--ink);font-weight:500}
+    .linefig .ln{fill:none;stroke-width:2.5;stroke-linejoin:round;stroke-linecap:round}
+    .linefig .clicks{stroke:var(--muted)}
+    .linefig .leads{stroke:var(--accent);stroke-width:3}
+    .linefig .open{stroke:var(--accent);stroke-dasharray:3 6;opacity:.7}
+    .linefig.armed .draw{stroke-dasharray:1;stroke-dashoffset:1}
+    .linefig.armed .open,.linefig.armed .lt,.linefig.armed .mt,.linefig.armed .mk{opacity:0}
+    .linefig.seen .draw{stroke-dashoffset:0;transition:stroke-dashoffset 1.6s var(--ease)}
+    .linefig.seen .open{opacity:.7;transition:opacity .4s var(--ease) 1.5s}
+    .linefig.seen .lt,.linefig.seen .mt{opacity:1;transition:opacity .4s var(--ease) .9s}
+    .linefig.seen .mk{opacity:.7;transition:opacity .4s var(--ease) .5s}
+    @media (max-width:600px){.resbars>div{grid-template-columns:minmax(0,1fr) 3.5rem}.resbars>div>span{grid-column:1 / -1}}
+    .flowfig svg>g>text.sub{fill:var(--muted);font:13px var(--sans)}
   </style>
 </head>
 <body>
@@ -1985,9 +2024,54 @@
         draw(); drawn.push(state);
       }
 
-      figs.forEach(function (fig) { (fig.dataset.flow === "paths" ? paths : route)(fig); });
+      // Figure three: a short line of steps, or a loop, with the data running along it.
+      function chain(fig) {
+        var svg = fig.querySelector("svg"), box = fig.querySelector(".flow-stage"), state = { live: [], tok: null }, steps = fig.dataset.steps.split("|"), loop = fig.dataset.loop;
+        function draw() {
+          var W = box.clientWidth, n = steps.length, m = 14, lanes = [], nodes = [], i, H;
+          if (W >= 720) {
+            H = loop ? 190 : 116; var gap = 22, bw = (W - 2 * m - (n - 1) * gap) / n, hn = 56, y = loop ? 34 : (H - hn) / 2;
+            for (i = 0; i < n; i++) {
+              var x = m + i * (bw + gap);
+              if (i < n - 1) lanes.push('<path class="lane live" d="M' + (x + bw) + " " + (y + hn / 2) + "H" + (x + bw + gap) + '"/>');
+              nodes.push(rect("on", x, y, bw, hn, txt("l", x + bw / 2, y + hn / 2, steps[i])));
+            }
+            if (loop) {
+              var x0 = m + bw / 2, x1 = m + (n - 1) * (bw + gap) + bw / 2, yb = y + hn;
+              lanes.push('<path class="lane live dash" d="M' + x1 + " " + yb + "C" + x1 + " " + (yb + 76) + " " + x0 + " " + (yb + 76) + " " + x0 + " " + yb + '"/>');
+              nodes.push(txt("sub", (x0 + x1) / 2, yb + 38, loop));
+            }
+          } else {
+            var hn2 = 44, g2 = 16, side = loop ? 44 : 0, bw2 = Math.min(W - 2 * m - side, 340); H = 2 * m + n * hn2 + (n - 1) * g2;
+            for (i = 0; i < n; i++) {
+              var yy = m + i * (hn2 + g2);
+              if (i < n - 1) lanes.push('<path class="lane live" d="M' + (m + bw2 / 2) + " " + (yy + hn2) + "V" + (yy + hn2 + g2) + '"/>');
+              nodes.push(rect("on", m, yy, bw2, hn2, txt("l", m + bw2 / 2, yy + hn2 / 2, steps[i])));
+            }
+            if (loop) { var xr = m + bw2, ya = m + (n - 1) * (hn2 + g2) + hn2 / 2, yt = m + hn2 / 2; lanes.push('<path class="lane live dash" d="M' + xr + " " + ya + "C" + (xr + 38) + " " + ya + " " + (xr + 38) + " " + yt + " " + xr + " " + yt + '"/>'); }
+          }
+          box.style.height = H + "px";
+          finish(state, svg, W, H, lanes, nodes);
+        }
+        if (window.ResizeObserver) new ResizeObserver(draw).observe(box); else window.addEventListener("resize", draw);
+        draw(); drawn.push(state);
+      }
+
+      figs.forEach(function (fig) { (fig.dataset.flow === "paths" ? paths : fig.dataset.flow === "chain" ? chain : route)(fig); });
       function loop(t) { drawn.forEach(function (s) { place(s, t); }); requestAnimationFrame(loop); }
       if (!still) requestAnimationFrame(loop);
+    })();
+
+
+    // Charts draw themselves once, when they come on screen. With scripts off or "reduce motion" on they are simply there.
+    (function () {
+      var figs = Array.prototype.slice.call(document.querySelectorAll("[data-reveal]"));
+      if (!figs.length || !window.IntersectionObserver || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+      figs.forEach(function (fig) { fig.classList.add("armed"); });
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (en) { if (en.isIntersecting) { en.target.classList.add("seen"); io.unobserve(en.target); } });
+      }, { threshold: 0.35 });
+      figs.forEach(function (fig) { io.observe(fig); });
     })();
   </script>
 </body>

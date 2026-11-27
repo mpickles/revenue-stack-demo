@@ -376,7 +376,11 @@ class CommittedPages(unittest.TestCase):
             page = self.pages[case["file"]]
             body = page[page.index("<main"):page.index("</main>")]
             self.assertTrue(case["published"].startswith("https://www.upgrow.io/case-study/"), "only a page my employer published")
-            self.assertEqual(body.count(f'href="{case["published"]}"'), 1, case["file"])
+            self.assertEqual(body.count(f'href="{case["published"]}"'), 2, f'{case["file"]}: the source is linked at the top and at the end')
+            self.assertLess(body.index(f'href="{case["published"]}"'), body.index("<dt>Problem</dt>"))
+            self.assertEqual(body.count('<figure class="resbars" data-reveal>'), 1, "the published result is drawn")
+            self.assertEqual(body.count('data-flow="chain"'), 1, "how the work ran is drawn")
+            self.assertIn("published by Upgrow", body)
             self.assertIn(case["client"], body)
             self.assertIn("Published by Upgrow", body)
             for label in ("<dt>Problem</dt>", "<dt>What I did</dt>", "<dt>Result</dt>"):
@@ -747,6 +751,8 @@ class CommittedPages(unittest.TestCase):
         self.assertIn("Before the swap = 100", demo, "an index, never a raw client number")
         self.assertIn('document.getElementById("fsb")', page)
         self.assertLess(page.index("Try it: fill in the form</h2>"), page.index("What I chose, and what I turned down</h2>"))
+        self.assertEqual(page.count('<figure class="linefig" data-reveal>'), 1)
+        self.assertIn("not from client data", page)
 
     def test_the_animated_diagrams_have_their_controls_and_agree_with_the_pages(self):
         page = self.pages["platform.html"]
