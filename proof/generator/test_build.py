@@ -217,7 +217,7 @@ class CommittedPages(unittest.TestCase):
 
     def test_the_page_about_how_the_site_was_made_exists_and_is_linked(self):
         self.assertIn("colophon.html", self.pages)
-        self.assertIn('href="colophon.html"', self.pages["index.html"])
+        self.assertNotIn('href="colophon.html"', self.pages["index.html"], "it describes an older version of the site, so the home page does not send people there")
 
     def test_the_home_page_lists_only_notes_that_are_written(self):
         home = self.pages["index.html"]
@@ -506,7 +506,10 @@ class CommittedPages(unittest.TestCase):
         home = self.pages["index.html"]
         skills = home[home.index('id="skills"'):home.index('id="about"')]
         self.assertNotIn("<table", skills)
-        self.assertEqual(skills.count("<dt>"), 4)
+        self.assertEqual(skills.count("<dt>"), 6)
+        self.assertEqual(skills.count('<dt><svg viewBox="0 0 24 24" aria-hidden="true">'), 6, "an icon on each")
+        self.assertEqual(skills.count('<ul class="tags">'), 6)
+        self.assertEqual(skills.count("Learning: "), 3, "what I am still learning is said, not hidden")
         about = home[home.index('id="about"'):]
         about = about[: about.index("</section>")]
         self.assertIn('<p class="big">Before any of this I worked on an alpaca ranch and cooked for a sorority house.</p>', about)
