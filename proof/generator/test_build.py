@@ -417,7 +417,7 @@ class CommittedPages(unittest.TestCase):
         block = home[home.index('<section class="sec" id="daily"'):home.index('<section class="sec" id="experience"')]
         cards = block.split("<article>")[1:]
         self.assertEqual([c[c.index("<h3>") + 4:c.index("</h3>")] for c in cards],
-                         ["Conversion tracking", "Landing pages", "Data analysis", "Dashboards and reports"])
+                         ["Conversion tracking", "Landing pages", "Analysis and dashboards", "AI and automation"])
         for card in cards:
             self.assertEqual(card.count("<li>"), 3, "three examples each")
             self.assertIn('aria-hidden="true"', card)
