@@ -1292,23 +1292,13 @@
     @media (max-width:760px){.fs{grid-template-columns:minmax(0,1fr)}}
 
     /* While the six screens are pinned, the screenshot is capped so the whole block fits on the screen. */
-    .rshot.fit .rshot-pane img{width:auto;max-width:100%;max-height:calc(100svh - 300px);margin-inline:auto}
 
-    /* Layout mock, platform page only. Three ideas: a title that stays put beside its section, one picture
-       that runs edge to edge, and long lists that open on request. */
+    /* A long list shows its first rows and opens on request. */
     .shows.fold:not(.open)>div:nth-child(n+3){display:none}
     .fold-more{margin:0}
     .fold-more button{border:0;background:none;padding:16px 0;font-size:.875rem;color:var(--muted)}
     .fold-more button::before{content:"+";color:var(--accent);margin-right:10px}
     .fold-more button:hover{color:var(--ink)}
-    .cover-wide .page-cover{width:100vw;margin-left:calc(50% - 50vw);border-radius:0;border-inline:0}
-    .cover-wide .page-cover .shot-frame img{aspect-ratio:auto;width:100%;height:min(70svh,52vw);object-fit:cover;object-position:top center}
-    @media (min-width:1000px){
-      .cs-block.split{display:grid;grid-template-columns:15rem minmax(0,1fr);column-gap:72px;align-items:start;border-top:1px solid var(--line);padding-top:28px}
-      .cs-block.split>.cs-h{grid-column:1;grid-row:1 / span 12;position:sticky;top:104px;margin:0;padding:0;border:0;font-size:1.5rem;line-height:1.12}
-      .cs-block.split>:not(.cs-h){grid-column:2;min-width:0}
-      .cs-block.split>.cs-h+*{margin-top:0}
-    }
 
     /* The three lessons line up row by row: title with title, summary with summary, each point with its neighbours. */
     @supports (grid-template-rows:subgrid){
@@ -1320,14 +1310,14 @@
       }
     }
     /* Screenshots sit at a reading size, not the full width of the page. */
-    .rshot-frame{max-width:58rem}
     /* The detailed diagram is drawn on white. On a dark page it is flipped so it does not glare. */
     :root[data-theme="dark"] #arch img{filter:invert(1) hue-rotate(180deg)}
     @media (prefers-color-scheme:dark){:root:not([data-theme="light"]) #arch img{filter:invert(1) hue-rotate(180deg)}}
 
     /* A screenshot never stands taller than the screen. Press it to see it large. */
-    .rshot-frame img{width:auto;max-width:100%;max-height:min(68svh,42rem);margin-inline:auto}
-    .rshot.fit .rshot-pane img{max-height:min(68svh,42rem,calc(100svh - 300px))}
+    /* The frame is narrowed until a 16 by 10 screenshot fits, so the space is held before the picture loads. */
+    .rshot-frame{max-width:min(58rem,calc(min(68svh,42rem)*1.6))}
+    .rshot.fit .rshot-frame{max-width:min(58rem,calc(min(68svh,42rem,100svh - 300px)*1.6))}
     .rshot-pane,figure.rshot-frame{position:relative}
     .zoomable{cursor:zoom-in}
     .zoom-open{position:absolute;top:10px;right:10px;z-index:2;border:1px solid var(--line);border-radius:8px;background:color-mix(in srgb,var(--bg) 90%,transparent);backdrop-filter:blur(6px);color:var(--ink);padding:6px 12px 7px;font-size:.8125rem}
@@ -1403,7 +1393,7 @@
       </div>
     </div>
 
-    <div class="cs-block split">
+    <div class="cs-block">
       <h2 class="cs-h">Why it is built the way it is</h2>
       <div class="why" data-stagger>
         <article><div class="c"><small>Because</small><b>A model will state a wrong number with total confidence.</b></div><div class="d"><small>So</small><b>Code works out every number. The model only writes.</b><p>Each figure a report can quote is worked out in SQL first and handed over.</p></div></article>
@@ -1412,11 +1402,11 @@
       </div>
     </div>
 
-    <div class="cs-block split"><h2 class="cs-h">What I learned</h2><p class="sub">In July I had never shipped a production app. In October I ran the go-live. Three things I had to learn to get there.</p><div class="themes"><article><small>1</small><h3>Moving data cheaply</h3><p>Every query costs money, so the design has to read less.</p><ul><li>Rebuild only what changed. The morning build went from about 30 GB a day to about 7.5.</li><li>A quota refuses a query. An alert only tells you after.</li><li>Measure before cutting. My one guess missed.</li></ul></article><article><small>2</small><h3>Designing for the person using it</h3><p>I had to think like a product manager: what will they really do, and what happens at the edges.</p><ul><li>119 pages became 46 after the first pilot on real data.</li><li>A form for rerun requests was too technical. It became one button with plain names.</li><li>I assumed sane inputs. A budget was saved at 403% of its parent. Now it cannot be.</li></ul></article><article><small>3</small><h3>Directing an AI, strictly</h3><p>Claude wrote the code. My job was the specs, the rules and the checks it could not skip.</p><ul><li>Plan first, then build. A test for every behaviour.</li><li>Hooks, reviewers and branch rules, each added after something went wrong.</li><li>Never guess at a cause. Read the logs first.</li></ul></article></div><div class="how-w"><p class="how-l">How the way I work with Claude Code got stricter</p><ol class="flow n5 dated"><li><svg viewBox="0 0 48 48" aria-hidden="true"><rect class="i-b" x="16" y="8" width="22" height="26" rx="3"/><rect class="i-b" x="10" y="14" width="22" height="26" rx="3"/><path class="i-k" d="M15 22h12"/><path class="i-l" d="M15 28h12M15 34h7"/></svg><small>Aug to Sept</small><b>Chat and file drops</b><p>One file overwrote another. Rule: a patch must match the old text exactly once.</p></li><li><svg viewBox="0 0 48 48" aria-hidden="true"><path class="i-k" d="M10 14l3 3 5-6"/><path class="i-l" d="M24 14h14M10 25l3 3 5-6M24 25h14M12 36h4M24 36h14"/></svg><small>Early Oct</small><b>Specs before code</b><p>A plan I approve, a test for every behaviour. An outside reviewer found 12 issues in one phase.</p></li><li><svg viewBox="0 0 48 48" aria-hidden="true"><rect class="i-b" x="13" y="22" width="22" height="16" rx="3"/><path class="i-l" d="M18 22v-5a6 6 0 0 1 12 0v5"/><circle class="i-on" cx="24" cy="30" r="2.5"/></svg><small>Mid Oct</small><b>Hooks and guardrails</b><p>Hooks block destructive commands and secret reads. No session ends on a failing check.</p></li><li><svg viewBox="0 0 48 48" aria-hidden="true"><path class="i-l" d="M10 12h8l8 12M10 36h8l8-12M10 24h16"/><path class="i-k" d="M26 24h12"/><circle class="i-on" cx="38" cy="24" r="3"/></svg><small>Mid Oct</small><b>Parallel sessions</b><p>Branches collided. Rule: nothing merges without my go. A test fixer may never weaken a test.</p></li><li><svg viewBox="0 0 48 48" aria-hidden="true"><circle class="i-b" cx="24" cy="24" r="14"/><path class="i-k" d="M17 24l5 5 9-10"/></svg><small>Nov</small><b>Release branches</b><p>Main only moves forward. I found the checks had been stopping before the real tests ran.</p></li></ol></div></div>
+    <div class="cs-block"><h2 class="cs-h">What I learned</h2><p class="sub">In July I had never shipped a production app. In October I ran the go-live. Three things I had to learn to get there.</p><div class="themes"><article><small>1</small><h3>Moving data cheaply</h3><p>Every query costs money, so the design has to read less.</p><ul><li>Rebuild only what changed. The morning build went from about 30 GB a day to about 7.5.</li><li>A quota refuses a query. An alert only tells you after.</li><li>Measure before cutting. My one guess missed.</li></ul></article><article><small>2</small><h3>Designing for the person using it</h3><p>I had to think like a product manager: what will they really do, and what happens at the edges.</p><ul><li>119 pages became 46 after the first pilot on real data.</li><li>A form for rerun requests was too technical. It became one button with plain names.</li><li>I assumed sane inputs. A budget was saved at 403% of its parent. Now it cannot be.</li></ul></article><article><small>3</small><h3>Directing an AI, strictly</h3><p>Claude wrote the code. My job was the specs, the rules and the checks it could not skip.</p><ul><li>Plan first, then build. A test for every behaviour.</li><li>Hooks, reviewers and branch rules, each added after something went wrong.</li><li>Never guess at a cause. Read the logs first.</li></ul></article></div><div class="how-w"><p class="how-l">How the way I work with Claude Code got stricter</p><ol class="flow n5 dated"><li><svg viewBox="0 0 48 48" aria-hidden="true"><rect class="i-b" x="16" y="8" width="22" height="26" rx="3"/><rect class="i-b" x="10" y="14" width="22" height="26" rx="3"/><path class="i-k" d="M15 22h12"/><path class="i-l" d="M15 28h12M15 34h7"/></svg><small>Aug to Sept</small><b>Chat and file drops</b><p>One file overwrote another. Rule: a patch must match the old text exactly once.</p></li><li><svg viewBox="0 0 48 48" aria-hidden="true"><path class="i-k" d="M10 14l3 3 5-6"/><path class="i-l" d="M24 14h14M10 25l3 3 5-6M24 25h14M12 36h4M24 36h14"/></svg><small>Early Oct</small><b>Specs before code</b><p>A plan I approve, a test for every behaviour. An outside reviewer found 12 issues in one phase.</p></li><li><svg viewBox="0 0 48 48" aria-hidden="true"><rect class="i-b" x="13" y="22" width="22" height="16" rx="3"/><path class="i-l" d="M18 22v-5a6 6 0 0 1 12 0v5"/><circle class="i-on" cx="24" cy="30" r="2.5"/></svg><small>Mid Oct</small><b>Hooks and guardrails</b><p>Hooks block destructive commands and secret reads. No session ends on a failing check.</p></li><li><svg viewBox="0 0 48 48" aria-hidden="true"><path class="i-l" d="M10 12h8l8 12M10 36h8l8-12M10 24h16"/><path class="i-k" d="M26 24h12"/><circle class="i-on" cx="38" cy="24" r="3"/></svg><small>Mid Oct</small><b>Parallel sessions</b><p>Branches collided. Rule: nothing merges without my go. A test fixer may never weaken a test.</p></li><li><svg viewBox="0 0 48 48" aria-hidden="true"><circle class="i-b" cx="24" cy="24" r="14"/><path class="i-k" d="M17 24l5 5 9-10"/></svg><small>Nov</small><b>Release branches</b><p>Main only moves forward. I found the checks had been stopping before the real tests ran.</p></li></ol></div></div>
 
-    <div class="cs-block split"><h2 class="cs-h">What went wrong, and what I do now</h2><dl class="shows learn" data-fold="2"><div><dt><b>I promised time savings and timed nothing first.</b>Two reporting cycles went by and that baseline is gone.</dt><dd><i>Next time</i>Time the old way before writing any code. Every deck now logs the minutes spent editing it.</dd></div><div><dt><b>Three checks failed open or never ran.</b>The number checker, the automated tests and the backups. Each one said it was fine.</dt><dd><i>Fix</i>Prove a check can fail before trusting it. Plant an error. Restore a backup.</dd></div><div><dt><b>On the first full live day, fewer than half the decks built first time.</b>A missing file permission, a time limit that was too short, and a test run that had marked work as done.</dt><dd><i>Fix</i>Each cause fixed that day. Every deck rebuilt and checked by hand the next.</dd></div><div><dt><b>On launch day nobody could sign in.</b>The new sign-in stored each person's ID in a different form from the one the app looked up.</dt><dd><i>Fix</i>Both sides now use the same form. Patched the same day.</dd></div><div><dt><b>Production ran on old settings for a month.</b>A manual step nobody could see. I forgot one redeploy.</dt><dd><i>Fix</i>No step that lives in my head. Settings sit where the team can edit them.</dd></div></dl></div>
+    <div class="cs-block"><h2 class="cs-h">What went wrong, and what I do now</h2><dl class="shows learn" data-fold="2"><div><dt><b>I promised time savings and timed nothing first.</b>Two reporting cycles went by and that baseline is gone.</dt><dd><i>Next time</i>Time the old way before writing any code. Every deck now logs the minutes spent editing it.</dd></div><div><dt><b>Three checks failed open or never ran.</b>The number checker, the automated tests and the backups. Each one said it was fine.</dt><dd><i>Fix</i>Prove a check can fail before trusting it. Plant an error. Restore a backup.</dd></div><div><dt><b>On the first full live day, fewer than half the decks built first time.</b>A missing file permission, a time limit that was too short, and a test run that had marked work as done.</dt><dd><i>Fix</i>Each cause fixed that day. Every deck rebuilt and checked by hand the next.</dd></div><div><dt><b>On launch day nobody could sign in.</b>The new sign-in stored each person's ID in a different form from the one the app looked up.</dt><dd><i>Fix</i>Both sides now use the same form. Patched the same day.</dd></div><div><dt><b>Production ran on old settings for a month.</b>A manual step nobody could see. I forgot one redeploy.</dt><dd><i>Fix</i>No step that lives in my head. Settings sit where the team can edit them.</dd></div></dl></div>
 
-    <div class="cs-block split">
+    <div class="cs-block">
       <h2 class="cs-h">What is next</h2>
       <dl class="shows">
         <div><dt>Reports built by the platform</dt><dd>Report building is moving from a spreadsheet-driven process to the platform. The first automated monthly cycle runs in December</dd></div>
@@ -1622,6 +1612,7 @@
         function fit(full) { box.classList.toggle("full", full); size.textContent = full ? "Fit to screen" : "Full size"; if (!full) box.scrollTo(0, 0); }
         function open(img) {
           big.src = img.currentSrc || img.src; big.alt = img.alt; fit(false);
+          big.style.filter = getComputedStyle(img).filter === "none" ? "" : getComputedStyle(img).filter;  // the diagram is flipped on a dark page
           box.showModal(); if (lenis) lenis.stop();
         }
         box.addEventListener("close", function () { if (lenis) lenis.start(); });
@@ -1637,7 +1628,7 @@
         $$(".rshot-frame").forEach(function (frame) {
           var b = document.createElement("button"); b.type = "button"; b.className = "zoom-open"; b.textContent = "Expand";
           b.addEventListener("click", function () {
-            var showing = $$("img", frame).filter(function (img) { return img.offsetParent !== null; })[0];
+            var showing = $$("img", frame).filter(function (img) { return getComputedStyle(img).display !== "none" && img.getClientRects().length > 0; })[0];
             if (showing) open(showing);
           });
           frame.appendChild(b);
@@ -1768,15 +1759,7 @@
         if (document.querySelector(".hero h1")) gsap.to(".hero h1", { yPercent: -12, opacity: 0.25, ease: "none", scrollTrigger: { trigger: ".hero", start: "top top", end: "bottom 15%", scrub: true } });
 
         // The screenshot grows to full width as it comes up the screen.
-        // The platform page's cover opens from the width of the text to the full width of the screen.
-        var wide = document.querySelector(".cover-wide .page-cover");
-        if (wide) {
-          var wrap = wide.closest(".wrap"), gutter = Math.max(0, (window.innerWidth - wrap.clientWidth) / 2 + parseFloat(getComputedStyle(wrap).paddingLeft));
-          gsap.fromTo(wide, { clipPath: "inset(0px " + gutter + "px round 10px)" }, { clipPath: "inset(0px 0px round 0px)", ease: "none",
-            scrollTrigger: { trigger: wide, start: "top 96px", end: "+=" + Math.round(window.innerHeight * 0.45), scrub: true } });
-        }
         $$("[data-grow]").forEach(function (frame) {
-          if (frame.closest(".cover-wide")) return;
           gsap.fromTo(frame, { scale: 0.86, borderRadius: 22 }, { scale: 1, borderRadius: 10, ease: "none", scrollTrigger: { trigger: frame, start: "top 95%", end: "top 30%", scrub: true } });
         });
 
@@ -1900,6 +1883,11 @@
           window.addEventListener("pointerdown", function () { gsap.to(dot, { scale: 0.7, duration: 0.12 }); });
           window.addEventListener("pointerup", function (e) { gsap.to(dot, { scale: e.target.closest && e.target.closest("a, button") ? 3.4 : 1, duration: 0.25 }); });
         }
+        // A picture that loads late can move everything under it. Measure again when one does.
+        var again = null;
+        $$("img[loading=lazy]").forEach(function (img) {
+          if (!img.complete) img.addEventListener("load", function () { clearTimeout(again); again = setTimeout(function () { ScrollTrigger.refresh(); }, 120); });
+        });
         ScrollTrigger.refresh();
       }
       // Cover drawings play once when they first come into view, so phones see the motion too.

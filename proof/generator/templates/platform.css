@@ -685,23 +685,13 @@ details.whole dd b{font-size:.9375rem}
 @media (max-width:760px){.fs{grid-template-columns:minmax(0,1fr)}}
 
 /* While the six screens are pinned, the screenshot is capped so the whole block fits on the screen. */
-.rshot.fit .rshot-pane img{width:auto;max-width:100%;max-height:calc(100svh - 300px);margin-inline:auto}
 
-/* Layout mock, platform page only. Three ideas: a title that stays put beside its section, one picture
-   that runs edge to edge, and long lists that open on request. */
+/* A long list shows its first rows and opens on request. */
 .shows.fold:not(.open)>div:nth-child(n+3){display:none}
 .fold-more{margin:0}
 .fold-more button{border:0;background:none;padding:16px 0;font-size:.875rem;color:var(--muted)}
 .fold-more button::before{content:"+";color:var(--accent);margin-right:10px}
 .fold-more button:hover{color:var(--ink)}
-.cover-wide .page-cover{width:100vw;margin-left:calc(50% - 50vw);border-radius:0;border-inline:0}
-.cover-wide .page-cover .shot-frame img{aspect-ratio:auto;width:100%;height:min(70svh,52vw);object-fit:cover;object-position:top center}
-@media (min-width:1000px){
-  .cs-block.split{display:grid;grid-template-columns:15rem minmax(0,1fr);column-gap:72px;align-items:start;border-top:1px solid var(--line);padding-top:28px}
-  .cs-block.split>.cs-h{grid-column:1;grid-row:1 / span 12;position:sticky;top:104px;margin:0;padding:0;border:0;font-size:1.5rem;line-height:1.12}
-  .cs-block.split>:not(.cs-h){grid-column:2;min-width:0}
-  .cs-block.split>.cs-h+*{margin-top:0}
-}
 
 /* The three lessons line up row by row: title with title, summary with summary, each point with its neighbours. */
 @supports (grid-template-rows:subgrid){
@@ -713,14 +703,14 @@ details.whole dd b{font-size:.9375rem}
   }
 }
 /* Screenshots sit at a reading size, not the full width of the page. */
-.rshot-frame{max-width:58rem}
 /* The detailed diagram is drawn on white. On a dark page it is flipped so it does not glare. */
 :root[data-theme="dark"] #arch img{filter:invert(1) hue-rotate(180deg)}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]) #arch img{filter:invert(1) hue-rotate(180deg)}}
 
 /* A screenshot never stands taller than the screen. Press it to see it large. */
-.rshot-frame img{width:auto;max-width:100%;max-height:min(68svh,42rem);margin-inline:auto}
-.rshot.fit .rshot-pane img{max-height:min(68svh,42rem,calc(100svh - 300px))}
+/* The frame is narrowed until a 16 by 10 screenshot fits, so the space is held before the picture loads. */
+.rshot-frame{max-width:min(58rem,calc(min(68svh,42rem)*1.6))}
+.rshot.fit .rshot-frame{max-width:min(58rem,calc(min(68svh,42rem,100svh - 300px)*1.6))}
 .rshot-pane,figure.rshot-frame{position:relative}
 .zoomable{cursor:zoom-in}
 .zoom-open{position:absolute;top:10px;right:10px;z-index:2;border:1px solid var(--line);border-radius:8px;background:color-mix(in srgb,var(--bg) 90%,transparent);backdrop-filter:blur(6px);color:var(--ink);padding:6px 12px 7px;font-size:.8125rem}
