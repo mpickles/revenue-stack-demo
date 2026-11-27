@@ -251,30 +251,6 @@ def platform_tiles_html(platform):
     )
 
 
-def tour_html(platform):
-    """The six parts of the platform as one pinned walk on the home page: a stage on the left, the steps on the right.
-    It ships hidden. The page script shows it only when it can pin and animate it, so with scripts off or
-    "reduce motion" on, the page is exactly what it was."""
-    e = html.escape
-    stage, steps = [], []
-    for index, part in enumerate(platform["parts"]):
-        if part.get("clip"):
-            show = (f'<video muted loop playsinline preload="none" width="1280" height="800" poster="img/platform/{e(part["screen"])}-light.webp" '
-                    f'aria-label="{e(part["screen_alt"])}"><source src="img/platform/{e(part["clip"])}" type="video/mp4"></video>')
-        elif part.get("screen"):
-            show = (f'<img class="l" src="img/platform/{e(part["screen"])}-light.webp" alt="{e(part["screen_alt"])}" width="1600" height="1000" loading="lazy">'
-                    f'<img class="d" src="img/platform/{e(part["screen"])}-dark.webp" alt="{e(part["screen_alt"])}" width="1600" height="1000" loading="lazy">')
-        else:
-            show = cover("pf-" + part["slug"])
-        stage.append(f'<figure data-i="{index}">{show}</figure>')
-        steps.append(f'<li data-i="{index}"><b><i>{index + 1}</i>{e(part["name"])}</b>'
-                     f'<span><span class="line">{e(part["line"])}.</span> <a href="{e(part["file"])}">Read part {index + 1}</a></span></li>')
-    return ('<div class="tour" id="tour" hidden><div class="tour-pin">'
-            f'<div class="tour-stage">{"".join(stage)}</div>'
-            f'<ol class="tour-steps">{"".join(steps)}</ol>'
-            '</div></div>')
-
-
 def proof_html(builds):
     """Real results only. The section is left out until at least one build has a headline."""
     items = [f'<li>{html.escape(b["tile"])}: {html.escape(b["headline"])}</li>' for b in builds if b.get("headline")]
@@ -402,7 +378,6 @@ def build_pages():
         platform_cover=cover("platform", grows=True),
         platform_tiles=indent(platform_tiles_html(config["platform"]), 8),
         platform_count=str(len(config["platform"]["parts"])),
-        tour=indent(tour_html(config["platform"]), 6),
         case_cards=indent(case_cards_html(config.get("cases", [])), 6),
         project_cover=cover("project", grows=True),
         project_cover_plain=cover("project"),

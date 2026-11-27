@@ -767,21 +767,11 @@ class CommittedPages(unittest.TestCase):
             hidden = page[page.index('<details class="more-rows">'):page.index("</details>")]
             self.assertEqual(hidden.count("<small>Chose</small>"), said, file)
 
-    def test_the_home_page_tour_walks_the_six_parts_in_order_and_ships_hidden(self):
+    def test_the_home_page_has_no_scroll_through_tour_of_the_six_parts(self):
         home = self.pages["index.html"]
-        self.assertEqual(home.count('<div class="tour" id="tour" hidden>'), 1, "hidden until the script can pin it")
-        tour = home[home.index('<div class="tour" id="tour" hidden>'):home.index('<p class="parts-h"')]
-        parts = self.config["platform"]["parts"]
-        steps = re.findall(r'<li data-i="(\d)"><b><i>(\d)</i>([^<]+)</b>.*?<a href="([^"]+)">Read part (\d)</a>', tour)
-        self.assertEqual([(int(i), int(n), html.unescape(name), file, int(m)) for i, n, name, file, m in steps],
-                         [(k, k + 1, part["name"], part["file"], k + 1) for k, part in enumerate(parts)])
-        self.assertEqual(tour.count("<figure data-i="), len(parts))
-        for src in re.findall(r'(?:src|poster)="(img/[^"]+)"', tour):
-            self.assertTrue((build.PROOF / src).is_file(), src)
-        for alt in re.findall(r'<img [^>]*alt="([^"]*)"', tour):
-            self.assertTrue(alt.strip())
-        self.assertIn(".tour[hidden]{display:none}", home)
-        self.assertIn('document.getElementById("tour")', home)
+        self.assertNotIn('id="tour"', home)
+        self.assertNotIn("tour-pin", home, "nothing on the home page holds the screen still while it scrolls")
+        self.assertEqual(home.count('<a href="platform.html#hub">See the six on the map</a>'), 1, "one line points at the six parts")
 
     def test_smooth_scrolling_is_one_pinned_version_on_every_page_that_animates(self):
         for path, page in self.pages.items():

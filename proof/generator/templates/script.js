@@ -225,30 +225,6 @@
       gsap.from(inner, { yPercent: 112, duration: MED, ease: EASE, scrollTrigger: { trigger: h, start: "top 98%" } });
     });
 
-    // The tour of the platform: the stage holds still while the page scrolls through the six parts.
-    (function () {
-      var tour = document.getElementById("tour");
-      if (!tour) return;
-      tour.hidden = false;
-      var after = tour.nextElementSibling;
-      if (after && after.classList.contains("parts-h")) after.hidden = true;  // the tour says the same thing, better
-      var shows = $$(".tour-stage figure", tour), steps = $$(".tour-steps li", tour), at = -1;
-      function go(i) {
-        if (i === at) return; at = i;
-        shows.forEach(function (el, n) {
-          el.classList.toggle("on", n === i);
-          var clip = el.querySelector("video"), art = el.querySelector(".art");
-          if (clip) { if (n === i) { var p = clip.play(); if (p && p.catch) p.catch(function () {}); } else clip.pause(); }
-          if (art) art.classList.toggle("play", n === i);
-        });
-        steps.forEach(function (el, n) { el.classList.toggle("on", n === i); });
-      }
-      go(0);
-      ScrollTrigger.create({ trigger: ".tour-pin", start: "top top", end: "+=" + steps.length * 55 + "%", pin: true, anticipatePin: 1,
-        onUpdate: function (self) { go(Math.min(steps.length - 1, Math.floor(self.progress * steps.length))); } });
-      steps.forEach(function (el, n) { el.querySelector("b").addEventListener("click", function () { go(n); }); });
-    })();
-
     // Lists and cards arrive one after another.
     [".sys", ".proof li", "[data-stagger] > *", ".tldr > div", ".nums > div", ".flow > li", ".chose > div", ".shows > div", ".more-rows > div"].forEach(function (group) {
       if (!document.querySelector(group)) return;
