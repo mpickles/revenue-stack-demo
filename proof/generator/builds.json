@@ -341,28 +341,37 @@
         "name": "The web app",
         "line": "Each person sees only their own clients",
         "tools": "Postgres, Cloud Run",
-        "file": "platform-web-app.html"
+        "file": "platform-web-app.html",
+        "screen": "02-clients-owner",
+        "screen_alt": "The client list in the app, with made-up clients"
       },
       {
         "slug": "reports",
         "name": "Reports and notes",
         "line": "Reports that check their own numbers",
         "tools": "Claude API",
-        "file": "platform-reports.html"
+        "file": "platform-reports.html",
+        "screen": "07-report-review-numbers-look-off",
+        "screen_alt": "Report review, with one slide flagged before anyone approves"
       },
       {
         "slug": "audit",
         "name": "Tracking audit",
         "line": "Found consent was blocking every tag",
         "tools": "Tag Manager",
-        "file": "platform-audit.html"
+        "file": "platform-audit.html",
+        "screen": "09-audit-is-it-working-menu",
+        "screen_alt": "The tracking audit for one made-up client"
       },
       {
         "slug": "spend",
         "name": "Search terms and budgets",
         "line": "Nothing is spent without a person's yes",
         "tools": "Google Ads",
-        "file": "platform-spend.html"
+        "file": "platform-spend.html",
+        "screen": "06-client-pacing-edit-over-parent",
+        "screen_alt": "Budget pacing, mid-edit, with made-up numbers",
+        "clip": "pacing-edit.mp4"
       }
     ],
     "description": "The operations platform I built for a paid media team: a tested warehouse, a web app and the workflows on top."

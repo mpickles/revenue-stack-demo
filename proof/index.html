@@ -562,6 +562,45 @@
     /* A part of the page switched off in builds.json stays off, whatever its own display rule says. */
     .hw[hidden],.sys[hidden],.parts-h[hidden]{display:none!important}
     .hw[hidden] + .hw.note{grid-column:1 / -1}
+
+    /* Smooth scrolling (Lenis). These four rules are the library's own stylesheet. */
+    html.lenis,html.lenis body{height:auto}
+    .lenis:not(.lenis-autoToggle).lenis-stopped{overflow:clip}
+    .lenis [data-lenis-prevent]{overscroll-behavior:contain}
+    .lenis.lenis-smooth iframe{pointer-events:none}
+
+    /* Headings arrive a letter at a time, each word behind its own mask. */
+    h2 .w-mask{padding-bottom:.14em;margin-bottom:-.14em}
+
+    /* The tour: the six parts of the platform, one screen held in place while the page scrolls through them. */
+    .tour[hidden]{display:none}
+    .tour{margin-top:clamp(56px,7vw,96px)}
+    .tour-pin{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr);gap:24px 64px;align-items:center;min-height:100svh;padding:88px 0 32px}
+    .tour-stage{position:relative;aspect-ratio:16/10;border:1px solid var(--line);border-radius:10px;overflow:hidden;background:var(--panel);box-shadow:var(--lift)}
+    .tour-stage figure{position:absolute;inset:0;margin:0;opacity:0;clip-path:inset(0 0 100% 0);transition:clip-path .5s var(--ease),opacity .2s var(--ease) .3s}
+    .tour-stage figure.on{opacity:1;clip-path:inset(0);transition:clip-path .5s var(--ease),opacity 0s;z-index:1}
+    .tour-stage img,.tour-stage video,.tour-stage .art{display:block;width:100%;height:100%;object-fit:cover;object-position:top left}
+    .tour-stage .d{display:none}
+    @media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .tour-stage .l{display:none}:root:not([data-theme="light"]) .tour-stage .d{display:block}}
+    :root[data-theme="dark"] .tour-stage .l{display:none}
+    :root[data-theme="dark"] .tour-stage .d{display:block}
+    .tour-steps{list-style:none;margin:0;padding:0;border-top:1px solid var(--line)}
+    .tour-steps li{border-bottom:1px solid var(--line);padding:14px 0;color:var(--muted);transition:color .35s var(--ease)}
+    .tour-steps b{display:flex;gap:14px;align-items:baseline;font-weight:500;font-size:clamp(1.125rem,1rem + .6vw,1.5rem);letter-spacing:-.025em;line-height:1.15}
+    .tour-steps b i{font-style:normal;font-size:.8125rem;letter-spacing:0;font-variant-numeric:tabular-nums;color:var(--muted);min-width:1ch}
+    .tour-steps li>span{display:grid;grid-template-rows:0fr;font-size:.9375rem;padding-left:calc(1ch + 14px);transition:grid-template-rows .5s var(--ease),opacity .35s var(--ease),padding-top .5s var(--ease);opacity:0}
+    .tour-steps li>span>*{min-height:0;overflow:hidden}
+    .tour-steps li>span{display:block;max-height:0;overflow:hidden;transition:max-height .5s var(--ease),opacity .35s var(--ease),padding-top .5s var(--ease)}
+    .tour-steps li.on{color:var(--ink)}
+    .tour-steps li.on b i{color:var(--accent)}
+    .tour-steps li.on>span{max-height:6rem;opacity:1;padding-top:8px}
+    .tour-steps .line{color:var(--muted)}
+    .tour-steps a{white-space:nowrap}
+    @media (max-width:860px){
+      .tour-pin{grid-template-columns:minmax(0,1fr);align-content:center;gap:20px;padding:84px 0 20px}
+      .tour-steps li{padding:9px 0}
+      .tour-steps b{font-size:1.0625rem}
+    }
   </style>
 </head>
 <body>
@@ -610,6 +649,7 @@
           </dl>
         </div>
       </article>
+      <div class="tour" id="tour" hidden><div class="tour-pin"><div class="tour-stage"><figure data-i="0"><svg class="art" viewBox="0 0 400 250" role="img" aria-label="Four sources feed one table. One source is in colour" xmlns="http://www.w3.org/2000/svg"><rect class="c-box" x="56" y="50" width="52" height="24" rx="6"/><rect class="c-box" x="56" y="92" width="52" height="24" rx="6"/><rect class="c-box" x="56" y="134" width="52" height="24" rx="6"/><rect class="c-box" x="56" y="176" width="52" height="24" rx="6"/><path class="c-line" d="M108 62C170 62 170 125 232 125"/><path class="c-line" d="M108 146C170 146 170 125 232 125"/><path class="c-line" d="M108 188C170 188 170 125 232 125"/><rect class="c-box" x="244" y="66" width="100" height="118" rx="10"/><rect class="c-bar m-tint" style="--i:2;--t:12" x="260" y="88" width="68" height="12" rx="4"/><rect class="c-bar m-tint" style="--i:3;--t:14" x="260" y="114" width="68" height="12" rx="4"/><rect class="c-bar m-tint" style="--i:4;--t:16" x="260" y="140" width="68" height="12" rx="4"/><path class="c-on-line m-draw" style="--i:5" pathLength="1" d="M108 104C170 104 170 125 232 125H244"/><rect class="c-on-box m-fill" style="--i:0" x="56" y="92" width="52" height="24" rx="6"/></svg></figure><figure data-i="1"><svg class="art" viewBox="0 0 400 250" role="img" aria-label="Uneven bars reach a gate. Four come out aligned and in colour. One is stopped" xmlns="http://www.w3.org/2000/svg"><rect class="c-bar" x="58" y="60" width="96" height="12" rx="4"/><rect class="c-bar" x="74" y="92" width="70" height="12" rx="4"/><rect class="c-bar" x="50" y="124" width="110" height="12" rx="4"/><rect class="c-bar" x="82" y="156" width="84" height="12" rx="4"/><rect class="c-bar" x="62" y="188" width="100" height="12" rx="4"/><rect class="c-gate" x="196" y="44" width="4" height="170" rx="2"/><rect class="c-on m-pass" style="--i:0;--d:70" x="240" y="60" width="96" height="12" rx="4"/><rect class="c-on m-pass" style="--i:3;--d:70" x="240" y="92" width="96" height="12" rx="4"/><rect class="c-on m-pass" style="--i:6;--d:70" x="240" y="124" width="96" height="12" rx="4"/><rect class="c-hollow m-pop" style="--i:9" x="212" y="156" width="26" height="12" rx="4"/><rect class="c-on m-pass" style="--i:12;--d:70" x="240" y="188" width="96" height="12" rx="4"/></svg></figure><figure data-i="2"><img class="l" src="img/platform/02-clients-owner-light.webp" alt="The client list in the app, with made-up clients" width="1600" height="1000" loading="lazy"><img class="d" src="img/platform/02-clients-owner-dark.webp" alt="The client list in the app, with made-up clients" width="1600" height="1000" loading="lazy"></figure><figure data-i="3"><img class="l" src="img/platform/07-report-review-numbers-look-off-light.webp" alt="Report review, with one slide flagged before anyone approves" width="1600" height="1000" loading="lazy"><img class="d" src="img/platform/07-report-review-numbers-look-off-dark.webp" alt="Report review, with one slide flagged before anyone approves" width="1600" height="1000" loading="lazy"></figure><figure data-i="4"><img class="l" src="img/platform/09-audit-is-it-working-menu-light.webp" alt="The tracking audit for one made-up client" width="1600" height="1000" loading="lazy"><img class="d" src="img/platform/09-audit-is-it-working-menu-dark.webp" alt="The tracking audit for one made-up client" width="1600" height="1000" loading="lazy"></figure><figure data-i="5"><video muted loop playsinline preload="none" width="1280" height="800" poster="img/platform/06-client-pacing-edit-over-parent-light.webp" aria-label="Budget pacing, mid-edit, with made-up numbers"><source src="img/platform/pacing-edit.mp4" type="video/mp4"></video></figure></div><ol class="tour-steps"><li data-i="0"><b><i>1</i>Getting the data in</b><span><span class="line">Data from every tool, loaded on a schedule.</span> <a href="platform-data-in.html">Read part 1</a></span></li><li data-i="1"><b><i>2</i>Cleaning and testing it</b><span><span class="line">Tests that stop a bad number reaching anyone.</span> <a href="platform-clean.html">Read part 2</a></span></li><li data-i="2"><b><i>3</i>The web app</b><span><span class="line">Each person sees only their own clients.</span> <a href="platform-web-app.html">Read part 3</a></span></li><li data-i="3"><b><i>4</i>Reports and notes</b><span><span class="line">Reports that check their own numbers.</span> <a href="platform-reports.html">Read part 4</a></span></li><li data-i="4"><b><i>5</i>Tracking audit</b><span><span class="line">Found consent was blocking every tag.</span> <a href="platform-audit.html">Read part 5</a></span></li><li data-i="5"><b><i>6</i>Search terms and budgets</b><span><span class="line">Nothing is spent without a person&#x27;s yes.</span> <a href="platform-spend.html">Read part 6</a></span></li></ol></div></div>
       <p class="parts-h">6 parts, all live. <a href="platform.html#hub">See the six on the map</a></p>
       <article class="sys second lead-in" hidden>
         <a class="proj-cover" href="project.html" aria-label="See the whole system"><svg class="art" style="view-transition-name:cover-project" viewBox="0 0 400 250" role="img" aria-label="Many dots on the left, one in colour. Its line passes a gate, takes one of three branches and runs down through a funnel" xmlns="http://www.w3.org/2000/svg"><circle class="c-dot m-pop" style="--i:0" cx="20" cy="58" r="5"/><circle class="c-dot m-pop" style="--i:1" cx="44" cy="40" r="6"/><circle class="c-dot m-pop" style="--i:2" cx="72" cy="52" r="4"/><circle class="c-dot m-pop" style="--i:3" cx="92" cy="78" r="5"/><circle class="c-dot m-pop" style="--i:4" cx="30" cy="88" r="6"/><circle class="c-dot m-pop" style="--i:0" cx="62" cy="84" r="5"/><circle class="c-dot m-pop" style="--i:1" cx="84" cy="108" r="4"/><circle class="c-dot m-pop" style="--i:2" cx="16" cy="122" r="5"/><circle class="c-dot m-pop" style="--i:3" cx="34" cy="150" r="4"/><circle class="c-dot m-pop" style="--i:4" cx="70" cy="148" r="6"/><circle class="c-dot m-pop" style="--i:0" cx="92" cy="140" r="4"/><circle class="c-dot m-pop" style="--i:1" cx="22" cy="178" r="6"/><circle class="c-dot m-pop" style="--i:2" cx="50" cy="172" r="5"/><circle class="c-dot m-pop" style="--i:3" cx="80" cy="182" r="5"/><circle class="c-dot m-pop" style="--i:4" cx="40" cy="206" r="4"/><circle class="c-dot m-pop" style="--i:0" cx="68" cy="212" r="5"/><circle class="c-dot m-pop" style="--i:1" cx="94" cy="204" r="4"/><circle class="c-dot m-pop" style="--i:2" cx="88" cy="34" r="4"/><rect class="c-gate" x="116" y="40" width="5" height="170" rx="2.5"/><path class="c-line" d="M150 125H232M150 125C176 125 176 177 202 177H232M150 125C176 125 176 73 202 73H232"/><rect class="c-box" x="232" y="111" width="40" height="28" rx="6"/><rect class="c-box" x="232" y="163" width="40" height="28" rx="6"/><rect class="c-bar m-tint" style="--i:10;--t:22" x="306" y="96" width="76" height="14" rx="4"/><rect class="c-bar m-tint" style="--i:12;--t:24" x="317" y="122" width="54" height="14" rx="4"/><rect class="c-bar m-tint" style="--i:14;--t:26" x="328" y="148" width="32" height="14" rx="4"/><path class="c-on-line m-draw" style="--i:7" pathLength="1" d="M54 125H150C176 125 176 73 202 73H232"/><circle class="c-on m-lead" style="--i:0" cx="54" cy="125" r="9"/><rect class="c-on-box m-fill" style="--i:16" x="232" y="59" width="40" height="28" rx="6"/><path class="c-on-line m-draw" style="--i:18" pathLength="1" d="M272 73H344V176"/><rect class="c-on m-pop" style="--i:29" x="333" y="174" width="22" height="14" rx="4"/></svg></a>
@@ -700,6 +740,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/ScrollTrigger.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/SplitText.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/Flip.min.js"></script>
+  <script src="https://unpkg.com/lenis@1.3.29/dist/lenis.min.js"></script>
   <script>
     // Behaviour and motion for every page. Pages read fine with this script off, and
     // with "reduce motion" on nothing is hidden or animated.
@@ -750,7 +791,7 @@
           chips.forEach(function (c) { c.setAttribute("aria-pressed", String(c === chip)); });
           var state = motion && window.Flip ? Flip.getState(rows) : null;
           rows.forEach(function (row) { row.hidden = !(chip.dataset.f === "all" || row.classList.contains(chip.dataset.f)); });
-          if (state) Flip.from(state, { duration: 0.5, ease: "power2.inOut", absolute: true,
+          if (state) Flip.from(state, { duration: 0.5, ease: "power3.out", absolute: true,
             onEnter: function (els) { return gsap.fromTo(els, { opacity: 0 }, { opacity: 1, duration: 0.3 }); },
             onLeave: function (els) { return gsap.to(els, { opacity: 0, duration: 0.2 }); } });
           if (motion) ScrollTrigger.refresh();
@@ -811,6 +852,14 @@
       var morphedIn = false;
       try { morphedIn = "onpagereveal" in window && !!document.referrer && new URL(document.referrer).origin === location.origin; } catch (err) {}
 
+      // Smooth scrolling. One clock drives the scroll and every animation tied to it.
+      if (window.Lenis) {
+        var lenis = new Lenis({ anchors: true, allowNestedScroll: true });
+        lenis.on("scroll", ScrollTrigger.update);
+        gsap.ticker.add(function (time) { lenis.raf(time * 1000); });
+        gsap.ticker.lagSmoothing(0);
+      }
+
       function start() {
         // The page title rises line by line, once.
         var title = document.querySelector("[data-rise]");
@@ -863,11 +912,40 @@
         // Section headings rise out of a mask as they arrive.
         $$("main h2").forEach(function (h) {
           if (h.closest(".prose")) return;
+          if (window.SplitText) {
+            var cut = SplitText.create(h, { type: "words,chars", mask: "words", wordsClass: "w", charsClass: "c", aria: "auto" });
+            gsap.from(cut.chars, { yPercent: 112, duration: SLOW, stagger: 0.014, ease: EASE, scrollTrigger: { trigger: h, start: "top 96%" } });
+            return;
+          }
           var text = h.textContent; h.setAttribute("aria-label", text); h.textContent = "";
           var mask = document.createElement("span"); mask.className = "mask"; mask.setAttribute("aria-hidden", "true");
           var inner = document.createElement("span"); inner.textContent = text; mask.appendChild(inner); h.appendChild(mask);
           gsap.from(inner, { yPercent: 112, duration: MED, ease: EASE, scrollTrigger: { trigger: h, start: "top 98%" } });
         });
+
+        // The tour of the platform: the stage holds still while the page scrolls through the six parts.
+        (function () {
+          var tour = document.getElementById("tour");
+          if (!tour) return;
+          tour.hidden = false;
+          var after = tour.nextElementSibling;
+          if (after && after.classList.contains("parts-h")) after.hidden = true;  // the tour says the same thing, better
+          var shows = $$(".tour-stage figure", tour), steps = $$(".tour-steps li", tour), at = -1;
+          function go(i) {
+            if (i === at) return; at = i;
+            shows.forEach(function (el, n) {
+              el.classList.toggle("on", n === i);
+              var clip = el.querySelector("video"), art = el.querySelector(".art");
+              if (clip) { if (n === i) { var p = clip.play(); if (p && p.catch) p.catch(function () {}); } else clip.pause(); }
+              if (art) art.classList.toggle("play", n === i);
+            });
+            steps.forEach(function (el, n) { el.classList.toggle("on", n === i); });
+          }
+          go(0);
+          ScrollTrigger.create({ trigger: ".tour-pin", start: "top top", end: "+=" + steps.length * 55 + "%", pin: true, anticipatePin: 1,
+            onUpdate: function (self) { go(Math.min(steps.length - 1, Math.floor(self.progress * steps.length))); } });
+          steps.forEach(function (el, n) { el.querySelector("b").addEventListener("click", function () { go(n); }); });
+        })();
 
         // Lists and cards arrive one after another.
         [".sys", ".proof li", "[data-stagger] > *"].forEach(function (group) {
@@ -905,7 +983,7 @@
         });
 
         // The big email draws in at the end.
-        if (document.querySelector(".mail")) gsap.from(".mail", { yPercent: 60, opacity: 0, duration: 0.9, ease: "expo.out", scrollTrigger: { trigger: ".mail", start: "top 94%" } });
+        if (document.querySelector(".mail")) gsap.from(".mail", { yPercent: 60, opacity: 0, duration: SLOW, ease: EASE, scrollTrigger: { trigger: ".mail", start: "top 94%" } });
 
         // Cursor: a coral dot trails the normal pointer and grows over anything clickable.
         if (window.matchMedia("(pointer: fine)").matches) {

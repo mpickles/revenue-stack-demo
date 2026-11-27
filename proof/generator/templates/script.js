@@ -47,7 +47,7 @@
       chips.forEach(function (c) { c.setAttribute("aria-pressed", String(c === chip)); });
       var state = motion && window.Flip ? Flip.getState(rows) : null;
       rows.forEach(function (row) { row.hidden = !(chip.dataset.f === "all" || row.classList.contains(chip.dataset.f)); });
-      if (state) Flip.from(state, { duration: 0.5, ease: "power2.inOut", absolute: true,
+      if (state) Flip.from(state, { duration: 0.5, ease: "power3.out", absolute: true,
         onEnter: function (els) { return gsap.fromTo(els, { opacity: 0 }, { opacity: 1, duration: 0.3 }); },
         onLeave: function (els) { return gsap.to(els, { opacity: 0, duration: 0.2 }); } });
       if (motion) ScrollTrigger.refresh();
@@ -108,6 +108,14 @@
   var morphedIn = false;
   try { morphedIn = "onpagereveal" in window && !!document.referrer && new URL(document.referrer).origin === location.origin; } catch (err) {}
 
+  // Smooth scrolling. One clock drives the scroll and every animation tied to it.
+  if (window.Lenis) {
+    var lenis = new Lenis({ anchors: true, allowNestedScroll: true });
+    lenis.on("scroll", ScrollTrigger.update);
+    gsap.ticker.add(function (time) { lenis.raf(time * 1000); });
+    gsap.ticker.lagSmoothing(0);
+  }
+
   function start() {
     // The page title rises line by line, once.
     var title = document.querySelector("[data-rise]");
@@ -160,11 +168,40 @@
     // Section headings rise out of a mask as they arrive.
     $$("main h2").forEach(function (h) {
       if (h.closest(".prose")) return;
+      if (window.SplitText) {
+        var cut = SplitText.create(h, { type: "words,chars", mask: "words", wordsClass: "w", charsClass: "c", aria: "auto" });
+        gsap.from(cut.chars, { yPercent: 112, duration: SLOW, stagger: 0.014, ease: EASE, scrollTrigger: { trigger: h, start: "top 96%" } });
+        return;
+      }
       var text = h.textContent; h.setAttribute("aria-label", text); h.textContent = "";
       var mask = document.createElement("span"); mask.className = "mask"; mask.setAttribute("aria-hidden", "true");
       var inner = document.createElement("span"); inner.textContent = text; mask.appendChild(inner); h.appendChild(mask);
       gsap.from(inner, { yPercent: 112, duration: MED, ease: EASE, scrollTrigger: { trigger: h, start: "top 98%" } });
     });
+
+    // The tour of the platform: the stage holds still while the page scrolls through the six parts.
+    (function () {
+      var tour = document.getElementById("tour");
+      if (!tour) return;
+      tour.hidden = false;
+      var after = tour.nextElementSibling;
+      if (after && after.classList.contains("parts-h")) after.hidden = true;  // the tour says the same thing, better
+      var shows = $$(".tour-stage figure", tour), steps = $$(".tour-steps li", tour), at = -1;
+      function go(i) {
+        if (i === at) return; at = i;
+        shows.forEach(function (el, n) {
+          el.classList.toggle("on", n === i);
+          var clip = el.querySelector("video"), art = el.querySelector(".art");
+          if (clip) { if (n === i) { var p = clip.play(); if (p && p.catch) p.catch(function () {}); } else clip.pause(); }
+          if (art) art.classList.toggle("play", n === i);
+        });
+        steps.forEach(function (el, n) { el.classList.toggle("on", n === i); });
+      }
+      go(0);
+      ScrollTrigger.create({ trigger: ".tour-pin", start: "top top", end: "+=" + steps.length * 55 + "%", pin: true, anticipatePin: 1,
+        onUpdate: function (self) { go(Math.min(steps.length - 1, Math.floor(self.progress * steps.length))); } });
+      steps.forEach(function (el, n) { el.querySelector("b").addEventListener("click", function () { go(n); }); });
+    })();
 
     // Lists and cards arrive one after another.
     [".sys", ".proof li", "[data-stagger] > *"].forEach(function (group) {
@@ -202,7 +239,7 @@
     });
 
     // The big email draws in at the end.
-    if (document.querySelector(".mail")) gsap.from(".mail", { yPercent: 60, opacity: 0, duration: 0.9, ease: "expo.out", scrollTrigger: { trigger: ".mail", start: "top 94%" } });
+    if (document.querySelector(".mail")) gsap.from(".mail", { yPercent: 60, opacity: 0, duration: SLOW, ease: EASE, scrollTrigger: { trigger: ".mail", start: "top 94%" } });
 
     // Cursor: a coral dot trails the normal pointer and grows over anything clickable.
     if (window.matchMedia("(pointer: fine)").matches) {
