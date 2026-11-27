@@ -601,6 +601,10 @@
       .tour-steps li{padding:9px 0}
       .tour-steps b{font-size:1.0625rem}
     }
+
+    /* A dark band always shows the dark screenshot, whatever the page's own theme. */
+    .band .rshot-frame .l,.band .proj-cover.shot .l,.band .tour-stage .l,.band .shot-frame .l{display:none}
+    .band .rshot-frame .d,.band .proj-cover.shot .d,.band .tour-stage .d,.band .shot-frame .d{display:block}
     /* Styles for the platform pages only. Loaded after style.css. */
     "
 
@@ -1290,6 +1294,7 @@
     /* While the six screens are pinned, the screenshot is capped so the whole block fits on the screen. */
     .rshot.fit .rshot-pane img{width:auto;max-width:100%;max-height:calc(100svh - 300px);margin-inline:auto}
 
+    <<<<<<< HEAD
     /* Layout mock, platform page only. Three ideas: a title that stays put beside its section, one picture
        that runs edge to edge, and long lists that open on request. */
     .shows.fold:not(.open)>div:nth-child(n+3){display:none}
@@ -1315,6 +1320,13 @@
         .themes li:last-child{padding-bottom:0}
       }
     }
+    =======
+    /* Screenshots sit at a reading size, not the full width of the page. */
+    .rshot-frame{max-width:58rem}
+    /* The detailed diagram is drawn on white. On a dark page it is flipped so it does not glare. */
+    :root[data-theme="dark"] #arch img{filter:invert(1) hue-rotate(180deg)}
+    @media (prefers-color-scheme:dark){:root:not([data-theme="light"]) #arch img{filter:invert(1) hue-rotate(180deg)}}
+    >>>>>>> motion-layer
   </style>
 </head>
 <body>
@@ -1324,7 +1336,7 @@
     <div><a href="index.html#work">Work</a><a href="platform.html">Platform</a><a href="#contact">Contact</a><button type="button" data-theme-toggle>Dark</button></div>
   </nav>
 <main class="writeup"><div class="wrap">
-    <div class="cover-wide"><div class="page-cover"><span class="shot-frame" style="view-transition-name:cover-platform"><img class="l" src="img/platform/04-client-overview-light.webp" alt="The platform's client overview screen, shown with made-up clients" width="1600" height="1000"><img class="d" src="img/platform/04-client-overview-dark.webp" alt="The platform's client overview screen in dark mode, shown with made-up clients" width="1600" height="1000"></span></div></div>
+    <div class="page-cover"><span class="shot-frame" style="view-transition-name:cover-platform"><img class="l" src="img/platform/04-client-overview-light.webp" alt="The platform's client overview screen, shown with made-up clients" width="1600" height="1000"><img class="d" src="img/platform/04-client-overview-dark.webp" alt="The platform's client overview screen in dark mode, shown with made-up clients" width="1600" height="1000"></span></div>
     <header class="writeup-head">
       <h1 style="view-transition-name:title-platform">I built the operations platform a paid media team works in</h1>
       <p class="status is-live">Live at Upgrow</p>

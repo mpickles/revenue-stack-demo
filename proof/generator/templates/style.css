@@ -566,3 +566,7 @@ h2 .w-mask{padding-bottom:.14em;margin-bottom:-.14em}
   .tour-steps li{padding:9px 0}
   .tour-steps b{font-size:1.0625rem}
 }
+
+/* A dark band always shows the dark screenshot, whatever the page's own theme. */
+.band .rshot-frame .l,.band .proj-cover.shot .l,.band .tour-stage .l,.band .shot-frame .l{display:none}
+.band .rshot-frame .d,.band .proj-cover.shot .d,.band .tour-stage .d,.band .shot-frame .d{display:block}
