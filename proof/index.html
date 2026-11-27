@@ -612,6 +612,18 @@
     div.hw.note small+a{margin-top:10px}
     div.hw.note a:hover{color:var(--accent)}
     .hw[hidden] + div.hw.note{grid-column:1 / -1}
+
+    /* Day to day: four kinds of hands-on work, each with three examples. Rows line up across the cards. */
+    .daily{display:grid;grid-template-columns:repeat(auto-fit,minmax(15rem,1fr));gap:0 clamp(20px,2.4vw,32px);margin-top:36px}
+    .daily article{display:grid;grid-template-rows:subgrid;grid-row:span 6;gap:0;padding:20px 0 24px;border-top:1px solid var(--ink)}
+    .daily svg{width:40px;height:40px;margin-bottom:10px}
+    .daily .d-l{fill:none;stroke:var(--ink);stroke-width:1.75;stroke-linecap:round;stroke-linejoin:round}
+    .daily .d-on{fill:var(--accent)}
+    .daily .d-on-l{fill:none;stroke:var(--accent);stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round}
+    .daily h3{margin:0 0 8px;font-size:1.125rem;font-weight:500;letter-spacing:-.015em}
+    .daily p{margin:0 0 16px;color:var(--muted);font-size:.9375rem;line-height:1.5}
+    .daily ul{display:contents;list-style:none;font-size:.9375rem;line-height:1.45}
+    .daily li{padding:10px 0;border-top:1px solid var(--line);font-size:.9375rem;line-height:1.45}
   </style>
 </head>
 <body>
@@ -683,6 +695,17 @@
       <a class="case-row lead-in" href="case-eventmobi.html"><small>Paid search</small><b>EventMobi: paid search revenue up 80% in a year.</b><span>Read it</span></a>
       <a class="case-row" href="case-huddle.html"><small>SEO</small><b>Huddle Men's Health: 20x the organic traffic in a year.</b><span>Read it</span></a>
       <a class="case-row" href="case-form-swap.html"><small>Diagnosis</small><b>A form swap cut paid leads in half. Finding the cause.</b><span>Read it</span></a>
+    </div></section>
+
+    <section class="sec" id="daily"><div class="wrap">
+      <h2>Day to day</h2>
+      <p class="sub">The hands-on work behind the pages above. A client is named only where Upgrow has published the work.</p>
+      <div class="daily" data-stagger>
+        <article><svg viewBox="0 0 48 48" aria-hidden="true"><path class="d-l" d="M8 10h14l18 18-12 12L10 22z"/><circle class="d-on" cx="17" cy="17" r="3"/></svg><h3>Conversion tracking</h3><p>Setting it up, testing it, and fixing it when the leads stop matching. Tag Manager, GA4, Google Ads, and offline conversions from the CRM.</p><ul><li>Merged a client's two Tag Manager containers into one, with a diff of every tag and an audit document.</li><li>Sent lead stages from a client's Salesforce back to Google Ads and LinkedIn as offline conversions.</li><li>Fixed tracking across two subdomains for a client whose signup form ran on its own backend.</li></ul></article>
+        <article><svg viewBox="0 0 48 48" aria-hidden="true"><rect class="d-l" x="9" y="7" width="30" height="34" rx="3"/><path class="d-l" d="M15 15h18M15 21h12"/><rect class="d-on" x="15" y="28" width="14" height="7" rx="3.5"/></svg><h3>Landing pages</h3><p>Building the pages paid traffic lands on, and testing changes to them.</p><ul><li>Built landing pages for a software client's paid search that raised the conversion rate.</li><li>Built the pages, wrote the copy and ran conversion tests for <a href="case-huddle.html">Huddle Men's Health</a>.</li><li>Found a landing page form whose <a href="case-form-swap.html">submit button nobody could reach</a>.</li></ul></article>
+        <article><svg viewBox="0 0 48 48" aria-hidden="true"><path class="d-l" d="M8 38V26M17 38V18M26 38V24"/><circle class="d-l" cx="32" cy="18" r="8"/><path class="d-on-l" d="M38 24l5 5"/></svg><h3>Data analysis</h3><p>Pulling the numbers and finding what changed.</p><ul><li>Pulled the account data each week and brought the trends to the strategy meeting on <a href="case-eventmobi.html">EventMobi</a>.</li><li>Analysed a software client's paid leads to troubleshoot lead problems.</li><li>Compared leads per click before and after a site change, to <a href="case-form-swap.html">pin a drop on the page</a>.</li></ul></article>
+        <article><svg viewBox="0 0 48 48" aria-hidden="true"><rect class="d-l" x="7" y="9" width="34" height="30" rx="3"/><path class="d-l" d="M7 18h34M21 18v21"/><path class="d-on-l" d="M26 33l4-5 3 3 4-6"/></svg><h3>Dashboards and reports</h3><p>Building the views clients and the team read.</p><ul><li>A Looker Studio dashboard of organic search numbers from GA4.</li><li>A HubSpot dashboard of paid performance and leads for a client.</li><li>The monthly reports and alerts in <a href="platform.html">the operations platform</a>.</li></ul></article>
+      </div>
     </div></section>
 
     <section class="sec" id="experience"><div class="wrap">

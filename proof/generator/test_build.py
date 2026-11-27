@@ -410,6 +410,26 @@ class CommittedPages(unittest.TestCase):
             self.assertNotRegex(hero, r"\$\d")
         self.assertIn(".cs-hero svg{display:block;width:100%;height:auto;max-height:min(46svh,19rem)}", self.pages["case-form-swap.html"], "never taller than the screen")
 
+    def test_the_home_page_shows_the_day_to_day_work_with_examples(self):
+        home = self.pages["index.html"]
+        self.assertLess(home.index('id="client-work"'), home.index('id="daily"'))
+        self.assertLess(home.index('id="daily"'), home.index('id="experience"'))
+        block = home[home.index('<section class="sec" id="daily"'):home.index('<section class="sec" id="experience"')]
+        cards = block.split("<article>")[1:]
+        self.assertEqual([c[c.index("<h3>") + 4:c.index("</h3>")] for c in cards],
+                         ["Conversion tracking", "Landing pages", "Data analysis", "Dashboards and reports"])
+        for card in cards:
+            self.assertEqual(card.count("<li>"), 3, "three examples each")
+            self.assertIn('aria-hidden="true"', card)
+        # Client data stays off the home page: no figures here, and no client named unless published.
+        self.assertNotRegex(block, r"\d\s*%|\$\d|\dx\b")
+        self.assertNotIn("<img", block)
+        published = [case["client"] for case in self.config["cases"] if case.get("published")]
+        for name in ("Revver", "Percona", "Radetco", "Sayva", "Eloquens", "Espresso", "Unstructured", "WitnessAI"):
+            self.assertNotIn(name, published)
+            self.assertNotIn(name, home)
+        self.assertIn("grid-template-rows:subgrid;grid-row:span 6", home, "the four cards line up row by row")
+
     def test_the_first_screen_shows_the_work_as_links(self):
         home = self.pages["index.html"]
         hero = home[home.index('<header class="hero'):home.index("</header>")]
