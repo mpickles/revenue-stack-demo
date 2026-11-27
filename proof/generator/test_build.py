@@ -656,6 +656,30 @@ class CommittedPages(unittest.TestCase):
         self.assertIn(".hw[hidden],.sys[hidden],.parts-h[hidden]{display:none!important}", home)
         self.assertIn("project.html", self.pages)
 
+    def test_the_part_pages_carry_the_counts_checked_on_nov_27(self):
+        clean = self.pages["platform-clean.html"]
+        self.assertIn("215 models and 808 tests", clean)
+        self.assertIn("69 staging, 61 marts, 73 audit, 9 watch, 3 ops", clean)
+        self.assertEqual(69 + 61 + 73 + 9 + 3, 215)
+        loads = self.pages["platform-data-in.html"]
+        loads = loads[loads.index("What loads today</h2>"):loads.index("What I chose, and what I turned down</h2>")]
+        self.assertEqual(loads.count("<dt>"), 6)
+        self.assertEqual(loads.count("Built and paused") + loads.count("built and paused"), 2, "what is switched off is said")
+        app = self.pages["platform-web-app.html"]
+        door = app[app.index("comes in by the same door</h2>"):app.index("It also tracks its own use</h2>")]
+        self.assertIn("<dt>58 tools</dt><dd>37 read, 20 write and 1 starts a run.</dd>", door)
+        self.assertEqual(37 + 20 + 1, 58)
+        audit = self.pages["platform-audit.html"]
+        alerts = audit[audit.index("Alerts, every morning</h2>"):audit.index("What I chose, and what I turned down</h2>")]
+        self.assertIn("Seventeen rules", alerts)
+        counts = [int(n) for n in re.findall(r"<dt>(?:Critical|Warning|Trend), (\d+) rules</dt>", alerts)]
+        self.assertEqual(sum(counts), 17)
+        for file in ("platform-clean.html", "platform-web-app.html", "platform-audit.html", "platform-spend.html", "platform-data-in.html", "platform-reports.html"):
+            page = self.pages[file]
+            said = int(re.search(r"<summary>(\d+) more choices</summary>", page).group(1))
+            hidden = page[page.index('<details class="more-rows">'):page.index("</details>")]
+            self.assertEqual(hidden.count("<small>Chose</small>"), said, file)
+
     def test_the_job_history_matches_the_dates_on_my_profile(self):
         home = self.pages["index.html"]
         jobs = home[home.index('id="experience"'):home.index('id="skills"')]
