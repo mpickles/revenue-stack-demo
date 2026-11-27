@@ -410,15 +410,23 @@ class CommittedPages(unittest.TestCase):
             self.assertNotRegex(hero, r"\$\d")
         self.assertIn(".cs-hero svg{display:block;width:100%;height:auto;max-height:min(46svh,19rem)}", self.pages["case-form-swap.html"], "never taller than the screen")
 
-    def test_the_day_to_day_work_is_told_in_the_current_job_not_in_a_section_of_its_own(self):
+    def test_each_job_lists_what_i_did_with_an_icon_per_line(self):
         home = self.pages["index.html"]
         self.assertNotIn('id="daily"', home)
-        xp = home[home.index('<section class="sec" id="experience"'):]
-        job = xp[xp.index("<b>Marketing Operations Specialist</b>"):xp.index("<b>PPC and SEO Specialist</b>")]
-        for said in ("offline conversions", "Zapier", "MCP servers and connectors", "Looker Studio", "HubSpot"):
+        xp = home[home.index('<section class="sec" id="experience"'):home.index('<section class="sec" id="skills"')]
+        entries = xp.split('<span class="when">')[1:]
+        self.assertEqual(len(entries), 5)
+        for entry in entries:
+            self.assertEqual(entry.count('<ul class="did">'), 1)
+            self.assertEqual(entry.count('<svg viewBox="0 0 24 24" aria-hidden="true">'), entry.count("<strong>"), "one icon per line")
+        self.assertEqual([entry.count("<strong>") for entry in entries], [5, 4, 4, 2, 1])
+        job = entries[0]
+        for said in ("offline conversions", "Zapier", "MCP servers and connectors", "Looker Studio", "HubSpot", 'href="platform.html"'):
             self.assertIn(said, job)
-        for tag in ("<li>Zapier</li>", "<li>Looker Studio</li>", "<li>MCP</li>"):
-            self.assertIn(tag, job)
+        for case in self.config["cases"]:
+            self.assertIn(f'href="{case["file"]}"', entries[1], "the client pages hang off the job they were done in")
+        # Only figures my employer has published appear here.
+        self.assertEqual(sorted(re.findall(r"\d+(?:%|x)", xp)), ["20x", "80%"])
 
     def test_the_home_page_shows_each_client_page_as_a_card_with_its_picture(self):
         home = self.pages["index.html"]

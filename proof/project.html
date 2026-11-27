@@ -152,6 +152,13 @@
     .xp b{display:block;font-weight:500;font-size:clamp(1.25rem,1.1rem + .8vw,1.75rem);letter-spacing:-.03em;line-height:1.1}
     .xp .where{display:block;margin-top:6px;color:var(--muted)}
     .xp p{margin:16px 0 0;max-width:40rem}
+    .xp .did{list-style:none;margin:22px 0 0;padding:0;display:grid;gap:18px clamp(24px,3vw,40px)}
+    @media (min-width:640px){.xp .did{grid-template-columns:repeat(2,minmax(0,1fr))}}
+    .xp .did li{display:grid;grid-template-columns:36px minmax(0,1fr);gap:0 14px;align-items:start}
+    .xp .did svg{width:36px;height:36px;padding:7px;border:1px solid var(--line);border-radius:10px;background:var(--panel);fill:none;stroke:var(--accent);stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+    .xp .did strong{display:block;font-weight:500;line-height:1.3}
+    .xp .did span{display:block;margin-top:3px;color:var(--muted);font-size:.9375rem;line-height:1.5}
+    .xp .did + .tags{margin-top:22px}
     .tags{list-style:none;margin:18px 0 0;padding:0;display:flex;flex-wrap:wrap;gap:6px}
     .tags li{font-family:var(--mono);font-size:.75rem;border:1px solid var(--line);border-radius:4px;padding:3px 8px;color:var(--muted)}
 
