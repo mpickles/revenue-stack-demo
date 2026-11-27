@@ -584,3 +584,38 @@
     });
   });
 })();
+
+// Projects carousel. With one project showing, or scripts off, it is simply the project.
+(function () {
+  var car = document.getElementById("pcar");
+  if (!car) return;
+  var track = car.querySelector(".pcar-track"), nav = car.querySelector(".pcar-nav");
+  var slides = Array.prototype.filter.call(track.children, function (el) { return !el.hidden; });
+  var tabs = Array.prototype.filter.call(car.querySelectorAll(".pcar-tabs button"), function (el) { return !el.hidden; });
+  var arrows = car.querySelectorAll(".pcar-arrows button"), at = 0;
+  if (slides.length < 2) return;
+  nav.hidden = false;
+  var calm = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  function mark(i) {
+    at = i;
+    tabs.forEach(function (tab, n) { tab.setAttribute("aria-pressed", n === i ? "true" : "false"); });
+    arrows[0].disabled = i === 0; arrows[1].disabled = i === slides.length - 1;
+  }
+  function go(i) {
+    i = Math.max(0, Math.min(slides.length - 1, i));
+    track.scrollTo({ left: slides[i].offsetLeft - slides[0].offsetLeft, behavior: calm ? "auto" : "smooth" });
+    mark(i);
+  }
+  tabs.forEach(function (tab, n) { tab.addEventListener("click", function () { go(n); }); });
+  Array.prototype.forEach.call(arrows, function (b) { b.addEventListener("click", function () { go(at + Number(b.getAttribute("data-dir"))); }); });
+  var tick = null;
+  track.addEventListener("scroll", function () {
+    clearTimeout(tick);
+    tick = setTimeout(function () {
+      var best = 0, gap = Infinity;
+      slides.forEach(function (el, n) { var d = Math.abs(el.offsetLeft - slides[0].offsetLeft - track.scrollLeft); if (d < gap) { gap = d; best = n; } });
+      mark(best);
+    }, 90);
+  }, { passive: true });
+  mark(0);
+})();

@@ -636,6 +636,25 @@
     .cs-hero.seen .h-cut{opacity:1;transition:opacity .3s var(--ease) 1.1s}
     .cs-hero.seen .h-drop{transform:none;transition:transform .8s var(--ease) 1.2s}
     .cs-hero.seen .h-drop5{transform:none;transition:transform 1s var(--ease) .4s}
+    /* Projects: one at a time, side by side. Named tabs and arrows move between them; a swipe works too. */
+    .pcar{margin-top:8px}
+    .pcar-nav{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px 24px;margin-top:20px}
+    .pcar-nav[hidden]{display:none}
+    .pcar-tabs{display:flex;flex-wrap:wrap;gap:8px}
+    .pcar-tabs button{font:inherit;font-size:.9375rem;color:var(--muted);background:none;border:1px solid var(--line);border-radius:999px;padding:8px 16px 9px;cursor:pointer;transition:color var(--t-fast) var(--ease),border-color var(--t-fast) var(--ease),background var(--t-fast) var(--ease)}
+    .pcar-tabs button[hidden]{display:none}
+    .pcar-tabs button[aria-pressed="true"]{color:var(--bg);background:var(--ink);border-color:var(--ink)}
+    .pcar-arrows{display:flex;gap:8px}
+    .pcar-arrows button{width:40px;height:40px;display:grid;place-items:center;color:var(--ink);background:none;border:1px solid var(--line);border-radius:50%;cursor:pointer;transition:border-color var(--t-fast) var(--ease),opacity var(--t-fast) var(--ease)}
+    .pcar-arrows button:hover{border-color:var(--muted)}
+    .pcar-arrows button:disabled{opacity:.35;cursor:default}
+    .pcar-arrows svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.75;stroke-linecap:round;stroke-linejoin:round}
+    .pcar-track{display:flex;gap:64px;overflow-x:auto;overscroll-behavior-x:contain;scroll-snap-type:x mandatory;scrollbar-width:none}
+    .pcar-track::-webkit-scrollbar{display:none}
+    .pcar-track>.sys{flex:0 0 100%;min-width:0;scroll-snap-align:start}
+    .pcar .sys,.band .pcar .sys.second{margin-top:0;padding:20px 0 0;border-top:0}
+    @media (min-width:900px){.band .pcar .sys.second{grid-template-columns:minmax(0,1.3fr) minmax(0,1fr)}.band .pcar .sys.second .proj-cover{order:0}}
+    .pcar .sys .parts-h{margin:20px 0 0}
     /* Styles for the platform pages only. Loaded after style.css. */
     "
 
@@ -2081,6 +2100,41 @@
           pic.classList.remove("seen"); void pic.offsetWidth; pic.classList.add("seen");
         });
       });
+    })();
+
+    // Projects carousel. With one project showing, or scripts off, it is simply the project.
+    (function () {
+      var car = document.getElementById("pcar");
+      if (!car) return;
+      var track = car.querySelector(".pcar-track"), nav = car.querySelector(".pcar-nav");
+      var slides = Array.prototype.filter.call(track.children, function (el) { return !el.hidden; });
+      var tabs = Array.prototype.filter.call(car.querySelectorAll(".pcar-tabs button"), function (el) { return !el.hidden; });
+      var arrows = car.querySelectorAll(".pcar-arrows button"), at = 0;
+      if (slides.length < 2) return;
+      nav.hidden = false;
+      var calm = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      function mark(i) {
+        at = i;
+        tabs.forEach(function (tab, n) { tab.setAttribute("aria-pressed", n === i ? "true" : "false"); });
+        arrows[0].disabled = i === 0; arrows[1].disabled = i === slides.length - 1;
+      }
+      function go(i) {
+        i = Math.max(0, Math.min(slides.length - 1, i));
+        track.scrollTo({ left: slides[i].offsetLeft - slides[0].offsetLeft, behavior: calm ? "auto" : "smooth" });
+        mark(i);
+      }
+      tabs.forEach(function (tab, n) { tab.addEventListener("click", function () { go(n); }); });
+      Array.prototype.forEach.call(arrows, function (b) { b.addEventListener("click", function () { go(at + Number(b.getAttribute("data-dir"))); }); });
+      var tick = null;
+      track.addEventListener("scroll", function () {
+        clearTimeout(tick);
+        tick = setTimeout(function () {
+          var best = 0, gap = Infinity;
+          slides.forEach(function (el, n) { var d = Math.abs(el.offsetLeft - slides[0].offsetLeft - track.scrollLeft); if (d < gap) { gap = d; best = n; } });
+          mark(best);
+        }, 90);
+      }, { passive: true });
+      mark(0);
     })();
   </script>
 </body>

@@ -761,6 +761,20 @@ class CommittedPages(unittest.TestCase):
             self.assertTrue((build.PROOF / shot).is_file(), shot)
         self.assertIn('getElementById("shots2")', page)
 
+    def test_the_projects_sit_in_a_carousel_with_named_tabs_and_arrows(self):
+        home = self.pages["index.html"]
+        work = home[home.index('<section class="sec band" id="work"'):home.index('<section class="sec" id="client-work"')]
+        self.assertEqual(work.count('<div class="pcar" id="pcar">'), 1)
+        track = work[work.index('<div class="pcar-track">'):]
+        self.assertEqual(track.count("<article class=\"sys"), 2, "both projects are slides")
+        self.assertLess(track.index('href="platform.html"'), track.index('href="project.html"'), "the live platform comes first")
+        self.assertIn('<div class="pcar-nav" hidden>', work, "the controls show only when the script finds two projects")
+        self.assertEqual(work.count('aria-label="Previous project"'), 1)
+        self.assertEqual(work.count('aria-label="Next project"'), 1)
+        self.assertIn(">Operations platform</button>", work)
+        self.assertIn("scroll-snap-type:x mandatory", home)
+        self.assertNotIn('class="pin"', work, "nothing here holds the screen still")
+
     def test_the_second_project_shows_on_the_home_page_only_when_it_is_switched_on(self):
         home = self.pages["index.html"]
         off = bool(self.config["project"].get("hidden"))
