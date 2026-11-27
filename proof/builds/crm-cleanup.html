@@ -1216,13 +1216,13 @@
         var q = function (s) { return fig.querySelector(s); };
         var dots = q(".flow-dots"); dots.innerHTML = STEPS.map(function (s, i) { return '<button type="button" data-i="' + i + '" aria-label="Step ' + (i + 1) + ": " + esc(s.t) + '">' + (i + 1) + "</button>"; }).join("");
         function draw() {
-          var W = box.clientWidth, v = W < 560, H = v ? 640 : 420; box.style.height = H + "px";
+          var W = box.clientWidth, v = W < 560, H = v ? Math.max(360, Math.min(640, window.innerHeight - 400)) : Math.max(280, Math.min(420, window.innerHeight - 200)); box.style.height = H + "px";
           var st = STEPS[cur], on = st.on, fl = st.flow, lanes = [], nodes = [], m = 14;
           var cls = function (k) { return on.indexOf(k) >= 0 ? "on" : "off"; };
           var lane = function (k, d, dash) { lanes.push('<path class="lane' + (fl.indexOf(k) >= 0 ? " live" : "") + (dash ? " dash" : "") + '" d="' + d + '"/>'); };
           var i;
           if (!v) {
-            var top = 70, colW = (W - 2 * m) / 5, bw = Math.min(160, colW - 26), short = bw < 118;
+            var top = 70, colW = (W - 2 * m) / 5, bw = Math.min(160, colW - 26), short = bw < 134;
             var cx = function (n) { return m + colW * (n + 0.5); }, gap = 14, avail = H - top - 14, hn = Math.min(56, (avail - 3 * gap) / 4);
             var total = 4 * hn + 3 * gap, y0 = top + (avail - total) / 2, yc = function (n) { return y0 + n * (hn + gap) + hn / 2; };
             var L = function (n) { return cx(n) - bw / 2; }, R = function (n) { return cx(n) + bw / 2; };
@@ -1296,7 +1296,7 @@
       function paths(fig) {
         var svg = fig.querySelector("svg"), box = fig.querySelector(".flow-stage"), state = { live: [], tok: null }, pick = "claude", tabs = fig.querySelector(".flow-tabs");
         function draw() {
-          var W = box.clientWidth, H = W < 560 ? 300 : 330, m = 14; box.style.height = H + "px";
+          var W = box.clientWidth, H = Math.max(250, Math.min(W < 560 ? 300 : 330, window.innerHeight - 220)), m = 14; box.style.height = H + "px";
           var colW = (W - 2 * m) / 3, bw = Math.min(200, colW - 30), short = bw < 132;
           var cx = function (i) { return m + colW * (i + 0.5); }, L = function (i) { return cx(i) - bw / 2; }, R = function (i) { return cx(i) + bw / 2; };
           var gap = 18, hn = Math.min(60, (H - 2 * m - 3 * gap) / 4), y = function (i) { return m + i * (hn + gap) + hn / 2; };

@@ -1316,7 +1316,7 @@
 
     /* A screenshot never stands taller than the screen. Press it to see it large. */
     /* The frame is narrowed until a 16 by 10 screenshot fits, so the space is held before the picture loads. */
-    .rshot-frame{max-width:min(58rem,calc(min(68svh,42rem)*1.6))}
+    .rshot-frame{max-width:min(58rem,calc(min(68svh,42rem,100svh - 290px)*1.6))}
     .rshot.fit .rshot-frame{max-width:min(58rem,calc(min(68svh,42rem,100svh - 300px)*1.6))}
     .rshot-pane,figure.rshot-frame{position:relative}
     .zoomable{cursor:zoom-in}
@@ -1362,6 +1362,26 @@
     .flow-tabs button[aria-pressed="true"]{border-color:var(--ink);color:var(--ink);box-shadow:0 0 0 1px var(--ink)}
     .flowfig[data-flow="paths"] .flow-t{margin-top:18px;font-size:1.125rem}
     @media (max-width:760px){.flow-panel{grid-template-columns:minmax(0,1fr)}}
+
+    /* A diagram and everything that goes with it fit on one screen: on a wide screen the words and the
+       controls sit beside the picture, and the picture is never taller than the room under the nav. */
+    @media (min-width:900px){
+      .flowfig{display:grid;grid-template-columns:minmax(0,1fr) 19rem;gap:0 32px;align-items:start}
+      .flowfig .flow-panel{grid-template-columns:minmax(0,1fr);margin-top:0;gap:18px}
+      .flowfig .flow-panel>div:last-child{order:-1}
+      .flowfig .flow-b{min-height:0;font-size:.9375rem;line-height:1.45}
+      .flowfig .flow-t{font-size:1.25rem}
+      .flowfig .flow-dots button{width:34px;min-height:34px}
+      .flowfig[data-flow="paths"]{grid-template-rows:auto 1fr}
+      .flowfig[data-flow="paths"] .flow-stage{grid-row:1 / span 2}
+      .flowfig[data-flow="paths"] .flow-tabs{margin-top:0;flex-direction:column;align-items:stretch}
+      .flowfig[data-flow="paths"] .flow-tabs button{text-align:left}
+      .flowfig[data-flow="paths"] .flow-t{margin-top:16px}
+    }
+
+    /* Short screens: the build-run demo tightens its rows, and a phone gets a shorter diagram panel. */
+    @media (max-height:760px){#dag.rows2 li{padding:8px 0}.app-main.solo{padding-top:18px;padding-bottom:18px}.pick{margin-bottom:12px}}
+    @media (max-width:899px){.flowfig .flow-b{min-height:0;font-size:.9375rem}.flowfig .flow-panel{margin-top:14px;gap:10px}.flow-dots{margin-top:8px}.flow-dots button{width:36px;min-height:36px}}
   </style>
 </head>
 <body>
@@ -1865,13 +1885,13 @@
         var q = function (s) { return fig.querySelector(s); };
         var dots = q(".flow-dots"); dots.innerHTML = STEPS.map(function (s, i) { return '<button type="button" data-i="' + i + '" aria-label="Step ' + (i + 1) + ": " + esc(s.t) + '">' + (i + 1) + "</button>"; }).join("");
         function draw() {
-          var W = box.clientWidth, v = W < 560, H = v ? 640 : 420; box.style.height = H + "px";
+          var W = box.clientWidth, v = W < 560, H = v ? Math.max(360, Math.min(640, window.innerHeight - 400)) : Math.max(280, Math.min(420, window.innerHeight - 200)); box.style.height = H + "px";
           var st = STEPS[cur], on = st.on, fl = st.flow, lanes = [], nodes = [], m = 14;
           var cls = function (k) { return on.indexOf(k) >= 0 ? "on" : "off"; };
           var lane = function (k, d, dash) { lanes.push('<path class="lane' + (fl.indexOf(k) >= 0 ? " live" : "") + (dash ? " dash" : "") + '" d="' + d + '"/>'); };
           var i;
           if (!v) {
-            var top = 70, colW = (W - 2 * m) / 5, bw = Math.min(160, colW - 26), short = bw < 118;
+            var top = 70, colW = (W - 2 * m) / 5, bw = Math.min(160, colW - 26), short = bw < 134;
             var cx = function (n) { return m + colW * (n + 0.5); }, gap = 14, avail = H - top - 14, hn = Math.min(56, (avail - 3 * gap) / 4);
             var total = 4 * hn + 3 * gap, y0 = top + (avail - total) / 2, yc = function (n) { return y0 + n * (hn + gap) + hn / 2; };
             var L = function (n) { return cx(n) - bw / 2; }, R = function (n) { return cx(n) + bw / 2; };
@@ -1945,7 +1965,7 @@
       function paths(fig) {
         var svg = fig.querySelector("svg"), box = fig.querySelector(".flow-stage"), state = { live: [], tok: null }, pick = "claude", tabs = fig.querySelector(".flow-tabs");
         function draw() {
-          var W = box.clientWidth, H = W < 560 ? 300 : 330, m = 14; box.style.height = H + "px";
+          var W = box.clientWidth, H = Math.max(250, Math.min(W < 560 ? 300 : 330, window.innerHeight - 220)), m = 14; box.style.height = H + "px";
           var colW = (W - 2 * m) / 3, bw = Math.min(200, colW - 30), short = bw < 132;
           var cx = function (i) { return m + colW * (i + 0.5); }, L = function (i) { return cx(i) - bw / 2; }, R = function (i) { return cx(i) + bw / 2; };
           var gap = 18, hn = Math.min(60, (H - 2 * m - 3 * gap) / 4), y = function (i) { return m + i * (hn + gap) + hn / 2; };
