@@ -395,6 +395,21 @@ class CommittedPages(unittest.TestCase):
             for case in named:
                 self.assertNotIn(case["client"], page, f'{path} names {case["client"]}')
 
+    def test_every_client_work_page_opens_on_a_drawn_picture(self):
+        for case in self.config["cases"]:
+            page = self.pages[case["file"]]
+            body = page[page.index("<main"):page.index("</main>")]
+            self.assertEqual(body.count('<figure class="cs-hero" data-reveal>'), 1, case["file"])
+            hero = body[body.index('<figure class="cs-hero"'):]
+            hero = hero[:hero.index("</figure>")]
+            self.assertLess(body.index("<h1"), body.index('<figure class="cs-hero"'), "the picture sits under the title")
+            self.assertLess(body.index('<figure class="cs-hero"'), body.index("<dt>Problem</dt>"), "and above the summary")
+            self.assertRegex(hero, r'<svg viewBox="[^"]+" role="img" aria-label="[^"]{40,}">', "drawn, and described for a screen reader")
+            self.assertIn("<figcaption>Drawn, not a screenshot.", hero)
+            self.assertNotIn("<img", hero)
+            self.assertNotRegex(hero, r"\$\d")
+        self.assertIn(".cs-hero svg{display:block;width:100%;height:auto;max-height:min(46svh,19rem)}", self.pages["case-form-swap.html"], "never taller than the screen")
+
     def test_the_first_screen_shows_the_work_as_links(self):
         home = self.pages["index.html"]
         hero = home[home.index('<header class="hero'):home.index("</header>")]

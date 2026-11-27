@@ -1439,6 +1439,45 @@
     .linefig.seen .mk{opacity:.7;transition:opacity .4s var(--ease) .5s}
     @media (max-width:600px){.resbars>div{grid-template-columns:minmax(0,1fr) 3.5rem}.resbars>div>span{grid-column:1 / -1}}
     .flowfig svg>g>text.sub{fill:var(--muted);font:13px var(--sans)}
+
+    /* The picture at the top of a client work page. Always drawn: a client page carries no screenshots. */
+    .cs-hero{margin:28px 0 36px;max-width:58rem;border:1px solid var(--line);border-radius:14px;background:var(--panel);padding:clamp(10px,2vw,20px) clamp(10px,2vw,20px) 12px}
+    .cs-hero svg{display:block;width:100%;height:auto;max-height:min(46svh,19rem)}
+    .cs-hero figcaption{margin-top:8px;color:var(--muted);font-size:.8125rem;line-height:1.45;max-width:46rem}
+    .cs-hero .h-b{fill:var(--bg);stroke:var(--line);stroke-width:1.5}
+    .cs-hero .h-f{fill:var(--bg);stroke:var(--line);stroke-width:1.5}
+    .cs-hero .h-s{fill:color-mix(in srgb,var(--ink) 22%,transparent)}
+    .cs-hero .h-s2{fill:color-mix(in srgb,var(--ink) 11%,transparent)}
+    .cs-hero .h-k{fill:var(--ink)}
+    .cs-hero .h-on{fill:var(--accent)}
+    .cs-hero .h-onbar{fill:var(--on-accent)}
+    .cs-hero .h-hot{fill:color-mix(in srgb,var(--accent) 9%,var(--bg));stroke:var(--accent);stroke-width:1.5}
+    .cs-hero .h-mg,.cs-hero .h-ar{fill:none;stroke:var(--muted);stroke-width:1.75;stroke-linecap:round;stroke-linejoin:round}
+    .cs-hero .h-tag{fill:var(--on-accent);font:600 11px var(--sans)}
+    .cs-hero .h-tag.big{font-size:15px}
+    .cs-hero .h-ax{stroke:var(--line);stroke-width:1.5;fill:none}
+    .cs-hero .h-area{fill:color-mix(in srgb,var(--accent) 12%,transparent)}
+    .cs-hero .h-ln{fill:none;stroke:var(--accent);stroke-width:3;stroke-linecap:round;stroke-linejoin:round}
+    .cs-hero .h-d0{fill:var(--bg);stroke:var(--muted);stroke-width:2}
+    .cs-hero .h-d1{fill:var(--accent)}
+    .cs-hero .h-n0{fill:var(--muted);font:500 18px var(--sans)}
+    .cs-hero .h-n1{fill:var(--ink);font:500 30px var(--sans);letter-spacing:-.02em}
+    .cs-hero .h-n1.sm{font-size:22px}
+    .cs-hero .h-ghost{fill:none;stroke:var(--accent);stroke-width:1.5;stroke-dasharray:5 5;opacity:.75}
+    .cs-hero .h-ghostbar{fill:var(--accent);opacity:.45}
+    .cs-hero .h-cut{stroke:var(--coral);stroke-width:3;stroke-linecap:round}
+    .cs-hero .h-drop{transform-box:fill-box;transform-origin:bottom}
+    .cs-hero.armed .draw{stroke-dasharray:1;stroke-dashoffset:1}
+    .cs-hero.armed .h-area,.cs-hero.armed .h-d1,.cs-hero.armed .h-n1,.cs-hero.armed .h-more,.cs-hero.armed .h-cut{opacity:0}
+    .cs-hero.armed .h-btn{transform:translateY(-88px)}
+    .cs-hero.armed .h-drop{transform:scaleY(2.5)}
+    .cs-hero.seen .draw{stroke-dashoffset:0;transition:stroke-dashoffset 1.4s var(--ease) .2s}
+    .cs-hero.seen .h-area{opacity:1;transition:opacity .6s var(--ease) 1s}
+    .cs-hero.seen .h-d1,.cs-hero.seen .h-n1{opacity:1;transition:opacity .4s var(--ease) 1.2s}
+    .cs-hero.seen .h-more{opacity:1;transition:opacity .4s var(--ease) .5s}
+    .cs-hero.seen .h-btn{transform:none;transition:transform .7s var(--ease) .5s}
+    .cs-hero.seen .h-cut{opacity:1;transition:opacity .3s var(--ease) 1.1s}
+    .cs-hero.seen .h-drop{transform:none;transition:transform .8s var(--ease) 1.2s}
   </style>
 </head>
 <body>
