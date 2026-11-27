@@ -785,6 +785,17 @@
       function say(i) { if (says && i !== shown) { shown = i; says.textContent = steps[i].dataset.step; } }
       if (steps.length) say(steps.length - 1);
 
+      // A long list shows its first rows and opens on request. Without this script every row shows.
+      $$("[data-fold]").forEach(function (list) {
+        var keep = Number(list.dataset.fold), more = list.children.length - keep;
+        if (more < 1) return;
+        list.classList.add("fold");
+        var p = document.createElement("p"), b = document.createElement("button");
+        p.className = "fold-more"; b.type = "button"; b.textContent = "Show " + more + " more"; b.setAttribute("aria-expanded", "false");
+        b.addEventListener("click", function () { list.classList.add("open"); p.remove(); if (window.ScrollTrigger) ScrollTrigger.refresh(); });
+        p.appendChild(b); list.parentNode.insertBefore(p, list.nextSibling);
+      });
+
       var motion = window.gsap && window.ScrollTrigger && !still;
       if (motion) gsap.registerPlugin.apply(gsap, [ScrollTrigger].concat(window.SplitText ? [SplitText] : [], window.Flip ? [Flip] : []));
 
@@ -909,7 +920,15 @@
         if (document.querySelector(".hero h1")) gsap.to(".hero h1", { yPercent: -12, opacity: 0.25, ease: "none", scrollTrigger: { trigger: ".hero", start: "top top", end: "bottom 15%", scrub: true } });
 
         // The screenshot grows to full width as it comes up the screen.
+        // The platform page's cover opens from the width of the text to the full width of the screen.
+        var wide = document.querySelector(".cover-wide .page-cover");
+        if (wide) {
+          var wrap = wide.closest(".wrap"), gutter = Math.max(0, (window.innerWidth - wrap.clientWidth) / 2 + parseFloat(getComputedStyle(wrap).paddingLeft));
+          gsap.fromTo(wide, { clipPath: "inset(0px " + gutter + "px round 10px)" }, { clipPath: "inset(0px 0px round 0px)", ease: "none",
+            scrollTrigger: { trigger: wide, start: "top 96px", end: "+=" + Math.round(window.innerHeight * 0.45), scrub: true } });
+        }
         $$("[data-grow]").forEach(function (frame) {
+          if (frame.closest(".cover-wide")) return;
           gsap.fromTo(frame, { scale: 0.86, borderRadius: 22 }, { scale: 1, borderRadius: 10, ease: "none", scrollTrigger: { trigger: frame, start: "top 95%", end: "top 30%", scrub: true } });
         });
 

@@ -686,3 +686,19 @@ details.whole dd b{font-size:.9375rem}
 
 /* While the six screens are pinned, the screenshot is capped so the whole block fits on the screen. */
 .rshot.fit .rshot-pane img{width:auto;max-width:100%;max-height:calc(100svh - 300px);margin-inline:auto}
+
+/* Layout mock, platform page only. Three ideas: a title that stays put beside its section, one picture
+   that runs edge to edge, and long lists that open on request. */
+.shows.fold:not(.open)>div:nth-child(n+3){display:none}
+.fold-more{margin:0}
+.fold-more button{border:0;background:none;padding:16px 0;font-size:.875rem;color:var(--muted)}
+.fold-more button::before{content:"+";color:var(--accent);margin-right:10px}
+.fold-more button:hover{color:var(--ink)}
+.cover-wide .page-cover{width:100vw;margin-left:calc(50% - 50vw);border-radius:0;border-inline:0}
+.cover-wide .page-cover .shot-frame img{aspect-ratio:auto;width:100%;height:min(70svh,52vw);object-fit:cover;object-position:top center}
+@media (min-width:1000px){
+  .cs-block.split{display:grid;grid-template-columns:15rem minmax(0,1fr);column-gap:72px;align-items:start;border-top:1px solid var(--line);padding-top:28px}
+  .cs-block.split>.cs-h{grid-column:1;grid-row:1 / span 12;position:sticky;top:104px;margin:0;padding:0;border:0;font-size:1.5rem;line-height:1.12}
+  .cs-block.split>:not(.cs-h){grid-column:2;min-width:0}
+  .cs-block.split>.cs-h+*{margin-top:0}
+}
