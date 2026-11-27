@@ -978,12 +978,42 @@
         })();
 
         // Lists and cards arrive one after another.
-        [".sys", ".proof li", "[data-stagger] > *"].forEach(function (group) {
+        [".sys", ".proof li", "[data-stagger] > *", ".tldr > div", ".nums > div", ".flow > li", ".chose > div", ".shows > div", ".more-rows > div"].forEach(function (group) {
           if (!document.querySelector(group)) return;
           ScrollTrigger.batch(group, { start: "top 98%", once: true, onEnter: function (batch) {
             gsap.from(batch, { opacity: 0, y: 10, duration: FAST, stagger: 0.02, ease: EASE, clearProps: "opacity,transform" });
           } });
         });
+
+        // A plain number counts up to its value as it arrives. Ranges, ratios and money are left alone.
+        $$(".nums b").forEach(function (b) {
+          var text = b.textContent.trim();
+          if (!/^[0-9][0-9,]*%?$/.test(text) || b.children.length) return;
+          var end = parseInt(text.replace(/[^0-9]/g, ""), 10), unit = text.slice(-1) === "%" ? "%" : "", box = { n: 0 };
+          if (end < 10) return;
+          b.setAttribute("aria-label", text);
+          b.style.fontVariantNumeric = "tabular-nums";
+          gsap.to(box, { n: end, duration: SLOW * 2, ease: EASE, scrollTrigger: { trigger: b, start: "top 92%", once: true },
+            onUpdate: function () { b.textContent = Math.round(box.n).toLocaleString("en-US") + unit; },
+            onComplete: function () { b.textContent = text; } });
+        });
+
+        // The six real screens on the platform page hold still while the page scrolls through them,
+        // as long as the whole block fits on the screen.
+        (function () {
+          var shots = document.getElementById("shots");
+          if (!shots) return;
+          var tabs = $$("[data-shot]", shots);
+          if (tabs.length < 3) return;
+          shots.classList.add("fit");  // cap the screenshot's height so the block can fit under the nav
+          if (shots.offsetHeight > window.innerHeight - 96) { shots.classList.remove("fit"); return; }
+          $$("img", shots).forEach(function (img) { img.loading = "eager"; if (!img.complete) img.addEventListener("load", function () { ScrollTrigger.refresh(); }); });
+          ScrollTrigger.create({ trigger: shots, start: "top 88px", end: "+=" + tabs.length * 45 + "%", pin: true, anticipatePin: 1,
+            onUpdate: function (self) {
+              var tab = tabs[Math.min(tabs.length - 1, Math.floor(self.progress * tabs.length))];
+              if (tab.getAttribute("aria-pressed") !== "true") tab.click();
+            } });
+        })();
 
         // Table rows wipe in from the left.
         $$("table[data-wipe]").forEach(function (table) {

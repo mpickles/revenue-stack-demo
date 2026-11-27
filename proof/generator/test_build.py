@@ -702,6 +702,17 @@ class CommittedPages(unittest.TestCase):
                 self.assertEqual(page.count('<script src="https://unpkg.com/lenis@1.3.29/dist/lenis.min.js"></script>'), 1, path)
                 self.assertEqual(len(re.findall(r"unpkg\.com/lenis@", page)), 1, path)
 
+    def test_the_form_swap_story_has_a_demo_a_visitor_can_work(self):
+        page = self.pages["case-form-swap.html"]
+        self.assertEqual(page.count("Try it: fill in the form</h2>"), 1)
+        demo = page[page.index("Try it: fill in the form</h2>"):page.index("How I found it</h2>")]
+        self.assertIn("made up", demo)
+        for part in ('id="fse" type="email"', 'id="fsg"', 'data-k="swap"', 'data-k="fix"', 'id="fst"', 'aria-live="polite"'):
+            self.assertEqual(demo.count(part), 1, part)
+        self.assertIn("Before the swap = 100", demo, "an index, never a raw client number")
+        self.assertIn('document.getElementById("fsb")', page)
+        self.assertLess(page.index("Try it: fill in the form</h2>"), page.index("What I chose, and what I turned down</h2>"))
+
     def test_the_job_history_matches_the_dates_on_my_profile(self):
         home = self.pages["index.html"]
         jobs = home[home.index('id="experience"'):home.index('id="skills"')]
