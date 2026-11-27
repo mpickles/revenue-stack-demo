@@ -507,14 +507,17 @@ def build_pages():
         )
 
     stops, journey = journey_html(project, builds, status_of)
-    part_links = "\n".join(
-        f'        <li><a href="builds/{e(step["slug"])}.html"><i>{n}</i>{e(step["short"])}</a><span class="status {STATUSES[status_of[step["slug"]]][1]}">{STATUSES[status_of[step["slug"]]][0]}</span></li>'
+    by_slug = {b["slug"]: b for b in builds}
+    tiles = "\n".join(
+        f'<a class="cover-card{" off" if status_of[step["slug"]] == "planned" else ""}" href="builds/{e(step["slug"])}.html">{cover(step["slug"])}'
+        f'<span class="body"><b><i>{n}</i>{e(step["short"])}</b><span class="line">{e(step["name"])}</span>'
+        f'<span class="meta"><span class="status {STATUSES[status_of[step["slug"]]][1]}">{STATUSES[status_of[step["slug"]]][0]}</span><span>{e(by_slug[step["slug"]]["tools"])}</span></span></span></a>'
         for n, step in enumerate(project["journey"], 1)
     )
     first = project["journey"][0]
     first_text, first_class = STATUSES[status_of[first["slug"]]]
     pages["project.html"] = template("project.html").substitute(
-        part_links=part_links,
+        tiles=indent(tiles, 8),
         contact=inner_contact,
         contact_nav=inner_nav,
         style=style,

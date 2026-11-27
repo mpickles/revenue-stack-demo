@@ -7,8 +7,8 @@
   },
   "project": {
     "hidden": false,
-    "title": "A full revenue stack for a made‑up B2B software company",
-    "sentence": "One lead followed the whole way: ad click, consent, form, CRM, routing, conversions sent back to the ad platform, and the report at the end. Built in six parts on a made-up company, Roadwren, so all of it can be public.",
+    "title": "GTM system: one lead, from ad click to revenue report",
+    "sentence": "One lead followed the whole way: ad click, consent, form, CRM, routing, conversions sent back to the ad platform, and the report at the end. Six parts, built on a made-up company, Roadwren, so every file can be public.",
     "built_with": "Next.js, Tag Manager, GA4, HubSpot, Salesforce Flow, Python, SQL, dbt",
     "headline": null,
     "recording": null,

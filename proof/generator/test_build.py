@@ -244,6 +244,22 @@ class CommittedPages(unittest.TestCase):
             self.assertIn(html.escape(step["short"]), page)
         self.assertIn('href="project.html"', self.pages["index.html"])
 
+    def test_the_project_page_mirrors_the_platform_page(self):
+        page = self.pages["project.html"]
+        body = page[page.index("<main"):page.index("</main>")]
+        order = ["How it is put together</h2>", "Follow one lead</h2>", "Why it is built the way it is</h2>", '<nav class="pager"']
+        marks = [body.index(mark) for mark in order]
+        self.assertEqual(marks, sorted(marks), "the same sections in the same order as the platform page")
+        tiles = body[body.index('<div class="covers ptiles" data-stagger>'):body.index("Follow one lead</h2>")]
+        journey = self.config["project"]["journey"]
+        self.assertEqual(tiles.count('<a class="cover-card'), len(journey))
+        for n, step in enumerate(journey, 1):
+            self.assertIn(f'<b><i>{n}</i>{html.escape(step["short"])}</b><span class="line">{html.escape(step["name"])}</span>', tiles)
+        self.assertNotIn('class="part-links"', body, "the tiles replace the plain list")
+        self.assertNotIn('<p class="sub">', body)
+        self.assertNotIn("made", html.unescape(self.config["project"]["title"]).lower(), "the title says what the system does")
+        self.assertIn("made-up company", body, "and the page still says plainly that the company is made up")
+
     def test_the_project_page_promises_a_result_once_and_shows_no_empty_section(self):
         page = self.pages["project.html"]
         self.assertLessEqual(page.count('class="slot"'), 1)
