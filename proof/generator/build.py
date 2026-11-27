@@ -93,6 +93,20 @@ def render_readme(readme_text, readme_path, repo):
     return title, md.renderer.render(kept, md.options, {})
 
 
+def case_cards_html(cases):
+    """The client work cards on the home page. Each shows, small, the picture its page opens on."""
+    order = sorted(cases, key=lambda c: 0 if c.get("published") else 1)
+    out = ['<div class="case-cards" data-stagger>']
+    for case in order:
+        body = (GENERATOR / "templates" / "cases" / case["file"]).read_text(encoding="utf-8")
+        start = body.index("<svg", body.index('<figure class="cs-hero"'))
+        svg = body[start:body.index("</svg>", start) + 6]
+        svg = re.sub(r' role="img" aria-label="[^"]*"', ' aria-hidden="true"', svg, count=1)
+        out.append(f'  <a class="case-card" href="{case["file"]}"><span class="cs-hero thumb">{svg}</span><small>{html.escape(case["kind"])}</small><b>{html.escape(case["card"], quote=False)}</b><span class="go">Read it</span></a>')
+    out.append("</div>")
+    return "\n".join(out)
+
+
 def indent(text, spaces):
     pad = " " * spaces
     return "\n".join(pad + line if line else line for line in text.splitlines())
@@ -389,6 +403,7 @@ def build_pages():
         platform_tiles=indent(platform_tiles_html(config["platform"]), 8),
         platform_count=str(len(config["platform"]["parts"])),
         tour=indent(tour_html(config["platform"]), 6),
+        case_cards=indent(case_cards_html(config.get("cases", [])), 6),
         project_cover=cover("project", grows=True),
         project_cover_plain=cover("project"),
         project_hidden=" hidden" if project.get("hidden") else "",

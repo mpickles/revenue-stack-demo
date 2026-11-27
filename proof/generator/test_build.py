@@ -430,6 +430,19 @@ class CommittedPages(unittest.TestCase):
             self.assertNotIn(name, home)
         self.assertIn("grid-template-rows:subgrid;grid-row:span 6", home, "the four cards line up row by row")
 
+    def test_the_home_page_shows_each_client_page_as_a_card_with_its_picture(self):
+        home = self.pages["index.html"]
+        block = home[home.index('<section class="sec" id="client-work"'):home.index('<section class="sec" id="daily"')]
+        self.assertEqual(block.count('<a class="case-card"'), len(self.config["cases"]))
+        for case in self.config["cases"]:
+            card = block[block.index(f'<a class="case-card" href="{case["file"]}"'):]
+            card = card[:card.index("</a>")]
+            self.assertEqual(card.count('<span class="cs-hero thumb"><svg viewBox="0 0 720 250" aria-hidden="true">'), 1, "the page's own picture, small")
+            self.assertIn(f'<small>{case["kind"]}</small>', card)
+            self.assertNotIn("<img", card)
+        self.assertNotIn('<p class="sub">', block, "no subheading: the cards speak for themselves")
+        self.assertIn(".case-card{display:grid;grid-template-rows:subgrid;grid-row:span 4", home, "the cards line up row by row")
+
     def test_the_first_screen_shows_the_work_as_links(self):
         home = self.pages["index.html"]
         hero = home[home.index('<header class="hero'):home.index("</header>")]

@@ -449,11 +449,14 @@
     :root[data-theme="dark"] .proj-cover.shot .l{display:none}:root[data-theme="dark"] .proj-cover.shot .d{display:block}
     @media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .proj-cover.shot .l{display:none}:root:not([data-theme="light"]) .proj-cover.shot .d{display:block}}
     .proj-cover.shot small{display:block;padding:10px 14px;border-top:1px solid var(--line);background:var(--bg);color:var(--muted);font-size:.8125rem}
-    .case-row{display:grid;gap:6px 32px;align-items:baseline;margin-top:32px;padding:26px 0;border-top:2px solid var(--accent);border-bottom:1px solid var(--line);background:none;text-decoration:none}
-    @media (min-width:760px){.case-row{grid-template-columns:9rem 1fr auto}}
-    .case-row small{font-family:var(--mono);font-size:.75rem;color:var(--muted)}
-    .case-row b{font-weight:500;font-size:clamp(1.25rem,1rem + 1vw,1.75rem);letter-spacing:-.025em;line-height:1.2}
-    .case-row span{color:var(--muted);text-decoration:underline;text-underline-offset:3px}
+    .case-cards{display:grid;gap:0 clamp(20px,2.4vw,32px);margin-top:36px}
+    @media (min-width:820px){.case-cards{grid-template-columns:repeat(3,minmax(0,1fr))}}
+    .case-card{display:grid;grid-template-rows:subgrid;grid-row:span 4;gap:0;padding:0 0 28px;background:none;text-decoration:none}
+    .case-card small{margin-top:16px;font-family:var(--mono);font-size:.75rem;color:var(--muted)}
+    .case-card b{margin-top:6px;font-weight:500;font-size:clamp(1.125rem,1rem + .5vw,1.375rem);letter-spacing:-.02em;line-height:1.25}
+    .case-card .go{margin-top:10px;color:var(--muted);text-decoration:underline;text-underline-offset:3px}
+    .case-card .cs-hero.thumb{display:block;margin:0;max-width:none;padding:12px;transition:border-color var(--t-fast) var(--ease)}
+    .case-card:hover .cs-hero.thumb,.case-card:focus-visible .cs-hero.thumb{border-color:var(--accent)}
     .parts-h a{margin-left:10px;color:var(--ink);text-decoration:underline;text-decoration-color:var(--line);text-underline-offset:3px;background:none}
     /* Every part, as plain links under the map. Works with no script. */
     .part-links{list-style:none;margin:28px 0 0;padding:0;display:grid;gap:0 32px;border-top:1px solid var(--line)}
@@ -624,6 +627,44 @@
     .daily p{margin:0 0 16px;color:var(--muted);font-size:.9375rem;line-height:1.5}
     .daily ul{display:contents;list-style:none;font-size:.9375rem;line-height:1.45}
     .daily li{padding:10px 0;border-top:1px solid var(--line);font-size:.9375rem;line-height:1.45}
+    /* The picture at the top of a client work page. Always drawn: a client page carries no screenshots. */
+    .cs-hero{margin:28px 0 36px;max-width:58rem;border:1px solid var(--line);border-radius:14px;background:var(--panel);padding:clamp(10px,2vw,20px) clamp(10px,2vw,20px) 12px}
+    .cs-hero svg{display:block;width:100%;height:auto;max-height:min(46svh,19rem)}
+    .cs-hero figcaption{margin-top:8px;color:var(--muted);font-size:.8125rem;line-height:1.45;max-width:46rem}
+    .cs-hero .h-b{fill:var(--bg);stroke:var(--line);stroke-width:1.5}
+    .cs-hero .h-f{fill:var(--bg);stroke:var(--line);stroke-width:1.5}
+    .cs-hero .h-s{fill:color-mix(in srgb,var(--ink) 22%,transparent)}
+    .cs-hero .h-s2{fill:color-mix(in srgb,var(--ink) 11%,transparent)}
+    .cs-hero .h-k{fill:var(--ink)}
+    .cs-hero .h-on{fill:var(--accent)}
+    .cs-hero .h-onbar{fill:var(--on-accent)}
+    .cs-hero .h-hot{fill:color-mix(in srgb,var(--accent) 9%,var(--bg));stroke:var(--accent);stroke-width:1.5}
+    .cs-hero .h-mg,.cs-hero .h-ar{fill:none;stroke:var(--muted);stroke-width:1.75;stroke-linecap:round;stroke-linejoin:round}
+    .cs-hero .h-tag{fill:var(--on-accent);font:600 11px var(--sans)}
+    .cs-hero .h-tag.big{font-size:15px}
+    .cs-hero .h-ax{stroke:var(--line);stroke-width:1.5;fill:none}
+    .cs-hero .h-area{fill:color-mix(in srgb,var(--accent) 12%,transparent)}
+    .cs-hero .h-ln{fill:none;stroke:var(--accent);stroke-width:3;stroke-linecap:round;stroke-linejoin:round}
+    .cs-hero .h-d0{fill:var(--bg);stroke:var(--muted);stroke-width:2}
+    .cs-hero .h-d1{fill:var(--accent)}
+    .cs-hero .h-n0{fill:var(--muted);font:500 18px var(--sans)}
+    .cs-hero .h-n1{fill:var(--ink);font:500 30px var(--sans);letter-spacing:-.02em}
+    .cs-hero .h-n1.sm{font-size:22px}
+    .cs-hero .h-ghost{fill:none;stroke:var(--accent);stroke-width:1.5;stroke-dasharray:5 5;opacity:.75}
+    .cs-hero .h-ghostbar{fill:var(--accent);opacity:.45}
+    .cs-hero .h-cut{stroke:var(--coral);stroke-width:3;stroke-linecap:round}
+    .cs-hero .h-drop{transform-box:fill-box;transform-origin:bottom}
+    .cs-hero.armed .draw{stroke-dasharray:1;stroke-dashoffset:1}
+    .cs-hero.armed .h-area,.cs-hero.armed .h-d1,.cs-hero.armed .h-n1,.cs-hero.armed .h-more,.cs-hero.armed .h-cut{opacity:0}
+    .cs-hero.armed .h-btn{transform:translateY(-88px)}
+    .cs-hero.armed .h-drop{transform:scaleY(2.5)}
+    .cs-hero.seen .draw{stroke-dashoffset:0;transition:stroke-dashoffset 1.4s var(--ease) .2s}
+    .cs-hero.seen .h-area{opacity:1;transition:opacity .6s var(--ease) 1s}
+    .cs-hero.seen .h-d1,.cs-hero.seen .h-n1{opacity:1;transition:opacity .4s var(--ease) 1.2s}
+    .cs-hero.seen .h-more{opacity:1;transition:opacity .4s var(--ease) .5s}
+    .cs-hero.seen .h-btn{transform:none;transition:transform .7s var(--ease) .5s}
+    .cs-hero.seen .h-cut{opacity:1;transition:opacity .3s var(--ease) 1.1s}
+    .cs-hero.seen .h-drop{transform:none;transition:transform .8s var(--ease) 1.2s}
   </style>
 </head>
 <body>
@@ -691,15 +732,15 @@
 
     <section class="sec" id="client-work"><div class="wrap">
       <h2>Client work</h2>
-      <p class="sub">Two results Upgrow has published, with the client named and my part spelled out. One diagnosis where the client is not named.</p>
-      <a class="case-row lead-in" href="case-eventmobi.html"><small>Paid search</small><b>EventMobi: paid search revenue up 80% in a year.</b><span>Read it</span></a>
-      <a class="case-row" href="case-huddle.html"><small>SEO</small><b>Huddle Men's Health: 20x the organic traffic in a year.</b><span>Read it</span></a>
-      <a class="case-row" href="case-form-swap.html"><small>Diagnosis</small><b>A form swap cut paid leads in half. Finding the cause.</b><span>Read it</span></a>
+      <div class="case-cards" data-stagger>
+        <a class="case-card" href="case-eventmobi.html"><span class="cs-hero thumb"><svg viewBox="0 0 720 250" aria-hidden="true"><rect class="h-b" x="16" y="16" width="300" height="218" rx="12"/><rect class="h-f" x="36" y="34" width="260" height="30" rx="15"/><circle class="h-mg" cx="54" cy="48" r="6"/><path class="h-mg" d="M58.5 52.5l5 5"/><rect class="h-s" x="72" y="45" width="110" height="8" rx="4"/><rect class="h-hot" x="36" y="78" width="260" height="62" rx="8"/><rect class="h-on" x="48" y="90" width="30" height="16" rx="4"/><text class="h-tag" x="63" y="102" text-anchor="middle">Ad</text><rect class="h-k" x="86" y="94" width="150" height="8" rx="4"/><rect class="h-s" x="48" y="116" width="220" height="6" rx="3"/><rect class="h-s" x="48" y="128" width="170" height="6" rx="3"/><rect class="h-s" x="36" y="158" width="140" height="8" rx="4"/><rect class="h-s2" x="36" y="174" width="230" height="6" rx="3"/><rect class="h-s2" x="36" y="186" width="190" height="6" rx="3"/><rect class="h-s" x="36" y="206" width="120" height="8" rx="4"/><rect class="h-s2" x="36" y="220" width="210" height="6" rx="3"/><path class="h-ar" d="M330 125H372M364 117l8 8l-8 8"/><path class="h-area" d="M400 140L450 136L500 128L550 117L600 104L650 92L700 81V214H400Z"/><path class="h-ax" d="M396 214H704"/><path class="h-ln draw" pathLength="1" d="M400 140L450 136L500 128L550 117L600 104L650 92L700 81"/><circle class="h-d0" cx="400" cy="140" r="4"/><circle class="h-d1" cx="700" cy="81" r="5.5"/><text class="h-n0" x="400" y="124">100</text><text class="h-n1" x="704" y="62" text-anchor="end">180</text></svg></span><small>Paid search</small><b>EventMobi: paid search revenue up 80% in a year.</b><span class="go">Read it</span></a>
+        <a class="case-card" href="case-huddle.html"><span class="cs-hero thumb"><svg viewBox="0 0 720 250" aria-hidden="true"><rect class="h-b" x="16" y="28" width="170" height="194" rx="10"/><rect class="h-k" x="32" y="46" width="120" height="10" rx="5"/><rect class="h-k" x="32" y="62" width="84" height="10" rx="5"/><rect class="h-s" x="32" y="84" width="138" height="50" rx="6"/><rect class="h-s2" x="32" y="146" width="138" height="6" rx="3"/><rect class="h-s2" x="32" y="158" width="130" height="6" rx="3"/><rect class="h-s2" x="32" y="170" width="138" height="6" rx="3"/><rect class="h-s2" x="32" y="182" width="96" height="6" rx="3"/><rect class="h-on" x="32" y="198" width="64" height="14" rx="7"/><path class="h-ar" d="M196 125H226M218 117l8 8l-8 8"/><rect class="h-b" x="236" y="28" width="200" height="194" rx="10"/><rect class="h-f" x="252" y="44" width="168" height="26" rx="13"/><circle class="h-mg" cx="268" cy="56" r="6"/><path class="h-mg" d="M272.5 60.5l5 5"/><rect class="h-s" x="284" y="53" width="80" height="8" rx="4"/><rect class="h-hot" x="252" y="82" width="168" height="52" rx="8"/><circle class="h-on" cx="274" cy="108" r="12"/><text class="h-tag big" x="274" y="113" text-anchor="middle">1</text><rect class="h-k" x="294" y="98" width="110" height="8" rx="4"/><rect class="h-s" x="294" y="114" width="90" height="6" rx="3"/><rect class="h-s" x="252" y="150" width="120" height="8" rx="4"/><rect class="h-s2" x="252" y="164" width="160" height="6" rx="3"/><rect class="h-s" x="252" y="186" width="100" height="8" rx="4"/><rect class="h-s2" x="252" y="200" width="150" height="6" rx="3"/><path class="h-ar" d="M446 125H476M468 117l8 8l-8 8"/><path class="h-area" d="M492 205C590 203 660 170 700 34V214H492Z"/><path class="h-ax" d="M488 214H704"/><path class="h-ln draw" pathLength="1" d="M492 205C590 203 660 170 700 34"/><circle class="h-d0" cx="492" cy="205" r="4"/><circle class="h-d1" cx="700" cy="34" r="5.5"/><text class="h-n0" x="492" y="190">1x</text><text class="h-n1" x="684" y="46" text-anchor="end">20x</text></svg></span><small>SEO</small><b>Huddle Men's Health: 20x the organic traffic in a year.</b><span class="go">Read it</span></a>
+        <a class="case-card" href="case-form-swap.html"><span class="cs-hero thumb"><svg viewBox="0 0 720 250" aria-hidden="true"><rect class="h-b" x="40" y="30" width="230" height="150" rx="10"/><rect class="h-s" x="58" y="46" width="70" height="6" rx="3"/><rect class="h-f" x="58" y="60" width="194" height="26" rx="6"/><rect class="h-on" x="58" y="102" width="194" height="34" rx="8"/><rect class="h-onbar" x="125" y="116" width="60" height="6" rx="3"/><path class="h-ar" d="M286 105H330M322 97l8 8l-8 8"/><rect class="h-b" x="346" y="30" width="230" height="150" rx="10"/><rect class="h-f" x="364" y="44" width="194" height="26" rx="6"/><rect class="h-k" x="374" y="54" width="96" height="6" rx="3"/><g class="h-more"><rect class="h-f" x="364" y="78" width="194" height="26" rx="6"/><rect class="h-f" x="364" y="112" width="194" height="26" rx="6"/><rect class="h-f" x="364" y="146" width="194" height="26" rx="6"/></g><g class="h-btn"><rect class="h-ghost" x="364" y="190" width="194" height="34" rx="8"/><rect class="h-ghostbar" x="431" y="204" width="60" height="6" rx="3"/></g><path class="h-cut" d="M346 180H576"/><path class="h-ax" d="M596 214H712"/><rect class="h-s" x="610" y="64" width="36" height="150" rx="3"/><rect class="h-on h-drop" x="662" y="154" width="36" height="60" rx="3"/><text class="h-n0" x="628" y="54" text-anchor="middle">100</text><text class="h-n1 sm" x="680" y="144" text-anchor="middle">40</text></svg></span><small>Diagnosis</small><b>A form swap cut paid leads in half. Finding the cause.</b><span class="go">Read it</span></a>
+      </div>
     </div></section>
 
     <section class="sec" id="daily"><div class="wrap">
       <h2>Day to day</h2>
-      <p class="sub">The hands-on work behind the pages above. A client is named only where Upgrow has published the work.</p>
       <div class="daily" data-stagger>
         <article><svg viewBox="0 0 48 48" aria-hidden="true"><path class="d-l" d="M8 10h14l18 18-12 12L10 22z"/><circle class="d-on" cx="17" cy="17" r="3"/></svg><h3>Conversion tracking</h3><p>Setting it up, testing it, and fixing it when it breaks. Tag Manager, GA4, Google Ads, and offline conversions from the CRM.</p><ul><li>Fixing conversion tracking when it breaks.</li><li>Offline conversions, from the CRM back to the ad platforms.</li><li>Tag Manager and GA4 setup, and testing that each conversion fires.</li></ul></article>
         <article><svg viewBox="0 0 48 48" aria-hidden="true"><rect class="d-l" x="9" y="7" width="30" height="34" rx="3"/><path class="d-l" d="M15 15h18M15 21h12"/><rect class="d-on" x="15" y="28" width="14" height="7" rx="3.5"/></svg><h3>Landing pages</h3><p>Building the pages paid traffic lands on, and testing changes to them.</p><ul><li>Built landing pages for a software client's paid search that raised the conversion rate.</li><li>Built the pages, wrote the copy and ran conversion tests for <a href="case-huddle.html">Huddle Men's Health</a>.</li><li>Found a landing page form whose <a href="case-form-swap.html">submit button nobody could reach</a>.</li></ul></article>
