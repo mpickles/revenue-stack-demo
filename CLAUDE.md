@@ -17,7 +17,7 @@ Everything in this repo is public. The company and all data are made up.
 - If a spec in docs/ is unclear, ask. Do not guess.
 
 ## Layout
-site/ tagging/ pipelines/ warehouse/ agents/ docs/ proof/
+site/ tagging/ pipelines/ warehouse/ agents/ crm/ outbound/ docs/ proof/
 
 ## Commands
 - site: npm run dev, npm test, npm run build

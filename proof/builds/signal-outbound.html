@@ -1,0 +1,1439 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Outbound: a hiring signal starts a checked, approved email sequence | Max Pickard</title>
+  <meta name="description" content="A signal starts an email sequence that is checked before it is sent">
+  <meta property="og:title" content="Outbound: a hiring signal starts a checked, approved email sequence | Max Pickard">
+  <meta property="og:description" content="A signal starts an email sequence that is checked before it is sent">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://maxpickard-revenue-stack.vercel.app/builds/signal-outbound.html">
+  <meta property="og:image" content="https://maxpickard-revenue-stack.vercel.app/img/og.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <!-- Made by proof/generator/build.py from outbound/signals/README.md. Do not edit by hand. -->
+  <script>
+    // Runs before the page paints. Applies the saved light or dark choice, and picks one accent
+    // colour per visit: teal, cobalt, red, orange or plum. Each pair is [light mode, dark mode].
+    (function () {
+      var el = document.documentElement, pairs = [["#0F7B6C", "#3CC8B4"], ["#2348E8", "#7C93FF"], ["#C4261D", "#FF6B5E"], ["#C2500C", "#FF8A3D"], ["#8A2A6B", "#E58FCA"]];
+      var pick = Math.floor(Math.random() * pairs.length);
+      try {
+        var theme = localStorage.getItem("theme"); if (theme) el.dataset.theme = theme;
+        var saved = sessionStorage.getItem("accent");
+        if (saved !== null && pairs[saved]) pick = Number(saved); else sessionStorage.setItem("accent", pick);
+      } catch (e) {}
+      el.style.setProperty("--a-l", pairs[pick][0]); el.style.setProperty("--a-d", pairs[pick][1]);
+    })();
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    /* Technical direction. Named tokens, light and dark. IBM Plex Sans for reading,
+       IBM Plex Mono only where something is data: tables, statuses, diagram notes. */
+    :root{
+      --bg:#FAFAF9;--ink:#111417;--muted:#60666D;--line:rgb(17 20 23/.14);--panel:#F0F1F0;--a-l:#0F7B6C;--a-d:#3CC8B4;--accent:var(--a-l);--on-accent:#FAFAF9;
+      --sans:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;--mono:"IBM Plex Mono",ui-monospace,Menlo,Consolas,monospace;
+      --ease:cubic-bezier(.23,1,.32,1);--t-fast:.2s;--t-med:.35s;--t-slow:.5s;
+      --lift:0 1px 1px rgb(17 20 23/.04),0 3px 6px rgb(17 20 23/.04),0 12px 24px rgb(17 20 23/.06);
+    }
+    @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#101214;--ink:#ECEDEE;--muted:#979DA4;--line:rgb(236 237 238/.13);--panel:#171A1D;--accent:var(--a-d);--on-accent:#101214;--lift:0 1px 1px rgb(0 0 0/.3),0 4px 8px rgb(0 0 0/.25),0 16px 32px rgb(0 0 0/.3);color-scheme:dark}}
+    :root[data-theme="dark"]{--bg:#101214;--ink:#ECEDEE;--muted:#979DA4;--line:rgb(236 237 238/.13);--panel:#171A1D;--accent:var(--a-d);--on-accent:#101214;--lift:0 1px 1px rgb(0 0 0/.3),0 4px 8px rgb(0 0 0/.25),0 16px 32px rgb(0 0 0/.3);color-scheme:dark}
+    *,*::before,*::after{box-sizing:border-box}
+    html{-webkit-text-size-adjust:100%;scroll-padding-top:96px}
+    body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:1.125rem;line-height:1.5;overflow-x:hidden}
+    ::selection{background:var(--accent);color:var(--bg)}
+    button{font:inherit;color:inherit;cursor:pointer;transition:transform .16s var(--ease),background-color .2s var(--ease)}
+    button:active{transform:scale(.96)}
+    a{color:inherit;text-decoration:none;background:linear-gradient(currentColor,currentColor) no-repeat left 100%/100% 1px;transition:background-size .2s var(--ease),color .2s var(--ease)}
+    a:hover{color:var(--accent);background-size:0 1px;background-position:right 100%}
+    a:focus-visible,button:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+    .wrap{width:100%;max-width:78rem;margin:0 auto;padding:0 clamp(20px,5vw,64px)}
+    h1,h2,h3{margin:0;font-weight:500;letter-spacing:-.04em;text-wrap:balance}
+    p,li,dd,figcaption{text-wrap:pretty}
+    h2{font-size:clamp(1.875rem,1.3rem + 2.4vw,3.25rem);line-height:1.02;max-width:22ch;text-wrap:balance}
+    h2 .mask{display:block;overflow:hidden;padding-bottom:.12em;margin-bottom:-.12em}
+    h2 .mask>span{display:block}
+    .sub{margin:18px 0 0;color:var(--muted);max-width:38rem}
+    .sec{padding:clamp(64px,7.5vw,104px) 0 0}
+
+    /* Nav: floats, stops short of the screen edges */
+    .nav{position:fixed;top:16px;left:50%;transform:translateX(-50%);z-index:20;width:min(calc(100% - 32px),42rem);display:flex;gap:8px 20px;align-items:center;justify-content:space-between;padding:8px 8px 8px 20px;background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(12px);border:1px solid var(--line);border-radius:16px;box-shadow:var(--lift);font-size:.9375rem}
+    .nav .nav-name{font-weight:600;background:none}
+    .nav div{display:flex;gap:6px 18px;align-items:center}
+    .nav div a{background:none;color:var(--muted)}
+    .nav div a:hover{color:var(--ink)}
+    .nav button{border:1px solid var(--line);background:none;border-radius:8px;padding:5px 12px 6px;min-height:36px;font-size:.875rem}
+    .nav button:hover{background:var(--panel)}
+    @media (max-width:560px){.nav div a{display:none}}
+
+    /* Hero */
+    .hero{min-height:100svh;display:flex;flex-direction:column;justify-content:flex-end;padding:132px 0 clamp(40px,6vw,80px)}
+    .hero h1{font-size:clamp(3.5rem,1rem + 10.5vw,10rem);line-height:.88;letter-spacing:-.055em;max-width:8ch}
+    .hero h1 i{font-style:normal;color:var(--accent)}
+    .progress{position:fixed;inset:0 0 auto 0;height:3px;z-index:30;background:var(--accent);transform:scaleX(0);transform-origin:left}
+    .hero-grid{display:grid;gap:36px 64px;align-items:end}
+    @media (min-width:980px){.hero-grid{grid-template-columns:1fr 19rem}}
+    .slot-box.portrait{aspect-ratio:4/5;width:100%;max-width:19rem;border-radius:10px}
+    @media (max-width:979px){.slot-box.portrait{max-width:10rem}}
+    .spec{margin:clamp(28px,4vw,48px) 0 0;border-top:2px solid var(--accent);font-size:.9375rem;font-variant-numeric:tabular-nums}
+    .spec div{display:grid;grid-template-columns:6.5rem 1fr;gap:12px;padding:11px 0;border-bottom:1px solid var(--line)}
+    .spec dt{color:var(--muted)}.spec dd{margin:0}
+    @media (min-width:980px){.spec{display:grid;grid-template-columns:1fr 1.5fr .6fr 1fr 1.5fr;gap:0 32px}.spec div{display:block;padding:14px 0 0;border-bottom:0}.spec dd{margin-top:4px}}
+    .under{display:flex;flex-wrap:wrap;gap:14px 40px;justify-content:space-between;align-items:baseline;margin-top:clamp(28px,4vw,48px);padding-top:22px;border-top:1px solid var(--line)}
+    .under p{margin:0;font-size:clamp(1.0625rem,1rem + .5vw,1.375rem);letter-spacing:-.01em}
+    .under nav{display:flex;flex-wrap:wrap;gap:6px 26px;font-size:1rem}
+    .copy{border:0;background:linear-gradient(currentColor,currentColor) no-repeat left 100%/100% 1px;padding:0}
+    .copy:hover{color:var(--accent)}
+
+    /* A real screenshot in a plain browser frame */
+    .frame{margin:72px 0 0;border:1px solid var(--line);border-radius:10px;overflow:hidden;background:var(--panel);box-shadow:var(--lift);transform-origin:50% 0}
+    .frame-bar{display:flex;align-items:center;gap:7px;padding:10px 14px;border-bottom:1px solid var(--line);font-family:var(--mono);font-size:.75rem;color:var(--muted)}
+    .frame-bar i{width:9px;height:9px;border-radius:50%;border:1px solid var(--muted)}
+    .frame-bar i:first-child{background:var(--accent);border-color:var(--accent)}
+    .frame-bar span{margin-left:10px}
+    .frame img{display:block;width:100%;height:auto}
+    .frame figcaption{padding:12px 14px;border-top:1px solid var(--line);font-size:.9375rem;color:var(--muted)}
+    .writeup .frame{max-width:52rem}
+
+    /* Proof lines */
+    .proof{margin:40px 0 0;padding:0;list-style:none;max-width:52rem}
+    .proof li{padding:16px 0;border-top:1px solid var(--line);font-size:clamp(1.125rem,1rem + .7vw,1.5rem);letter-spacing:-.015em}
+    .proof li:last-child{border-bottom:1px solid var(--line)}
+
+    /* Featured systems: text left, facts right */
+    .sys{display:grid;gap:16px 72px;padding:44px 0;border-top:1px solid var(--line)}
+    .sys:first-of-type{margin-top:56px;border-top:2px solid var(--accent)}
+    .sys.second{margin-top:128px;border-top:2px solid var(--accent)}
+    .sys p a{margin-right:18px}
+    .parts-h{margin:88px 0 0;font-size:1rem;font-weight:500;letter-spacing:0;color:var(--muted)}
+    @media (min-width:900px){.sys{grid-template-columns:minmax(0,7fr) minmax(0,4fr)}}
+    .sys h3{margin:0 0 16px;font-size:clamp(1.5rem,1.2rem + 1.4vw,2.375rem);line-height:1.05}
+    .sys h3 a{background:none}
+    .sys p{margin:0 0 16px;max-width:36rem}
+    .sys p.q{color:var(--muted)}
+    .facts{margin:0;font-size:.9375rem;font-variant-numeric:tabular-nums}
+    .facts div{display:grid;grid-template-columns:5.5rem 1fr;gap:12px;padding:11px 0;border-bottom:1px solid var(--line)}
+    .facts dt{color:var(--muted)}.facts dd{margin:0}
+    .status{display:inline-flex;align-items:center;gap:8px;font-family:var(--mono);font-size:.8125rem}
+    .status::before{content:"";width:8px;height:8px;border-radius:50%;border:1.5px solid var(--muted);transform:translateY(-.5px)}
+    .status.is-active::before{background:var(--accent);border-color:var(--accent)}
+    .status.is-active,.rows .status.is-active{color:var(--accent)}
+
+    /* The scene: one system, drawn as you scroll */
+    .pin{padding:24px 0 40px}
+    .writeup .scene{margin-top:24px}
+    .writeup .scene h2{font-size:clamp(1.5rem,1.3rem + .9vw,2rem)}
+    .scene svg{display:block;width:100%;height:auto;overflow:visible;margin:40px 0 0}
+    .scene .box{fill:var(--bg);stroke:var(--ink);stroke-width:1.5}
+    .scene .box.end{fill:var(--panel)}
+    .scene .wire{fill:none;stroke:var(--accent);stroke-width:2}
+    .scene text{font-family:var(--sans);font-size:19px;fill:var(--ink);text-anchor:middle}
+    .scene text.s{font-family:var(--mono);font-size:12.5px;fill:var(--muted)}
+    .says{color:var(--accent);margin:28px 0 0;font-weight:500;font-size:clamp(1.25rem,1rem + 1.3vw,2.125rem);line-height:1.15;letter-spacing:-.025em;min-height:2.4em;max-width:44rem}
+
+    /* Tables: the grading table is the look of the site */
+    .tw{overflow-x:auto;margin-top:48px}
+    [data-fade~="r"]{-webkit-mask-image:linear-gradient(to right,#000 calc(100% - 40px),transparent);mask-image:linear-gradient(to right,#000 calc(100% - 40px),transparent)}
+    [data-fade~="l"]{-webkit-mask-image:linear-gradient(to left,#000 calc(100% - 40px),transparent);mask-image:linear-gradient(to left,#000 calc(100% - 40px),transparent)}
+    [data-fade="l r"]{-webkit-mask-image:linear-gradient(to right,transparent,#000 40px,#000 calc(100% - 40px),transparent);mask-image:linear-gradient(to right,transparent,#000 40px,#000 calc(100% - 40px),transparent)}
+    table{width:100%;border-collapse:collapse;font-family:var(--mono);font-size:.8125rem;font-variant-numeric:tabular-nums;border:1px solid var(--line);min-width:32rem}
+    th,td{text-align:left;padding:13px 16px;border-bottom:1px solid var(--line);border-right:1px solid var(--line);vertical-align:top}
+    th{font-weight:500;color:var(--muted);background:var(--panel)}
+
+    .xp{list-style:none;margin:56px 0 0;padding:0;border-top:2px solid var(--accent)}
+    .xp>li{display:grid;gap:8px 72px;padding:36px 0;border-bottom:1px solid var(--line)}
+    @media (min-width:860px){.xp>li{grid-template-columns:12rem minmax(0,1fr)}}
+    .xp .when{font-family:var(--mono);font-size:.8125rem;font-variant-numeric:tabular-nums;color:var(--muted);padding-top:.35em}
+    .xp b{display:block;font-weight:500;font-size:clamp(1.25rem,1.1rem + .8vw,1.75rem);letter-spacing:-.03em;line-height:1.1}
+    .xp .where{display:block;margin-top:6px;color:var(--muted)}
+    .xp p{margin:16px 0 0;max-width:40rem}
+    .xp .did{list-style:none;margin:22px 0 0;padding:0;display:grid;gap:18px clamp(24px,3vw,40px)}
+    @media (min-width:640px){.xp .did{grid-template-columns:repeat(2,minmax(0,1fr))}}
+    .xp .did li{display:grid;grid-template-columns:36px minmax(0,1fr);gap:0 14px;align-items:start}
+    .xp .did svg{width:36px;height:36px;padding:7px;border:1px solid var(--line);border-radius:10px;background:var(--panel);fill:none;stroke:var(--accent);stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+    .xp .did strong{display:block;font-weight:500;line-height:1.3}
+    .xp .did span{display:block;margin-top:3px;color:var(--muted);font-size:.9375rem;line-height:1.5}
+    .xp .did + .tags{margin-top:22px}
+    .tags{list-style:none;margin:18px 0 0;padding:0;display:flex;flex-wrap:wrap;gap:6px}
+    .tags li{font-family:var(--mono);font-size:.75rem;border:1px solid var(--line);border-radius:4px;padding:3px 8px;color:var(--muted)}
+
+    .slot{font-family:var(--mono);font-size:.75rem;color:var(--muted);border:1px dashed var(--muted);border-radius:4px;padding:2px 8px}
+    .slot-box{display:grid;place-items:center;border:1px dashed var(--muted);border-radius:6px;background:repeating-linear-gradient(135deg,transparent 0 14px,color-mix(in srgb,var(--accent) 7%,transparent) 14px 15px)}
+    .slot-box span{font-family:var(--mono);font-size:.8125rem;color:var(--muted);background:var(--bg);padding:4px 10px;border-radius:4px}
+    .slot-box.wide{aspect-ratio:16/9}
+    .about{margin-top:56px;max-width:44rem}
+    .about p{margin:0 0 18px}
+    .about p:first-child{font-size:clamp(1.25rem,1.05rem + .9vw,1.75rem);line-height:1.3;letter-spacing:-.02em}
+
+    .contact{margin-top:clamp(88px,12vw,168px);padding:clamp(72px,10vw,140px) 0 72px;background:var(--accent);color:var(--on-accent)}
+    .contact ::selection{background:var(--on-accent);color:var(--accent)}
+    .contact a:hover,.contact .copy:hover{color:var(--on-accent);opacity:.75}
+    .contact a:focus-visible,.contact button:focus-visible{outline-color:var(--on-accent)}
+    .contact .mail{display:inline-block;margin-top:22px;font-weight:500;font-size:clamp(1.5rem,.6rem + 4.6vw,4.75rem);letter-spacing:-.045em;line-height:1.05;overflow-wrap:anywhere;background:linear-gradient(currentColor,currentColor) no-repeat left 100%/0 3px;padding-bottom:6px;transition:background-size .45s var(--ease)}
+    .contact .mail:hover{opacity:1;background-size:100% 3px}
+    .contact.slim{margin-top:0;padding:clamp(44px,6vw,72px) 0 40px}
+    .contact.slim .mail{margin-top:12px;font-size:clamp(1.375rem,.9rem + 2.2vw,2.5rem);letter-spacing:-.03em}
+    .contact.slim .foot{margin-top:32px}
+    .contact small{display:block;margin-top:14px;font-size:.9375rem;min-height:1.5em}
+    .foot{display:flex;flex-wrap:wrap;gap:8px 32px;margin-top:56px;padding-top:20px;border-top:1px solid color-mix(in srgb,var(--on-accent) 35%,transparent);font-size:.9375rem}
+
+    /* Write-up pages */
+    .writeup{padding:132px 0 96px}
+    .writeup-head{max-width:52rem}
+    .writeup-head h1{font-size:clamp(2.25rem,1.3rem + 3.6vw,4.25rem);line-height:1}
+    .writeup-head .status{margin-top:22px}
+    .headline{margin:40px 0 0;padding:22px 0;border-top:1px solid var(--ink);border-bottom:1px solid var(--line);max-width:52rem}
+    .headline-label{margin:0;font-family:var(--mono);font-size:.8125rem;color:var(--muted)}
+    .headline-value{margin:8px 0 0;font-size:clamp(1.25rem,1.1rem + .8vw,1.75rem);line-height:1.3;letter-spacing:-.02em}
+    .recording{margin:32px 0 0;max-width:52rem}
+    .recording video{display:block;width:100%;border:1px solid var(--line);border-radius:6px}
+    .figure{margin:48px 0 0;padding:28px 20px;background:var(--panel);border:1px solid var(--line);border-radius:6px;overflow-x:auto}
+    .dia{display:block;width:100%;min-width:600px;max-width:780px;height:auto;margin:0 auto;font-family:var(--sans)}
+    .dia-box{fill:var(--bg);stroke:var(--line);stroke-width:1.2}
+    .dia-box.b{stroke:var(--ink)}
+    .dia-box.m{stroke-dasharray:4 3;stroke:var(--muted)}
+    .dia-text{fill:var(--ink);font-size:13.5px}
+    .dia-sub,.dia-label{fill:var(--muted);font-family:var(--mono);font-size:10.5px}
+    .dia-line{fill:none;stroke:var(--accent);stroke-width:1.5}
+    .dia-dash{stroke-dasharray:4 3}
+    .dia-head{fill:var(--accent)}
+    .dia-route{fill:none;stroke:none}.dia-pulse{display:none}
+    .prose{max-width:44rem;margin-top:56px}
+    .prose h2{margin:56px 0 0;font-size:clamp(1.5rem,1.3rem + .9vw,2rem);line-height:1.1;max-width:none}
+    .prose h3{margin:36px 0 0;font-size:1.25rem;letter-spacing:-.02em}
+    .prose p,.prose ul,.prose ol{margin:16px 0 0}
+    .prose ul,.prose ol{padding-left:1.25rem}
+    .prose li+li{margin-top:6px}
+    .prose code{font-family:var(--mono);font-size:.85em;background:var(--panel);border:1px solid var(--line);border-radius:4px;padding:1px 5px}
+    .prose pre{margin:16px 0 0;padding:16px 18px;background:var(--panel);border:1px solid var(--line);border-radius:6px;overflow-x:auto;line-height:1.5}
+    .prose pre code{background:none;border:0;padding:0;font-size:.8125rem}
+    .prose .tw{margin-top:20px}
+    .repo-links{margin:16px 0 0;padding:0;list-style:none;display:flex;flex-wrap:wrap;gap:8px 28px}
+    .pager{margin:96px 0 0;padding-top:24px;border-top:1px solid var(--line);display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px 32px}
+    .pager a{background:none;font-size:1.25rem;font-weight:500;letter-spacing:-.02em}
+    .pager span{display:block;font-family:var(--mono);font-size:.8125rem;font-weight:400;letter-spacing:0;color:var(--muted)}
+    .pager .next{text-align:right;margin-left:auto}
+
+    /* Cursor: the normal pointer stays. A small coral dot trails it and grows into a soft ring over links.
+       Fine pointers only, added by the script. Coral is fixed, whatever the accent colour is. */
+    :root{--coral:#FF6F61}
+    .grid{position:fixed;inset:0;width:100%;height:100%;z-index:-1;pointer-events:none}
+    .cursor{position:fixed;left:0;top:0;width:12px;height:12px;margin:-6px 0 0 -6px;border-radius:50%;background:var(--coral);pointer-events:none;z-index:40;opacity:0;transition:background-color .2s var(--ease)}
+    .cursor.on-link{background:color-mix(in srgb,var(--coral) 24%,transparent);box-shadow:inset 0 0 0 .5px var(--coral)}
+    @media (prefers-reduced-motion:reduce){*{transition:none!important}.cursor{display:none}}
+    /* Covers, notes, case study summary, colophon */
+    .art{display:block;width:100%;aspect-ratio:16/10;background:var(--panel)}
+    .art .c-line{fill:none;stroke:var(--muted);stroke-width:1.5;opacity:.55}
+    .art .c-rule{stroke:var(--ink);stroke-width:1.5;stroke-dasharray:4 5;opacity:.5}
+    .art .c-dot,.art .c-bar,.art .c-cell{fill:var(--muted);opacity:.35}
+    .art .c-hollow{fill:none;stroke:var(--muted);stroke-width:1.5;opacity:.7}
+    .art .c-box{fill:var(--bg);stroke:var(--muted);stroke-width:1.5;opacity:.8}
+    .art .c-gate{fill:var(--ink)}
+    .art .c-on{fill:var(--accent)}
+    .art .c-on-line{fill:none;stroke:var(--accent);stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round}
+    .art .c-on-box{fill:var(--accent)}
+    .art .c-node{fill:var(--bg);stroke:var(--muted);stroke-width:1.5}
+    .art .c-tick{fill:none;stroke:var(--on-accent);stroke-width:3;stroke-linecap:round;stroke-linejoin:round}
+    .covers{display:grid;gap:24px;margin-top:28px}
+    @media (min-width:700px){.covers{grid-template-columns:repeat(2,minmax(0,1fr))}}
+    @media (min-width:1080px){.covers{grid-template-columns:repeat(3,minmax(0,1fr))}}
+    .cover-card{display:block;text-decoration:none;color:inherit;border:1px solid var(--line);border-radius:10px;overflow:hidden;background:var(--bg);transition:transform .35s var(--ease),box-shadow .35s var(--ease)}
+    a.cover-card:hover{transform:translateY(-4px);box-shadow:var(--lift)}
+    a.cover-card:hover b{text-decoration:underline;text-decoration-color:var(--accent);text-underline-offset:.2em}
+    .cover-card .art{border-bottom:1px solid var(--line)}
+    .cover-card .body{display:block;padding:20px 22px 22px}
+    .cover-card b{display:block;font-weight:500;font-size:1.125rem;line-height:1.3;letter-spacing:-.02em;text-wrap:balance}
+    .cover-card .meta{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px 16px;margin-top:16px;font-family:var(--mono);font-size:.75rem;color:var(--muted)}
+    .cover-card b i{font-style:normal;font-weight:400;color:var(--muted);margin-right:10px}
+    .cover-card .line{display:block;margin-top:6px;color:var(--muted);font-size:.9375rem;line-height:1.4}
+    .cover-card.off .art{opacity:.55}
+    .cover-card.off b{color:var(--muted)}
+    .sys-cover{margin:56px 0 0;border:1px solid var(--line);border-radius:10px;overflow:hidden}
+    .sys-cover .art{aspect-ratio:16/6}
+    .notes-list{list-style:none;margin:56px 0 0;padding:0;border-top:2px solid var(--accent)}
+    .notes-list li{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;gap:8px 32px;padding:24px 0;border-bottom:1px solid var(--line)}
+    .notes-list b{font-weight:500;font-size:clamp(1.125rem,1rem + .6vw,1.5rem);letter-spacing:-.025em}
+    .cs-strip{display:grid;gap:0 40px;margin:48px 0 0;border-top:2px solid var(--accent);font-size:.9375rem}
+    @media (min-width:860px){.cs-strip{grid-template-columns:1.6fr 1.4fr .8fr 1fr}}
+    .cs-strip div{padding:14px 0;border-bottom:1px solid var(--line)}
+    @media (min-width:860px){.cs-strip div{border-bottom:0}}
+    .cs-strip dt{color:var(--muted)}.cs-strip dd{margin:4px 0 0}
+    .cs-cols{display:grid;gap:40px 56px;margin:72px 0 0}
+    @media (min-width:860px){.cs-cols{grid-template-columns:repeat(3,minmax(0,1fr))}}
+    .cs-cols h2,.cs-h{font-size:1.25rem;letter-spacing:-.02em;font-weight:500;margin:0 0 16px;padding-bottom:12px;border-bottom:1px solid var(--line)}
+    .cs-cols ul{margin:0;padding:0;list-style:none}
+    .cs-cols li{padding:10px 0 10px 18px;position:relative;line-height:1.45}
+    .cs-cols li::before{content:"";position:absolute;left:0;top:1.05em;width:6px;height:6px;border-radius:50%;background:var(--accent)}
+    .cs-block{margin-top:88px}
+    details.full{margin-top:88px;border:1px solid var(--line);border-radius:10px;background:var(--bg)}
+    details.full summary{cursor:pointer;padding:18px 22px;font-weight:500;list-style:none;display:flex;justify-content:space-between}
+    details.full summary::after{content:"Open";font-family:var(--mono);font-size:.75rem;color:var(--muted)}
+    details.full[open] summary::after{content:"Close"}
+    details.full .prose{padding:0 22px 22px;margin-top:0}
+    .swatches{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px;margin-top:24px}
+    .swatches button{border:1px solid var(--line);border-radius:10px;padding:0;overflow:hidden;background:var(--bg);text-align:left}
+    .swatches i{display:block;height:72px}
+    .swatches span{display:block;padding:10px 12px;font-family:var(--mono);font-size:.75rem;color:var(--muted)}
+    .swatches button[aria-pressed="true"]{outline:2px solid var(--ink);outline-offset:2px}
+    .specimen{display:grid;gap:24px 56px;margin-top:24px;align-items:end}
+    @media (min-width:860px){.specimen{grid-template-columns:1fr 1fr}}
+    .specimen .big{font-size:clamp(4rem,12vw,8rem);line-height:.9;letter-spacing:-.05em;font-weight:500}
+    .specimen .mono{font-family:var(--mono);font-size:clamp(1.5rem,4vw,2.5rem);letter-spacing:-.02em}
+    .specimen small{display:block;margin-top:12px;color:var(--muted);font-size:.875rem}
+    .cs-cols .repo-links li::before{display:none}
+    .cs-cols .repo-links li{padding-left:0}
+    /* Drawings move once when you point at them, and once when they first scroll into view. Never with "reduce motion". */
+    .art .m-pop,.art .m-grow,.art .m-growc,.art .m-slide,.art .m-tint,.art .m-lead,.art .m-fall,.art .m-pass,.art .m-score{transform-box:fill-box;transform-origin:center}
+    .art .m-fall{opacity:0}
+    .art .m-score{transform-origin:left center}
+    .art .m-grow{transform-origin:left center}
+    .art .m-draw{stroke-dasharray:1}
+    @media (prefers-reduced-motion:no-preference){
+      :is(.cover-card,.sys-cover,.proj-cover,.stop):hover .m-draw,.art.play .m-draw{animation:m-draw 1.4s var(--ease) both;animation-delay:calc(var(--i,0)*130ms)}
+      :is(.cover-card,.sys-cover,.proj-cover,.stop):hover .m-pop,.art.play .m-pop{animation:m-pop .9s var(--ease) both;animation-delay:calc(var(--i,0)*130ms)}
+      :is(.cover-card,.sys-cover,.proj-cover,.stop):hover :is(.m-grow,.m-growc),.art.play :is(.m-grow,.m-growc){animation:m-grow 1.2s var(--ease) both;animation-delay:calc(var(--i,0)*130ms)}
+      :is(.cover-card,.sys-cover,.proj-cover,.stop):hover .m-slide,.art.play .m-slide{animation:m-slide 1.3s var(--ease) both;animation-delay:calc(var(--i,0)*200ms)}
+      /* A bar that grows in, then takes the colour for a moment as the lead passes it (--t says when). */
+      :is(.cover-card,.sys-cover,.proj-cover,.stop):hover .m-tint,.art.play .m-tint{animation:m-grow 1.2s var(--ease) both,m-tint .8s ease-in-out both;animation-delay:calc(var(--i,0)*130ms),calc(var(--t,0)*130ms)}
+      /* The lead: starts as one grey dot in the crowd, steps forward, then takes the colour. */
+      :is(.cover-card,.sys-cover,.proj-cover,.stop):hover .m-lead,.art.play .m-lead{animation:m-lead 1.1s var(--ease) both;animation-delay:calc(var(--i,0)*130ms)}
+      /* A box that is already there, empty, and fills with the colour when the lead reaches it. */
+      :is(.cover-card,.sys-cover,.proj-cover,.stop):hover .m-fill,.art.play .m-fill{animation:m-fill .5s var(--ease) both;animation-delay:calc(var(--i,0)*130ms)}
+      /* A dot that starts grey, travels --d to its place, and takes the colour on the way. */
+      :is(.cover-card,.sys-cover,.proj-cover,.stop):hover .m-pass,.art.play .m-pass{animation:m-pass 1.3s var(--ease) both;animation-delay:calc(var(--i,0)*130ms)}
+      /* A cell the check passes over: it takes the colour for a moment. A flagged cell keeps it. */
+      :is(.cover-card,.sys-cover,.proj-cover,.stop):hover .m-blink,.art.play .m-blink{animation:m-tint .6s ease-in-out both;animation-delay:calc(var(--i,0)*130ms)}
+      :is(.cover-card,.sys-cover,.proj-cover,.stop):hover .m-mark,.art.play .m-mark{animation:m-mark .4s var(--ease) both;animation-delay:calc(var(--i,0)*130ms)}
+      /* A score bar that grows grey and takes the colour once it is past the line. */
+      :is(.cover-card,.sys-cover,.proj-cover,.stop):hover .m-score,.art.play .m-score{animation:m-grow 1.2s var(--ease) both,m-mark .4s var(--ease) both;animation-delay:calc(var(--i,0)*130ms),calc(var(--i,0)*130ms + 700ms)}
+      /* The lead falling through the funnel: --d is how far, in drawing units. */
+      :is(.cover-card,.sys-cover,.proj-cover,.stop):hover .m-fall,.art.play .m-fall{animation:m-fall 1.6s ease-in-out both;animation-delay:calc(var(--i,0)*130ms)}
+    }
+    @keyframes m-draw{from{stroke-dashoffset:1}to{stroke-dashoffset:0}}
+    @keyframes m-pop{0%{transform:scale(.3);opacity:0}60%{transform:scale(1.18);opacity:1}100%{transform:scale(1)}}
+    @keyframes m-grow{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+    @keyframes m-slide{from{transform:translateX(-70px);opacity:0}to{transform:none}}
+    @keyframes m-fill{from{fill:var(--bg);stroke:var(--muted);stroke-width:1.5;opacity:.8}to{fill:var(--accent);stroke:var(--accent);stroke-width:1.5;opacity:1}}
+    @keyframes m-pass{0%{transform:translateX(calc(var(--d,80)*-1px));fill:var(--muted);opacity:.35}50%{fill:var(--muted);opacity:.35}100%{transform:none;fill:var(--accent);opacity:1}}
+    @keyframes m-mark{from{fill:var(--muted);opacity:.35}to{fill:var(--accent);opacity:1}}
+    @keyframes m-tint{0%,100%{fill:var(--muted);opacity:.35}45%{fill:var(--accent);opacity:1}}
+    @keyframes m-lead{0%{transform:translateX(-40px) scale(.6);fill:var(--muted);opacity:.35}55%{transform:none;fill:var(--muted);opacity:.35}100%{transform:none;fill:var(--accent);opacity:1}}
+    @keyframes m-fall{0%{transform:translateY(calc(var(--d,100)*-1px));opacity:0}12%,82%{opacity:1}100%{transform:none;opacity:0}}
+
+    /* The project page: ownership line, facts, the lead's path, the choices. */
+    .own{margin:22px 0 0;font-size:clamp(1.125rem,1rem + .6vw,1.5rem);line-height:1.35;letter-spacing:-.02em;max-width:44rem;text-wrap:pretty}
+    .plat{display:grid;gap:0 40px;margin:40px 0 0;border-top:1px solid var(--line)}
+    @media (min-width:860px){.plat{grid-template-columns:repeat(3,minmax(0,1fr))}}
+    .plat div{padding:18px 0;border-bottom:1px solid var(--line)}
+    .plat dt{font-weight:500;font-size:1.0625rem;letter-spacing:-.02em}
+    .plat dd{margin:4px 0 0;color:var(--muted);font-size:.9375rem;line-height:1.45}
+    .ctl{margin-top:32px}
+    .ctl button{border:1px solid var(--ink);background:var(--ink);color:var(--bg);border-radius:8px;padding:9px 16px 10px;font-size:.9375rem}
+    .map{position:relative;display:grid;grid-template-columns:repeat(7,minmax(0,1fr) 20px) minmax(0,1fr);margin:32px 0 0}
+    .map .stop-cap{padding:10px 10px 12px}.map .stop-cap b{font-size:.875rem}
+    .stop{position:relative;border:1px solid var(--line);border-radius:10px;background:var(--bg);padding:0;text-align:left;display:flex;flex-direction:column;transition:border-color .3s,box-shadow .3s,transform .3s var(--ease)}
+    .stop:hover{transform:translateY(-2px)}
+    .stop:active{transform:scale(.98)}
+    .stop .art{border-bottom:1px solid var(--line);border-radius:9px 9px 0 0;transition:opacity .3s}
+    .stop-cap{padding:12px 14px 14px}
+    .stop-cap b{font-weight:500;font-size:1rem;letter-spacing:-.015em;line-height:1.2}
+    .stop-cap b i{font-style:normal;color:var(--muted);margin-right:6px;font-variant-numeric:tabular-nums}
+    .stop:not(.done) .art{opacity:.5}
+    .stop.cur{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent),var(--lift)}
+    .link{position:relative}
+    .link .ln{position:absolute;left:5px;right:5px;top:var(--mid,50px);height:2px;margin-top:-1px;background:var(--line);transition:background-color .5s}
+    .link .ln::after{content:"";position:absolute;right:0;top:50%;width:7px;height:7px;border-top:2px solid var(--muted);border-right:2px solid var(--muted);transform:translateY(-50%) rotate(45deg);opacity:.6;transition:border-color .5s,opacity .5s}
+    .link.on .ln{background:var(--accent)}.link.on .ln::after{border-color:var(--accent);opacity:1}
+    .lead{position:absolute;left:0;top:0;width:16px;height:16px;margin:-8px 0 0 -8px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 4px color-mix(in srgb,var(--accent) 24%,transparent),0 0 0 2px var(--bg);z-index:3;pointer-events:none;transition:transform .5s var(--ease)}
+    .lead.still{transition:none}
+    .one{margin:28px 0 0;border:1px solid var(--line);border-radius:10px;background:var(--bg);padding:26px 28px 28px;display:grid;gap:10px 56px;align-items:start}
+    @media (min-width:860px){.one{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}}
+    .one h3{margin:8px 0 0;font-size:clamp(1.375rem,1.1rem + 1vw,1.875rem);letter-spacing:-.03em;line-height:1.12;font-weight:500;text-wrap:balance}
+    .one p{margin:12px 0 0;color:var(--muted);max-width:34rem}
+    .one .go{display:inline-block;margin-top:18px}
+    .one dl{margin:0}
+    .one dl div{display:grid;grid-template-columns:5.5rem 1fr;gap:12px;padding:12px 0;border-bottom:1px solid var(--line)}
+    .one dl div:first-child{border-top:1px solid var(--line)}
+    .one dt{color:var(--muted);font-size:.875rem;padding-top:.1em}.one dd{margin:0}
+    .one .swap{animation:swap .5s var(--ease) both}
+    @keyframes swap{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+    @media (max-width:860px){.map{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.link,.lead{display:none}}
+    .why{display:grid;gap:20px;margin-top:32px}
+    @media (min-width:860px){.why{grid-template-columns:repeat(3,minmax(0,1fr))}}
+    .why article{border:1px solid var(--line);border-radius:10px;overflow:hidden;background:var(--bg);display:flex;flex-direction:column}
+    .why .c{padding:18px 20px;background:var(--panel);border-bottom:1px solid var(--line)}
+    .why .d{padding:18px 20px 22px}
+    .why small{display:block;font-family:var(--mono);font-size:.6875rem;color:var(--muted);margin-bottom:6px}
+    .why .c b{font-weight:500;line-height:1.35;display:block}
+    .why .d b{font-weight:500;font-size:1.125rem;letter-spacing:-.02em;line-height:1.3;display:block}
+    .why .d p{margin:10px 0 0;font-size:.9375rem;line-height:1.5;color:var(--muted)}
+    @supports (grid-template-rows:subgrid){@media (min-width:861px){.why{grid-template-rows:auto auto;row-gap:0}.why article{display:grid;grid-row:span 2;grid-template-rows:subgrid}}}
+    .cs-slot{margin:32px 0 0}
+    .shows{margin:32px 0 0;border-top:2px solid var(--accent)}
+    .shows div{display:grid;gap:6px 40px;padding:18px 0;border-bottom:1px solid var(--line)}
+    @media (min-width:860px){.shows div{grid-template-columns:16rem 1fr}}
+    .shows dt{font-weight:500;font-size:1.0625rem;letter-spacing:-.02em}.shows dd{margin:0;color:var(--muted);line-height:1.5}
+
+    /* On a part's write-up: all the parts in order, this one marked. */
+    .sits{margin:32px 0 56px;border:1px solid var(--line);border-radius:10px;background:var(--bg);padding:18px 20px 20px}
+    .sits-h{display:flex;justify-content:space-between;align-items:baseline;gap:16px;flex-wrap:wrap;font-size:.875rem;color:var(--muted)}
+    .sits-h b{color:var(--ink);font-weight:500}
+    .mini{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:10px;margin-top:14px}
+    .mini a{display:block;border:1px solid var(--line);border-radius:8px;overflow:hidden;background:none;color:var(--muted);font-size:.75rem;line-height:1.25;transition:border-color .3s,transform .3s var(--ease)}
+    .mini a:hover{transform:translateY(-2px);border-color:var(--muted)}
+    .mini a .art{aspect-ratio:16/9;border-bottom:1px solid var(--line)}
+    .mini a span{display:block;padding:7px 9px 8px}
+    .mini a[aria-current]{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent);color:var(--ink)}
+    .mini a:not([aria-current]) .art{opacity:.6}
+    @media (max-width:700px){.mini{grid-template-columns:repeat(3,minmax(0,1fr))}}
+
+    /* The project on the home page: its drawing on one side, the words and three buttons on the other. */
+    .sys.lead-in{align-items:center}
+    @media (min-width:900px){.sys.lead-in{grid-template-columns:minmax(0,1.05fr) minmax(0,1fr)}}
+    .proj-cover{display:block;background:none;border:1px solid var(--line);border-radius:10px;overflow:hidden;transition:transform .35s var(--ease),box-shadow .35s var(--ease)}
+    .proj-cover:hover{transform:translateY(-3px);box-shadow:var(--lift)}
+    .sys p.acts{display:flex;flex-wrap:wrap;gap:8px;margin:24px 0 28px}
+    .sys p.acts a{margin:0;background:none;border:1px solid var(--line);border-radius:8px;padding:9px 16px 10px;font-size:.9375rem;transition:transform .16s var(--ease),border-color .2s var(--ease)}
+    .sys p.acts a:hover{border-color:var(--muted)}
+    .sys p.acts a:active{transform:scale(.96)}
+    .sys p.acts a.main{background:var(--ink);border-color:var(--ink);color:var(--bg)}
+    .sys.lead-in+.parts-h{margin-top:56px}
+
+    /* A drawing grows from its card into the top of the page it opens. Browsers without this just change page. */
+    .page-cover{border:1px solid var(--line);border-radius:10px;overflow:hidden;margin-bottom:56px;background:var(--panel)}
+    .page-cover .art{aspect-ratio:16/5}
+    @media (prefers-reduced-motion:no-preference){@view-transition{navigation:auto}}
+    ::view-transition-group(*){animation-duration:.5s;animation-timing-function:cubic-bezier(.23,1,.32,1)}
+    ::view-transition-old(root),::view-transition-new(root){animation-duration:.3s}
+
+    /* A platform tile: number, name, one line. Same as its box on the map. */
+    .wf-card .body b i{font-style:normal;color:var(--muted);margin-right:8px;font-variant-numeric:tabular-nums}
+    .wf-card .line{display:block;margin-top:6px;color:var(--muted);font-size:.9375rem;line-height:1.4}
+
+    /* Three lines at the top of a page, for the reader who has one minute: the problem, what I built, the result. */
+    .tldr{display:grid;gap:0 40px;margin:36px 0 0;border-top:2px solid var(--accent)}
+    @media (min-width:860px){.tldr{grid-template-columns:repeat(3,minmax(0,1fr))}}
+    .tldr div{padding:18px 0 20px;border-bottom:1px solid var(--line)}
+    .tldr dt{font-family:var(--mono);font-size:.75rem;color:var(--muted)}
+    .tldr dd{margin:8px 0 0;font-size:1.0625rem;line-height:1.4;letter-spacing:-.01em;text-wrap:pretty}
+
+    .tldr + .own{margin-top:36px}
+
+    /* Breadcrumb: where this page sits, once, at the very top. */
+    .crumb{display:flex;flex-wrap:wrap;gap:6px 10px;align-items:baseline;margin:0 0 20px;font-size:.875rem;color:var(--muted)}
+    .crumb a{color:var(--muted);background:none;text-decoration:underline;text-decoration-color:var(--line);text-underline-offset:3px}
+    .crumb a:hover{color:var(--ink)}
+    .crumb [aria-current]{color:var(--ink)}
+    .pager .all{text-align:center}
+    @media (max-width:700px){.pager .all{order:3;width:100%;text-align:left}}
+
+    @media (min-width:701px){.pager:has(.all){display:grid;grid-template-columns:1fr auto 1fr;align-items:start}.pager:has(.all) .prev{grid-column:1}.pager .all{grid-column:2}.pager:has(.all) .next{grid-column:3}}
+    img.portrait{aspect-ratio:4/5;width:100%;max-width:19rem;height:auto;object-fit:cover;border-radius:10px;border:1px solid var(--line)}
+    @media (max-width:979px){img.portrait{max-width:10rem}}
+    /* One way into the work from the first screen. */
+    .under p .see{display:inline-block;margin-left:14px;vertical-align:2px;background:var(--ink);color:var(--bg);border:1px solid var(--ink);border-radius:8px;padding:8px 15px 9px;font-size:.9375rem;letter-spacing:0;text-decoration:none;transition:transform .16s var(--ease)}
+    .under p .see:active{transform:scale(.96)}
+    @media (max-width:520px){.under p .see{display:block;width:max-content;margin:14px 0 0}}
+
+    /* First screen, second version: what I do and three results, before the name. */
+    .hero.v2{min-height:0;justify-content:flex-start;padding:clamp(120px,14vw,168px) 0 clamp(32px,5vw,56px)}
+    .who{margin:0 0 18px;font-size:1.0625rem;font-weight:500;letter-spacing:-.01em}
+    .who span{margin-left:12px;font-weight:400;color:var(--muted)}
+    .hero.v2 h1.role{font-size:clamp(2.75rem,1rem + 6.4vw,6rem);line-height:.95;max-width:none}
+    .pitch2{margin:14px 0 0;max-width:34rem;color:var(--muted);font-size:1.0625rem;line-height:1.5}
+    .pitch{margin:22px 0 0;max-width:34rem;font-size:clamp(1.1875rem,1rem + .8vw,1.5rem);line-height:1.3;letter-spacing:-.015em}
+    .hero-acts{display:flex;flex-wrap:wrap;align-items:center;gap:10px 22px;margin:28px 0 0;font-size:1rem}
+    .hero-acts .see{background:var(--ink);color:var(--bg);border-radius:8px;padding:10px 18px 11px;text-decoration:none}
+    .stats{display:grid;gap:0 40px;margin:clamp(36px,5vw,56px) 0 0;border-top:2px solid var(--accent)}
+    @media (min-width:760px){.stats{grid-template-columns:repeat(3,minmax(0,1fr))}}
+    .stats div{padding:18px 0 20px;border-bottom:1px solid var(--line)}
+    .stats dd{margin:0;font-size:clamp(2rem,1.4rem + 2vw,3rem);font-weight:500;letter-spacing:-.04em;line-height:1;font-variant-numeric:tabular-nums}
+    .stats dt{margin-top:10px;color:var(--muted);font-size:.9375rem;line-height:1.4;max-width:17rem}
+    .hero.v2 .spec{margin-top:clamp(36px,5vw,56px)}
+    @media (min-width:980px){.hero.v2 .spec{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:0 40px}.hero.v2 .spec div{display:block;border-bottom:0;padding:18px 0 0}.hero.v2 .spec dd{margin-top:4px}}
+    .proj-cover.shot{display:block;border:1px solid var(--line);border-radius:10px;overflow:hidden;background:var(--panel);box-shadow:var(--lift)}
+    .proj-cover.shot img{display:block;width:100%;height:auto}.proj-cover.shot .d{display:none}
+    :root[data-theme="dark"] .proj-cover.shot .l{display:none}:root[data-theme="dark"] .proj-cover.shot .d{display:block}
+    @media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .proj-cover.shot .l{display:none}:root:not([data-theme="light"]) .proj-cover.shot .d{display:block}}
+    .proj-cover.shot small{display:block;padding:10px 14px;border-top:1px solid var(--line);background:var(--bg);color:var(--muted);font-size:.8125rem}
+    .case-cards{display:grid;gap:24px;margin-top:36px}
+    @media (min-width:600px){.case-cards{grid-template-columns:repeat(2,minmax(0,1fr))}}
+    @media (min-width:1100px){.case-cards{grid-template-columns:repeat(4,minmax(0,1fr));gap:20px}.case-card .body{padding:18px 18px 20px}}
+    .case-card{display:flex;flex-direction:column}
+    .case-card .body{flex:1;display:flex;flex-direction:column}
+    .case-card .meta{margin-top:auto;padding-top:16px}
+    .case-card .cs-hero.thumb{display:block;margin:0;max-width:none;border:0;border-bottom:1px solid var(--line);border-radius:0;padding:14px}
+    .parts-h a{margin-left:10px;color:var(--ink);text-decoration:underline;text-decoration-color:var(--line);text-underline-offset:3px;background:none}
+    /* Every part, as plain links under the map. Works with no script. */
+    .part-links{list-style:none;margin:28px 0 0;padding:0;display:grid;gap:0 32px;border-top:1px solid var(--line)}
+    @media (min-width:760px){.part-links{grid-template-columns:repeat(2,minmax(0,1fr))}}
+    @media (min-width:1100px){.part-links{grid-template-columns:repeat(3,minmax(0,1fr))}}
+    .part-links li{display:flex;justify-content:space-between;align-items:baseline;gap:16px;padding:13px 0;border-bottom:1px solid var(--line);font-size:.9375rem}
+    .part-links a{background:none;text-decoration:underline;text-decoration-color:var(--line);text-underline-offset:3px}
+    .part-links a i{font-style:normal;font-family:var(--mono);font-size:.75rem;color:var(--muted);margin-right:10px}
+    /* A real screen as a cover: the card on the home page and the banner on its page are the same picture. */
+    .shot-frame{display:block;overflow:hidden}
+    .shot-frame img{display:block;width:100%;height:auto}.shot-frame .d{display:none}
+    :root[data-theme="dark"] .shot-frame .l{display:none}:root[data-theme="dark"] .shot-frame .d{display:block}
+    @media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .shot-frame .l{display:none}:root:not([data-theme="light"]) .shot-frame .d{display:block}}
+    .page-cover .shot-frame img{aspect-ratio:16/6.4;object-fit:cover;object-position:top left}
+
+    /* First screen: what I do on the left, the work itself on the right. */
+    .hero-split{display:grid;gap:44px 64px;align-items:end}
+    @media (min-width:1000px){.hero-split{grid-template-columns:minmax(0,1fr) minmax(0,.92fr)}}
+    .hero-work{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+    .hw{display:block;background:none;text-decoration:none;border:1px solid var(--line);border-radius:12px;overflow:hidden;background:var(--bg);box-shadow:var(--lift);transition:border-color var(--t-fast) var(--ease)}
+    .hw:hover{border-color:var(--muted)}
+    .hw-pic{display:block;aspect-ratio:16/10;overflow:hidden;background:var(--panel);border-bottom:1px solid var(--line)}
+    .hw-pic img{width:100%;height:100%;object-fit:cover;object-position:top left}
+    .hw-pic .art{display:block;width:100%;height:100%}
+    .hw b{display:block;padding:13px 14px 0;font-weight:500;font-size:1rem;letter-spacing:-.015em;line-height:1.25}
+    .hw-s{display:block;padding:6px 14px 14px}
+    .hw-row{grid-column:1 / -1;display:grid;grid-template-columns:auto 1fr auto;gap:14px;align-items:baseline;padding:14px;border:1px solid var(--line);border-radius:12px;background:var(--bg);text-decoration:none;transition:border-color .2s var(--ease)}
+    .hw-row:hover{border-color:var(--muted)}
+    .hw-row small{font-family:var(--mono);font-size:.6875rem;color:var(--accent)}
+    .hw-row b{font-weight:500;font-size:.9375rem;letter-spacing:-.01em}
+    .hw-row i{font-style:normal;font-size:.875rem;color:var(--muted);text-decoration:underline;text-underline-offset:3px}
+    @media (max-width:520px){.hw-row{grid-template-columns:1fr auto}.hw-row small{grid-column:1 / -1}}
+    .hero.v2 h1.role{font-size:clamp(2.75rem,1rem + 5.2vw,5.25rem)}
+    .hero.v2 h1.name{font-size:clamp(3.25rem,1rem + 7.6vw,7.25rem);line-height:.88;letter-spacing:-.055em;max-width:none;white-space:nowrap}
+    .role-line{margin:26px 0 0;font-size:1rem;font-weight:500;color:var(--muted);line-height:1.3}
+    .role-line span{margin-left:12px;font-weight:400}
+    .hero.v2 .role-line + .pitch{margin-top:10px;color:var(--ink);font-size:clamp(1.5rem,1.1rem + 1.5vw,2.125rem);font-weight:500;letter-spacing:-.025em;line-height:1.18;max-width:32rem;text-wrap:balance}
+    /* Colour is the lead: a card on the first screen is grey until the pointer (or the keyboard) reaches it. */
+    @media (hover:hover) and (pointer:fine){
+      .hw .hw-pic > *{filter:grayscale(1) contrast(.94);opacity:.82;transition:filter var(--t-med) var(--ease),opacity var(--t-med) var(--ease)}
+      .hw:hover .hw-pic > *,.hw:focus-visible .hw-pic > *{filter:none;opacity:1}
+    }
+    ::view-transition-group(title-platform),::view-transition-group(title-project){animation-duration:.45s}
+
+    /* A status says how far along something is, so it gets its own colour and never the accent. */
+    :root{--ok:#177245;--warn:#93600A}
+    @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--ok:#56D38B;--warn:#F0B44C}}
+    :root[data-theme="dark"]{--ok:#56D38B;--warn:#F0B44C}
+    .status.is-live,.rows .status.is-live{color:var(--ok)}.status.is-live::before{background:var(--ok);border-color:var(--ok)}
+    .status.is-active,.rows .status.is-active{color:var(--warn)}.status.is-active::before{background:var(--warn);border-color:var(--warn)}
+
+    /* First screen: the work is as big as the name. One large card, two half cards. */
+    .hero-split{align-items:start}
+    @media (min-width:1000px){.hero-split{grid-template-columns:minmax(0,.86fr) minmax(0,1fr)}}
+    .hw.big{grid-column:1 / -1}
+    .hw.big .hw-pic{aspect-ratio:16/8.2}
+    .hw.big b{font-size:1.1875rem;padding-top:15px}
+    .hw.note{display:flex;flex-direction:column;padding:16px 16px 16px;box-shadow:var(--lift)}
+    .hw.note small{font-family:var(--mono);font-size:.6875rem;color:var(--accent)}
+    .hw.note b{padding:10px 0 0;font-size:1.0625rem;line-height:1.25}
+    .hw.note i{margin-top:auto;padding-top:18px;font-style:normal;font-size:.875rem;color:var(--muted);text-decoration:underline;text-underline-offset:3px}
+
+    /* Projects: the one dark band on the page. The two projects sit large inside it, on alternate sides. */
+    .band{--bg:#0E1012;--ink:#ECEDEE;--muted:#9BA1A8;--line:rgb(236 237 238/.14);--panel:#171A1D;--accent:var(--a-d);--on-accent:#101214;--ok:#56D38B;--warn:#F0B44C;
+      background:var(--bg);color:var(--ink);margin-top:clamp(64px,7.5vw,104px);padding:clamp(72px,8vw,112px) 0 clamp(72px,8vw,112px);color-scheme:dark}
+    .band .sys:first-of-type{border-top:0;margin-top:40px;padding-top:0}
+    .band .sys.second{border-top:1px solid var(--line);margin-top:72px;padding-top:72px}
+    .band .proj-cover.shot small{background:var(--panel)}
+    .band .facts div{grid-template-columns:5rem 1fr}
+    .band .parts-h{margin-top:40px}
+    @media (min-width:1000px){
+      .band .sys{grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:16px 64px;align-items:center}
+      .band .sys.second{grid-template-columns:minmax(0,1fr) minmax(0,1.3fr)}
+      .band .sys.second .proj-cover{order:2}
+    }
+    .band + .sec{padding-top:clamp(72px,8vw,112px)}
+
+    /* Skills as four plain lines. */
+    .skills{margin:40px 0 0;display:grid;gap:0 clamp(20px,2.4vw,32px)}
+    @media (min-width:640px){.skills{grid-template-columns:repeat(2,minmax(0,1fr))}}
+    @media (min-width:980px){.skills{grid-template-columns:repeat(3,minmax(0,1fr))}}
+    .skills>div{display:grid;grid-template-rows:subgrid;grid-row:span 2;gap:0;padding:22px 0 26px;border-top:2px solid var(--accent)}
+    .skills dt{display:flex;align-items:center;gap:12px;font-weight:500;font-size:1.125rem;letter-spacing:-.015em}
+    .skills dt svg{flex:none;width:36px;height:36px;padding:7px;border:1px solid var(--line);border-radius:10px;background:var(--panel);fill:none;stroke:var(--accent);stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+    .skills dd{margin:16px 0 0;display:flex;flex-direction:column;justify-content:space-between;gap:12px}
+    .skills .tags{margin:0}
+    .skills small{display:block;color:var(--muted);font-size:.875rem}
+    .skills small:empty{display:none}
+
+    /* About: the line people remember, large, with the rest beside it. */
+    .about.two{max-width:none;display:grid;gap:32px 72px;align-items:start}
+    @media (min-width:900px){.about.two{grid-template-columns:minmax(0,1.15fr) minmax(0,1fr)}}
+    .about.two p.big{margin:0;font-size:clamp(1.75rem,1.2rem + 2.4vw,3.25rem);line-height:1.08;letter-spacing:-.035em;font-weight:500;text-wrap:balance}
+    .about.two div p:first-of-type{font-size:1.125rem;line-height:1.5;letter-spacing:-.005em}
+    .about.two img.portrait{margin-bottom:24px}
+
+
+    /* Print and save-as-PDF: the words and pictures only, on white, with nothing left hidden by an animation. */
+    @media print{
+      :root,.band{--bg:#fff;--ink:#111;--muted:#444;--line:#ccc;--panel:#f4f4f4;color-scheme:light}
+      .nav,.progress,.cursor,canvas.grid,.pager,.contact,.ops-ctl,.ctl,.crumb,[data-theme-toggle],.more-rows>summary{display:none!important}
+      *{opacity:1!important;transform:none!important;animation:none!important;transition:none!important;box-shadow:none!important;clip-path:none!important}
+      body{background:#fff}
+      .writeup{padding:0}
+      details.more-rows>*{display:block}
+      .cs-block,.tldr,.flow li,.chose>*,figure,img,svg{break-inside:avoid}
+      h2,h3{break-after:avoid}
+      a{text-decoration:none;color:inherit}
+    }
+    /* A part of the page switched off in builds.json stays off, whatever its own display rule says. */
+    .hw[hidden],.sys[hidden],.parts-h[hidden]{display:none!important}
+    .hw[hidden] + .hw.note{grid-column:1 / -1}
+
+    /* Smooth scrolling (Lenis). These four rules are the library's own stylesheet. */
+    html.lenis,html.lenis body{height:auto}
+    .lenis:not(.lenis-autoToggle).lenis-stopped{overflow:clip}
+    .lenis [data-lenis-prevent]{overscroll-behavior:contain}
+    .lenis.lenis-smooth iframe{pointer-events:none}
+
+    /* Headings arrive a letter at a time, each word behind its own mask. */
+    h2 .w-mask{padding-bottom:.14em;margin-bottom:-.14em}
+
+    /* A dark band always shows the dark screenshot, whatever the page's own theme. */
+    .band .rshot-frame .l,.band .proj-cover.shot .l,.band .shot-frame .l{display:none}
+    .band .rshot-frame .d,.band .proj-cover.shot .d,.band .shot-frame .d{display:block}
+
+    /* The client work note on the first screen lists each story as its own link. */
+    div.hw.note{gap:0}
+    div.hw.note a{display:block;padding:9px 0;border-top:1px solid var(--line);background:none;font-weight:500;font-size:1rem;letter-spacing:-.015em;line-height:1.25}
+    div.hw.note small+a{margin-top:10px}
+    div.hw.note a:hover{color:var(--accent)}
+    .hw[hidden] + div.hw.note{grid-column:1 / -1}
+
+    /* The picture at the top of a client work page. Always drawn: a client page carries no screenshots. */
+    .cs-hero{margin:28px 0 36px;max-width:58rem;border:1px solid var(--line);border-radius:14px;background:var(--panel);padding:clamp(10px,2vw,20px) clamp(10px,2vw,20px) 12px}
+    .cs-hero svg{display:block;width:100%;height:auto;max-height:min(46svh,19rem)}
+    .cs-hero .h-b{fill:var(--bg);stroke:var(--line);stroke-width:1.5}
+    .cs-hero .h-f{fill:var(--bg);stroke:var(--line);stroke-width:1.5}
+    .cs-hero .h-s{fill:color-mix(in srgb,var(--ink) 22%,transparent)}
+    .cs-hero .h-s2{fill:color-mix(in srgb,var(--ink) 11%,transparent)}
+    .cs-hero .h-k{fill:var(--ink)}
+    .cs-hero .h-on{fill:var(--accent)}
+    .cs-hero .h-onbar{fill:var(--on-accent)}
+    .cs-hero .h-hot{fill:color-mix(in srgb,var(--accent) 9%,var(--bg));stroke:var(--accent);stroke-width:1.5}
+    .cs-hero .h-mg,.cs-hero .h-ar{fill:none;stroke:var(--muted);stroke-width:1.75;stroke-linecap:round;stroke-linejoin:round}
+    .cs-hero .h-tag{fill:var(--on-accent);font:600 11px var(--sans)}
+    .cs-hero .h-tag.big{font-size:15px}
+    .cs-hero .h-ax{stroke:var(--line);stroke-width:1.5;fill:none}
+    .cs-hero .h-area{fill:color-mix(in srgb,var(--accent) 12%,transparent)}
+    .cs-hero .h-ln{fill:none;stroke:var(--accent);stroke-width:3;stroke-linecap:round;stroke-linejoin:round}
+    .cs-hero .h-d0{fill:var(--bg);stroke:var(--muted);stroke-width:2}
+    .cs-hero .h-d1{fill:var(--accent)}
+    .cs-hero .h-n0{fill:var(--muted);font:500 18px var(--sans)}
+    .cs-hero .h-n1{fill:var(--ink);font:500 30px var(--sans);letter-spacing:-.02em}
+    .cs-hero .h-n1.sm{font-size:22px}
+    .cs-hero .h-ghost{fill:none;stroke:var(--accent);stroke-width:1.5;stroke-dasharray:5 5;opacity:.75}
+    .cs-hero .h-ghostbar{fill:var(--accent);opacity:.45}
+    .cs-hero .h-cut{stroke:var(--coral);stroke-width:3;stroke-linecap:round}
+    .cs-hero .h-drop,.cs-hero .h-drop5{transform-box:fill-box;transform-origin:bottom}
+    .cs-hero.armed .draw{stroke-dasharray:1;stroke-dashoffset:1}
+    .cs-hero.armed .h-area,.cs-hero.armed .h-d1,.cs-hero.armed .h-n1,.cs-hero.armed .h-more,.cs-hero.armed .h-cut{opacity:0}
+    .cs-hero.armed .h-btn{transform:translateY(-88px)}
+    .cs-hero.armed .h-drop{transform:scaleY(2.5)}
+    .cs-hero.armed .h-drop5{transform:scaleY(.2)}
+    .cs-hero.seen .draw{stroke-dashoffset:0;transition:stroke-dashoffset 1.4s var(--ease) .2s}
+    .cs-hero.seen .h-area{opacity:1;transition:opacity .6s var(--ease) 1s}
+    .cs-hero.seen .h-d1,.cs-hero.seen .h-n1{opacity:1;transition:opacity .4s var(--ease) 1.2s}
+    .cs-hero.seen .h-more{opacity:1;transition:opacity .4s var(--ease) .5s}
+    .cs-hero.seen .h-btn{transform:none;transition:transform .7s var(--ease) .5s}
+    .cs-hero.seen .h-cut{opacity:1;transition:opacity .3s var(--ease) 1.1s}
+    .cs-hero.seen .h-drop{transform:none;transition:transform .8s var(--ease) 1.2s}
+    .cs-hero.seen .h-drop5{transform:none;transition:transform 1s var(--ease) .4s}
+    /* Projects: one at a time, side by side. Named tabs and arrows move between them; a swipe works too. */
+    .pcar{margin-top:8px}
+    .pcar-nav{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px 24px;margin-top:20px}
+    .pcar-nav[hidden]{display:none}
+    .pcar-tabs{display:flex;flex-wrap:wrap;gap:8px}
+    .pcar-tabs button{font:inherit;font-size:.9375rem;color:var(--muted);background:none;border:1px solid var(--line);border-radius:999px;padding:8px 16px 9px;cursor:pointer;transition:color var(--t-fast) var(--ease),border-color var(--t-fast) var(--ease),background var(--t-fast) var(--ease)}
+    .pcar-tabs button[hidden]{display:none}
+    .pcar-tabs button[aria-pressed="true"]{color:var(--bg);background:var(--ink);border-color:var(--ink)}
+    .pcar-arrows{display:flex;gap:8px}
+    .pcar-arrows button{width:40px;height:40px;display:grid;place-items:center;color:var(--ink);background:none;border:1px solid var(--line);border-radius:50%;cursor:pointer;transition:border-color var(--t-fast) var(--ease),opacity var(--t-fast) var(--ease)}
+    .pcar-arrows button:hover{border-color:var(--muted)}
+    .pcar-arrows button:disabled{opacity:.35;cursor:default}
+    .pcar-arrows svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.75;stroke-linecap:round;stroke-linejoin:round}
+    .pcar-track{display:flex;gap:64px;overflow-x:auto;overscroll-behavior-x:contain;scroll-snap-type:x mandatory;scrollbar-width:none}
+    .pcar-track::-webkit-scrollbar{display:none}
+    .pcar-track>.sys{flex:0 0 100%;min-width:0;scroll-snap-align:start}
+    .pcar .sys,.band .pcar .sys.second{margin-top:0;padding:20px 0 0;border-top:0}
+    @media (min-width:900px){.band .pcar .sys.second{grid-template-columns:minmax(0,1.3fr) minmax(0,1fr)}.band .pcar .sys.second .proj-cover{order:0}}
+    .pcar .sys .parts-h{margin:20px 0 0}
+    /* A short, wide window: the name gives up height so the pitch and the buttons stay on the first screen. */
+    @media (min-width:900px) and (max-height:760px){.hero.v2{padding-top:104px}.hero.v2 h1.name{font-size:clamp(3rem,13svh,5.5rem)}.role-line{margin-top:16px}.hero.v2 .role-line + .pitch{font-size:clamp(1.375rem,4.4svh,1.875rem)}.pitch2{margin-top:10px;font-size:1rem}}
+    /* Part tiles: on a short window the picture gives up height so both rows of tiles fit one screen. */
+    @media (min-width:1080px) and (max-height:820px){.ptiles{gap:16px}.ptiles .cover-card .art{aspect-ratio:auto;width:100%;height:clamp(96px,19svh,200px)}.ptiles .cover-card .body{padding:14px 18px 16px}.ptiles .cover-card .meta{margin-top:10px}}
+    @media (min-width:1080px){.covers.n4{grid-template-columns:repeat(4,minmax(0,1fr));gap:18px}.covers.n4 .cover-card .body{padding:16px 16px 18px}.covers.n4 .cover-card b{font-size:1rem}.covers.n4 .cover-card .line{font-size:.875rem}}
+  </style>
+</head>
+<body>
+  <div class="progress" aria-hidden="true"></div>
+  <nav class="nav" aria-label="Site">
+    <a class="nav-name" href="../index.html">Max Pickard</a>
+    <div><a href="../index.html#work">All builds</a><a href="https://github.com/mpickles/revenue-stack-demo/tree/main/outbound/signals">GitHub</a><a href="#contact">Contact</a><button type="button" data-theme-toggle>Dark</button></div>
+  </nav>
+  <main class="writeup"><div class="wrap">
+    <nav class="crumb" aria-label="Breadcrumb"><a href="../index.html#work">Work</a><span aria-hidden="true">/</span><a href="../project.html">Revenue stack</a><span aria-hidden="true">/</span><span aria-current="page">Part 2 of 8</span></nav>
+    <div class="page-cover"><svg class="art" style="view-transition-name:cover-signal-outbound" viewBox="0 0 400 250" role="img" aria-label="A signal from one company travels along a line, passes a check, and reaches an envelope that fills with colour" xmlns="http://www.w3.org/2000/svg"><rect class="c-box" x="52" y="98" width="54" height="54" rx="8"/><circle class="c-on m-lead" style="--i:0" cx="79" cy="125" r="8"/><path class="c-line" d="M106 125H276"/><path class="c-on-line m-draw" style="--i:4" pathLength="1" d="M106 125H276"/><circle class="c-on m-pop" style="--i:8" cx="194" cy="125" r="22"/><path class="c-tick m-draw" style="--i:10" pathLength="1" d="M184 126l8 8 14-16"/><rect class="c-on-box m-fill" style="--i:14" x="278" y="92" width="76" height="66" rx="8"/><path class="c-tick" d="M286 102l30 24 30-24"/></svg></div>
+    <header class="writeup-head">
+      <h1 data-rise>Outbound: a hiring signal starts a checked, approved email sequence</h1>
+      <p class="status is-planned">Planned</p>
+    </header>
+    <div class="headline">
+      <p class="headline-label">Not graded yet. It will be graded on</p>
+      <p class="headline-value">20 planted signals against an answer key, and 10 drafts with a planted false claim that must all be rejected.</p>
+    </div>
+    <div class="figure">
+      <svg class="dia" viewBox="0 0 756 542" role="img" aria-labelledby="signal-outbound-t signal-outbound-d" xmlns="http://www.w3.org/2000/svg">
+      <title id="signal-outbound-t">How a signal becomes a checked, approved email</title>
+      <desc id="signal-outbound-d">An n8n workflow reads each top-tier account's public job board once a day. A new posting for a fleet, dispatch or logistics role is saved once as a signal. The do-not-contact list and the 30-day rule can stop it there. Claude drafts a three-email sequence, a check in code rejects any claim that does not trace to the signal or the account record, and a person approves. The send goes to test inboxes, each step is logged in Salesforce, and replies are sorted and written back.</desc>
+      <defs><marker id="signal-outbound-a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" class="dia-head"/></marker></defs>
+      <path d="M214 47 L278 47" class="dia-line" marker-end="url(#signal-outbound-a)"/>
+      <path d="M478 47 L542 47" class="dia-line" marker-end="url(#signal-outbound-a)"/>
+      <path d="M378 80 L378 126" class="dia-line" marker-end="url(#signal-outbound-a)"/>
+      <path d="M378 192 L378 238" class="dia-line" marker-end="url(#signal-outbound-a)"/>
+      <path d="M478 271 L542 271" class="dia-line" marker-end="url(#signal-outbound-a)"/>
+      <path d="M378 304 L378 350" class="dia-line" marker-end="url(#signal-outbound-a)"/>
+      <path d="M378 416 L378 462" class="dia-line" marker-end="url(#signal-outbound-a)"/>
+      <path d="M278 495 L214 495" class="dia-line" marker-end="url(#signal-outbound-a)"/>
+      <rect x="14" y="14" width="200" height="66" rx="6" class="dia-box "/>
+      <text x="114.0" y="44" class="dia-text" text-anchor="middle">Tier A accounts</text>
+      <text x="114.0" y="61" class="dia-sub" text-anchor="middle">from the account list</text>
+      <rect x="278" y="14" width="200" height="66" rx="6" class="dia-box b"/>
+      <text x="378.0" y="44" class="dia-text" text-anchor="middle">Daily job board check</text>
+      <text x="378.0" y="61" class="dia-sub" text-anchor="middle">n8n, public job boards</text>
+      <rect x="542" y="14" width="200" height="66" rx="6" class="dia-box m"/>
+      <text x="642.0" y="44" class="dia-text" text-anchor="middle">Stopped</text>
+      <text x="642.0" y="61" class="dia-sub" text-anchor="middle">repeat, wrong role, suppressed</text>
+      <rect x="278" y="126" width="200" height="66" rx="6" class="dia-box b"/>
+      <text x="378.0" y="156" class="dia-text" text-anchor="middle">Claude drafts</text>
+      <text x="378.0" y="173" class="dia-sub" text-anchor="middle">three plain-text emails</text>
+      <rect x="278" y="238" width="200" height="66" rx="6" class="dia-box b"/>
+      <text x="378.0" y="268" class="dia-text" text-anchor="middle">Claim check in code</text>
+      <text x="378.0" y="285" class="dia-sub" text-anchor="middle">traces to the signal, or rejected</text>
+      <rect x="542" y="238" width="200" height="66" rx="6" class="dia-box m"/>
+      <text x="642.0" y="268" class="dia-text" text-anchor="middle">Rejected draft</text>
+      <text x="642.0" y="285" class="dia-sub" text-anchor="middle">logged with the reason</text>
+      <rect x="278" y="350" width="200" height="66" rx="6" class="dia-box b"/>
+      <text x="378.0" y="380" class="dia-text" text-anchor="middle">A person approves</text>
+      <text x="378.0" y="397" class="dia-sub" text-anchor="middle">edit, approve or reject</text>
+      <rect x="278" y="462" width="200" height="66" rx="6" class="dia-box b"/>
+      <text x="378.0" y="492" class="dia-text" text-anchor="middle">Send and log</text>
+      <text x="378.0" y="509" class="dia-sub" text-anchor="middle">test inboxes, Salesforce task</text>
+      <rect x="14" y="462" width="200" height="66" rx="6" class="dia-box "/>
+      <text x="114.0" y="492" class="dia-text" text-anchor="middle">Replies sorted</text>
+      <text x="114.0" y="509" class="dia-sub" text-anchor="middle">Salesforce updated</text>
+      </svg>
+    </div>
+    <article class="prose">
+      <p>Status: planned. Nothing in this folder is built yet. This page says what it will do and how it will be graded.</p>
+      <p>A workflow that watches the Tier A accounts for a reason to reach out, drafts a short sequence with Claude, checks every claim in the draft, waits for a person to approve it, and logs each step in Salesforce. It is for a team that wants outbound to be timely and specific without anyone sending something untrue.</p>
+      <h2>What it will do</h2>
+      <ol>
+      <li>Watch each Tier A account's public job board once a day. A new posting for a fleet, dispatch or logistics role is the signal.</li>
+      <li>Save each new signal once. A repeat of the same posting is ignored.</li>
+      <li>Ask Claude for a three-email plain-text sequence, written from the signal and the account record in a fixed format.</li>
+      <li>Check the draft in code: every claim must trace to the signal or the account record, or the draft is rejected.</li>
+      <li>Hold every draft for a person to approve, edit or reject.</li>
+      <li>Respect a do-not-contact list, one sequence per person in 30 days, and a daily cap.</li>
+      <li>Send from a domain set up with SPF, DKIM and DMARC.</li>
+      <li>Write each step to Salesforce as a task, and keep a sequence status on the contact.</li>
+      <li>Read each reply, sort it (interested, not now, unsubscribe, wrong person) and update Salesforce.</li>
+      </ol>
+      <h2>How it will be graded</h2>
+      <div class="tw"><table>
+      <thead>
+      <tr>
+      <th>Check</th>
+      <th>Pass bar</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr>
+      <td>20 planted signals with an answer key</td>
+      <td>Every signal that should start a sequence does. None of the ones that must not (a repeat, the wrong role, a suppressed account, a contact reached in the last 30 days) does</td>
+      </tr>
+      <tr>
+      <td>10 drafts with a planted false claim</td>
+      <td>All 10 rejected by the check</td>
+      </tr>
+      <tr>
+      <td>Drafts</td>
+      <td>Nothing is queued without an approval on record</td>
+      </tr>
+      <tr>
+      <td>Authentication</td>
+      <td>SPF, DKIM and DMARC all pass on a test message</td>
+      </tr>
+      <tr>
+      <td>Planted replies</td>
+      <td>Each is sorted into the right group, and an unsubscribe adds the person to the do-not-contact list</td>
+      </tr>
+      <tr>
+      <td>A second run on the same day</td>
+      <td>Sends nothing new</td>
+      </tr>
+      </tbody>
+      </table></div>
+      <h2>Planned files</h2>
+      <ul>
+      <li><code>signal_rule.md</code>: which postings count, and why</li>
+      <li><code>n8n/signal_to_sequence.json</code>: the exported workflow</li>
+      <li><code>prompts/sequence.md</code> and <code>check_claims.py</code></li>
+      <li><code>signals_planted.json</code> and <code>answer_key.json</code></li>
+      <li><code>results.md</code></li>
+      </ul>
+      <h2>Choices already made</h2>
+      <ul>
+      <li>Roadwren is made up, so no email goes to a real prospect. Sends go only to test inboxes I own. The system is real; the audience is not, and the page says so.</li>
+      <li>A person approves every draft. The check in code is there to catch what a tired reviewer would miss, not to replace the reviewer.</li>
+      <li>Hiring is the signal because a public job board can be read for free and a new fleet or dispatch role says something true about the account.</li>
+      </ul>
+      <h2>In the repo</h2>
+      <ul class="repo-links">
+        <li><a href="https://github.com/mpickles/revenue-stack-demo/tree/main/outbound/signals">Build folder</a></li>
+        <li><a href="https://github.com/mpickles/revenue-stack-demo/blob/main/docs/decisions.md">Decisions</a></li>
+      </ul>
+    </article>
+
+    <nav class="pager" aria-label="More builds">
+      <a class="prev" href="account-list.html"><span>Before</span>Account list in Clay</a>
+    </nav>
+  </div></main>
+
+    <section class="contact slim" id="contact"><div class="wrap">
+      <h2>Say hello</h2>
+      <a class="mail" href="mailto:maxapickard@gmail.com">maxapickard@gmail.com</a>
+      <small><button type="button" class="copy" data-copy="maxapickard@gmail.com">Copy the address</button> <span id="copied" aria-live="polite"></span></small>
+      <div class="foot"><a href="https://www.linkedin.com/in/maxwellapickard/">LinkedIn</a><span>Chicago</span></div>
+    </div></section>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/ScrollTrigger.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/SplitText.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/Flip.min.js"></script>
+  <script src="https://unpkg.com/lenis@1.3.29/dist/lenis.min.js"></script>
+  <script>
+    // Behaviour and motion for every page. Pages read fine with this script off, and
+    // with "reduce motion" on nothing is hidden or animated.
+    (function () {
+      var root = document.documentElement;
+      var still = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      var $$ = function (s, el) { return Array.prototype.slice.call((el || document).querySelectorAll(s)); };
+
+      // Light and dark. Follows the device until the visitor picks one.
+      var toggle = document.querySelector("[data-theme-toggle]");
+      function isDark() { return root.dataset.theme ? root.dataset.theme === "dark" : window.matchMedia("(prefers-color-scheme: dark)").matches; }
+      function paint() { toggle.textContent = isDark() ? "Light" : "Dark"; }
+      paint();
+      toggle.addEventListener("click", function () {
+        root.dataset.theme = isDark() ? "light" : "dark";
+        try { localStorage.setItem("theme", root.dataset.theme); } catch (e) {}
+        paint();
+      });
+
+      // A thin bar at the top shows how far down the page you are.
+      var bar = document.querySelector(".progress");
+      if (bar) window.addEventListener("scroll", function () {
+        var max = root.scrollHeight - window.innerHeight;
+        bar.style.transform = "scaleX(" + (max > 0 ? Math.min(1, window.scrollY / max) : 0) + ")";
+      }, { passive: true });
+
+      // Copy the email address, with a confirmation.
+      $$("[data-copy]").forEach(function (button) {
+        var label = button.textContent, note = document.getElementById("copied");
+        button.addEventListener("click", function () {
+          var done = function () { button.textContent = "Copied"; if (note) note.textContent = "Copied to your clipboard."; setTimeout(function () { button.textContent = label; }, 1600); };
+          try { navigator.clipboard.writeText(button.dataset.copy).then(done, function () {}); } catch (e) {}
+        });
+      });
+
+      // The routing scene: the sentence under the diagram.
+      var steps = $$(".scene [data-step]"), says = document.querySelector(".says"), shown = -1;
+      function say(i) { if (says && i !== shown) { shown = i; says.textContent = steps[i].dataset.step; } }
+      if (steps.length) say(steps.length - 1);
+
+      // A long list shows its first rows and opens on request. Without this script every row shows.
+      $$("[data-fold]").forEach(function (list) {
+        var keep = Number(list.dataset.fold), more = list.children.length - keep;
+        if (more < 1) return;
+        list.classList.add("fold");
+        var p = document.createElement("p"), b = document.createElement("button");
+        p.className = "fold-more"; b.type = "button"; b.textContent = "Show " + more + " more"; b.setAttribute("aria-expanded", "false");
+        b.addEventListener("click", function () { list.classList.add("open"); p.remove(); if (window.ScrollTrigger) ScrollTrigger.refresh(); });
+        p.appendChild(b); list.parentNode.insertBefore(p, list.nextSibling);
+      });
+      var lenis = null;  // set further down, when smooth scrolling starts
+      // Screenshots: press one to see it large, press again for full size. Works with or without motion.
+      (function () {
+        var shots = $$(".rshot-frame img");
+        if (!shots.length || !window.HTMLDialogElement) return;
+        var box = document.createElement("dialog"); box.className = "zoom"; box.setAttribute("data-lenis-prevent", ""); box.setAttribute("aria-label", "Screenshot, enlarged");
+        box.innerHTML = '<div class="zoom-bar"><button type="button" data-size>Full size</button><button type="button" data-close>Close</button></div><div class="zoom-box"></div>';
+        document.body.appendChild(box);
+        var big = document.createElement("img"), size = box.querySelector("[data-size]");
+        box.querySelector(".zoom-box").appendChild(big);
+        function fit(full) { box.classList.toggle("full", full); size.textContent = full ? "Fit to screen" : "Full size"; if (!full) box.scrollTo(0, 0); }
+        function open(img) {
+          big.src = img.currentSrc || img.src; big.alt = img.alt; fit(false);
+          big.style.filter = getComputedStyle(img).filter === "none" ? "" : getComputedStyle(img).filter;  // the diagram is flipped on a dark page
+          box.showModal(); if (lenis) lenis.stop();
+        }
+        box.addEventListener("close", function () { if (lenis) lenis.start(); });
+        box.querySelector("[data-close]").addEventListener("click", function () { box.close(); });
+        size.addEventListener("click", function () { fit(!box.classList.contains("full")); });
+        big.addEventListener("click", function () { fit(!box.classList.contains("full")); });
+        box.addEventListener("click", function (e) { if (e.target === box || e.target.classList.contains("zoom-box")) box.close(); });
+        shots.forEach(function (img) {
+          img.classList.add("zoomable");
+          img.addEventListener("click", function () { open(img); });
+        });
+        // One "Expand" button per frame, for touch and keyboard. It opens whichever screenshot is showing.
+        $$(".rshot-frame").forEach(function (frame) {
+          var b = document.createElement("button"); b.type = "button"; b.className = "zoom-open"; b.textContent = "Expand";
+          b.addEventListener("click", function () {
+            var showing = $$("img", frame).filter(function (img) { return getComputedStyle(img).display !== "none" && img.getClientRects().length > 0; })[0];
+            if (showing) open(showing);
+          });
+          frame.appendChild(b);
+        });
+      })();
+
+      var motion = window.gsap && window.ScrollTrigger && !still;
+      if (motion) gsap.registerPlugin.apply(gsap, [ScrollTrigger].concat(window.SplitText ? [SplitText] : [], window.Flip ? [Flip] : []));
+
+      // The build filter. Rows slide to their new places.
+      var chips = $$(".chips button"), rows = $$(".rows li");
+      chips.forEach(function (chip) {
+        chip.addEventListener("click", function () {
+          chips.forEach(function (c) { c.setAttribute("aria-pressed", String(c === chip)); });
+          var state = motion && window.Flip ? Flip.getState(rows) : null;
+          rows.forEach(function (row) { row.hidden = !(chip.dataset.f === "all" || row.classList.contains(chip.dataset.f)); });
+          if (state) Flip.from(state, { duration: 0.5, ease: "power3.out", absolute: true,
+            onEnter: function (els) { return gsap.fromTo(els, { opacity: 0 }, { opacity: 1, duration: 0.3 }); },
+            onLeave: function (els) { return gsap.to(els, { opacity: 0, duration: 0.2 }); } });
+          if (motion) ScrollTrigger.refresh();
+        });
+      });
+
+      // The lead's path on the project page. Click a part, or let one lead walk through all of them.
+      (function () {
+        var map = document.getElementById("map"), src = document.getElementById("journey");
+        if (!map || !src) return;
+        var steps = JSON.parse(src.textContent), at = 0, timer = null, play = document.getElementById("play");
+        var lead = map.querySelector(".lead"), stops = map.querySelectorAll(".stop"), links = map.querySelectorAll(".link");
+        var calm = matchMedia("(prefers-reduced-motion: reduce)").matches;
+        function rest(i) { var m = map.getBoundingClientRect(), r = stops[i].getBoundingClientRect(); return "translate(" + (r.left - m.left + r.width / 2) + "px," + (r.top - m.top) + "px)"; }
+        function text(id, value, quiet) { var el = document.getElementById(id); el.textContent = value; if (quiet) return; el.classList.remove("swap"); void el.offsetWidth; el.classList.add("swap"); }
+        function show(i, quiet) {
+          at = Math.max(0, Math.min(steps.length - 1, i)); var step = steps[at];
+          lead.classList.toggle("still", !!quiet || calm); lead.style.transform = rest(at);
+          stops.forEach(function (b, k) { b.classList.toggle("done", k <= at); b.classList.toggle("cur", k === at); if (k === at) b.setAttribute("aria-current", "step"); else b.removeAttribute("aria-current"); });
+          links.forEach(function (l, k) { l.classList.toggle("on", k < at); });
+          if (!quiet) { var art = stops[at].querySelector(".art"); art.classList.remove("play"); void art.getBoundingClientRect(); art.classList.add("play"); }
+          var status = document.getElementById("s-status"); status.textContent = step.status; status.className = "status " + step.css;
+          text("s-name", step.name, quiet); text("s-why", step.why, quiet); text("s-gets", step.gets, quiet); text("s-out", step.out, quiet);
+          document.getElementById("s-go").href = "builds/" + step.slug + ".html";
+        }
+        function size() { map.style.setProperty("--mid", stops[0].querySelector(".art").getBoundingClientRect().height / 2 + "px"); lead.classList.add("still"); lead.style.transform = rest(at); }
+        function stop() { if (timer) clearInterval(timer); timer = null; play.textContent = "Follow the lead"; }
+        play.addEventListener("click", function () {
+          if (timer) return stop();
+          show(0); play.textContent = "Stop";
+          timer = setInterval(function () { if (at >= steps.length - 1) return stop(); show(at + 1); }, 2200);
+        });
+        stops.forEach(function (b) { b.addEventListener("click", function () { stop(); show(Number(b.dataset.step)); }); });
+        window.addEventListener("resize", size);
+        if (document.fonts && document.fonts.ready) document.fonts.ready.then(size);
+        size(); show(0, true);
+      })();
+
+      // Two cards can open the same page. Whichever is clicked takes the shared names, so its picture grows into
+      // the page's banner and its title becomes the page's title.
+      document.addEventListener("click", function (e) {
+        var link = e.target.closest && e.target.closest("a");
+        if (!link) return;
+        Array.prototype.forEach.call(link.querySelectorAll("[data-vt-name]"), function (part) {
+          var name = part.getAttribute("data-vt-name");
+          Array.prototype.forEach.call(document.querySelectorAll('[style*="view-transition-name"]'), function (el) {
+            if (el.style.viewTransitionName === name) el.style.viewTransitionName = "none";
+          });
+          part.style.viewTransitionName = name;
+        });
+      }, true);
+
+      if (!motion) return;
+
+      // One motion language for the whole site: one curve and three speeds. Nothing that moves takes longer than SLOW.
+      var EASE = "power3.out", FAST = 0.2, MED = 0.35, SLOW = 0.5;
+      // Arriving from another page of this site, the browser has just morphed that page into this one. Do not replay the title.
+      var morphedIn = false;
+      try { morphedIn = "onpagereveal" in window && !!document.referrer && new URL(document.referrer).origin === location.origin; } catch (err) {}
+
+      // Smooth scrolling. One clock drives the scroll and every animation tied to it.
+      if (window.Lenis) {
+        lenis = new Lenis({ anchors: true, allowNestedScroll: true });
+        lenis.on("scroll", ScrollTrigger.update);
+        gsap.ticker.add(function (time) { lenis.raf(time * 1000); });
+        gsap.ticker.lagSmoothing(0);
+      }
+
+      function start() {
+        // The page title rises line by line, once.
+        var title = document.querySelector("[data-rise]");
+        if (title) {
+          if (window.SplitText) {
+            var split = SplitText.create(title, { type: "lines", mask: "lines", aria: "auto" });
+            if (!morphedIn) gsap.from(split.lines, { yPercent: 105, duration: SLOW, stagger: 0.06, ease: EASE, delay: 0.05 });
+          } else if (!morphedIn) {
+            gsap.from(title, { opacity: 0, y: 24, duration: SLOW, ease: EASE, delay: 0.05 });
+          }
+          gsap.from(".under, .spec, .slot-box.portrait, .writeup-head .status, .headline", { opacity: 0, duration: MED, ease: EASE, delay: 0.35 });
+        }
+
+        // Home page entrance. Nothing waits behind a loader: the name is readable from the first frame and the
+        // rest arrives around it inside a second. Half that on a return visit in the same tab.
+        var name = document.querySelector(".hero.v2 h1.name");
+        if (name) {
+          var stop = name.querySelector("i"), firstVisit = true;
+          try { firstVisit = !sessionStorage.getItem("entered"); sessionStorage.setItem("entered", "1"); } catch (err) {}
+          var k = firstVisit ? 1 : 0.5;
+          var intro = gsap.timeline({ delay: 0.05 });
+          // The lead. One dot in the accent colour runs in from the left edge and lands as the full stop after my name.
+          if (stop) {
+            gsap.set(stop, { opacity: 0 });
+            intro.call(function () {
+              var box = stop.getBoundingClientRect(), style = getComputedStyle(stop);
+              var runner = stop.cloneNode(true);
+              runner.style.cssText = "position:fixed;margin:0;z-index:5;pointer-events:none;left:" + box.left + "px;top:" + box.top + "px;font:" + style.font + ";line-height:" + style.lineHeight + ";letter-spacing:0;color:" + style.color + ";transform-origin:100% 80%";
+              document.body.appendChild(runner);
+              gsap.fromTo(runner, { x: -(box.left + 60), scaleX: 3.2 }, { x: 0, scaleX: 1, duration: 0.42 * k, ease: "power3.inOut", onComplete: function () {
+                gsap.set(stop, { opacity: 1 });
+                runner.remove();
+                gsap.fromTo(stop, { scale: 1.6 }, { scale: 1, duration: MED, ease: "back.out(3)", transformOrigin: "50% 80%", display: "inline-block", clearProps: "transform,display" });
+              } });
+            }, null, 0.4 * k);
+            intro.call(function () { gsap.set(stop, { opacity: 1 }); }, null, 0.4 * k + 1.2);  // whatever happens, the dot ends up visible
+          }
+          intro.from(".role-line, .hero.v2 .pitch, .hero-acts", { opacity: 0, y: 12, duration: MED * k, stagger: 0.05, ease: EASE, clearProps: "opacity,transform" }, 0.2 * k);
+          intro.from(".hero-work > *", { opacity: 0, y: 24, duration: MED * k, stagger: 0.07, ease: EASE, clearProps: "opacity,transform" }, 0.3 * k);
+        }
+
+        // The name eases back as you scroll away from it.
+        if (document.querySelector(".hero h1")) gsap.to(".hero h1", { yPercent: -12, opacity: 0.25, ease: "none", scrollTrigger: { trigger: ".hero", start: "top top", end: "bottom 15%", scrub: true } });
+
+        // The screenshot grows to full width as it comes up the screen.
+        $$("[data-grow]").forEach(function (frame) {
+          gsap.fromTo(frame, { scale: 0.86, borderRadius: 22 }, { scale: 1, borderRadius: 10, ease: "none", scrollTrigger: { trigger: frame, start: "top 95%", end: "top 30%", scrub: true } });
+        });
+
+        // Section headings rise out of a mask as they arrive.
+        $$("main h2").forEach(function (h) {
+          if (h.closest(".prose")) return;
+          if (window.SplitText) {
+            var cut = SplitText.create(h, { type: "words,chars", mask: "words", wordsClass: "w", charsClass: "c", aria: "auto" });
+            gsap.from(cut.chars, { yPercent: 112, duration: SLOW, stagger: 0.014, ease: EASE, scrollTrigger: { trigger: h, start: "top 96%" } });
+            return;
+          }
+          var text = h.textContent; h.setAttribute("aria-label", text); h.textContent = "";
+          var mask = document.createElement("span"); mask.className = "mask"; mask.setAttribute("aria-hidden", "true");
+          var inner = document.createElement("span"); inner.textContent = text; mask.appendChild(inner); h.appendChild(mask);
+          gsap.from(inner, { yPercent: 112, duration: MED, ease: EASE, scrollTrigger: { trigger: h, start: "top 98%" } });
+        });
+
+        // Lists and cards arrive one after another.
+        [".sys", ".proof li", "[data-stagger] > *", ".tldr > div", ".nums > div", ".flow > li", ".chose > div", ".shows > div", ".more-rows > div"].forEach(function (group) {
+          if (!document.querySelector(group)) return;
+          ScrollTrigger.batch(group, { start: "top 98%", once: true, onEnter: function (batch) {
+            gsap.from(batch, { opacity: 0, y: 10, duration: FAST, stagger: 0.02, ease: EASE, clearProps: "opacity,transform" });
+          } });
+        });
+
+        // A plain number counts up to its value as it arrives. Ranges, ratios and money are left alone.
+        $$(".nums b").forEach(function (b) {
+          var text = b.textContent.trim();
+          if (!/^[0-9][0-9,]*%?$/.test(text) || b.children.length) return;
+          var end = parseInt(text.replace(/[^0-9]/g, ""), 10), unit = text.slice(-1) === "%" ? "%" : "", box = { n: 0 };
+          if (end < 10) return;
+          b.setAttribute("aria-label", text);
+          b.style.fontVariantNumeric = "tabular-nums";
+          gsap.to(box, { n: end, duration: SLOW * 2, ease: EASE, scrollTrigger: { trigger: b, start: "top 92%", once: true },
+            onUpdate: function () { b.textContent = Math.round(box.n).toLocaleString("en-US") + unit; },
+            onComplete: function () { b.textContent = text; } });
+        });
+
+        // Table rows wipe in from the left.
+        $$("table[data-wipe]").forEach(function (table) {
+          gsap.from(table.querySelectorAll("tr"), { clipPath: "inset(0 100% 0 0)", duration: FAST, stagger: 0.02, ease: EASE, scrollTrigger: { trigger: table, start: "top 98%" } });
+        });
+
+        // The routing scene: the diagram draws itself once, when it comes on screen. The page keeps scrolling.
+        if (steps.length) {
+          var draw = gsap.timeline({ scrollTrigger: { trigger: ".scene .pin", start: "top 65%", once: true },
+            onUpdate: function () { say(Math.min(steps.length - 1, Math.floor(draw.progress() * steps.length))); } });
+          steps.forEach(function (step) {
+            var wire = step.querySelector(".wire");
+            if (wire) { var len = wire.getTotalLength(); gsap.set(wire, { strokeDasharray: len, strokeDashoffset: len }); draw.to(wire, { strokeDashoffset: 0, duration: 0.7, ease: "none" }); }
+            draw.from(step.querySelectorAll("rect, text"), { opacity: 0, duration: 0.7, ease: "none" }, wire ? ">-0.1" : 0);
+          });
+          say(0);
+        }
+
+        // Write-up diagrams draw their arrows once, when they come into view.
+        $$("svg.dia").forEach(function (svg) {
+          var lines = $$(".dia-line:not(.dia-dash)", svg);
+          lines.forEach(function (line) { var len = line.getTotalLength(); gsap.set(line, { strokeDasharray: len, strokeDashoffset: len }); });
+          var tl = gsap.timeline({ scrollTrigger: { trigger: svg, start: "top 78%" } });
+          tl.from($$(".dia-box, .dia-text, .dia-sub", svg), { opacity: 0, duration: 0.5, stagger: 0.015 })
+            .to(lines, { strokeDashoffset: 0, duration: 0.5, stagger: 0.09, ease: "power2.out" }, 0.3)
+            .from($$(".dia-label, .dia-dash", svg), { opacity: 0, duration: 0.4 }, ">-0.2");
+        });
+
+        // The big email draws in at the end.
+        if (document.querySelector(".mail")) gsap.from(".mail", { yPercent: 60, opacity: 0, duration: SLOW, ease: EASE, scrollTrigger: { trigger: ".mail", start: "top 94%" } });
+
+        // Cursor: a coral dot trails the normal pointer and grows over anything clickable.
+        if (window.matchMedia("(pointer: fine)").matches) {
+          var dot = document.createElement("div"); dot.className = "cursor"; dot.setAttribute("aria-hidden", "true"); document.body.appendChild(dot);
+          var x = gsap.quickTo(dot, "x", { duration: 0.45, ease: "power3" }), y = gsap.quickTo(dot, "y", { duration: 0.45, ease: "power3" });
+          window.addEventListener("pointermove", function (e) { if (e.pointerType === "touch") return; gsap.to(dot, { opacity: 1, duration: 0.2, overwrite: "auto" }); x(e.clientX); y(e.clientY); });
+          document.addEventListener("pointerleave", function () { gsap.to(dot, { opacity: 0, duration: 0.2 }); });
+          document.addEventListener("pointerover", function (e) {
+            var hot = !!e.target.closest("a, button");
+            dot.classList.toggle("on-link", hot);
+            gsap.to(dot, { scale: hot ? 3.4 : 1, duration: 0.3, ease: "power3.out", overwrite: "auto" });
+          });
+          window.addEventListener("pointerdown", function () { gsap.to(dot, { scale: 0.7, duration: 0.12 }); });
+          window.addEventListener("pointerup", function (e) { gsap.to(dot, { scale: e.target.closest && e.target.closest("a, button") ? 3.4 : 1, duration: 0.25 }); });
+        }
+        // A picture that loads late can move everything under it. Measure again when one does.
+        var again = null;
+        $$("img[loading=lazy]").forEach(function (img) {
+          if (!img.complete) img.addEventListener("load", function () { clearTimeout(again); again = setTimeout(function () { ScrollTrigger.refresh(); }, 120); });
+        });
+        ScrollTrigger.refresh();
+      }
+      // Cover drawings play once when they first come into view, so phones see the motion too.
+      // The class comes off afterwards so pointing at a card can play it again.
+      if (!still && "IntersectionObserver" in window) {
+        var seen = new IntersectionObserver(function (entries) {
+          entries.forEach(function (entry) {
+            if (!entry.isIntersecting) return;
+            var art = entry.target; seen.unobserve(art); art.classList.add("play");
+            setTimeout(function () { art.classList.remove("play"); }, 5400);
+          });
+        }, { threshold: 0.6 });
+        $$(".art").forEach(function (art) { seen.observe(art); });
+      }
+
+      // Scrolling boxes (wide tables, diagrams, code) fade out at whichever edge still has more to scroll to.
+      (function () {
+        var boxes = $$(".tw, .figure, .prose pre");
+        function mark(el) {
+          var more = el.scrollWidth - el.clientWidth, x = el.scrollLeft, edge = [];
+          if (more > 1 && x > 1) edge.push("l");
+          if (more > 1 && x < more - 1) edge.push("r");
+          if (edge.length) el.setAttribute("data-fade", edge.join(" ")); else el.removeAttribute("data-fade");
+        }
+        boxes.forEach(function (el) { mark(el); el.addEventListener("scroll", function () { mark(el); }, { passive: true }); });
+        window.addEventListener("resize", function () { boxes.forEach(mark); });
+      })();
+
+      // Background: a faint dot grid. Dots near the pointer swell and take the accent colour,
+      // and one ripple crosses the page on load, done in under five seconds. Nothing else moves on its own. With "reduce motion" the grid is drawn once and stays still.
+      (function () {
+        var c = document.createElement("canvas"); c.className = "grid"; c.setAttribute("aria-hidden", "true");
+        document.body.insertBefore(c, document.body.firstChild);
+        var g = c.getContext("2d"); if (!g) return;
+        var gap = 28, w = 0, h = 0, px = -999, py = -999, tx = -999, ty = -999, base = "", accent = "", read = 0;
+        var blocks = $$("h1, h2, h3, p, dl, table, figure, .rows, .xp, .nav, .under, .slot-box, .prose ul, .prose ol, .prose pre, .pager");
+        var born = performance.now();
+        function colours() { var s = getComputedStyle(root); base = s.getPropertyValue("--muted").trim(); accent = s.getPropertyValue("--accent").trim(); }
+        function size() {
+          var d = Math.min(window.devicePixelRatio || 1, 2); w = window.innerWidth; h = window.innerHeight;
+          c.width = w * d; c.height = h * d; g.setTransform(d, 0, 0, d, 0, 0);
+        }
+        function draw(now) {
+          if (now - read > 500) { colours(); read = now; }
+          px += (tx - px) * 0.12; py += (ty - py) * 0.12;
+          var reach = Math.hypot(w, h), ring = still ? -999 : (now - born) / 1000 * 420 - 80;
+          g.clearRect(0, 0, w, h);
+          // No dots behind words: skip any dot that falls inside a block of text on screen.
+          var boxes = [];
+          for (var i = 0; i < blocks.length; i++) {
+            var r = blocks[i].getBoundingClientRect();
+            if (r.bottom > 0 && r.top < h && r.width) boxes.push(r);
+          }
+          for (var x = gap / 2; x < w; x += gap) dots: for (var y = gap / 2; y < h; y += gap) {
+            for (var j = 0; j < boxes.length; j++) { var b = boxes[j]; if (x > b.left - 10 && x < b.right + 10 && y > b.top - 8 && y < b.bottom + 8) continue dots; }
+            var near = Math.max(0, 1 - Math.hypot(x - px, y - py) / 150);
+            var wave = Math.max(0, 1 - Math.abs(Math.hypot(x, y) - ring) / 70) * 0.55;
+            var a = Math.max(near, wave);
+            if (a < 0.02) { g.globalAlpha = 0.2; g.fillStyle = base; g.fillRect(x - 0.5, y - 0.5, 1, 1); continue; }
+            g.globalAlpha = 0.2 + a * 0.7; g.fillStyle = accent;
+            g.beginPath(); g.arc(x, y, 0.6 + a * 1.5, 0, 6.2832); g.fill();
+          }
+          if (!still && !document.hidden) requestAnimationFrame(draw);
+        }
+        size(); requestAnimationFrame(draw);
+        window.addEventListener("resize", function () { size(); if (still) requestAnimationFrame(draw); });
+        if (still) { toggle.addEventListener("click", function () { read = 0; requestAnimationFrame(draw); }); return; }
+        document.addEventListener("visibilitychange", function () { if (!document.hidden) requestAnimationFrame(draw); });
+        window.addEventListener("pointermove", function (e) { if (e.pointerType !== "touch") { tx = e.clientX; ty = e.clientY; } });
+        document.addEventListener("pointerleave", function () { tx = ty = -999; });
+      })();
+
+      if (document.fonts && document.fonts.ready) document.fonts.ready.then(start); else start();
+    })();
+
+    // Animated diagrams: data riding the lanes that are live for the step or the request picked.
+    // One drawing routine for both figures. With "reduce motion" on, the dots sit still on their lanes.
+    (function () {
+      var figs = Array.prototype.slice.call(document.querySelectorAll(".flowfig"));
+      if (!figs.length) return;
+      var still = window.matchMedia("(prefers-reduced-motion: reduce)").matches, drawn = [];
+      function esc(s) { return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;"); }
+      function rect(cls, x, y, w, h, inner) { return '<g class="n ' + cls + '"><rect x="' + x + '" y="' + y + '" width="' + w + '" height="' + h + '" rx="10"/>' + inner + "</g>"; }
+      function txt(cls, x, y, s, anchor) { return '<text class="' + cls + '" x="' + x + '" y="' + y + '" text-anchor="' + (anchor || "middle") + '" dominant-baseline="central">' + esc(s) + "</text>"; }
+      function finish(state, svg, W, H, lanes, nodes) {
+        svg.setAttribute("viewBox", "0 0 " + W + " " + H);
+        svg.innerHTML = "<g>" + lanes.join("") + "</g><g>" + nodes.join("") + '</g><g class="tok"></g>';
+        state.live = Array.prototype.slice.call(svg.querySelectorAll("path.live")).map(function (p) { return { p: p, len: p.getTotalLength() }; });
+        state.tok = svg.querySelector(".tok");
+        state.tok.innerHTML = state.live.map(function () { return '<circle r="4.5"/><circle r="4.5"/><circle r="4.5"/>'; }).join("");
+        place(state, performance.now());
+      }
+      function place(state, t) {
+        if (!state.tok) return;
+        state.live.forEach(function (o, i) {
+          for (var k = 0; k < 3; k++) {
+            var c = state.tok.children[i * 3 + k]; if (!c) return;
+            var f = still ? (k + 1) / 4 : ((t / 2400) + k / 3) % 1, pt = o.p.getPointAtLength(f * o.len);
+            c.setAttribute("cx", pt.x); c.setAttribute("cy", pt.y);
+          }
+        });
+      }
+
+      // Figure one: a night of data, from the sources to the people who read it.
+      var SRC = [["Ad platforms", "Ads"], ["CRM leads", "CRM"], ["Tasks and calls", "Tasks"], ["Tag containers", "Tags"]];
+      var CON = [["Web app", "App"], ["The team's Claude", "Claude"], ["Report decks", "Decks"], ["Alerts", "Alerts"]];
+      var BLK = { raw: ["Raw", ["As delivered", "Never edited"], "As delivered"], stg: ["Staging", ["Cleaned", "One shape", "5 am build"], "Cleaned, one shape"], mart: ["Marts", ["Daily facts", "Rollups", "Tested"], "Tested tables"] };
+      var STEPS = [
+        { t: "Every source lands overnight", on: ["src", "raw"], flow: ["s"], b: "Google Ads arrives through the platform's own free transfer and a daily script. Microsoft Ads posts from a script inside each account. Tasks, call summaries and tag containers load every night. Nothing is changed on the way in." },
+        { t: "Raw is the untouched copy", on: ["raw"], flow: [], b: "Each source keeps its own dataset, exactly as delivered. When a number looks wrong later, it can be traced all the way back to here." },
+        { t: "5 am: dbt cleans and joins", on: ["raw", "stg"], flow: ["rs"], b: "A scheduled job runs dbt. Staging models fix names and types, remove duplicates and map every ad account to its client, so each platform ends up in one shape." },
+        { t: "Marts are what people read", on: ["stg", "mart"], flow: ["sm"], b: "Daily facts, monthly and quarterly rollups, and leads matched to campaigns. 808 tests guard 215 models. A failed test stops the build, so a bad number is never published." },
+        { t: "Changes are tested before they ship", on: ["ci", "stg", "mart"], flow: ["ci"], b: "Every push builds the changed models, and the ones that depend on them, in a throwaway dataset and runs their tests. It deploys only if they pass." },
+        { t: "Everything reads the same tables", on: ["mart", "con"], flow: ["c"], b: "The web app, the team's Claude, the report decks and the alerts all read the same tested tables. The app and a deck cannot disagree." },
+        { t: "Built to cost nothing to host", on: ["src", "raw", "stg", "mart", "ci", "con"], flow: ["s", "rs", "sm", "c"], b: "Cost comes from how often tables are re-read, not from their size. The build re-processes recent days only, and the app keeps each answer until the next load." }
+      ];
+      function route(fig) {
+        var svg = fig.querySelector("svg"), box = fig.querySelector(".flow-stage"), state = { live: [], tok: null }, cur = 0, playing = false, timer = null, seen = false;
+        var q = function (s) { return fig.querySelector(s); };
+        var dots = q(".flow-dots"); dots.innerHTML = STEPS.map(function (s, i) { return '<button type="button" data-i="' + i + '" aria-label="Step ' + (i + 1) + ": " + esc(s.t) + '">' + (i + 1) + "</button>"; }).join("");
+        function draw() {
+          var W = box.clientWidth, v = W < 560, H = v ? Math.max(360, Math.min(640, window.innerHeight - 400)) : Math.max(280, Math.min(420, window.innerHeight - 200)); box.style.height = H + "px";
+          var st = STEPS[cur], on = st.on, fl = st.flow, lanes = [], nodes = [], m = 14;
+          var cls = function (k) { return on.indexOf(k) >= 0 ? "on" : "off"; };
+          var lane = function (k, d, dash) { lanes.push('<path class="lane' + (fl.indexOf(k) >= 0 ? " live" : "") + (dash ? " dash" : "") + '" d="' + d + '"/>'); };
+          var i;
+          if (!v) {
+            var top = 70, colW = (W - 2 * m) / 5, bw = Math.min(160, colW - 26), short = bw < 134;
+            var cx = function (n) { return m + colW * (n + 0.5); }, gap = 14, avail = H - top - 14, hn = Math.min(56, (avail - 3 * gap) / 4);
+            var total = 4 * hn + 3 * gap, y0 = top + (avail - total) / 2, yc = function (n) { return y0 + n * (hn + gap) + hn / 2; };
+            var L = function (n) { return cx(n) - bw / 2; }, R = function (n) { return cx(n) + bw / 2; };
+            for (i = 0; i < 4; i++) {
+              lane("s", "M" + R(0) + " " + yc(i) + "H" + L(1)); lane("rs", "M" + R(1) + " " + yc(i) + "H" + L(2));
+              lane("sm", "M" + R(2) + " " + yc(i) + "H" + L(3)); lane("c", "M" + R(3) + " " + yc(i) + "H" + L(4));
+              nodes.push(rect(cls("src"), L(0), yc(i) - hn / 2, bw, hn, txt("l", cx(0), yc(i), short ? SRC[i][1] : SRC[i][0])));
+              nodes.push(rect(cls("con"), L(4), yc(i) - hn / 2, bw, hn, txt("l", cx(4), yc(i), short ? CON[i][1] : CON[i][0])));
+            }
+            ["raw", "stg", "mart"].forEach(function (k, j) {
+              var b = BLK[k], x = cx(j + 1);
+              nodes.push(rect(cls(k), L(j + 1), y0, bw, total, txt("h", x, y0 + 26, b[0]) + b[1].map(function (s, n) { return txt("sub", x, y0 + 54 + n * 20, s); }).join("")));
+            });
+            var cw = Math.min(230, bw * 1.7), cxm = (cx(2) + cx(3)) / 2, ct = 12, ch = 42;
+            lane("ci", "M" + (cxm - cw * 0.25) + " " + (ct + ch) + "C" + (cxm - cw * 0.25) + " " + (ct + ch + 16) + " " + cx(2) + " " + (y0 - 16) + " " + cx(2) + " " + y0, true);
+            lane("ci", "M" + (cxm + cw * 0.25) + " " + (ct + ch) + "C" + (cxm + cw * 0.25) + " " + (ct + ch + 16) + " " + cx(3) + " " + (y0 - 16) + " " + cx(3) + " " + y0, true);
+            nodes.push(rect(cls("ci"), cxm - cw / 2, ct, cw, ch, txt("l", cxm, ct + ch / 2, cw < 170 ? "Checks" : "A check on every push")));
+          } else {
+            var ciw = Math.min(92, W * 0.24), laneR = W - m - ciw - 12, laneW = laneR - m, cW = laneW / 4, bw2 = cW - 8, bx = function (n) { return m + cW * (n + 0.5); };
+            var hs = 46, hb = 60, g2 = (H - 2 * m - 2 * hs - 3 * hb) / 4, y = [m];
+            y[1] = y[0] + hs + g2; y[2] = y[1] + hb + g2; y[3] = y[2] + hb + g2; y[4] = y[3] + hb + g2;
+            for (i = 0; i < 4; i++) {
+              var x2 = bx(i);
+              lane("s", "M" + x2 + " " + (y[0] + hs) + "V" + y[1]); lane("rs", "M" + x2 + " " + (y[1] + hb) + "V" + y[2]);
+              lane("sm", "M" + x2 + " " + (y[2] + hb) + "V" + y[3]); lane("c", "M" + x2 + " " + (y[3] + hb) + "V" + y[4]);
+              nodes.push(rect(cls("src"), x2 - bw2 / 2, y[0], bw2, hs, txt("l", x2, y[0] + hs / 2, SRC[i][1])));
+              nodes.push(rect(cls("con"), x2 - bw2 / 2, y[4], bw2, hs, txt("l", x2, y[4] + hs / 2, CON[i][1])));
+            }
+            ["raw", "stg", "mart"].forEach(function (k, j) {
+              var b = BLK[k], yy = y[j + 1];
+              nodes.push(rect(cls(k), m, yy, laneW, hb, txt("h", m + 14, yy + 21, b[0], "start") + txt("sub", m + 14, yy + 42, b[2], "start")));
+            });
+            var cxl = W - m - ciw, cy = (y[2] + y[3] + hb) / 2, t1 = y[2] + hb / 2, t2 = y[3] + hb / 2;
+            lane("ci", "M" + cxl + " " + (cy - 12) + "C" + (cxl - 14) + " " + (cy - 12) + " " + (laneR + 14) + " " + t1 + " " + laneR + " " + t1, true);
+            lane("ci", "M" + cxl + " " + (cy + 12) + "C" + (cxl - 14) + " " + (cy + 12) + " " + (laneR + 14) + " " + t2 + " " + laneR + " " + t2, true);
+            nodes.push(rect(cls("ci"), cxl, cy - 28, ciw, 56, txt("l", cxl + ciw / 2, cy, "Checks")));
+          }
+          finish(state, svg, W, H, lanes, nodes);
+        }
+        function plan() {
+          clearTimeout(timer);
+          if (playing) timer = setTimeout(function () { go(cur + 1); }, 7000);
+          q(".flow-play").textContent = playing ? "Pause" : "Play"; q(".flow-play").setAttribute("aria-pressed", String(playing));
+        }
+        function go(i) {
+          cur = (i + STEPS.length) % STEPS.length;
+          q(".flow-n").textContent = "Step " + (cur + 1) + " of " + STEPS.length; q(".flow-t").textContent = STEPS[cur].t; q(".flow-b").textContent = STEPS[cur].b;
+          Array.prototype.forEach.call(dots.children, function (b, n) { if (n === cur) b.setAttribute("aria-current", "step"); else b.removeAttribute("aria-current"); });
+          draw(); plan();
+        }
+        q(".flow-prev").addEventListener("click", function () { playing = false; go(cur - 1); });
+        q(".flow-next").addEventListener("click", function () { playing = false; go(cur + 1); });
+        q(".flow-play").addEventListener("click", function () { playing = !playing; plan(); });
+        dots.addEventListener("click", function (e) { var b = e.target.closest("button"); if (b) { playing = false; go(Number(b.dataset.i)); } });
+        if (window.ResizeObserver) new ResizeObserver(draw).observe(box); else window.addEventListener("resize", draw);
+        // It plays by itself only while it is on screen, and only once you have reached it.
+        if (window.IntersectionObserver && !still) new IntersectionObserver(function (es) {
+          var inView = es[0].isIntersecting;
+          if (inView && !seen) { seen = true; playing = true; }
+          if (!inView) clearTimeout(timer); else plan();
+        }, { threshold: 0.4 }).observe(fig);
+        go(0); drawn.push(state);
+      }
+
+      // Figure two: the path one request takes.
+      var PATHS = {
+        claude: { t: "Someone asks the team's Claude a question.", e: ["pd", "bd", "dc"], n: ["pg", "bq", "dl", "claude"], b: "Claude calls a tool on the app's own connector. The token is looked up on that call, the person is loaded from Postgres, and the tool runs through the same data layer as the app: their clients only, from the cache when it can. Claude writes the sentences. It never does the sums." },
+        app: { t: "An account lead opens a client page.", e: ["pd", "bd", "da"], n: ["pg", "bq", "dl", "app"], b: "The server knows who they are from sign-in and looks up their clients in Postgres. Only then does it ask the data layer for numbers. On a cache miss it runs one named query against the tested tables, with a cost cap." },
+        deck: { t: "A monthly report builds.", e: ["bk"], n: ["bq", "deck"], b: "Code works out every number the report may quote from the tested tables. The model only writes around them, and a checker flags any slide that looks off. The result is a draft. A person approves it before anything reaches a client." }
+      };
+      function paths(fig) {
+        var svg = fig.querySelector("svg"), box = fig.querySelector(".flow-stage"), state = { live: [], tok: null }, pick = "claude", tabs = fig.querySelector(".flow-tabs");
+        function draw() {
+          var W = box.clientWidth, H = Math.max(250, Math.min(W < 560 ? 300 : 330, window.innerHeight - 220)), m = 14; box.style.height = H + "px";
+          var colW = (W - 2 * m) / 3, bw = Math.min(200, colW - 30), short = bw < 132;
+          var cx = function (i) { return m + colW * (i + 0.5); }, L = function (i) { return cx(i) - bw / 2; }, R = function (i) { return cx(i) + bw / 2; };
+          var gap = 18, hn = Math.min(60, (H - 2 * m - 3 * gap) / 4), y = function (i) { return m + i * (hn + gap) + hn / 2; };
+          var r = PATHS[pick], lanes = [], nodes = [];
+          var c = function (k) { return r.n.indexOf(k) >= 0 ? "on" : "off"; };
+          var lane = function (k, d) { lanes.push('<path class="lane' + (r.e.indexOf(k) >= 0 ? " live" : "") + '" d="' + d + '"/>'); };
+          var boxAt = function (k, i, row, label, sub) { nodes.push(rect(c(k), L(i), y(row) - hn / 2, bw, hn, sub ? txt("l", cx(i), y(row) - 9, label) + txt("sub", cx(i), y(row) + 11, sub) : txt("l", cx(i), y(row), label))); };
+          var dlTop = y(1) - hn / 2, dlH = y(2) - y(1) + hn, mid = (R(1) + L(2)) / 2, midL = (R(0) + L(1)) / 2;
+          lane("pd", "M" + R(0) + " " + y(0) + "C" + midL + " " + y(0) + " " + midL + " " + (dlTop + 18) + " " + L(1) + " " + (dlTop + 18));
+          lane("bd", "M" + R(0) + " " + y(3) + "C" + midL + " " + y(3) + " " + midL + " " + (dlTop + dlH - 18) + " " + L(1) + " " + (dlTop + dlH - 18));
+          lane("dc", "M" + R(1) + " " + (dlTop + 18) + "C" + mid + " " + (dlTop + 18) + " " + mid + " " + y(0) + " " + L(2) + " " + y(0));
+          lane("da", "M" + R(1) + " " + (dlTop + dlH / 2) + "C" + mid + " " + (dlTop + dlH / 2) + " " + mid + " " + y(1.5) + " " + L(2) + " " + y(1.5));
+          lane("bk", "M" + R(0) + " " + (y(3) + 12) + "H" + L(2));
+          boxAt("pg", 0, 0, "Postgres", short ? "Who you are" : "People and their clients");
+          boxAt("bq", 0, 3, short ? "Warehouse" : "Tested tables", short ? "Numbers" : "Every number");
+          boxAt("claude", 2, 0, short ? "Claude" : "The team's Claude", short ? "" : "Through the connector");
+          boxAt("app", 2, 1.5, short ? "App" : "Web app", short ? "" : "Client pages");
+          boxAt("deck", 2, 3, short ? "Decks" : "Report decks", short ? "" : "A draft for review");
+          var subs = short ? ["Your clients", "Cache"] : ["Who is asking?", "Your clients only", "Cache, cost cap"];
+          nodes.push(rect(c("dl"), L(1), dlTop, bw, dlH, txt("h", cx(1), dlTop + 24, "Data layer") + subs.map(function (s, n) { return txt("sub", cx(1), dlTop + 50 + n * 19, s); }).join("")));
+          finish(state, svg, W, H, lanes, nodes);
+          fig.querySelector(".flow-t").textContent = r.t; fig.querySelector(".flow-b").textContent = r.b;
+          Array.prototype.forEach.call(tabs.children, function (b) { b.setAttribute("aria-pressed", String(b.dataset.r === pick)); });
+        }
+        tabs.addEventListener("click", function (e) { var b = e.target.closest("button"); if (b) { pick = b.dataset.r; draw(); } });
+        if (window.ResizeObserver) new ResizeObserver(draw).observe(box); else window.addEventListener("resize", draw);
+        draw(); drawn.push(state);
+      }
+
+      // Figure three: a short line of steps, or a loop, with the data running along it.
+      function chain(fig) {
+        var svg = fig.querySelector("svg"), box = fig.querySelector(".flow-stage"), state = { live: [], tok: null }, steps = fig.dataset.steps.split("|"), loop = fig.dataset.loop;
+        function draw() {
+          var W = box.clientWidth, n = steps.length, m = 14, lanes = [], nodes = [], i, H;
+          if (W >= 720) {
+            H = loop ? 190 : 116; var gap = 22, bw = (W - 2 * m - (n - 1) * gap) / n, hn = 56, y = loop ? 34 : (H - hn) / 2;
+            for (i = 0; i < n; i++) {
+              var x = m + i * (bw + gap);
+              if (i < n - 1) lanes.push('<path class="lane live" d="M' + (x + bw) + " " + (y + hn / 2) + "H" + (x + bw + gap) + '"/>');
+              nodes.push(rect("on", x, y, bw, hn, txt("l", x + bw / 2, y + hn / 2, steps[i])));
+            }
+            if (loop) {
+              var x0 = m + bw / 2, x1 = m + (n - 1) * (bw + gap) + bw / 2, yb = y + hn;
+              lanes.push('<path class="lane live dash" d="M' + x1 + " " + yb + "C" + x1 + " " + (yb + 76) + " " + x0 + " " + (yb + 76) + " " + x0 + " " + yb + '"/>');
+              nodes.push(txt("sub", (x0 + x1) / 2, yb + 38, loop));
+            }
+          } else {
+            var hn2 = 44, g2 = 16, side = loop ? 44 : 0, bw2 = Math.min(W - 2 * m - side, 340); H = 2 * m + n * hn2 + (n - 1) * g2;
+            for (i = 0; i < n; i++) {
+              var yy = m + i * (hn2 + g2);
+              if (i < n - 1) lanes.push('<path class="lane live" d="M' + (m + bw2 / 2) + " " + (yy + hn2) + "V" + (yy + hn2 + g2) + '"/>');
+              nodes.push(rect("on", m, yy, bw2, hn2, txt("l", m + bw2 / 2, yy + hn2 / 2, steps[i])));
+            }
+            if (loop) { var xr = m + bw2, ya = m + (n - 1) * (hn2 + g2) + hn2 / 2, yt = m + hn2 / 2; lanes.push('<path class="lane live dash" d="M' + xr + " " + ya + "C" + (xr + 38) + " " + ya + " " + (xr + 38) + " " + yt + " " + xr + " " + yt + '"/>'); }
+          }
+          box.style.height = H + "px";
+          finish(state, svg, W, H, lanes, nodes);
+        }
+        if (window.ResizeObserver) new ResizeObserver(draw).observe(box); else window.addEventListener("resize", draw);
+        draw(); drawn.push(state);
+      }
+
+      figs.forEach(function (fig) { (fig.dataset.flow === "paths" ? paths : fig.dataset.flow === "chain" ? chain : route)(fig); });
+      function loop(t) { drawn.forEach(function (s) { place(s, t); }); requestAnimationFrame(loop); }
+      if (!still) requestAnimationFrame(loop);
+    })();
+
+
+    // Charts draw themselves once, when they come on screen. With scripts off or "reduce motion" on they are simply there.
+    (function () {
+      var figs = Array.prototype.slice.call(document.querySelectorAll("[data-reveal]"));
+      if (!figs.length || !window.IntersectionObserver || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+      figs.forEach(function (fig) { fig.classList.add("armed"); });
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (en) { if (en.isIntersecting) { en.target.classList.add("seen"); io.unobserve(en.target); } });
+      }, { threshold: 0.35 });
+      figs.forEach(function (fig) { io.observe(fig); });
+      // A client work card plays its picture again when the pointer comes back to it.
+      Array.prototype.slice.call(document.querySelectorAll(".case-card")).forEach(function (card) {
+        var pic = card.querySelector("[data-reveal]");
+        if (!pic) return;
+        card.addEventListener("pointerenter", function () {
+          if (!pic.classList.contains("seen")) return;
+          pic.classList.remove("seen"); void pic.offsetWidth; pic.classList.add("seen");
+        });
+      });
+    })();
+
+    // Projects carousel. With one project showing, or scripts off, it is simply the project.
+    (function () {
+      var car = document.getElementById("pcar");
+      if (!car) return;
+      var track = car.querySelector(".pcar-track"), nav = car.querySelector(".pcar-nav");
+      var slides = Array.prototype.filter.call(track.children, function (el) { return !el.hidden; });
+      var tabs = Array.prototype.filter.call(car.querySelectorAll(".pcar-tabs button"), function (el) { return !el.hidden; });
+      var arrows = car.querySelectorAll(".pcar-arrows button"), at = 0;
+      if (slides.length < 2) return;
+      nav.hidden = false;
+      var calm = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      function mark(i) {
+        at = i;
+        tabs.forEach(function (tab, n) { tab.setAttribute("aria-pressed", n === i ? "true" : "false"); });
+        arrows[0].disabled = i === 0; arrows[1].disabled = i === slides.length - 1;
+      }
+      function go(i) {
+        i = Math.max(0, Math.min(slides.length - 1, i));
+        track.scrollTo({ left: slides[i].offsetLeft - slides[0].offsetLeft, behavior: calm ? "auto" : "smooth" });
+        mark(i);
+      }
+      tabs.forEach(function (tab, n) { tab.addEventListener("click", function () { go(n); }); });
+      Array.prototype.forEach.call(arrows, function (b) { b.addEventListener("click", function () { go(at + Number(b.getAttribute("data-dir"))); }); });
+      var tick = null;
+      track.addEventListener("scroll", function () {
+        clearTimeout(tick);
+        tick = setTimeout(function () {
+          var best = 0, gap = Infinity;
+          slides.forEach(function (el, n) { var d = Math.abs(el.offsetLeft - slides[0].offsetLeft - track.scrollLeft); if (d < gap) { gap = d; best = n; } });
+          mark(best);
+        }, 90);
+      }, { passive: true });
+      mark(0);
+    })();
+  </script>
+</body>
+</html>

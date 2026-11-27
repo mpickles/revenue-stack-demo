@@ -194,7 +194,7 @@ class CommittedPages(unittest.TestCase):
         home = self.pages["index.html"]
         self.assertEqual(home.count('class="wf-card'), 0, "part tiles live on the project pages, not the home page")
         self.assertEqual(home.count('class="cover-card'), len(self.config["cases"]), "the only cards of that kind here are the client work ones")
-        self.assertEqual(home.count("See the six on the map"), 1, "only the second project keeps the line; the platform card has its own button")
+        self.assertEqual(home.count("See them on the map"), 1, "only the second project keeps the line; the platform card has its own button")
         self.assertNotIn('href="platform.html#hub"', home)
         self.assertIn('href="project.html#map"', home)
         self.assertIn('id="hub"', self.pages["platform.html"])
@@ -250,7 +250,7 @@ class CommittedPages(unittest.TestCase):
         order = ["How it is put together</h2>", "Follow one lead</h2>", "Why it is built the way it is</h2>", '<nav class="pager"']
         marks = [body.index(mark) for mark in order]
         self.assertEqual(marks, sorted(marks), "the same sections in the same order as the platform page")
-        tiles = body[body.index('<div class="covers ptiles" data-stagger>'):body.index("Follow one lead</h2>")]
+        tiles = body[body.index('<div class="covers ptiles n4" data-stagger>'):body.index("Follow one lead</h2>")]
         journey = self.config["project"]["journey"]
         self.assertEqual(tiles.count('<a class="cover-card'), len(journey))
         for n, step in enumerate(journey, 1):

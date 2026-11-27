@@ -1,0 +1,40 @@
+<svg class="dia" viewBox="0 0 756 542" role="img" aria-labelledby="signal-outbound-t signal-outbound-d" xmlns="http://www.w3.org/2000/svg">
+<title id="signal-outbound-t">How a signal becomes a checked, approved email</title>
+<desc id="signal-outbound-d">An n8n workflow reads each top-tier account's public job board once a day. A new posting for a fleet, dispatch or logistics role is saved once as a signal. The do-not-contact list and the 30-day rule can stop it there. Claude drafts a three-email sequence, a check in code rejects any claim that does not trace to the signal or the account record, and a person approves. The send goes to test inboxes, each step is logged in Salesforce, and replies are sorted and written back.</desc>
+<defs><marker id="signal-outbound-a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" class="dia-head"/></marker></defs>
+<path d="M214 47 L278 47" class="dia-line" marker-end="url(#signal-outbound-a)"/>
+<path d="M478 47 L542 47" class="dia-line" marker-end="url(#signal-outbound-a)"/>
+<path d="M378 80 L378 126" class="dia-line" marker-end="url(#signal-outbound-a)"/>
+<path d="M378 192 L378 238" class="dia-line" marker-end="url(#signal-outbound-a)"/>
+<path d="M478 271 L542 271" class="dia-line" marker-end="url(#signal-outbound-a)"/>
+<path d="M378 304 L378 350" class="dia-line" marker-end="url(#signal-outbound-a)"/>
+<path d="M378 416 L378 462" class="dia-line" marker-end="url(#signal-outbound-a)"/>
+<path d="M278 495 L214 495" class="dia-line" marker-end="url(#signal-outbound-a)"/>
+<rect x="14" y="14" width="200" height="66" rx="6" class="dia-box "/>
+<text x="114.0" y="44" class="dia-text" text-anchor="middle">Tier A accounts</text>
+<text x="114.0" y="61" class="dia-sub" text-anchor="middle">from the account list</text>
+<rect x="278" y="14" width="200" height="66" rx="6" class="dia-box b"/>
+<text x="378.0" y="44" class="dia-text" text-anchor="middle">Daily job board check</text>
+<text x="378.0" y="61" class="dia-sub" text-anchor="middle">n8n, public job boards</text>
+<rect x="542" y="14" width="200" height="66" rx="6" class="dia-box m"/>
+<text x="642.0" y="44" class="dia-text" text-anchor="middle">Stopped</text>
+<text x="642.0" y="61" class="dia-sub" text-anchor="middle">repeat, wrong role, suppressed</text>
+<rect x="278" y="126" width="200" height="66" rx="6" class="dia-box b"/>
+<text x="378.0" y="156" class="dia-text" text-anchor="middle">Claude drafts</text>
+<text x="378.0" y="173" class="dia-sub" text-anchor="middle">three plain-text emails</text>
+<rect x="278" y="238" width="200" height="66" rx="6" class="dia-box b"/>
+<text x="378.0" y="268" class="dia-text" text-anchor="middle">Claim check in code</text>
+<text x="378.0" y="285" class="dia-sub" text-anchor="middle">traces to the signal, or rejected</text>
+<rect x="542" y="238" width="200" height="66" rx="6" class="dia-box m"/>
+<text x="642.0" y="268" class="dia-text" text-anchor="middle">Rejected draft</text>
+<text x="642.0" y="285" class="dia-sub" text-anchor="middle">logged with the reason</text>
+<rect x="278" y="350" width="200" height="66" rx="6" class="dia-box b"/>
+<text x="378.0" y="380" class="dia-text" text-anchor="middle">A person approves</text>
+<text x="378.0" y="397" class="dia-sub" text-anchor="middle">edit, approve or reject</text>
+<rect x="278" y="462" width="200" height="66" rx="6" class="dia-box b"/>
+<text x="378.0" y="492" class="dia-text" text-anchor="middle">Send and log</text>
+<text x="378.0" y="509" class="dia-sub" text-anchor="middle">test inboxes, Salesforce task</text>
+<rect x="14" y="462" width="200" height="66" rx="6" class="dia-box "/>
+<text x="114.0" y="492" class="dia-text" text-anchor="middle">Replies sorted</text>
+<text x="114.0" y="509" class="dia-sub" text-anchor="middle">Salesforce updated</text>
+</svg>

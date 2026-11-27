@@ -1,0 +1,40 @@
+<svg class="dia" viewBox="0 0 756 542" role="img" aria-labelledby="account-list-t account-list-d" xmlns="http://www.w3.org/2000/svg">
+<title id="account-list-t">How the account list is built, scored and loaded</title>
+<desc id="account-list-d">A one-page definition of the ideal customer drives a company search in Clay. A waterfall fills in three fields, cheapest source first. A written formula scores each company into a tier, and the tier is checked against 30 hand labels. People are found at the top tier only. An n8n workflow loads those accounts and contacts into Salesforce, matched on domain.</desc>
+<defs><marker id="account-list-a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" class="dia-head"/></marker></defs>
+<path d="M214 47 L278 47" class="dia-line" marker-end="url(#account-list-a)"/>
+<path d="M378 80 L378 126" class="dia-line" marker-end="url(#account-list-a)"/>
+<path d="M378 192 L378 238" class="dia-line" marker-end="url(#account-list-a)"/>
+<path d="M478 271 L542 271" class="dia-line" marker-end="url(#account-list-a)"/>
+<path d="M642 80 L642 238" class="dia-line" marker-end="url(#account-list-a)"/>
+<path d="M378 304 L378 350" class="dia-line" marker-end="url(#account-list-a)"/>
+<path d="M378 416 L378 462" class="dia-line" marker-end="url(#account-list-a)"/>
+<path d="M278 495 L214 495" class="dia-line" marker-end="url(#account-list-a)"/>
+<rect x="14" y="14" width="200" height="66" rx="6" class="dia-box "/>
+<text x="114.0" y="44" class="dia-text" text-anchor="middle">Ideal customer</text>
+<text x="114.0" y="61" class="dia-sub" text-anchor="middle">one page, three disqualifiers</text>
+<rect x="278" y="14" width="200" height="66" rx="6" class="dia-box b"/>
+<text x="378.0" y="44" class="dia-text" text-anchor="middle">Find companies in Clay</text>
+<text x="378.0" y="61" class="dia-sub" text-anchor="middle">about 150 that fit</text>
+<rect x="542" y="14" width="200" height="66" rx="6" class="dia-box "/>
+<text x="642.0" y="44" class="dia-text" text-anchor="middle">30 hand labels</text>
+<text x="642.0" y="61" class="dia-sub" text-anchor="middle">written before the score</text>
+<rect x="278" y="126" width="200" height="66" rx="6" class="dia-box b"/>
+<text x="378.0" y="156" class="dia-text" text-anchor="middle">Waterfall enrichment</text>
+<text x="378.0" y="173" class="dia-sub" text-anchor="middle">cheapest source first</text>
+<rect x="278" y="238" width="200" height="66" rx="6" class="dia-box b"/>
+<text x="378.0" y="268" class="dia-text" text-anchor="middle">Fit score and tiers</text>
+<text x="378.0" y="285" class="dia-sub" text-anchor="middle">A, B, C by a written formula</text>
+<rect x="542" y="238" width="200" height="66" rx="6" class="dia-box m"/>
+<text x="642.0" y="268" class="dia-text" text-anchor="middle">Agreement check</text>
+<text x="642.0" y="285" class="dia-sub" text-anchor="middle">tier against the labels</text>
+<rect x="278" y="350" width="200" height="66" rx="6" class="dia-box b"/>
+<text x="378.0" y="380" class="dia-text" text-anchor="middle">People at Tier A</text>
+<text x="378.0" y="397" class="dia-sub" text-anchor="middle">title rule, verified email</text>
+<rect x="278" y="462" width="200" height="66" rx="6" class="dia-box b"/>
+<text x="378.0" y="492" class="dia-text" text-anchor="middle">n8n load to Salesforce</text>
+<text x="378.0" y="509" class="dia-sub" text-anchor="middle">matched on domain</text>
+<rect x="14" y="462" width="200" height="66" rx="6" class="dia-box "/>
+<text x="114.0" y="492" class="dia-text" text-anchor="middle">Cost sheet</text>
+<text x="114.0" y="509" class="dia-sub" text-anchor="middle">credits per usable contact</text>
+</svg>
