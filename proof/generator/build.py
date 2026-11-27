@@ -540,6 +540,7 @@ def build_pages():
         first_name=e(first["name"]),
         first_why=e(first["why"]),
         first_slug=first["slug"],
+        first_tile=e(builds[0]["tile"]),
         first_gets=e(first["gets"]),
         first_out=e(first["hands_on"]),
         choices=indent("\n".join(

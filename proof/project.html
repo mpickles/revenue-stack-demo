@@ -125,7 +125,7 @@
     .status.is-active,.rows .status.is-active{color:var(--accent)}
 
     /* The scene: one system, drawn as you scroll */
-    .pin{min-height:100svh;display:flex;flex-direction:column;justify-content:center;padding:96px 0 40px}
+    .pin{padding:24px 0 40px}
     .writeup .scene{margin-top:24px}
     .writeup .scene h2{font-size:clamp(1.5rem,1.3rem + .9vw,2rem)}
     .scene svg{display:block;width:100%;height:auto;overflow:visible;margin:40px 0 0}
@@ -369,6 +369,7 @@
     .why .c b{font-weight:500;line-height:1.35;display:block}
     .why .d b{font-weight:500;font-size:1.125rem;letter-spacing:-.02em;line-height:1.3;display:block}
     .why .d p{margin:10px 0 0;font-size:.9375rem;line-height:1.5;color:var(--muted)}
+    @supports (grid-template-rows:subgrid){@media (min-width:861px){.why{grid-template-rows:auto auto;row-gap:0}.why article{display:grid;grid-row:span 2;grid-template-rows:subgrid}}}
     .cs-slot{margin:32px 0 0}
     .shows{margin:32px 0 0;border-top:2px solid var(--accent)}
     .shows div{display:grid;gap:6px 40px;padding:18px 0;border-bottom:1px solid var(--line)}
@@ -680,7 +681,6 @@
 
     <div class="cs-block">
       <h2 class="cs-h">One lead, start to finish</h2>
-      <p class="sub">6 parts. Each one hands the lead to the next. Click a part, or watch one lead go through.</p>
       <div class="ctl"><button type="button" id="play">Follow the lead</button></div>
       <div class="map" id="map">
         <button type="button" class="stop" data-step="0"><svg class="art" style="view-transition-name:cover-campaign-qa-agent" viewBox="0 0 400 250" role="img" aria-label="A grid of checks with six flagged in colour" xmlns="http://www.w3.org/2000/svg"><rect class="c-cell m-blink" style="--i:0" x="76" y="66" width="22" height="22" rx="4"/><rect class="c-on m-mark" style="--i:3" x="108" y="66" width="22" height="22" rx="4"/><rect class="c-cell m-blink" style="--i:4" x="140" y="66" width="22" height="22" rx="4"/><rect class="c-cell m-blink" style="--i:6" x="172" y="66" width="22" height="22" rx="4"/><rect class="c-cell m-blink" style="--i:8" x="204" y="66" width="22" height="22" rx="4"/><rect class="c-cell m-blink" style="--i:10" x="236" y="66" width="22" height="22" rx="4"/><rect class="c-cell m-blink" style="--i:12" x="268" y="66" width="22" height="22" rx="4"/><rect class="c-cell m-blink" style="--i:14" x="300" y="66" width="22" height="22" rx="4"/><rect class="c-cell m-blink" style="--i:0" x="76" y="98" width="22" height="22" rx="4"/><rect class="c-cell m-blink" style="--i:2" x="108" y="98" width="22" height="22" rx="4"/><rect class="c-cell m-blink" style="--i:4" x="140" y="98" width="22" height="22" rx="4"/><rect class="c-cell m-blink" style="--i:6" x="172" y="98" width="22" height="22" rx="4"/><rect class="c-on m-mark" style="--i:9" x="204" y="98" width="22" height="22" rx="4"/><rect class="c-cell m-blink" style="--i:10" x="236" y="98" width="22" height="22" rx="4"/><rect class="c-on m-mark" style="--i:13" x="268" y="98" width="22" height="22" rx="4"/><rect class="c-cell m-blink" style="--i:14" x="300" y="98" width="22" height="22" rx="4"/><rect class="c-cell m-blink" style="--i:0" x="76" y="130" width="22" height="22" rx="4"/><rect class="c-cell m-blink" style="--i:2" x="108" y="130" width="22" height="22" rx="4"/><rect class="c-on m-mark" style="--i:5" x="140" y="130" width="22" height="22" rx="4"/><rect class="c-cell m-blink" style="--i:6" x="172" y="130" width="22" height="22" rx="4"/><rect class="c-cell m-blink" style="--i:8" x="204" y="130" width="22" height="22" rx="4"/><rect class="c-cell m-blink" style="--i:10" x="236" y="130" width="22" height="22" rx="4"/><rect class="c-cell m-blink" style="--i:12" x="268" y="130" width="22" height="22" rx="4"/><rect class="c-cell m-blink" style="--i:14" x="300" y="130" width="22" height="22" rx="4"/><rect class="c-on m-mark" style="--i:1" x="76" y="162" width="22" height="22" rx="4"/><rect class="c-cell m-blink" style="--i:2" x="108" y="162" width="22" height="22" rx="4"/><rect class="c-cell m-blink" style="--i:4" x="140" y="162" width="22" height="22" rx="4"/><rect class="c-cell m-blink" style="--i:6" x="172" y="162" width="22" height="22" rx="4"/><rect class="c-cell m-blink" style="--i:8" x="204" y="162" width="22" height="22" rx="4"/><rect class="c-on m-mark" style="--i:11" x="236" y="162" width="22" height="22" rx="4"/><rect class="c-cell m-blink" style="--i:12" x="268" y="162" width="22" height="22" rx="4"/><rect class="c-cell m-blink" style="--i:14" x="300" y="162" width="22" height="22" rx="4"/></svg><span class="stop-cap"><b><i>1</i>Launch check</b></span></button><div class="link"><i class="ln"></i></div>
@@ -716,13 +716,13 @@
 
     <div class="cs-block">
       <h2 class="cs-h">Why it is built the way it is</h2>
-      <p class="sub">Every choice is written down with what it costs.</p>
       <div class="why" data-stagger>
         <article><div class="c"><small>Because</small><b>A visitor can say no to tracking.</b></div><div class="d"><small>So</small><b>Nothing is stored until they agree.</b><p>Click IDs wait in memory until consent. Browser storage is storage too.</p></div></article>
         <article><div class="c"><small>Because</small><b>Google and Meta match a sale to the most recent ad click.</b></div><div class="d"><small>So</small><b>A new ad click replaces the stored one.</b><p>Earlier touches are lost. That is the cost, and it is written down.</p></div></article>
         <article><div class="c"><small>Because</small><b>An unknown company size is not a small company.</b></div><div class="d"><small>So</small><b>Leads with no fleet size go to a review queue.</b><p>A wrong owner costs more than a short wait.</p></div></article>
       </div>
     </div>
+    <nav class="pager" aria-label="Where next"><a class="prev" href="index.html#work"><span>Back</span>All work</a><a class="all" href="platform.html"><span>Other project</span>Operations platform</a><a class="next" href="builds/campaign-qa-agent.html"><span>Start the six parts</span>1. Tracked site</a></nav>
   </div></main>
 
     <section class="contact slim" id="contact"><div class="wrap">
@@ -990,14 +990,14 @@
           gsap.from(table.querySelectorAll("tr"), { clipPath: "inset(0 100% 0 0)", duration: FAST, stagger: 0.02, ease: EASE, scrollTrigger: { trigger: table, start: "top 98%" } });
         });
 
-        // The routing scene: the page holds while the diagram draws itself.
+        // The routing scene: the diagram draws itself once, when it comes on screen. The page keeps scrolling.
         if (steps.length) {
-          var draw = gsap.timeline({ scrollTrigger: { trigger: ".scene .pin", start: "top top", end: "+=2000", pin: true, scrub: 0.4,
-            onUpdate: function (self) { say(Math.min(steps.length - 1, Math.floor(self.progress * steps.length))); } } });
+          var draw = gsap.timeline({ scrollTrigger: { trigger: ".scene .pin", start: "top 65%", once: true },
+            onUpdate: function () { say(Math.min(steps.length - 1, Math.floor(draw.progress() * steps.length))); } });
           steps.forEach(function (step) {
             var wire = step.querySelector(".wire");
-            if (wire) { var len = wire.getTotalLength(); gsap.set(wire, { strokeDasharray: len, strokeDashoffset: len }); draw.to(wire, { strokeDashoffset: 0, duration: 0.5, ease: "none" }); }
-            draw.from(step.querySelectorAll("rect, text"), { opacity: 0, duration: 0.5, ease: "none" }, wire ? ">-0.1" : 0);
+            if (wire) { var len = wire.getTotalLength(); gsap.set(wire, { strokeDasharray: len, strokeDashoffset: len }); draw.to(wire, { strokeDashoffset: 0, duration: 0.7, ease: "none" }); }
+            draw.from(step.querySelectorAll("rect, text"), { opacity: 0, duration: 0.7, ease: "none" }, wire ? ">-0.1" : 0);
           });
           say(0);
         }

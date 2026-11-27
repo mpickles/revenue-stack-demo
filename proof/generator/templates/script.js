@@ -251,14 +251,14 @@
       gsap.from(table.querySelectorAll("tr"), { clipPath: "inset(0 100% 0 0)", duration: FAST, stagger: 0.02, ease: EASE, scrollTrigger: { trigger: table, start: "top 98%" } });
     });
 
-    // The routing scene: the page holds while the diagram draws itself.
+    // The routing scene: the diagram draws itself once, when it comes on screen. The page keeps scrolling.
     if (steps.length) {
-      var draw = gsap.timeline({ scrollTrigger: { trigger: ".scene .pin", start: "top top", end: "+=2000", pin: true, scrub: 0.4,
-        onUpdate: function (self) { say(Math.min(steps.length - 1, Math.floor(self.progress * steps.length))); } } });
+      var draw = gsap.timeline({ scrollTrigger: { trigger: ".scene .pin", start: "top 65%", once: true },
+        onUpdate: function () { say(Math.min(steps.length - 1, Math.floor(draw.progress() * steps.length))); } });
       steps.forEach(function (step) {
         var wire = step.querySelector(".wire");
-        if (wire) { var len = wire.getTotalLength(); gsap.set(wire, { strokeDasharray: len, strokeDashoffset: len }); draw.to(wire, { strokeDashoffset: 0, duration: 0.5, ease: "none" }); }
-        draw.from(step.querySelectorAll("rect, text"), { opacity: 0, duration: 0.5, ease: "none" }, wire ? ">-0.1" : 0);
+        if (wire) { var len = wire.getTotalLength(); gsap.set(wire, { strokeDasharray: len, strokeDashoffset: len }); draw.to(wire, { strokeDashoffset: 0, duration: 0.7, ease: "none" }); }
+        draw.from(step.querySelectorAll("rect, text"), { opacity: 0, duration: 0.7, ease: "none" }, wire ? ">-0.1" : 0);
       });
       say(0);
     }

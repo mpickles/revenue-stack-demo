@@ -125,7 +125,7 @@
     .status.is-active,.rows .status.is-active{color:var(--accent)}
 
     /* The scene: one system, drawn as you scroll */
-    .pin{min-height:100svh;display:flex;flex-direction:column;justify-content:center;padding:96px 0 40px}
+    .pin{padding:24px 0 40px}
     .writeup .scene{margin-top:24px}
     .writeup .scene h2{font-size:clamp(1.5rem,1.3rem + .9vw,2rem)}
     .scene svg{display:block;width:100%;height:auto;overflow:visible;margin:40px 0 0}
@@ -369,6 +369,7 @@
     .why .c b{font-weight:500;line-height:1.35;display:block}
     .why .d b{font-weight:500;font-size:1.125rem;letter-spacing:-.02em;line-height:1.3;display:block}
     .why .d p{margin:10px 0 0;font-size:.9375rem;line-height:1.5;color:var(--muted)}
+    @supports (grid-template-rows:subgrid){@media (min-width:861px){.why{grid-template-rows:auto auto;row-gap:0}.why article{display:grid;grid-row:span 2;grid-template-rows:subgrid}}}
     .cs-slot{margin:32px 0 0}
     .shows{margin:32px 0 0;border-top:2px solid var(--accent)}
     .shows div{display:grid;gap:6px 40px;padding:18px 0;border-bottom:1px solid var(--line)}
@@ -688,7 +689,7 @@
     <section class="scene" aria-label="How the routing build works">
       <div class="pin">
         <h2>How it works</h2>
-        <p class="sub">One lead, from the form to Google Ads. Scroll to draw it.</p>
+        <p class="sub">One lead, from the form to Google Ads.</p>
         <svg viewBox="0 0 1200 330" role="img" aria-label="A form submit is always saved as a Salesforce lead, is judged on fleet size and routed by two Flows, converts with its click ID kept, is written to a checked upload file, and reaches Google Ads.">
           <g data-step="A visitor submits the form, with a click ID from the ad."><rect class="box" x="20" y="30" width="230" height="78" rx="4"/><text x="135" y="64">Form submit</text><text class="s" x="135" y="88">click ID, UTMs, consent</text></g>
           <g data-step="Nothing is blocked. Every lead is saved, even one that does not fit."><path class="wire" d="M250 69 H320"/><rect class="box" x="320" y="30" width="230" height="78" rx="4"/><text x="435" y="64">Nothing is blocked</text><text class="s" x="435" y="88">every lead is saved</text></g>
@@ -1406,14 +1407,14 @@
           gsap.from(table.querySelectorAll("tr"), { clipPath: "inset(0 100% 0 0)", duration: FAST, stagger: 0.02, ease: EASE, scrollTrigger: { trigger: table, start: "top 98%" } });
         });
 
-        // The routing scene: the page holds while the diagram draws itself.
+        // The routing scene: the diagram draws itself once, when it comes on screen. The page keeps scrolling.
         if (steps.length) {
-          var draw = gsap.timeline({ scrollTrigger: { trigger: ".scene .pin", start: "top top", end: "+=2000", pin: true, scrub: 0.4,
-            onUpdate: function (self) { say(Math.min(steps.length - 1, Math.floor(self.progress * steps.length))); } } });
+          var draw = gsap.timeline({ scrollTrigger: { trigger: ".scene .pin", start: "top 65%", once: true },
+            onUpdate: function () { say(Math.min(steps.length - 1, Math.floor(draw.progress() * steps.length))); } });
           steps.forEach(function (step) {
             var wire = step.querySelector(".wire");
-            if (wire) { var len = wire.getTotalLength(); gsap.set(wire, { strokeDasharray: len, strokeDashoffset: len }); draw.to(wire, { strokeDashoffset: 0, duration: 0.5, ease: "none" }); }
-            draw.from(step.querySelectorAll("rect, text"), { opacity: 0, duration: 0.5, ease: "none" }, wire ? ">-0.1" : 0);
+            if (wire) { var len = wire.getTotalLength(); gsap.set(wire, { strokeDasharray: len, strokeDashoffset: len }); draw.to(wire, { strokeDashoffset: 0, duration: 0.7, ease: "none" }); }
+            draw.from(step.querySelectorAll("rect, text"), { opacity: 0, duration: 0.7, ease: "none" }, wire ? ">-0.1" : 0);
           });
           say(0);
         }
