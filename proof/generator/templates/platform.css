@@ -702,3 +702,13 @@ details.whole dd b{font-size:.9375rem}
   .cs-block.split>:not(.cs-h){grid-column:2;min-width:0}
   .cs-block.split>.cs-h+*{margin-top:0}
 }
+
+/* The three lessons line up row by row: title with title, summary with summary, each point with its neighbours. */
+@supports (grid-template-rows:subgrid){
+  @media (min-width:861px){
+    .themes{grid-template-rows:repeat(6,auto);row-gap:0}
+    .themes article{display:grid;grid-row:span 6;grid-template-rows:subgrid}
+    .themes ul{display:grid;grid-row:span 3;grid-template-rows:subgrid}
+    .themes li:last-child{padding-bottom:0}
+  }
+}
