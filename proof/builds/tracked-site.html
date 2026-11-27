@@ -815,6 +815,41 @@
       function say(i) { if (says && i !== shown) { shown = i; says.textContent = steps[i].dataset.step; } }
       if (steps.length) say(steps.length - 1);
 
+      var lenis = null;  // set further down, when smooth scrolling starts
+      // Screenshots: press one to see it large, press again for full size. Works with or without motion.
+      (function () {
+        var shots = $$(".rshot-frame img");
+        if (!shots.length || !window.HTMLDialogElement) return;
+        var box = document.createElement("dialog"); box.className = "zoom"; box.setAttribute("data-lenis-prevent", ""); box.setAttribute("aria-label", "Screenshot, enlarged");
+        box.innerHTML = '<div class="zoom-bar"><button type="button" data-size>Full size</button><button type="button" data-close>Close</button></div><div class="zoom-box"></div>';
+        document.body.appendChild(box);
+        var big = document.createElement("img"), size = box.querySelector("[data-size]");
+        box.querySelector(".zoom-box").appendChild(big);
+        function fit(full) { box.classList.toggle("full", full); size.textContent = full ? "Fit to screen" : "Full size"; if (!full) box.scrollTo(0, 0); }
+        function open(img) {
+          big.src = img.currentSrc || img.src; big.alt = img.alt; fit(false);
+          box.showModal(); if (lenis) lenis.stop();
+        }
+        box.addEventListener("close", function () { if (lenis) lenis.start(); });
+        box.querySelector("[data-close]").addEventListener("click", function () { box.close(); });
+        size.addEventListener("click", function () { fit(!box.classList.contains("full")); });
+        big.addEventListener("click", function () { fit(!box.classList.contains("full")); });
+        box.addEventListener("click", function (e) { if (e.target === box || e.target.classList.contains("zoom-box")) box.close(); });
+        shots.forEach(function (img) {
+          img.classList.add("zoomable");
+          img.addEventListener("click", function () { open(img); });
+        });
+        // One "Expand" button per frame, for touch and keyboard. It opens whichever screenshot is showing.
+        $$(".rshot-frame").forEach(function (frame) {
+          var b = document.createElement("button"); b.type = "button"; b.className = "zoom-open"; b.textContent = "Expand";
+          b.addEventListener("click", function () {
+            var showing = $$("img", frame).filter(function (img) { return img.offsetParent !== null; })[0];
+            if (showing) open(showing);
+          });
+          frame.appendChild(b);
+        });
+      })();
+
       var motion = window.gsap && window.ScrollTrigger && !still;
       if (motion) gsap.registerPlugin.apply(gsap, [ScrollTrigger].concat(window.SplitText ? [SplitText] : [], window.Flip ? [Flip] : []));
 
@@ -888,7 +923,7 @@
 
       // Smooth scrolling. One clock drives the scroll and every animation tied to it.
       if (window.Lenis) {
-        var lenis = new Lenis({ anchors: true, allowNestedScroll: true });
+        lenis = new Lenis({ anchors: true, allowNestedScroll: true });
         lenis.on("scroll", ScrollTrigger.update);
         gsap.ticker.add(function (time) { lenis.raf(time * 1000); });
         gsap.ticker.lagSmoothing(0);
