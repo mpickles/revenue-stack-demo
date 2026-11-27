@@ -192,9 +192,10 @@ class CommittedPages(unittest.TestCase):
 
     def test_the_home_page_shows_two_projects_and_sends_the_reader_to_each_map_for_the_parts(self):
         home = self.pages["index.html"]
-        self.assertEqual(home.count('class="cover-card'), 0, "part tiles live on the project pages, not the home page")
-        self.assertEqual(home.count("See the six on the map"), 2)
-        self.assertIn('href="platform.html#hub"', home)
+        self.assertEqual(home.count('class="wf-card'), 0, "part tiles live on the project pages, not the home page")
+        self.assertEqual(home.count('class="cover-card'), len(self.config["cases"]), "the only cards of that kind here are the client work ones")
+        self.assertEqual(home.count("See the six on the map"), 1, "only the second project keeps the line; the platform card has its own button")
+        self.assertNotIn('href="platform.html#hub"', home)
         self.assertIn('href="project.html#map"', home)
         self.assertIn('id="hub"', self.pages["platform.html"])
         self.assertIn('id="map"', self.pages["project.html"])
@@ -431,16 +432,15 @@ class CommittedPages(unittest.TestCase):
     def test_the_home_page_shows_each_client_page_as_a_card_with_its_picture(self):
         home = self.pages["index.html"]
         block = home[home.index('<section class="sec" id="client-work"'):home.index('<section class="sec" id="experience"')]
-        self.assertEqual(block.count('<a class="case-card"'), len(self.config["cases"]))
+        self.assertEqual(block.count('<a class="cover-card case-card"'), len(self.config["cases"]))
         for case in self.config["cases"]:
-            card = block[block.index(f'<a class="case-card" href="{case["file"]}"'):]
+            card = block[block.index(f'<a class="cover-card case-card" href="{case["file"]}"'):]
             card = card[:card.index("</a>")]
             self.assertEqual(card.count('<span class="cs-hero thumb" data-reveal><svg viewBox="0 0 720 250" aria-hidden="true">'), 1, "the page's own picture, drawn in as it comes on screen")
-            self.assertIn(f'<small>{case["kind"]}</small>', card)
+            self.assertIn(f'<span class="meta"><span>{case["kind"]}</span><span>{"Published by Upgrow" if case.get("published") else "Client not named"}</span></span>', card)
             self.assertNotIn("<img", card)
         self.assertNotIn('<p class="sub">', block, "no subheading: the cards speak for themselves")
-        self.assertIn("@media (min-width:820px){.case-card{grid-template-columns:minmax(0,1.5fr) minmax(0,1fr)}}", home, "one card a row, the picture the larger half")
-        self.assertIn(".case-card .cs-hero.thumb svg{max-height:min(44svh,17rem)}", home, "never taller than the screen")
+        self.assertIn("@media (min-width:820px){.case-cards{grid-template-columns:repeat(3,minmax(0,1fr))}}", home, "three across, the same card as the platform parts")
         self.assertIn('card.addEventListener("pointerenter"', home, "the picture plays again on hover")
 
     def test_the_first_screen_shows_the_work_as_links(self):
@@ -774,7 +774,8 @@ class CommittedPages(unittest.TestCase):
         home = self.pages["index.html"]
         self.assertNotIn('id="tour"', home)
         self.assertNotIn("tour-pin", home, "nothing on the home page holds the screen still while it scrolls")
-        self.assertEqual(home.count('<a href="platform.html#hub">See the six on the map</a>'), 1, "one line points at the six parts")
+        self.assertNotIn("See the six on the map</a></p>\n      <article", home)
+        self.assertNotIn("parts, all live.", home, "the platform card's own button is the way in")
 
     def test_smooth_scrolling_is_one_pinned_version_on_every_page_that_animates(self):
         for path, page in self.pages.items():
