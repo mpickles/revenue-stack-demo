@@ -358,6 +358,8 @@ class CommittedPages(unittest.TestCase):
         for case in self.config["cases"]:
             page = self.pages[case["file"]]
             self.assertIn(f'href="{case["file"]}"', home)
+            if case.get("published"):
+                continue  # a client my employer has named in public: see the test below
             self.assertIn("Client not named", page)
             for label in ("<dt>Problem</dt>", "<dt>What I did</dt>", "<dt>Result</dt>"):
                 self.assertEqual(page.count(label), 1, f'{case["file"]} {label}')
@@ -366,6 +368,28 @@ class CommittedPages(unittest.TestCase):
             self.assertIn("What went wrong, and what I do now</h2>", page)
             self.assertNotIn("<img", page[page.index("<main"):page.index("</main>")], "no real screenshots on a client page")
             self.assertNotRegex(page[page.index("<main"):page.index("</main>")], r"\$\d", "no raw client money figures")
+
+    def test_a_published_case_study_names_the_client_links_the_source_and_says_my_part(self):
+        named = [case for case in self.config["cases"] if case.get("published")]
+        self.assertEqual(len(named), 2)
+        for case in named:
+            page = self.pages[case["file"]]
+            body = page[page.index("<main"):page.index("</main>")]
+            self.assertTrue(case["published"].startswith("https://www.upgrow.io/case-study/"), "only a page my employer published")
+            self.assertEqual(body.count(f'href="{case["published"]}"'), 1, case["file"])
+            self.assertIn(case["client"], body)
+            self.assertIn("Published by Upgrow", body)
+            for label in ("<dt>Problem</dt>", "<dt>What I did</dt>", "<dt>Result</dt>"):
+                self.assertEqual(body.count(label), 1, f'{case["file"]} {label}')
+            self.assertEqual(body.count("My part</h2>"), 1)
+            self.assertNotIn("<img", body, "no screenshots of a client's account")
+            self.assertNotRegex(body, r"\$\d", "no client money figures")
+        # A client is named on these pages and on the home page, and nowhere else.
+        for path, page in self.pages.items():
+            if path in ("index.html",) or path in [case["file"] for case in named]:
+                continue
+            for case in named:
+                self.assertNotIn(case["client"], page, f'{path} names {case["client"]}')
 
     def test_the_first_screen_shows_the_work_as_links(self):
         home = self.pages["index.html"]

@@ -394,6 +394,20 @@
       "file": "case-form-swap.html",
       "title": "A form swap cut paid leads in half",
       "description": "A form swap cut a client's paid leads by about 60% overnight. How I found the one cause."
+    },
+    {
+      "file": "case-eventmobi.html",
+      "title": "EventMobi: paid search revenue up 80% in a year",
+      "description": "My part in a paid search program Upgrow has published: keyword research, ad copy, budget pacing, data and experiments.",
+      "client": "EventMobi",
+      "published": "https://www.upgrow.io/case-study/eventmobi-paid-media/"
+    },
+    {
+      "file": "case-huddle.html",
+      "title": "Huddle Men's Health: 20x the organic traffic in a year",
+      "description": "My part in an SEO program Upgrow has published: keyword research, topics, briefs, writing, editing and publishing.",
+      "client": "Huddle Men's Health",
+      "published": "https://www.upgrow.io/case-study/huddle-mens-health-seo/"
     }
   ]
 }
