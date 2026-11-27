@@ -95,14 +95,14 @@ def render_readme(readme_text, readme_path, repo):
 
 def case_cards_html(cases):
     """The client work cards on the home page. Each shows, small, the picture its page opens on."""
-    order = sorted(cases, key=lambda c: 0 if c.get("published") else 1)
+    order = sorted(cases, key=lambda c: 0 if c.get("published") else 1 if c.get("pending") else 2)
     out = ['<div class="case-cards" data-stagger>']
     for case in order:
         body = (GENERATOR / "templates" / "cases" / case["file"]).read_text(encoding="utf-8")
         start = body.index("<svg", body.index('<figure class="cs-hero"'))
         svg = body[start:body.index("</svg>", start) + 6]
         svg = re.sub(r' role="img" aria-label="[^"]*"', ' aria-hidden="true"', svg, count=1)
-        note = "Published by Upgrow" if case.get("published") else "Client not named"
+        note = "Published" if case.get("published") else "Not named"
         out.append(f'  <a class="cover-card case-card" href="{case["file"]}"><span class="cs-hero thumb" data-reveal>{svg}</span>'
                    f'<span class="body"><b>{html.escape(case["card"], quote=False)}</b>'
                    f'<span class="meta"><span>{html.escape(case["kind"])}</span><span>{note}</span></span></span></a>')

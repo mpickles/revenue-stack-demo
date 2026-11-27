@@ -359,8 +359,8 @@ class CommittedPages(unittest.TestCase):
         for case in self.config["cases"]:
             page = self.pages[case["file"]]
             self.assertIn(f'href="{case["file"]}"', home)
-            if case.get("published"):
-                continue  # a client my employer has named in public: see the test below
+            if case.get("published") or case.get("pending"):
+                continue  # a client my employer has named in public, or is about to: see the tests below
             self.assertIn("Client not named", page)
             for label in ("<dt>Problem</dt>", "<dt>What I did</dt>", "<dt>Result</dt>"):
                 self.assertEqual(page.count(label), 1, f'{case["file"]} {label}')
@@ -369,6 +369,30 @@ class CommittedPages(unittest.TestCase):
             self.assertIn("What went wrong, and what I do now</h2>", page)
             self.assertNotIn("<img", page[page.index("<main"):page.index("</main>")], "no real screenshots on a client page")
             self.assertNotRegex(page[page.index("<main"):page.index("</main>")], r"\$\d", "no raw client money figures")
+
+    def test_a_case_study_my_employer_has_not_published_yet_names_no_client_and_links_nowhere(self):
+        waiting = [case for case in self.config["cases"] if case.get("pending")]
+        self.assertEqual(len(waiting), 1)
+        for case in waiting:
+            self.assertNotIn("client", case)
+            self.assertNotIn("published", case)
+            page = self.pages[case["file"]]
+            body = page[page.index("<main"):page.index("</main>")]
+            self.assertIn("Client not named", body)
+            self.assertNotIn("upgrow.io", body, "nothing to link to until it is published")
+            self.assertNotIn("case-form-swap.html", body, "the two unnamed stories are never tied together")
+            self.assertNotRegex(body, r"CRM (switch|change|migration)")
+            for label in ("<dt>Problem</dt>", "<dt>What I did</dt>", "<dt>Result</dt>"):
+                self.assertEqual(body.count(label), 1)
+            self.assertEqual(body.count("My part</h2>"), 1)
+            self.assertEqual(body.count('<figure class="resbars" data-reveal>'), 1)
+            self.assertEqual(body.count('data-flow="chain"'), 1)
+            self.assertNotIn("<img", body)
+            self.assertNotRegex(body, r"\$\d")
+        # Only a client my employer has published may carry a name in the config.
+        for case in self.config["cases"]:
+            if not case.get("published"):
+                self.assertNotIn("client", case, case["file"])
 
     def test_a_published_case_study_names_the_client_links_the_source_and_says_my_part(self):
         named = [case for case in self.config["cases"] if case.get("published")]
@@ -437,10 +461,10 @@ class CommittedPages(unittest.TestCase):
             card = block[block.index(f'<a class="cover-card case-card" href="{case["file"]}"'):]
             card = card[:card.index("</a>")]
             self.assertEqual(card.count('<span class="cs-hero thumb" data-reveal><svg viewBox="0 0 720 250" aria-hidden="true">'), 1, "the page's own picture, drawn in as it comes on screen")
-            self.assertIn(f'<span class="meta"><span>{case["kind"]}</span><span>{"Published by Upgrow" if case.get("published") else "Client not named"}</span></span>', card)
+            self.assertIn(f'<span class="meta"><span>{case["kind"]}</span><span>{"Published" if case.get("published") else "Not named"}</span></span>', card)
             self.assertNotIn("<img", card)
         self.assertNotIn('<p class="sub">', block, "no subheading: the cards speak for themselves")
-        self.assertIn("@media (min-width:820px){.case-cards{grid-template-columns:repeat(3,minmax(0,1fr))}}", home, "three across, the same card as the platform parts")
+        self.assertIn("@media (min-width:1100px){.case-cards{grid-template-columns:repeat(4,minmax(0,1fr))", home, "four across on a wide screen, the same card as the platform parts")
         self.assertIn('card.addEventListener("pointerenter"', home, "the picture plays again on hover")
 
     def test_the_first_screen_shows_the_work_as_links(self):
