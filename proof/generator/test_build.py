@@ -410,29 +410,19 @@ class CommittedPages(unittest.TestCase):
             self.assertNotRegex(hero, r"\$\d")
         self.assertIn(".cs-hero svg{display:block;width:100%;height:auto;max-height:min(46svh,19rem)}", self.pages["case-form-swap.html"], "never taller than the screen")
 
-    def test_the_home_page_shows_the_day_to_day_work_with_examples(self):
+    def test_the_day_to_day_work_is_told_in_the_current_job_not_in_a_section_of_its_own(self):
         home = self.pages["index.html"]
-        self.assertLess(home.index('id="client-work"'), home.index('id="daily"'))
-        self.assertLess(home.index('id="daily"'), home.index('id="experience"'))
-        block = home[home.index('<section class="sec" id="daily"'):home.index('<section class="sec" id="experience"')]
-        cards = block.split("<article>")[1:]
-        self.assertEqual([c[c.index("<h3>") + 4:c.index("</h3>")] for c in cards],
-                         ["Conversion tracking", "Landing pages", "Analysis and dashboards", "AI and automation"])
-        for card in cards:
-            self.assertEqual(card.count("<li>"), 3, "three examples each")
-            self.assertIn('aria-hidden="true"', card)
-        # Client data stays off the home page: no figures here, and no client named unless published.
-        self.assertNotRegex(block, r"\d\s*%|\$\d|\dx\b")
-        self.assertNotIn("<img", block)
-        published = [case["client"] for case in self.config["cases"] if case.get("published")]
-        for name in ("Revver", "Percona", "Radetco", "Sayva", "Eloquens", "Espresso", "Unstructured", "WitnessAI"):
-            self.assertNotIn(name, published)
-            self.assertNotIn(name, home)
-        self.assertIn("grid-template-rows:subgrid;grid-row:span 6", home, "the four cards line up row by row")
+        self.assertNotIn('id="daily"', home)
+        xp = home[home.index('<section class="sec" id="experience"'):]
+        job = xp[xp.index("<b>Marketing Operations Specialist</b>"):xp.index("<b>PPC and SEO Specialist</b>")]
+        for said in ("offline conversions", "Zapier", "MCP servers and connectors", "Looker Studio", "HubSpot"):
+            self.assertIn(said, job)
+        for tag in ("<li>Zapier</li>", "<li>Looker Studio</li>", "<li>MCP</li>"):
+            self.assertIn(tag, job)
 
     def test_the_home_page_shows_each_client_page_as_a_card_with_its_picture(self):
         home = self.pages["index.html"]
-        block = home[home.index('<section class="sec" id="client-work"'):home.index('<section class="sec" id="daily"')]
+        block = home[home.index('<section class="sec" id="client-work"'):home.index('<section class="sec" id="experience"')]
         self.assertEqual(block.count('<a class="case-card"'), len(self.config["cases"]))
         for case in self.config["cases"]:
             card = block[block.index(f'<a class="case-card" href="{case["file"]}"'):]
