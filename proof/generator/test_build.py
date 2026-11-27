@@ -405,7 +405,7 @@ class CommittedPages(unittest.TestCase):
             self.assertLess(body.index("<h1"), body.index('<figure class="cs-hero"'), "the picture sits under the title")
             self.assertLess(body.index('<figure class="cs-hero"'), body.index("<dt>Problem</dt>"), "and above the summary")
             self.assertRegex(hero, r'<svg viewBox="[^"]+" role="img" aria-label="[^"]{40,}">', "drawn, and described for a screen reader")
-            self.assertIn("<figcaption>Drawn, not a screenshot.", hero)
+            self.assertNotIn("<figcaption", hero, "the picture carries no caption")
             self.assertNotIn("<img", hero)
             self.assertNotRegex(hero, r"\$\d")
         self.assertIn(".cs-hero svg{display:block;width:100%;height:auto;max-height:min(46svh,19rem)}", self.pages["case-form-swap.html"], "never taller than the screen")
