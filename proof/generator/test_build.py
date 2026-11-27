@@ -714,6 +714,19 @@ class CommittedPages(unittest.TestCase):
         self.assertIn('document.getElementById("fsb")', page)
         self.assertLess(page.index("Try it: fill in the form</h2>"), page.index("What I chose, and what I turned down</h2>"))
 
+    def test_the_animated_diagrams_have_their_controls_and_agree_with_the_pages(self):
+        page = self.pages["platform.html"]
+        self.assertEqual(page.count('<div class="flowfig" data-flow="route">'), 1)
+        fig = page[page.index('<div class="flowfig" data-flow="route">'):page.index("Running the accounts, and the team</h2>")]
+        for part in ('class="flow-prev"', 'class="flow-play"', 'class="flow-next"', 'class="flow-dots"', 'aria-live="polite"', 'role="img" aria-label="'):
+            self.assertEqual(fig.count(part), 1, part)
+        app = self.pages["platform-web-app.html"]
+        self.assertEqual(app.count('<div class="flowfig" data-flow="paths">'), 1)
+        self.assertEqual(len(re.findall(r'<button type="button" data-r="(?:claude|app|deck)"', app)), 3)
+        self.assertIn("808 tests guard 215 models", page, "the diagram quotes the same counts as the warehouse page")
+        self.assertIn("215 models and 808 tests", self.pages["platform-clean.html"])
+        self.assertIn('matchMedia("(prefers-reduced-motion: reduce)")', page)
+
     def test_the_job_history_matches_the_dates_on_my_profile(self):
         home = self.pages["index.html"]
         jobs = home[home.index('id="experience"'):home.index('id="skills"')]

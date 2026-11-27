@@ -724,3 +724,34 @@ dialog.zoom.full img{max-width:none;max-height:none;cursor:zoom-out}
 dialog.zoom .zoom-bar{position:fixed;top:10px;right:12px;display:flex;gap:8px;z-index:1}
 dialog.zoom .zoom-bar button{border:1px solid rgb(236 237 238/.3);border-radius:8px;background:rgb(10 12 14/.8);color:#ECEDEE;padding:7px 14px 8px;font-size:.875rem}
 dialog.zoom .zoom-bar button:hover{border-color:#ECEDEE}
+
+/* Animated diagrams: boxes, lanes, and dots riding the lanes that are live. */
+.flowfig{margin-top:32px}
+.flow-stage{position:relative;height:420px;border:1px solid var(--line);border-radius:12px;background:var(--panel)}
+.flow-stage>svg{position:absolute;inset:0;width:100%;height:100%}
+.flowfig .n rect{fill:var(--bg);stroke:var(--line);stroke-width:1.5;transition:stroke .35s var(--ease)}
+.flowfig .n.on rect{stroke:var(--accent);stroke-width:2.5}
+.flowfig .n{transition:opacity .35s var(--ease)}
+.flowfig .n.off{opacity:.45}
+.flowfig .n .l{fill:var(--ink);font:500 14px var(--sans)}
+.flowfig .n .h{fill:var(--ink);font:500 17px var(--sans);letter-spacing:-.02em}
+.flowfig .n .sub{fill:var(--muted);font:13px var(--sans)}
+.flowfig .lane{fill:none;stroke:var(--line);stroke-width:2}
+.flowfig .lane.live{stroke:var(--accent);stroke-width:2.5}
+.flowfig .lane.dash{stroke-dasharray:5 5}
+.flowfig .tok circle{fill:var(--accent);stroke:var(--bg);stroke-width:2}
+.flow-panel{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:16px 40px;align-items:start;margin-top:22px}
+.flow-n{margin:0 0 6px;font-size:.875rem;color:var(--muted)}
+.flow-t{margin:0;font-weight:500;font-size:clamp(1.25rem,1.05rem + .9vw,1.625rem);letter-spacing:-.025em;line-height:1.15}
+.flow-b{margin:10px 0 0;max-width:40rem;color:var(--muted);min-height:4.5em}
+.flow-ctl{display:flex;flex-wrap:wrap;gap:8px}
+.flow-ctl button,.flow-dots button,.flow-tabs button{border:1px solid var(--line);background:var(--bg);border-radius:8px;min-height:40px;padding:0 14px;font-size:.875rem;color:var(--ink)}
+.flow-ctl .flow-play{background:var(--ink);border-color:var(--ink);color:var(--bg);min-width:5rem}
+.flow-dots{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+.flow-dots button{padding:0;width:40px;color:var(--muted)}
+.flow-dots button[aria-current="step"]{border-color:var(--ink);color:var(--ink);box-shadow:0 0 0 1px var(--ink)}
+.flow-tabs{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
+.flow-tabs button{color:var(--muted)}
+.flow-tabs button[aria-pressed="true"]{border-color:var(--ink);color:var(--ink);box-shadow:0 0 0 1px var(--ink)}
+.flowfig[data-flow="paths"] .flow-t{margin-top:18px;font-size:1.125rem}
+@media (max-width:760px){.flow-panel{grid-template-columns:minmax(0,1fr)}}
