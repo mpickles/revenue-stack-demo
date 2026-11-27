@@ -370,17 +370,18 @@ class CommittedPages(unittest.TestCase):
             self.assertNotIn("<img", page[page.index("<main"):page.index("</main>")], "no real screenshots on a client page")
             self.assertNotRegex(page[page.index("<main"):page.index("</main>")], r"\$\d", "no raw client money figures")
 
-    def test_a_case_study_my_employer_has_not_published_yet_names_no_client_and_links_nowhere(self):
+    def test_a_case_study_named_ahead_of_my_employer_publishing_it_links_nowhere_yet(self):
+        # One client is named before its case study is out, on my say-so (CLAUDE.md, Nov 27).
         waiting = [case for case in self.config["cases"] if case.get("pending")]
-        self.assertEqual(len(waiting), 1)
+        self.assertEqual([case.get("client") for case in waiting], ["Revver"])
         for case in waiting:
-            self.assertNotIn("client", case)
             self.assertNotIn("published", case)
             page = self.pages[case["file"]]
             body = page[page.index("<main"):page.index("</main>")]
-            self.assertIn("Client not named", body)
-            self.assertNotIn("upgrow.io", body, "nothing to link to until it is published")
-            self.assertNotIn("case-form-swap.html", body, "the two unnamed stories are never tied together")
+            self.assertIn(case["client"], body)
+            self.assertIn("Case study coming from Upgrow", body)
+            self.assertNotIn("href=\"https://www.upgrow.io", body, "nothing to link to until it is published")
+            self.assertNotIn("case-form-swap.html", body, "this page and the unnamed form story are never tied together")
             self.assertNotRegex(body, r"CRM (switch|change|migration)")
             for label in ("<dt>Problem</dt>", "<dt>What I did</dt>", "<dt>Result</dt>"):
                 self.assertEqual(body.count(label), 1)
@@ -389,14 +390,17 @@ class CommittedPages(unittest.TestCase):
             self.assertEqual(body.count('data-flow="chain"'), 1)
             self.assertNotIn("<img", body)
             self.assertNotRegex(body, r"\$\d")
-        # Only a client my employer has published may carry a name in the config.
+        # A client is named in the config only if published or on that short list.
         for case in self.config["cases"]:
-            if not case.get("published"):
+            if not case.get("published") and not case.get("pending"):
                 self.assertNotIn("client", case, case["file"])
+        # The unnamed form story never carries this client's name.
+        self.assertNotIn("Revver", self.pages["case-form-swap.html"])
 
     def test_a_published_case_study_names_the_client_links_the_source_and_says_my_part(self):
         named = [case for case in self.config["cases"] if case.get("published")]
         self.assertEqual(len(named), 2)
+        every_named = [case for case in self.config["cases"] if case.get("client")]
         for case in named:
             page = self.pages[case["file"]]
             body = page[page.index("<main"):page.index("</main>")]
@@ -415,9 +419,9 @@ class CommittedPages(unittest.TestCase):
             self.assertNotRegex(body, r"\$\d", "no client money figures")
         # A client is named on these pages and on the home page, and nowhere else.
         for path, page in self.pages.items():
-            if path in ("index.html",) or path in [case["file"] for case in named]:
+            if path in ("index.html",) or path in [case["file"] for case in every_named]:
                 continue
-            for case in named:
+            for case in every_named:
                 self.assertNotIn(case["client"], page, f'{path} names {case["client"]}')
 
     def test_every_client_work_page_opens_on_a_drawn_picture(self):
@@ -461,7 +465,7 @@ class CommittedPages(unittest.TestCase):
             card = block[block.index(f'<a class="cover-card case-card" href="{case["file"]}"'):]
             card = card[:card.index("</a>")]
             self.assertEqual(card.count('<span class="cs-hero thumb" data-reveal><svg viewBox="0 0 720 250" aria-hidden="true">'), 1, "the page's own picture, drawn in as it comes on screen")
-            self.assertIn(f'<span class="meta"><span>{case["kind"]}</span><span>{"Published" if case.get("published") else "Not named"}</span></span>', card)
+            self.assertIn(f'<span class="meta"><span>{case["kind"]}</span><span>{"Published" if case.get("published") else "Coming soon" if case.get("pending") else "Not named"}</span></span>', card)
             self.assertNotIn("<img", card)
         self.assertNotIn('<p class="sub">', block, "no subheading: the cards speak for themselves")
         self.assertIn("@media (min-width:1100px){.case-cards{grid-template-columns:repeat(4,minmax(0,1fr))", home, "four across on a wide screen, the same card as the platform parts")

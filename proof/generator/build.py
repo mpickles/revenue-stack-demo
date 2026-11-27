@@ -102,7 +102,7 @@ def case_cards_html(cases):
         start = body.index("<svg", body.index('<figure class="cs-hero"'))
         svg = body[start:body.index("</svg>", start) + 6]
         svg = re.sub(r' role="img" aria-label="[^"]*"', ' aria-hidden="true"', svg, count=1)
-        note = "Published" if case.get("published") else "Not named"
+        note = "Published" if case.get("published") else "Coming soon" if case.get("pending") else "Not named"
         out.append(f'  <a class="cover-card case-card" href="{case["file"]}"><span class="cs-hero thumb" data-reveal>{svg}</span>'
                    f'<span class="body"><b>{html.escape(case["card"], quote=False)}</b>'
                    f'<span class="meta"><span>{html.escape(case["kind"])}</span><span>{note}</span></span></span></a>')

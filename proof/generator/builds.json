@@ -416,11 +416,12 @@
       "published": "https://www.upgrow.io/case-study/huddle-mens-health-seo/"
     },
     {
-      "file": "case-software-leads.html",
+      "file": "case-revver.html",
       "kind": "Paid search",
-      "card": "A software client: more qualified leads at a lower cost each.",
-      "title": "A software client: 5x the qualified leads at 73% lower cost",
-      "description": "My part in a paid search program for a B2B software client: lead analysis, tracking, landing pages and experiments.",
+      "card": "Revver: more qualified leads at a lower cost each.",
+      "title": "Revver: 5x the qualified leads at 73% lower cost",
+      "client": "Revver",
+      "description": "My part in a paid search program for Revver: lead analysis, tracking, landing pages and experiments.",
       "pending": true
     }
   ]
