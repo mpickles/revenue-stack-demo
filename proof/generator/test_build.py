@@ -473,6 +473,8 @@ class CommittedPages(unittest.TestCase):
     def test_every_platform_page_says_what_went_wrong_and_what_i_do_now(self):
         for item in self.config["platform"]["pages"]:
             page = self.pages[item["file"]]
+            if item["file"] == "platform.html":
+                continue  # the overview page ends on what I learned; each of the six part pages says what went wrong
             self.assertEqual(page.count("What went wrong, and what I do now</h2>"), 1, item["file"])
             block = page[page.index("What went wrong, and what I do now</h2>"):]
             block = block[:block.index("</dl>")]
@@ -491,7 +493,7 @@ class CommittedPages(unittest.TestCase):
     def test_the_platform_page_names_the_three_things_i_learned_and_how_my_process_changed(self):
         page = self.pages["platform.html"]
         self.assertEqual(page.count("What I learned</h2>"), 1)
-        block = page[page.index("What I learned</h2>"):page.index("What went wrong, and what I do now</h2>")]
+        block = page[page.index("What I learned</h2>"):page.index("</main>")]
         for theme in ("Moving data cheaply", "Designing for the person using it", "Directing an AI, strictly"):
             self.assertEqual(block.count(f"<h3>{theme}</h3>"), 1, theme)
         steps = block[block.index('<ol class="flow n5 dated">'):block.index("</ol>")]
@@ -539,7 +541,15 @@ class CommittedPages(unittest.TestCase):
     def test_the_platform_map_comes_before_the_reasons_and_the_failures(self):
         page = self.pages["platform.html"]
         self.assertLess(page.index('id="hub"'), page.index("Why it is built the way it is"))
-        self.assertLess(page.index('id="hub"'), page.index("What went wrong, and what I do now"))
+        self.assertLess(page.index('id="hub"'), page.index("What I learned</h2>"))
+        # Nov 27: the platform page ends on what I learned. The failures and the next steps live on the six part pages.
+        self.assertNotIn("What went wrong, and what I do now</h2>", page)
+        self.assertNotIn("What is next</h2>", page)
+        closing = page[page.index("What I learned</h2>"):page.index("</main>")]
+        way_on = closing[closing.index('<nav class="pager"'):]
+        for href in ("index.html#work", "case-form-swap.html", "platform-data-in.html"):
+            self.assertEqual(way_on.count(f'href="{href}"'), 1, href)
+        self.assertIn('id="contact"', page[page.index("</main>"):])
 
     def test_the_platform_map_its_tiles_and_its_pages_are_the_same_six_things_in_the_same_order(self):
         parts = self.config["platform"]["parts"]

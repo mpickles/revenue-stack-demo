@@ -1029,23 +1029,6 @@
             onComplete: function () { b.textContent = text; } });
         });
 
-        // The six real screens on the platform page hold still while the page scrolls through them,
-        // as long as the whole block fits on the screen.
-        (function () {
-          var shots = document.getElementById("shots");
-          if (!shots) return;
-          var tabs = $$("[data-shot]", shots);
-          if (tabs.length < 3) return;
-          shots.classList.add("fit");  // cap the screenshot's height so the block can fit under the nav
-          if (shots.offsetHeight > window.innerHeight - 96) { shots.classList.remove("fit"); return; }
-          $$("img", shots).forEach(function (img) { img.loading = "eager"; if (!img.complete) img.addEventListener("load", function () { ScrollTrigger.refresh(); }); });
-          ScrollTrigger.create({ trigger: shots, start: "top 88px", end: "+=" + tabs.length * 45 + "%", pin: true, anticipatePin: 1,
-            onUpdate: function (self) {
-              var tab = tabs[Math.min(tabs.length - 1, Math.floor(self.progress * tabs.length))];
-              if (tab.getAttribute("aria-pressed") !== "true") tab.click();
-            } });
-        })();
-
         // Table rows wipe in from the left.
         $$("table[data-wipe]").forEach(function (table) {
           gsap.from(table.querySelectorAll("tr"), { clipPath: "inset(0 100% 0 0)", duration: FAST, stagger: 0.02, ease: EASE, scrollTrigger: { trigger: table, start: "top 98%" } });
