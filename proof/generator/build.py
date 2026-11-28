@@ -303,6 +303,13 @@ def contact_html(contact, slim=False):
     return "\n".join(lines)
 
 
+def resume_link_html():
+    """The résumé link shows on the first screen only once proof/resume.pdf exists, so it is never a dead link."""
+    if (PROOF / "resume.pdf").is_file():
+        return '<a href="resume.pdf" download="Max-Pickard-resume.pdf">Résumé</a>'
+    return ""
+
+
 def contact_links_html(contact):
     """The short links under the name."""
     e = html.escape
@@ -412,6 +419,7 @@ def build_pages():
         notes_nav='<a href="#notes">Notes</a>' if notes_html(config.get("notes", [])) else "",
         contact_nav='<a href="#contact">Contact</a>' if contact else "",
         contact_links=contact_links_html(contact_config),
+        resume_link=resume_link_html(),
     )
 
     for index, (build, page) in enumerate(zip(builds, rendered)):

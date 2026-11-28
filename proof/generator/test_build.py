@@ -523,6 +523,14 @@ class CommittedPages(unittest.TestCase):
         self.assertEqual(home.count("animation:pen "), 1)
         self.assertEqual(home.count("filter:url(#boil)"), 1)
 
+    def test_the_resume_link_shows_only_when_the_file_is_there(self):
+        # Owner's call, Nov 27: a download link on the first screen, and never a dead one.
+        home = self.pages["index.html"]
+        hero = home[home.index('<header class="hero'):home.index("</header>")]
+        there = (build.PROOF / "resume.pdf").is_file()
+        self.assertEqual(hero.count('<a href="resume.pdf" download="Max-Pickard-resume.pdf">Résumé</a>'), 1 if there else 0)
+        self.assertNotIn("$resume_link", home)
+
     def test_the_hero_shows_the_work_as_links(self):
         home = self.pages["index.html"]
         hero = home[home.index('<header class="hero'):home.index("</header>")]
