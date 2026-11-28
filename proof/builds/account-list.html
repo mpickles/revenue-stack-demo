@@ -664,6 +664,20 @@
     /* Part tiles: on a short window the picture gives up height so both rows of tiles fit one screen. */
     @media (min-width:1080px) and (max-height:820px){.ptiles{gap:16px}.ptiles .cover-card .art{aspect-ratio:auto;width:100%;height:clamp(96px,19svh,200px)}.ptiles .cover-card .body{padding:14px 18px 16px}.ptiles .cover-card .meta{margin-top:10px}}
     @media (min-width:1080px){.covers.n4{grid-template-columns:repeat(4,minmax(0,1fr));gap:18px}.covers.n4 .cover-card .body{padding:16px 16px 18px}.covers.n4 .cover-card b{font-size:1rem}.covers.n4 .cover-card .line{font-size:.875rem}}
+    /* First screen: the name and pitch on the left, the self-portrait on the right. The work cards sit in a row under it. */
+    .hero-me{display:none;margin:0}
+    .me-s{height:clamp(6.5rem,31vw,12rem);width:auto;flex:none;margin-bottom:-4px}
+    .hero-grid{display:flex;align-items:flex-end;gap:20px}
+    .hero-work{margin-top:clamp(36px,5vw,56px)}
+    @media (min-width:1000px){
+      .me-s{display:none}
+      .hero-me{display:flex;justify-content:center;align-items:flex-start}
+      .hero-me img{display:block;height:min(74svh,35rem);width:auto;max-width:100%;object-fit:contain;margin-top:-10px}
+      .hero-work{grid-template-columns:repeat(3,minmax(0,1fr))}
+      .hw.big{grid-column:auto}.hw.big .hw-pic{aspect-ratio:16/10}.hw.big b{font-size:1rem;padding-top:13px}
+    }
+    :root[data-theme="dark"] .hero-me img,:root[data-theme="dark"] .me-s{filter:invert(1)}
+    @media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .hero-me img,:root:not([data-theme="light"]) .me-s{filter:invert(1)}}
   </style>
 </head>
 <body>
@@ -1009,6 +1023,7 @@
             }, null, 0.4 * k);
             intro.call(function () { gsap.set(stop, { opacity: 1 }); }, null, 0.4 * k + 1.2);  // whatever happens, the dot ends up visible
           }
+          intro.from(".hero-me img, .me-s", { opacity: 0, duration: SLOW * k, ease: EASE, clearProps: "opacity" }, 0.15 * k);
           intro.from(".role-line, .hero.v2 .pitch, .hero-acts", { opacity: 0, y: 12, duration: MED * k, stagger: 0.05, ease: EASE, clearProps: "opacity,transform" }, 0.2 * k);
           intro.from(".hero-work > *", { opacity: 0, y: 24, duration: MED * k, stagger: 0.07, ease: EASE, clearProps: "opacity,transform" }, 0.3 * k);
         }
