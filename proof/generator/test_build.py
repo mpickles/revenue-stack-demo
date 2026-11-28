@@ -192,9 +192,10 @@ class CommittedPages(unittest.TestCase):
 
     def test_the_home_page_shows_two_projects_and_sends_the_reader_to_each_map_for_the_parts(self):
         home = self.pages["index.html"]
-        self.assertEqual(home.count('class="cover-card'), 0, "part tiles live on the project pages, not the home page")
-        self.assertEqual(home.count("See the six on the map"), 2)
-        self.assertIn('href="platform.html#hub"', home)
+        self.assertEqual(home.count('class="wf-card'), 0, "part tiles live on the project pages, not the home page")
+        self.assertEqual(home.count('class="cover-card'), len(self.config["cases"]), "the only cards of that kind here are the client work ones")
+        self.assertEqual(home.count("See them on the map"), 1, "only the second project keeps the line; the platform card has its own button")
+        self.assertNotIn('href="platform.html#hub"', home)
         self.assertIn('href="project.html#map"', home)
         self.assertIn('id="hub"', self.pages["platform.html"])
         self.assertIn('id="map"', self.pages["project.html"])
@@ -217,7 +218,7 @@ class CommittedPages(unittest.TestCase):
 
     def test_the_page_about_how_the_site_was_made_exists_and_is_linked(self):
         self.assertIn("colophon.html", self.pages)
-        self.assertIn('href="colophon.html"', self.pages["index.html"])
+        self.assertNotIn('href="colophon.html"', self.pages["index.html"], "it describes an older version of the site, so the home page does not send people there")
 
     def test_the_home_page_lists_only_notes_that_are_written(self):
         home = self.pages["index.html"]
@@ -242,6 +243,22 @@ class CommittedPages(unittest.TestCase):
         for step in journey:
             self.assertIn(html.escape(step["short"]), page)
         self.assertIn('href="project.html"', self.pages["index.html"])
+
+    def test_the_project_page_mirrors_the_platform_page(self):
+        page = self.pages["project.html"]
+        body = page[page.index("<main"):page.index("</main>")]
+        order = ["How it is put together</h2>", "Follow one lead</h2>", "Why it is built the way it is</h2>", '<nav class="pager"']
+        marks = [body.index(mark) for mark in order]
+        self.assertEqual(marks, sorted(marks), "the same sections in the same order as the platform page")
+        tiles = body[body.index('<div class="covers ptiles n4" data-stagger>'):body.index("Follow one lead</h2>")]
+        journey = self.config["project"]["journey"]
+        self.assertEqual(tiles.count('<a class="cover-card'), len(journey))
+        for n, step in enumerate(journey, 1):
+            self.assertIn(f'<b><i>{n}</i>{html.escape(step["short"])}</b><span class="line">{html.escape(step["name"])}</span>', tiles)
+        self.assertNotIn('class="part-links"', body, "the tiles replace the plain list")
+        self.assertNotIn('<p class="sub">', body)
+        self.assertNotIn("made", html.unescape(self.config["project"]["title"]).lower(), "the title says what the system does")
+        self.assertIn("made-up company", body, "and the page still says plainly that the company is made up")
 
     def test_the_project_page_promises_a_result_once_and_shows_no_empty_section(self):
         page = self.pages["project.html"]
@@ -358,6 +375,8 @@ class CommittedPages(unittest.TestCase):
         for case in self.config["cases"]:
             page = self.pages[case["file"]]
             self.assertIn(f'href="{case["file"]}"', home)
+            if case.get("published") or case.get("pending"):
+                continue  # a client my employer has named in public, or is about to: see the tests below
             self.assertIn("Client not named", page)
             for label in ("<dt>Problem</dt>", "<dt>What I did</dt>", "<dt>Result</dt>"):
                 self.assertEqual(page.count(label), 1, f'{case["file"]} {label}')
@@ -366,6 +385,107 @@ class CommittedPages(unittest.TestCase):
             self.assertIn("What went wrong, and what I do now</h2>", page)
             self.assertNotIn("<img", page[page.index("<main"):page.index("</main>")], "no real screenshots on a client page")
             self.assertNotRegex(page[page.index("<main"):page.index("</main>")], r"\$\d", "no raw client money figures")
+
+    def test_a_case_study_named_ahead_of_my_employer_publishing_it_links_nowhere_yet(self):
+        # One client is named before its case study is out, on my say-so (CLAUDE.md, Nov 27).
+        waiting = [case for case in self.config["cases"] if case.get("pending")]
+        self.assertEqual([case.get("client") for case in waiting], ["Revver"])
+        for case in waiting:
+            self.assertNotIn("published", case)
+            page = self.pages[case["file"]]
+            body = page[page.index("<main"):page.index("</main>")]
+            self.assertIn(case["client"], body)
+            self.assertIn("Case study coming from Upgrow", body)
+            self.assertNotIn("href=\"https://www.upgrow.io", body, "nothing to link to until it is published")
+            self.assertNotIn("case-form-swap.html", body, "this page and the unnamed form story are never tied together")
+            self.assertNotRegex(body, r"CRM (switch|change|migration)")
+            for label in ("<dt>Problem</dt>", "<dt>What I did</dt>", "<dt>Result</dt>"):
+                self.assertEqual(body.count(label), 1)
+            self.assertEqual(body.count("My part</h2>"), 1)
+            self.assertEqual(body.count('<figure class="resbars" data-reveal>'), 1)
+            self.assertEqual(body.count('data-flow="chain"'), 1)
+            self.assertNotIn("<img", body)
+            self.assertNotRegex(body, r"\$\d")
+        # A client is named in the config only if published or on that short list.
+        for case in self.config["cases"]:
+            if not case.get("published") and not case.get("pending"):
+                self.assertNotIn("client", case, case["file"])
+        # The unnamed form story never carries this client's name.
+        self.assertNotIn("Revver", self.pages["case-form-swap.html"])
+
+    def test_a_published_case_study_names_the_client_links_the_source_and_says_my_part(self):
+        named = [case for case in self.config["cases"] if case.get("published")]
+        self.assertEqual(len(named), 2)
+        every_named = [case for case in self.config["cases"] if case.get("client")]
+        for case in named:
+            page = self.pages[case["file"]]
+            body = page[page.index("<main"):page.index("</main>")]
+            self.assertTrue(case["published"].startswith("https://www.upgrow.io/case-study/"), "only a page my employer published")
+            self.assertEqual(body.count(f'href="{case["published"]}"'), 2, f'{case["file"]}: the source is linked at the top and at the end')
+            self.assertLess(body.index(f'href="{case["published"]}"'), body.index("<dt>Problem</dt>"))
+            self.assertEqual(body.count('<figure class="resbars" data-reveal>'), 1, "the published result is drawn")
+            self.assertEqual(body.count('data-flow="chain"'), 1, "how the work ran is drawn")
+            self.assertIn("published by Upgrow", body)
+            self.assertIn(case["client"], body)
+            self.assertIn("Published by Upgrow", body)
+            for label in ("<dt>Problem</dt>", "<dt>What I did</dt>", "<dt>Result</dt>"):
+                self.assertEqual(body.count(label), 1, f'{case["file"]} {label}')
+            self.assertEqual(body.count("My part</h2>"), 1)
+            self.assertNotIn("<img", body, "no screenshots of a client's account")
+            self.assertNotRegex(body, r"\$\d", "no client money figures")
+        # A client is named on these pages and on the home page, and nowhere else.
+        for path, page in self.pages.items():
+            if path in ("index.html",) or path in [case["file"] for case in every_named]:
+                continue
+            for case in every_named:
+                self.assertNotIn(case["client"], page, f'{path} names {case["client"]}')
+
+    def test_every_client_work_page_opens_on_a_drawn_picture(self):
+        for case in self.config["cases"]:
+            page = self.pages[case["file"]]
+            body = page[page.index("<main"):page.index("</main>")]
+            self.assertEqual(body.count('<figure class="cs-hero" data-reveal>'), 1, case["file"])
+            hero = body[body.index('<figure class="cs-hero"'):]
+            hero = hero[:hero.index("</figure>")]
+            self.assertLess(body.index("<h1"), body.index('<figure class="cs-hero"'), "the picture sits under the title")
+            self.assertLess(body.index('<figure class="cs-hero"'), body.index("<dt>Problem</dt>"), "and above the summary")
+            self.assertRegex(hero, r'<svg viewBox="[^"]+" role="img" aria-label="[^"]{40,}">', "drawn, and described for a screen reader")
+            self.assertNotIn("<figcaption", hero, "the picture carries no caption")
+            self.assertNotIn("<img", hero)
+            self.assertNotRegex(hero, r"\$\d")
+        self.assertIn(".cs-hero svg{display:block;width:100%;height:auto;max-height:min(46svh,19rem)}", self.pages["case-form-swap.html"], "never taller than the screen")
+
+    def test_each_job_lists_what_i_did_with_an_icon_per_line(self):
+        home = self.pages["index.html"]
+        self.assertNotIn('id="daily"', home)
+        xp = home[home.index('<section class="sec" id="experience"'):home.index('<section class="sec" id="skills"')]
+        entries = xp.split('<span class="when">')[1:]
+        self.assertEqual(len(entries), 5)
+        for entry in entries:
+            self.assertEqual(entry.count('<ul class="did">'), 1)
+            self.assertEqual(entry.count('<svg viewBox="0 0 24 24" aria-hidden="true">'), entry.count("<strong>"), "one icon per line")
+        self.assertEqual([entry.count("<strong>") for entry in entries], [5, 4, 4, 2, 1])
+        job = entries[0]
+        for said in ("offline conversions", "Zapier", "MCP servers and connectors", "Looker Studio", "HubSpot", 'href="platform.html"'):
+            self.assertIn(said, job)
+        for case in self.config["cases"]:
+            self.assertIn(f'href="{case["file"]}"', entries[1], "the client pages hang off the job they were done in")
+        # Only figures my employer has published appear here.
+        self.assertEqual(sorted(re.findall(r"\d+(?:%|x)", xp)), ["20x", "80%"])
+
+    def test_the_home_page_shows_each_client_page_as_a_card_with_its_picture(self):
+        home = self.pages["index.html"]
+        block = home[home.index('<section class="sec" id="client-work"'):home.index('<section class="sec" id="experience"')]
+        self.assertEqual(block.count('<a class="cover-card case-card"'), len(self.config["cases"]))
+        for case in self.config["cases"]:
+            card = block[block.index(f'<a class="cover-card case-card" href="{case["file"]}"'):]
+            card = card[:card.index("</a>")]
+            self.assertEqual(card.count('<span class="cs-hero thumb" data-reveal><svg viewBox="0 0 720 250" aria-hidden="true">'), 1, "the page's own picture, drawn in as it comes on screen")
+            self.assertIn(f'<span class="meta"><span>{case["kind"]}</span><span>{"Published" if case.get("published") else "Coming soon" if case.get("pending") else "Not named"}</span></span>', card)
+            self.assertNotIn("<img", card)
+        self.assertNotIn('<p class="sub">', block, "no subheading: the cards speak for themselves")
+        self.assertIn("@media (min-width:1100px){.case-cards{grid-template-columns:repeat(4,minmax(0,1fr))", home, "four across on a wide screen, the same card as the platform parts")
+        self.assertIn('card.addEventListener("pointerenter"', home, "the picture plays again on hover")
 
     def test_the_first_screen_shows_the_work_as_links(self):
         home = self.pages["index.html"]
@@ -432,7 +552,10 @@ class CommittedPages(unittest.TestCase):
         home = self.pages["index.html"]
         skills = home[home.index('id="skills"'):home.index('id="about"')]
         self.assertNotIn("<table", skills)
-        self.assertEqual(skills.count("<dt>"), 4)
+        self.assertEqual(skills.count("<dt>"), 6)
+        self.assertEqual(skills.count('<dt><svg viewBox="0 0 24 24" aria-hidden="true">'), 6, "an icon on each")
+        self.assertEqual(skills.count('<ul class="tags">'), 6)
+        self.assertEqual(skills.count("Learning: "), 3, "what I am still learning is said, not hidden")
         about = home[home.index('id="about"'):]
         about = about[: about.index("</section>")]
         self.assertIn('<p class="big">Before any of this I worked on an alpaca ranch and cooked for a sorority house.</p>', about)
@@ -473,6 +596,8 @@ class CommittedPages(unittest.TestCase):
     def test_every_platform_page_says_what_went_wrong_and_what_i_do_now(self):
         for item in self.config["platform"]["pages"]:
             page = self.pages[item["file"]]
+            if item["file"] == "platform.html":
+                continue  # the overview page ends on what I learned; each of the six part pages says what went wrong
             self.assertEqual(page.count("What went wrong, and what I do now</h2>"), 1, item["file"])
             block = page[page.index("What went wrong, and what I do now</h2>"):]
             block = block[:block.index("</dl>")]
@@ -491,7 +616,7 @@ class CommittedPages(unittest.TestCase):
     def test_the_platform_page_names_the_three_things_i_learned_and_how_my_process_changed(self):
         page = self.pages["platform.html"]
         self.assertEqual(page.count("What I learned</h2>"), 1)
-        block = page[page.index("What I learned</h2>"):page.index("What went wrong, and what I do now</h2>")]
+        block = page[page.index("What I learned</h2>"):page.index("</main>")]
         for theme in ("Moving data cheaply", "Designing for the person using it", "Directing an AI, strictly"):
             self.assertEqual(block.count(f"<h3>{theme}</h3>"), 1, theme)
         steps = block[block.index('<ol class="flow n5 dated">'):block.index("</ol>")]
@@ -539,7 +664,15 @@ class CommittedPages(unittest.TestCase):
     def test_the_platform_map_comes_before_the_reasons_and_the_failures(self):
         page = self.pages["platform.html"]
         self.assertLess(page.index('id="hub"'), page.index("Why it is built the way it is"))
-        self.assertLess(page.index('id="hub"'), page.index("What went wrong, and what I do now"))
+        self.assertLess(page.index('id="hub"'), page.index("What I learned</h2>"))
+        # Nov 27: the platform page ends on what I learned. The failures and the next steps live on the six part pages.
+        self.assertNotIn("What went wrong, and what I do now</h2>", page)
+        self.assertNotIn("What is next</h2>", page)
+        closing = page[page.index("What I learned</h2>"):page.index("</main>")]
+        way_on = closing[closing.index('<nav class="pager"'):]
+        for href in ("index.html#work", "case-form-swap.html", "platform-data-in.html"):
+            self.assertEqual(way_on.count(f'href="{href}"'), 1, href)
+        self.assertIn('id="contact"', page[page.index("</main>"):])
 
     def test_the_platform_map_its_tiles_and_its_pages_are_the_same_six_things_in_the_same_order(self):
         parts = self.config["platform"]["parts"]
@@ -620,13 +753,132 @@ class CommittedPages(unittest.TestCase):
     def test_the_platform_shows_real_screenshots_in_light_and_dark(self):
         page = self.pages["platform.html"]
         shots = re.findall(r'<img src="(img/platform/[^"]+)-light\.webp" class="l"', page)
-        self.assertEqual(len(shots), 6)
+        self.assertEqual(len(shots), 10)
         for shot in shots:
             self.assertIn(f'<img src="{shot}-dark.webp" class="d"', page)
             self.assertTrue((build.PROOF / f"{shot}-dark.webp").is_file(), shot)
         self.assertIn("made-up", page[page.index('id="shots"'):page.index("Why it is built the way it is")])
         for file in ("platform-spend.html", "platform-web-app.html", "platform-reports.html", "platform-audit.html"):
             self.assertIn('class="rshot-frame"', self.pages[file], file)
+
+    def test_the_platform_shows_the_team_screens_and_the_detailed_diagram(self):
+        page = self.pages["platform.html"]
+        block = page[page.index('id="shots2"'):page.index('id="shots"')]
+        shots = re.findall(r'<img src="(img/platform/[^"]+\.webp)" class="[ld]" alt="[^"]+"', block)
+        self.assertEqual(len(shots), 8, "four screens, each in light and dark")
+        self.assertEqual(sum(1 for shot in shots if shot.endswith("-dark.webp")), 4)
+        self.assertEqual(block.count("data-shot="), 4)
+        self.assertEqual(block.count("(demo data)"), 4)
+        self.assertIn("made up", block)
+        diagram = "img/platform/00-architecture.webp"
+        self.assertEqual(page.count(f'<img src="{diagram}"'), 1)
+        self.assertLess(page.index(diagram), page.index('id="shots2"'))
+        for shot in shots + [diagram]:
+            self.assertTrue((build.PROOF / shot).is_file(), shot)
+        self.assertIn('getElementById("shots2")', page)
+
+    def test_the_projects_sit_in_a_carousel_with_named_tabs_and_arrows(self):
+        home = self.pages["index.html"]
+        work = home[home.index('<section class="sec band" id="work"'):home.index('<section class="sec" id="client-work"')]
+        self.assertEqual(work.count('<div class="pcar" id="pcar">'), 1)
+        track = work[work.index('<div class="pcar-track">'):]
+        self.assertEqual(track.count("<article class=\"sys"), 2, "both projects are slides")
+        self.assertLess(track.index('href="platform.html"'), track.index('href="project.html"'), "the live platform comes first")
+        self.assertIn('<div class="pcar-nav" hidden>', work, "the controls show only when the script finds two projects")
+        self.assertEqual(work.count('aria-label="Previous project"'), 1)
+        self.assertEqual(work.count('aria-label="Next project"'), 1)
+        self.assertIn(">Operations platform</button>", work)
+        self.assertIn("scroll-snap-type:x mandatory", home)
+        self.assertNotIn('class="pin"', work, "nothing here holds the screen still")
+
+    def test_the_second_project_shows_on_the_home_page_only_when_it_is_switched_on(self):
+        home = self.pages["index.html"]
+        off = bool(self.config["project"].get("hidden"))
+        for opening in ('<a class="hw" href="project.html"', '<article class="sys second lead-in"'):
+            tag = home[home.index(opening):]
+            tag = tag[: tag.index(">") + 1]
+            self.assertEqual(tag.endswith(" hidden>"), off, opening)
+        line = home[: home.index('href="project.html#map"')]
+        line = line[line.rindex("<p"):]
+        self.assertEqual('<p class="parts-h" hidden>' in line, off)
+        self.assertIn(".hw[hidden],.sys[hidden],.parts-h[hidden]{display:none!important}", home)
+        self.assertIn("project.html", self.pages)
+
+    def test_the_part_pages_carry_the_counts_checked_on_nov_27(self):
+        clean = self.pages["platform-clean.html"]
+        self.assertIn("215 models and 808 tests", clean)
+        self.assertIn("69 staging, 61 marts, 73 audit, 9 watch, 3 ops", clean)
+        self.assertEqual(69 + 61 + 73 + 9 + 3, 215)
+        loads = self.pages["platform-data-in.html"]
+        loads = loads[loads.index("What loads today</h2>"):loads.index("What I chose, and what I turned down</h2>")]
+        self.assertEqual(loads.count("<dt>"), 6)
+        self.assertEqual(loads.count("Built and paused") + loads.count("built and paused"), 2, "what is switched off is said")
+        app = self.pages["platform-web-app.html"]
+        door = app[app.index("comes in by the same door</h2>"):app.index("It also tracks its own use</h2>")]
+        self.assertIn("<dt>58 tools</dt><dd>37 read, 20 write and 1 starts a run.</dd>", door)
+        self.assertEqual(37 + 20 + 1, 58)
+        audit = self.pages["platform-audit.html"]
+        alerts = audit[audit.index("Alerts, every morning</h2>"):audit.index("What I chose, and what I turned down</h2>")]
+        self.assertIn("Seventeen rules", alerts)
+        counts = [int(n) for n in re.findall(r"<dt>(?:Critical|Warning|Trend), (\d+) rules</dt>", alerts)]
+        self.assertEqual(sum(counts), 17)
+        for file in ("platform-clean.html", "platform-web-app.html", "platform-audit.html", "platform-spend.html", "platform-data-in.html", "platform-reports.html"):
+            page = self.pages[file]
+            said = int(re.search(r"<summary>(\d+) more choices</summary>", page).group(1))
+            hidden = page[page.index('<details class="more-rows">'):page.index("</details>")]
+            self.assertEqual(hidden.count("<small>Chose</small>"), said, file)
+
+    def test_the_home_page_has_no_scroll_through_tour_of_the_six_parts(self):
+        home = self.pages["index.html"]
+        self.assertNotIn('id="tour"', home)
+        self.assertNotIn("tour-pin", home, "nothing on the home page holds the screen still while it scrolls")
+        self.assertNotIn("See the six on the map</a></p>\n      <article", home)
+        self.assertNotIn("parts, all live.", home, "the platform card's own button is the way in")
+
+    def test_smooth_scrolling_is_one_pinned_version_on_every_page_that_animates(self):
+        for path, page in self.pages.items():
+            if "gsap.min.js" in page:
+                self.assertEqual(page.count('<script src="https://unpkg.com/lenis@1.3.29/dist/lenis.min.js"></script>'), 1, path)
+                self.assertEqual(len(re.findall(r"unpkg\.com/lenis@", page)), 1, path)
+
+    def test_the_form_swap_story_has_a_demo_a_visitor_can_work(self):
+        page = self.pages["case-form-swap.html"]
+        self.assertEqual(page.count("Try it: fill in the form</h2>"), 1)
+        demo = page[page.index("Try it: fill in the form</h2>"):page.index("How I found it</h2>")]
+        self.assertIn("made up", demo)
+        for part in ('id="fse" type="email"', 'id="fsg"', 'data-k="swap"', 'data-k="fix"', 'id="fst"', 'aria-live="polite"'):
+            self.assertEqual(demo.count(part), 1, part)
+        self.assertIn("Before the swap = 100", demo, "an index, never a raw client number")
+        self.assertIn('document.getElementById("fsb")', page)
+        self.assertLess(page.index("Try it: fill in the form</h2>"), page.index("What I chose, and what I turned down</h2>"))
+        self.assertEqual(page.count('<figure class="linefig" data-reveal>'), 1)
+        self.assertIn("not from client data", page)
+
+    def test_the_animated_diagrams_have_their_controls_and_agree_with_the_pages(self):
+        page = self.pages["platform.html"]
+        self.assertEqual(page.count('<div class="flowfig" data-flow="route">'), 1)
+        fig = page[page.index('<div class="flowfig" data-flow="route">'):page.index("Running the accounts, and the team</h2>")]
+        for part in ('class="flow-prev"', 'class="flow-play"', 'class="flow-next"', 'class="flow-dots"', 'aria-live="polite"', 'role="img" aria-label="'):
+            self.assertEqual(fig.count(part), 1, part)
+        app = self.pages["platform-web-app.html"]
+        self.assertEqual(app.count('<div class="flowfig" data-flow="paths">'), 1)
+        self.assertEqual(len(re.findall(r'<button type="button" data-r="(?:claude|app|deck)"', app)), 3)
+        self.assertIn("808 tests guard 215 models", page, "the diagram quotes the same counts as the warehouse page")
+        self.assertIn("215 models and 808 tests", self.pages["platform-clean.html"])
+        self.assertIn('matchMedia("(prefers-reduced-motion: reduce)")', page)
+
+    def test_the_job_history_matches_the_dates_on_my_profile(self):
+        home = self.pages["index.html"]
+        jobs = home[home.index('id="experience"'):home.index('id="skills"')]
+        rows = re.findall(r'<span class="when">([^<]+)</span>\s*<div><b>([^<]+)</b>', jobs)
+        self.assertEqual(rows[:4], [
+            ("Jul 2026 to now", "Marketing Operations Specialist"),
+            ("Nov 2024 to Jun 2026", "PPC and SEO Specialist"),
+            ("May 2024 to Oct 2024", "SEO Intern"),
+            ("Jun 2023 to May 2024", "Webmaster"),
+        ])
+        about = home[home.index('id="about"'):]
+        self.assertIn("data science, optimization and machine learning", about)
 
     def test_a_recording_on_a_page_is_a_file_that_exists(self):
         for path, text in self.pages.items():

@@ -125,7 +125,7 @@
     .status.is-active,.rows .status.is-active{color:var(--accent)}
 
     /* The scene: one system, drawn as you scroll */
-    .pin{min-height:100svh;display:flex;flex-direction:column;justify-content:center;padding:96px 0 40px}
+    .pin{padding:24px 0 40px}
     .writeup .scene{margin-top:24px}
     .writeup .scene h2{font-size:clamp(1.5rem,1.3rem + .9vw,2rem)}
     .scene svg{display:block;width:100%;height:auto;overflow:visible;margin:40px 0 0}
@@ -152,6 +152,13 @@
     .xp b{display:block;font-weight:500;font-size:clamp(1.25rem,1.1rem + .8vw,1.75rem);letter-spacing:-.03em;line-height:1.1}
     .xp .where{display:block;margin-top:6px;color:var(--muted)}
     .xp p{margin:16px 0 0;max-width:40rem}
+    .xp .did{list-style:none;margin:22px 0 0;padding:0;display:grid;gap:18px clamp(24px,3vw,40px)}
+    @media (min-width:640px){.xp .did{grid-template-columns:repeat(2,minmax(0,1fr))}}
+    .xp .did li{display:grid;grid-template-columns:36px minmax(0,1fr);gap:0 14px;align-items:start}
+    .xp .did svg{width:36px;height:36px;padding:7px;border:1px solid var(--line);border-radius:10px;background:var(--panel);fill:none;stroke:var(--accent);stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+    .xp .did strong{display:block;font-weight:500;line-height:1.3}
+    .xp .did span{display:block;margin-top:3px;color:var(--muted);font-size:.9375rem;line-height:1.5}
+    .xp .did + .tags{margin-top:22px}
     .tags{list-style:none;margin:18px 0 0;padding:0;display:flex;flex-wrap:wrap;gap:6px}
     .tags li{font-family:var(--mono);font-size:.75rem;border:1px solid var(--line);border-radius:4px;padding:3px 8px;color:var(--muted)}
 
@@ -242,6 +249,8 @@
     .cover-card .body{display:block;padding:20px 22px 22px}
     .cover-card b{display:block;font-weight:500;font-size:1.125rem;line-height:1.3;letter-spacing:-.02em;text-wrap:balance}
     .cover-card .meta{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px 16px;margin-top:16px;font-family:var(--mono);font-size:.75rem;color:var(--muted)}
+    .cover-card b i{font-style:normal;font-weight:400;color:var(--muted);margin-right:10px}
+    .cover-card .line{display:block;margin-top:6px;color:var(--muted);font-size:.9375rem;line-height:1.4}
     .cover-card.off .art{opacity:.55}
     .cover-card.off b{color:var(--muted)}
     .sys-cover{margin:56px 0 0;border:1px solid var(--line);border-radius:10px;overflow:hidden}
@@ -325,7 +334,8 @@
     .plat dd{margin:4px 0 0;color:var(--muted);font-size:.9375rem;line-height:1.45}
     .ctl{margin-top:32px}
     .ctl button{border:1px solid var(--ink);background:var(--ink);color:var(--bg);border-radius:8px;padding:9px 16px 10px;font-size:.9375rem}
-    .map{position:relative;display:grid;grid-template-columns:minmax(0,1fr) 30px minmax(0,1fr) 30px minmax(0,1fr) 30px minmax(0,1fr) 30px minmax(0,1fr) 30px minmax(0,1fr);margin:32px 0 0}
+    .map{position:relative;display:grid;grid-template-columns:repeat(7,minmax(0,1fr) 20px) minmax(0,1fr);margin:32px 0 0}
+    .map .stop-cap{padding:10px 10px 12px}.map .stop-cap b{font-size:.875rem}
     .stop{position:relative;border:1px solid var(--line);border-radius:10px;background:var(--bg);padding:0;text-align:left;display:flex;flex-direction:column;transition:border-color .3s,box-shadow .3s,transform .3s var(--ease)}
     .stop:hover{transform:translateY(-2px)}
     .stop:active{transform:scale(.98)}
@@ -362,6 +372,7 @@
     .why .c b{font-weight:500;line-height:1.35;display:block}
     .why .d b{font-weight:500;font-size:1.125rem;letter-spacing:-.02em;line-height:1.3;display:block}
     .why .d p{margin:10px 0 0;font-size:.9375rem;line-height:1.5;color:var(--muted)}
+    @supports (grid-template-rows:subgrid){@media (min-width:861px){.why{grid-template-rows:auto auto;row-gap:0}.why article{display:grid;grid-row:span 2;grid-template-rows:subgrid}}}
     .cs-slot{margin:32px 0 0}
     .shows{margin:32px 0 0;border-top:2px solid var(--accent)}
     .shows div{display:grid;gap:6px 40px;padding:18px 0;border-bottom:1px solid var(--line)}
@@ -434,6 +445,7 @@
     .who{margin:0 0 18px;font-size:1.0625rem;font-weight:500;letter-spacing:-.01em}
     .who span{margin-left:12px;font-weight:400;color:var(--muted)}
     .hero.v2 h1.role{font-size:clamp(2.75rem,1rem + 6.4vw,6rem);line-height:.95;max-width:none}
+    .pitch2{margin:14px 0 0;max-width:34rem;color:var(--muted);font-size:1.0625rem;line-height:1.5}
     .pitch{margin:22px 0 0;max-width:34rem;font-size:clamp(1.1875rem,1rem + .8vw,1.5rem);line-height:1.3;letter-spacing:-.015em}
     .hero-acts{display:flex;flex-wrap:wrap;align-items:center;gap:10px 22px;margin:28px 0 0;font-size:1rem}
     .hero-acts .see{background:var(--ink);color:var(--bg);border-radius:8px;padding:10px 18px 11px;text-decoration:none}
@@ -449,11 +461,13 @@
     :root[data-theme="dark"] .proj-cover.shot .l{display:none}:root[data-theme="dark"] .proj-cover.shot .d{display:block}
     @media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .proj-cover.shot .l{display:none}:root:not([data-theme="light"]) .proj-cover.shot .d{display:block}}
     .proj-cover.shot small{display:block;padding:10px 14px;border-top:1px solid var(--line);background:var(--bg);color:var(--muted);font-size:.8125rem}
-    .case-row{display:grid;gap:6px 32px;align-items:baseline;margin-top:32px;padding:26px 0;border-top:2px solid var(--accent);border-bottom:1px solid var(--line);background:none;text-decoration:none}
-    @media (min-width:760px){.case-row{grid-template-columns:9rem 1fr auto}}
-    .case-row small{font-family:var(--mono);font-size:.75rem;color:var(--muted)}
-    .case-row b{font-weight:500;font-size:clamp(1.25rem,1rem + 1vw,1.75rem);letter-spacing:-.025em;line-height:1.2}
-    .case-row span{color:var(--muted);text-decoration:underline;text-underline-offset:3px}
+    .case-cards{display:grid;gap:24px;margin-top:36px}
+    @media (min-width:600px){.case-cards{grid-template-columns:repeat(2,minmax(0,1fr))}}
+    @media (min-width:1100px){.case-cards{grid-template-columns:repeat(4,minmax(0,1fr));gap:20px}.case-card .body{padding:18px 18px 20px}}
+    .case-card{display:flex;flex-direction:column}
+    .case-card .body{flex:1;display:flex;flex-direction:column}
+    .case-card .meta{margin-top:auto;padding-top:16px}
+    .case-card .cs-hero.thumb{display:block;margin:0;max-width:none;border:0;border-bottom:1px solid var(--line);border-radius:0;padding:14px}
     .parts-h a{margin-left:10px;color:var(--ink);text-decoration:underline;text-decoration-color:var(--line);text-underline-offset:3px;background:none}
     /* Every part, as plain links under the map. Works with no script. */
     .part-links{list-style:none;margin:28px 0 0;padding:0;display:grid;gap:0 32px;border-top:1px solid var(--line)}
@@ -488,9 +502,9 @@
     @media (max-width:520px){.hw-row{grid-template-columns:1fr auto}.hw-row small{grid-column:1 / -1}}
     .hero.v2 h1.role{font-size:clamp(2.75rem,1rem + 5.2vw,5.25rem)}
     .hero.v2 h1.name{font-size:clamp(3.25rem,1rem + 7.6vw,7.25rem);line-height:.88;letter-spacing:-.055em;max-width:none;white-space:nowrap}
-    .role-line{margin:26px 0 0;font-size:clamp(1.375rem,1rem + 1.2vw,1.875rem);font-weight:500;letter-spacing:-.025em;line-height:1.15}
-    .role-line span{margin-left:14px;font-weight:400;color:var(--muted);font-size:.7em;letter-spacing:-.01em}
-    .hero.v2 .role-line + .pitch{margin-top:10px;color:var(--muted)}
+    .role-line{margin:26px 0 0;font-size:1rem;font-weight:500;color:var(--muted);line-height:1.3}
+    .role-line span{margin-left:12px;font-weight:400}
+    .hero.v2 .role-line + .pitch{margin-top:10px;color:var(--ink);font-size:clamp(1.5rem,1.1rem + 1.5vw,2.125rem);font-weight:500;letter-spacing:-.025em;line-height:1.18;max-width:32rem;text-wrap:balance}
     /* Colour is the lead: a card on the first screen is grey until the pointer (or the keyboard) reaches it. */
     @media (hover:hover) and (pointer:fine){
       .hw .hw-pic > *{filter:grayscale(1) contrast(.94);opacity:.82;transition:filter var(--t-med) var(--ease),opacity var(--t-med) var(--ease)}
@@ -532,12 +546,16 @@
     .band + .sec{padding-top:clamp(72px,8vw,112px)}
 
     /* Skills as four plain lines. */
-    .skills{margin:40px 0 0;border-top:2px solid var(--accent)}
-    .skills div{display:grid;gap:6px 40px;padding:20px 0;border-bottom:1px solid var(--line)}
-    @media (min-width:760px){.skills div{grid-template-columns:14rem 1fr}}
-    .skills dt{font-weight:500;font-size:1.0625rem;letter-spacing:-.015em}
-    .skills dd{margin:0;line-height:1.45}
-    .skills small{display:block;margin-top:6px;color:var(--muted);font-size:.875rem}
+    .skills{margin:40px 0 0;display:grid;gap:0 clamp(20px,2.4vw,32px)}
+    @media (min-width:640px){.skills{grid-template-columns:repeat(2,minmax(0,1fr))}}
+    @media (min-width:980px){.skills{grid-template-columns:repeat(3,minmax(0,1fr))}}
+    .skills>div{display:grid;grid-template-rows:subgrid;grid-row:span 2;gap:0;padding:22px 0 26px;border-top:2px solid var(--accent)}
+    .skills dt{display:flex;align-items:center;gap:12px;font-weight:500;font-size:1.125rem;letter-spacing:-.015em}
+    .skills dt svg{flex:none;width:36px;height:36px;padding:7px;border:1px solid var(--line);border-radius:10px;background:var(--panel);fill:none;stroke:var(--accent);stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+    .skills dd{margin:16px 0 0;display:flex;flex-direction:column;justify-content:space-between;gap:12px}
+    .skills .tags{margin:0}
+    .skills small{display:block;color:var(--muted);font-size:.875rem}
+    .skills small:empty{display:none}
 
     /* About: the line people remember, large, with the rest beside it. */
     .about.two{max-width:none;display:grid;gap:32px 72px;align-items:start}
@@ -559,6 +577,93 @@
       h2,h3{break-after:avoid}
       a{text-decoration:none;color:inherit}
     }
+    /* A part of the page switched off in builds.json stays off, whatever its own display rule says. */
+    .hw[hidden],.sys[hidden],.parts-h[hidden]{display:none!important}
+    .hw[hidden] + .hw.note{grid-column:1 / -1}
+
+    /* Smooth scrolling (Lenis). These four rules are the library's own stylesheet. */
+    html.lenis,html.lenis body{height:auto}
+    .lenis:not(.lenis-autoToggle).lenis-stopped{overflow:clip}
+    .lenis [data-lenis-prevent]{overscroll-behavior:contain}
+    .lenis.lenis-smooth iframe{pointer-events:none}
+
+    /* Headings arrive a letter at a time, each word behind its own mask. */
+    h2 .w-mask{padding-bottom:.14em;margin-bottom:-.14em}
+
+    /* A dark band always shows the dark screenshot, whatever the page's own theme. */
+    .band .rshot-frame .l,.band .proj-cover.shot .l,.band .shot-frame .l{display:none}
+    .band .rshot-frame .d,.band .proj-cover.shot .d,.band .shot-frame .d{display:block}
+
+    /* The client work note on the first screen lists each story as its own link. */
+    div.hw.note{gap:0}
+    div.hw.note a{display:block;padding:9px 0;border-top:1px solid var(--line);background:none;font-weight:500;font-size:1rem;letter-spacing:-.015em;line-height:1.25}
+    div.hw.note small+a{margin-top:10px}
+    div.hw.note a:hover{color:var(--accent)}
+    .hw[hidden] + div.hw.note{grid-column:1 / -1}
+
+    /* The picture at the top of a client work page. Always drawn: a client page carries no screenshots. */
+    .cs-hero{margin:28px 0 36px;max-width:58rem;border:1px solid var(--line);border-radius:14px;background:var(--panel);padding:clamp(10px,2vw,20px) clamp(10px,2vw,20px) 12px}
+    .cs-hero svg{display:block;width:100%;height:auto;max-height:min(46svh,19rem)}
+    .cs-hero .h-b{fill:var(--bg);stroke:var(--line);stroke-width:1.5}
+    .cs-hero .h-f{fill:var(--bg);stroke:var(--line);stroke-width:1.5}
+    .cs-hero .h-s{fill:color-mix(in srgb,var(--ink) 22%,transparent)}
+    .cs-hero .h-s2{fill:color-mix(in srgb,var(--ink) 11%,transparent)}
+    .cs-hero .h-k{fill:var(--ink)}
+    .cs-hero .h-on{fill:var(--accent)}
+    .cs-hero .h-onbar{fill:var(--on-accent)}
+    .cs-hero .h-hot{fill:color-mix(in srgb,var(--accent) 9%,var(--bg));stroke:var(--accent);stroke-width:1.5}
+    .cs-hero .h-mg,.cs-hero .h-ar{fill:none;stroke:var(--muted);stroke-width:1.75;stroke-linecap:round;stroke-linejoin:round}
+    .cs-hero .h-tag{fill:var(--on-accent);font:600 11px var(--sans)}
+    .cs-hero .h-tag.big{font-size:15px}
+    .cs-hero .h-ax{stroke:var(--line);stroke-width:1.5;fill:none}
+    .cs-hero .h-area{fill:color-mix(in srgb,var(--accent) 12%,transparent)}
+    .cs-hero .h-ln{fill:none;stroke:var(--accent);stroke-width:3;stroke-linecap:round;stroke-linejoin:round}
+    .cs-hero .h-d0{fill:var(--bg);stroke:var(--muted);stroke-width:2}
+    .cs-hero .h-d1{fill:var(--accent)}
+    .cs-hero .h-n0{fill:var(--muted);font:500 18px var(--sans)}
+    .cs-hero .h-n1{fill:var(--ink);font:500 30px var(--sans);letter-spacing:-.02em}
+    .cs-hero .h-n1.sm{font-size:22px}
+    .cs-hero .h-ghost{fill:none;stroke:var(--accent);stroke-width:1.5;stroke-dasharray:5 5;opacity:.75}
+    .cs-hero .h-ghostbar{fill:var(--accent);opacity:.45}
+    .cs-hero .h-cut{stroke:var(--coral);stroke-width:3;stroke-linecap:round}
+    .cs-hero .h-drop,.cs-hero .h-drop5{transform-box:fill-box;transform-origin:bottom}
+    .cs-hero.armed .draw{stroke-dasharray:1;stroke-dashoffset:1}
+    .cs-hero.armed .h-area,.cs-hero.armed .h-d1,.cs-hero.armed .h-n1,.cs-hero.armed .h-more,.cs-hero.armed .h-cut{opacity:0}
+    .cs-hero.armed .h-btn{transform:translateY(-88px)}
+    .cs-hero.armed .h-drop{transform:scaleY(2.5)}
+    .cs-hero.armed .h-drop5{transform:scaleY(.2)}
+    .cs-hero.seen .draw{stroke-dashoffset:0;transition:stroke-dashoffset 1.4s var(--ease) .2s}
+    .cs-hero.seen .h-area{opacity:1;transition:opacity .6s var(--ease) 1s}
+    .cs-hero.seen .h-d1,.cs-hero.seen .h-n1{opacity:1;transition:opacity .4s var(--ease) 1.2s}
+    .cs-hero.seen .h-more{opacity:1;transition:opacity .4s var(--ease) .5s}
+    .cs-hero.seen .h-btn{transform:none;transition:transform .7s var(--ease) .5s}
+    .cs-hero.seen .h-cut{opacity:1;transition:opacity .3s var(--ease) 1.1s}
+    .cs-hero.seen .h-drop{transform:none;transition:transform .8s var(--ease) 1.2s}
+    .cs-hero.seen .h-drop5{transform:none;transition:transform 1s var(--ease) .4s}
+    /* Projects: one at a time, side by side. Named tabs and arrows move between them; a swipe works too. */
+    .pcar{margin-top:8px}
+    .pcar-nav{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px 24px;margin-top:20px}
+    .pcar-nav[hidden]{display:none}
+    .pcar-tabs{display:flex;flex-wrap:wrap;gap:8px}
+    .pcar-tabs button{font:inherit;font-size:.9375rem;color:var(--muted);background:none;border:1px solid var(--line);border-radius:999px;padding:8px 16px 9px;cursor:pointer;transition:color var(--t-fast) var(--ease),border-color var(--t-fast) var(--ease),background var(--t-fast) var(--ease)}
+    .pcar-tabs button[hidden]{display:none}
+    .pcar-tabs button[aria-pressed="true"]{color:var(--bg);background:var(--ink);border-color:var(--ink)}
+    .pcar-arrows{display:flex;gap:8px}
+    .pcar-arrows button{width:40px;height:40px;display:grid;place-items:center;color:var(--ink);background:none;border:1px solid var(--line);border-radius:50%;cursor:pointer;transition:border-color var(--t-fast) var(--ease),opacity var(--t-fast) var(--ease)}
+    .pcar-arrows button:hover{border-color:var(--muted)}
+    .pcar-arrows button:disabled{opacity:.35;cursor:default}
+    .pcar-arrows svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.75;stroke-linecap:round;stroke-linejoin:round}
+    .pcar-track{display:flex;gap:64px;overflow-x:auto;overscroll-behavior-x:contain;scroll-snap-type:x mandatory;scrollbar-width:none}
+    .pcar-track::-webkit-scrollbar{display:none}
+    .pcar-track>.sys{flex:0 0 100%;min-width:0;scroll-snap-align:start}
+    .pcar .sys,.band .pcar .sys.second{margin-top:0;padding:20px 0 0;border-top:0}
+    @media (min-width:900px){.band .pcar .sys.second{grid-template-columns:minmax(0,1.3fr) minmax(0,1fr)}.band .pcar .sys.second .proj-cover{order:0}}
+    .pcar .sys .parts-h{margin:20px 0 0}
+    /* A short, wide window: the name gives up height so the pitch and the buttons stay on the first screen. */
+    @media (min-width:900px) and (max-height:760px){.hero.v2{padding-top:104px}.hero.v2 h1.name{font-size:clamp(3rem,13svh,5.5rem)}.role-line{margin-top:16px}.hero.v2 .role-line + .pitch{font-size:clamp(1.375rem,4.4svh,1.875rem)}.pitch2{margin-top:10px;font-size:1rem}}
+    /* Part tiles: on a short window the picture gives up height so both rows of tiles fit one screen. */
+    @media (min-width:1080px) and (max-height:820px){.ptiles{gap:16px}.ptiles .cover-card .art{aspect-ratio:auto;width:100%;height:clamp(96px,19svh,200px)}.ptiles .cover-card .body{padding:14px 18px 16px}.ptiles .cover-card .meta{margin-top:10px}}
+    @media (min-width:1080px){.covers.n4{grid-template-columns:repeat(4,minmax(0,1fr));gap:18px}.covers.n4 .cover-card .body{padding:16px 16px 18px}.covers.n4 .cover-card b{font-size:1rem}.covers.n4 .cover-card .line{font-size:.875rem}}
   </style>
 </head>
 <body>
@@ -571,7 +676,6 @@
     <header class="writeup-head">
       <h1 data-rise>How this site was made</h1>
     </header>
-    <p class="sub">The site is a piece of work too. These are the choices behind it.</p>
 
     <div class="cs-block">
       <h2 class="cs-h">Type</h2>
@@ -651,6 +755,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/ScrollTrigger.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/SplitText.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/Flip.min.js"></script>
+  <script src="https://unpkg.com/lenis@1.3.29/dist/lenis.min.js"></script>
   <script>
     // Behaviour and motion for every page. Pages read fine with this script off, and
     // with "reduce motion" on nothing is hidden or animated.
@@ -691,6 +796,52 @@
       function say(i) { if (says && i !== shown) { shown = i; says.textContent = steps[i].dataset.step; } }
       if (steps.length) say(steps.length - 1);
 
+      // A long list shows its first rows and opens on request. Without this script every row shows.
+      $$("[data-fold]").forEach(function (list) {
+        var keep = Number(list.dataset.fold), more = list.children.length - keep;
+        if (more < 1) return;
+        list.classList.add("fold");
+        var p = document.createElement("p"), b = document.createElement("button");
+        p.className = "fold-more"; b.type = "button"; b.textContent = "Show " + more + " more"; b.setAttribute("aria-expanded", "false");
+        b.addEventListener("click", function () { list.classList.add("open"); p.remove(); if (window.ScrollTrigger) ScrollTrigger.refresh(); });
+        p.appendChild(b); list.parentNode.insertBefore(p, list.nextSibling);
+      });
+      var lenis = null;  // set further down, when smooth scrolling starts
+      // Screenshots: press one to see it large, press again for full size. Works with or without motion.
+      (function () {
+        var shots = $$(".rshot-frame img");
+        if (!shots.length || !window.HTMLDialogElement) return;
+        var box = document.createElement("dialog"); box.className = "zoom"; box.setAttribute("data-lenis-prevent", ""); box.setAttribute("aria-label", "Screenshot, enlarged");
+        box.innerHTML = '<div class="zoom-bar"><button type="button" data-size>Full size</button><button type="button" data-close>Close</button></div><div class="zoom-box"></div>';
+        document.body.appendChild(box);
+        var big = document.createElement("img"), size = box.querySelector("[data-size]");
+        box.querySelector(".zoom-box").appendChild(big);
+        function fit(full) { box.classList.toggle("full", full); size.textContent = full ? "Fit to screen" : "Full size"; if (!full) box.scrollTo(0, 0); }
+        function open(img) {
+          big.src = img.currentSrc || img.src; big.alt = img.alt; fit(false);
+          big.style.filter = getComputedStyle(img).filter === "none" ? "" : getComputedStyle(img).filter;  // the diagram is flipped on a dark page
+          box.showModal(); if (lenis) lenis.stop();
+        }
+        box.addEventListener("close", function () { if (lenis) lenis.start(); });
+        box.querySelector("[data-close]").addEventListener("click", function () { box.close(); });
+        size.addEventListener("click", function () { fit(!box.classList.contains("full")); });
+        big.addEventListener("click", function () { fit(!box.classList.contains("full")); });
+        box.addEventListener("click", function (e) { if (e.target === box || e.target.classList.contains("zoom-box")) box.close(); });
+        shots.forEach(function (img) {
+          img.classList.add("zoomable");
+          img.addEventListener("click", function () { open(img); });
+        });
+        // One "Expand" button per frame, for touch and keyboard. It opens whichever screenshot is showing.
+        $$(".rshot-frame").forEach(function (frame) {
+          var b = document.createElement("button"); b.type = "button"; b.className = "zoom-open"; b.textContent = "Expand";
+          b.addEventListener("click", function () {
+            var showing = $$("img", frame).filter(function (img) { return getComputedStyle(img).display !== "none" && img.getClientRects().length > 0; })[0];
+            if (showing) open(showing);
+          });
+          frame.appendChild(b);
+        });
+      })();
+
       var motion = window.gsap && window.ScrollTrigger && !still;
       if (motion) gsap.registerPlugin.apply(gsap, [ScrollTrigger].concat(window.SplitText ? [SplitText] : [], window.Flip ? [Flip] : []));
 
@@ -701,7 +852,7 @@
           chips.forEach(function (c) { c.setAttribute("aria-pressed", String(c === chip)); });
           var state = motion && window.Flip ? Flip.getState(rows) : null;
           rows.forEach(function (row) { row.hidden = !(chip.dataset.f === "all" || row.classList.contains(chip.dataset.f)); });
-          if (state) Flip.from(state, { duration: 0.5, ease: "power2.inOut", absolute: true,
+          if (state) Flip.from(state, { duration: 0.5, ease: "power3.out", absolute: true,
             onEnter: function (els) { return gsap.fromTo(els, { opacity: 0 }, { opacity: 1, duration: 0.3 }); },
             onLeave: function (els) { return gsap.to(els, { opacity: 0, duration: 0.2 }); } });
           if (motion) ScrollTrigger.refresh();
@@ -762,6 +913,14 @@
       var morphedIn = false;
       try { morphedIn = "onpagereveal" in window && !!document.referrer && new URL(document.referrer).origin === location.origin; } catch (err) {}
 
+      // Smooth scrolling. One clock drives the scroll and every animation tied to it.
+      if (window.Lenis) {
+        lenis = new Lenis({ anchors: true, allowNestedScroll: true });
+        lenis.on("scroll", ScrollTrigger.update);
+        gsap.ticker.add(function (time) { lenis.raf(time * 1000); });
+        gsap.ticker.lagSmoothing(0);
+      }
+
       function start() {
         // The page title rises line by line, once.
         var title = document.querySelector("[data-rise]");
@@ -814,6 +973,11 @@
         // Section headings rise out of a mask as they arrive.
         $$("main h2").forEach(function (h) {
           if (h.closest(".prose")) return;
+          if (window.SplitText) {
+            var cut = SplitText.create(h, { type: "words,chars", mask: "words", wordsClass: "w", charsClass: "c", aria: "auto" });
+            gsap.from(cut.chars, { yPercent: 112, duration: SLOW, stagger: 0.014, ease: EASE, scrollTrigger: { trigger: h, start: "top 96%" } });
+            return;
+          }
           var text = h.textContent; h.setAttribute("aria-label", text); h.textContent = "";
           var mask = document.createElement("span"); mask.className = "mask"; mask.setAttribute("aria-hidden", "true");
           var inner = document.createElement("span"); inner.textContent = text; mask.appendChild(inner); h.appendChild(mask);
@@ -821,11 +985,24 @@
         });
 
         // Lists and cards arrive one after another.
-        [".sys", ".proof li", "[data-stagger] > *"].forEach(function (group) {
+        [".sys", ".proof li", "[data-stagger] > *", ".tldr > div", ".nums > div", ".flow > li", ".chose > div", ".shows > div", ".more-rows > div"].forEach(function (group) {
           if (!document.querySelector(group)) return;
           ScrollTrigger.batch(group, { start: "top 98%", once: true, onEnter: function (batch) {
             gsap.from(batch, { opacity: 0, y: 10, duration: FAST, stagger: 0.02, ease: EASE, clearProps: "opacity,transform" });
           } });
+        });
+
+        // A plain number counts up to its value as it arrives. Ranges, ratios and money are left alone.
+        $$(".nums b").forEach(function (b) {
+          var text = b.textContent.trim();
+          if (!/^[0-9][0-9,]*%?$/.test(text) || b.children.length) return;
+          var end = parseInt(text.replace(/[^0-9]/g, ""), 10), unit = text.slice(-1) === "%" ? "%" : "", box = { n: 0 };
+          if (end < 10) return;
+          b.setAttribute("aria-label", text);
+          b.style.fontVariantNumeric = "tabular-nums";
+          gsap.to(box, { n: end, duration: SLOW * 2, ease: EASE, scrollTrigger: { trigger: b, start: "top 92%", once: true },
+            onUpdate: function () { b.textContent = Math.round(box.n).toLocaleString("en-US") + unit; },
+            onComplete: function () { b.textContent = text; } });
         });
 
         // Table rows wipe in from the left.
@@ -833,14 +1010,14 @@
           gsap.from(table.querySelectorAll("tr"), { clipPath: "inset(0 100% 0 0)", duration: FAST, stagger: 0.02, ease: EASE, scrollTrigger: { trigger: table, start: "top 98%" } });
         });
 
-        // The routing scene: the page holds while the diagram draws itself.
+        // The routing scene: the diagram draws itself once, when it comes on screen. The page keeps scrolling.
         if (steps.length) {
-          var draw = gsap.timeline({ scrollTrigger: { trigger: ".scene .pin", start: "top top", end: "+=2000", pin: true, scrub: 0.4,
-            onUpdate: function (self) { say(Math.min(steps.length - 1, Math.floor(self.progress * steps.length))); } } });
+          var draw = gsap.timeline({ scrollTrigger: { trigger: ".scene .pin", start: "top 65%", once: true },
+            onUpdate: function () { say(Math.min(steps.length - 1, Math.floor(draw.progress() * steps.length))); } });
           steps.forEach(function (step) {
             var wire = step.querySelector(".wire");
-            if (wire) { var len = wire.getTotalLength(); gsap.set(wire, { strokeDasharray: len, strokeDashoffset: len }); draw.to(wire, { strokeDashoffset: 0, duration: 0.5, ease: "none" }); }
-            draw.from(step.querySelectorAll("rect, text"), { opacity: 0, duration: 0.5, ease: "none" }, wire ? ">-0.1" : 0);
+            if (wire) { var len = wire.getTotalLength(); gsap.set(wire, { strokeDasharray: len, strokeDashoffset: len }); draw.to(wire, { strokeDashoffset: 0, duration: 0.7, ease: "none" }); }
+            draw.from(step.querySelectorAll("rect, text"), { opacity: 0, duration: 0.7, ease: "none" }, wire ? ">-0.1" : 0);
           });
           say(0);
         }
@@ -856,7 +1033,7 @@
         });
 
         // The big email draws in at the end.
-        if (document.querySelector(".mail")) gsap.from(".mail", { yPercent: 60, opacity: 0, duration: 0.9, ease: "expo.out", scrollTrigger: { trigger: ".mail", start: "top 94%" } });
+        if (document.querySelector(".mail")) gsap.from(".mail", { yPercent: 60, opacity: 0, duration: SLOW, ease: EASE, scrollTrigger: { trigger: ".mail", start: "top 94%" } });
 
         // Cursor: a coral dot trails the normal pointer and grows over anything clickable.
         if (window.matchMedia("(pointer: fine)").matches) {
@@ -872,6 +1049,11 @@
           window.addEventListener("pointerdown", function () { gsap.to(dot, { scale: 0.7, duration: 0.12 }); });
           window.addEventListener("pointerup", function (e) { gsap.to(dot, { scale: e.target.closest && e.target.closest("a, button") ? 3.4 : 1, duration: 0.25 }); });
         }
+        // A picture that loads late can move everything under it. Measure again when one does.
+        var again = null;
+        $$("img[loading=lazy]").forEach(function (img) {
+          if (!img.complete) img.addEventListener("load", function () { clearTimeout(again); again = setTimeout(function () { ScrollTrigger.refresh(); }, 120); });
+        });
         ScrollTrigger.refresh();
       }
       // Cover drawings play once when they first come into view, so phones see the motion too.
@@ -945,6 +1127,256 @@
       })();
 
       if (document.fonts && document.fonts.ready) document.fonts.ready.then(start); else start();
+    })();
+
+    // Animated diagrams: data riding the lanes that are live for the step or the request picked.
+    // One drawing routine for both figures. With "reduce motion" on, the dots sit still on their lanes.
+    (function () {
+      var figs = Array.prototype.slice.call(document.querySelectorAll(".flowfig"));
+      if (!figs.length) return;
+      var still = window.matchMedia("(prefers-reduced-motion: reduce)").matches, drawn = [];
+      function esc(s) { return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;"); }
+      function rect(cls, x, y, w, h, inner) { return '<g class="n ' + cls + '"><rect x="' + x + '" y="' + y + '" width="' + w + '" height="' + h + '" rx="10"/>' + inner + "</g>"; }
+      function txt(cls, x, y, s, anchor) { return '<text class="' + cls + '" x="' + x + '" y="' + y + '" text-anchor="' + (anchor || "middle") + '" dominant-baseline="central">' + esc(s) + "</text>"; }
+      function finish(state, svg, W, H, lanes, nodes) {
+        svg.setAttribute("viewBox", "0 0 " + W + " " + H);
+        svg.innerHTML = "<g>" + lanes.join("") + "</g><g>" + nodes.join("") + '</g><g class="tok"></g>';
+        state.live = Array.prototype.slice.call(svg.querySelectorAll("path.live")).map(function (p) { return { p: p, len: p.getTotalLength() }; });
+        state.tok = svg.querySelector(".tok");
+        state.tok.innerHTML = state.live.map(function () { return '<circle r="4.5"/><circle r="4.5"/><circle r="4.5"/>'; }).join("");
+        place(state, performance.now());
+      }
+      function place(state, t) {
+        if (!state.tok) return;
+        state.live.forEach(function (o, i) {
+          for (var k = 0; k < 3; k++) {
+            var c = state.tok.children[i * 3 + k]; if (!c) return;
+            var f = still ? (k + 1) / 4 : ((t / 2400) + k / 3) % 1, pt = o.p.getPointAtLength(f * o.len);
+            c.setAttribute("cx", pt.x); c.setAttribute("cy", pt.y);
+          }
+        });
+      }
+
+      // Figure one: a night of data, from the sources to the people who read it.
+      var SRC = [["Ad platforms", "Ads"], ["CRM leads", "CRM"], ["Tasks and calls", "Tasks"], ["Tag containers", "Tags"]];
+      var CON = [["Web app", "App"], ["The team's Claude", "Claude"], ["Report decks", "Decks"], ["Alerts", "Alerts"]];
+      var BLK = { raw: ["Raw", ["As delivered", "Never edited"], "As delivered"], stg: ["Staging", ["Cleaned", "One shape", "5 am build"], "Cleaned, one shape"], mart: ["Marts", ["Daily facts", "Rollups", "Tested"], "Tested tables"] };
+      var STEPS = [
+        { t: "Every source lands overnight", on: ["src", "raw"], flow: ["s"], b: "Google Ads arrives through the platform's own free transfer and a daily script. Microsoft Ads posts from a script inside each account. Tasks, call summaries and tag containers load every night. Nothing is changed on the way in." },
+        { t: "Raw is the untouched copy", on: ["raw"], flow: [], b: "Each source keeps its own dataset, exactly as delivered. When a number looks wrong later, it can be traced all the way back to here." },
+        { t: "5 am: dbt cleans and joins", on: ["raw", "stg"], flow: ["rs"], b: "A scheduled job runs dbt. Staging models fix names and types, remove duplicates and map every ad account to its client, so each platform ends up in one shape." },
+        { t: "Marts are what people read", on: ["stg", "mart"], flow: ["sm"], b: "Daily facts, monthly and quarterly rollups, and leads matched to campaigns. 808 tests guard 215 models. A failed test stops the build, so a bad number is never published." },
+        { t: "Changes are tested before they ship", on: ["ci", "stg", "mart"], flow: ["ci"], b: "Every push builds the changed models, and the ones that depend on them, in a throwaway dataset and runs their tests. It deploys only if they pass." },
+        { t: "Everything reads the same tables", on: ["mart", "con"], flow: ["c"], b: "The web app, the team's Claude, the report decks and the alerts all read the same tested tables. The app and a deck cannot disagree." },
+        { t: "Built to cost nothing to host", on: ["src", "raw", "stg", "mart", "ci", "con"], flow: ["s", "rs", "sm", "c"], b: "Cost comes from how often tables are re-read, not from their size. The build re-processes recent days only, and the app keeps each answer until the next load." }
+      ];
+      function route(fig) {
+        var svg = fig.querySelector("svg"), box = fig.querySelector(".flow-stage"), state = { live: [], tok: null }, cur = 0, playing = false, timer = null, seen = false;
+        var q = function (s) { return fig.querySelector(s); };
+        var dots = q(".flow-dots"); dots.innerHTML = STEPS.map(function (s, i) { return '<button type="button" data-i="' + i + '" aria-label="Step ' + (i + 1) + ": " + esc(s.t) + '">' + (i + 1) + "</button>"; }).join("");
+        function draw() {
+          var W = box.clientWidth, v = W < 560, H = v ? Math.max(360, Math.min(640, window.innerHeight - 400)) : Math.max(280, Math.min(420, window.innerHeight - 200)); box.style.height = H + "px";
+          var st = STEPS[cur], on = st.on, fl = st.flow, lanes = [], nodes = [], m = 14;
+          var cls = function (k) { return on.indexOf(k) >= 0 ? "on" : "off"; };
+          var lane = function (k, d, dash) { lanes.push('<path class="lane' + (fl.indexOf(k) >= 0 ? " live" : "") + (dash ? " dash" : "") + '" d="' + d + '"/>'); };
+          var i;
+          if (!v) {
+            var top = 70, colW = (W - 2 * m) / 5, bw = Math.min(160, colW - 26), short = bw < 134;
+            var cx = function (n) { return m + colW * (n + 0.5); }, gap = 14, avail = H - top - 14, hn = Math.min(56, (avail - 3 * gap) / 4);
+            var total = 4 * hn + 3 * gap, y0 = top + (avail - total) / 2, yc = function (n) { return y0 + n * (hn + gap) + hn / 2; };
+            var L = function (n) { return cx(n) - bw / 2; }, R = function (n) { return cx(n) + bw / 2; };
+            for (i = 0; i < 4; i++) {
+              lane("s", "M" + R(0) + " " + yc(i) + "H" + L(1)); lane("rs", "M" + R(1) + " " + yc(i) + "H" + L(2));
+              lane("sm", "M" + R(2) + " " + yc(i) + "H" + L(3)); lane("c", "M" + R(3) + " " + yc(i) + "H" + L(4));
+              nodes.push(rect(cls("src"), L(0), yc(i) - hn / 2, bw, hn, txt("l", cx(0), yc(i), short ? SRC[i][1] : SRC[i][0])));
+              nodes.push(rect(cls("con"), L(4), yc(i) - hn / 2, bw, hn, txt("l", cx(4), yc(i), short ? CON[i][1] : CON[i][0])));
+            }
+            ["raw", "stg", "mart"].forEach(function (k, j) {
+              var b = BLK[k], x = cx(j + 1);
+              nodes.push(rect(cls(k), L(j + 1), y0, bw, total, txt("h", x, y0 + 26, b[0]) + b[1].map(function (s, n) { return txt("sub", x, y0 + 54 + n * 20, s); }).join("")));
+            });
+            var cw = Math.min(230, bw * 1.7), cxm = (cx(2) + cx(3)) / 2, ct = 12, ch = 42;
+            lane("ci", "M" + (cxm - cw * 0.25) + " " + (ct + ch) + "C" + (cxm - cw * 0.25) + " " + (ct + ch + 16) + " " + cx(2) + " " + (y0 - 16) + " " + cx(2) + " " + y0, true);
+            lane("ci", "M" + (cxm + cw * 0.25) + " " + (ct + ch) + "C" + (cxm + cw * 0.25) + " " + (ct + ch + 16) + " " + cx(3) + " " + (y0 - 16) + " " + cx(3) + " " + y0, true);
+            nodes.push(rect(cls("ci"), cxm - cw / 2, ct, cw, ch, txt("l", cxm, ct + ch / 2, cw < 170 ? "Checks" : "A check on every push")));
+          } else {
+            var ciw = Math.min(92, W * 0.24), laneR = W - m - ciw - 12, laneW = laneR - m, cW = laneW / 4, bw2 = cW - 8, bx = function (n) { return m + cW * (n + 0.5); };
+            var hs = 46, hb = 60, g2 = (H - 2 * m - 2 * hs - 3 * hb) / 4, y = [m];
+            y[1] = y[0] + hs + g2; y[2] = y[1] + hb + g2; y[3] = y[2] + hb + g2; y[4] = y[3] + hb + g2;
+            for (i = 0; i < 4; i++) {
+              var x2 = bx(i);
+              lane("s", "M" + x2 + " " + (y[0] + hs) + "V" + y[1]); lane("rs", "M" + x2 + " " + (y[1] + hb) + "V" + y[2]);
+              lane("sm", "M" + x2 + " " + (y[2] + hb) + "V" + y[3]); lane("c", "M" + x2 + " " + (y[3] + hb) + "V" + y[4]);
+              nodes.push(rect(cls("src"), x2 - bw2 / 2, y[0], bw2, hs, txt("l", x2, y[0] + hs / 2, SRC[i][1])));
+              nodes.push(rect(cls("con"), x2 - bw2 / 2, y[4], bw2, hs, txt("l", x2, y[4] + hs / 2, CON[i][1])));
+            }
+            ["raw", "stg", "mart"].forEach(function (k, j) {
+              var b = BLK[k], yy = y[j + 1];
+              nodes.push(rect(cls(k), m, yy, laneW, hb, txt("h", m + 14, yy + 21, b[0], "start") + txt("sub", m + 14, yy + 42, b[2], "start")));
+            });
+            var cxl = W - m - ciw, cy = (y[2] + y[3] + hb) / 2, t1 = y[2] + hb / 2, t2 = y[3] + hb / 2;
+            lane("ci", "M" + cxl + " " + (cy - 12) + "C" + (cxl - 14) + " " + (cy - 12) + " " + (laneR + 14) + " " + t1 + " " + laneR + " " + t1, true);
+            lane("ci", "M" + cxl + " " + (cy + 12) + "C" + (cxl - 14) + " " + (cy + 12) + " " + (laneR + 14) + " " + t2 + " " + laneR + " " + t2, true);
+            nodes.push(rect(cls("ci"), cxl, cy - 28, ciw, 56, txt("l", cxl + ciw / 2, cy, "Checks")));
+          }
+          finish(state, svg, W, H, lanes, nodes);
+        }
+        function plan() {
+          clearTimeout(timer);
+          if (playing) timer = setTimeout(function () { go(cur + 1); }, 7000);
+          q(".flow-play").textContent = playing ? "Pause" : "Play"; q(".flow-play").setAttribute("aria-pressed", String(playing));
+        }
+        function go(i) {
+          cur = (i + STEPS.length) % STEPS.length;
+          q(".flow-n").textContent = "Step " + (cur + 1) + " of " + STEPS.length; q(".flow-t").textContent = STEPS[cur].t; q(".flow-b").textContent = STEPS[cur].b;
+          Array.prototype.forEach.call(dots.children, function (b, n) { if (n === cur) b.setAttribute("aria-current", "step"); else b.removeAttribute("aria-current"); });
+          draw(); plan();
+        }
+        q(".flow-prev").addEventListener("click", function () { playing = false; go(cur - 1); });
+        q(".flow-next").addEventListener("click", function () { playing = false; go(cur + 1); });
+        q(".flow-play").addEventListener("click", function () { playing = !playing; plan(); });
+        dots.addEventListener("click", function (e) { var b = e.target.closest("button"); if (b) { playing = false; go(Number(b.dataset.i)); } });
+        if (window.ResizeObserver) new ResizeObserver(draw).observe(box); else window.addEventListener("resize", draw);
+        // It plays by itself only while it is on screen, and only once you have reached it.
+        if (window.IntersectionObserver && !still) new IntersectionObserver(function (es) {
+          var inView = es[0].isIntersecting;
+          if (inView && !seen) { seen = true; playing = true; }
+          if (!inView) clearTimeout(timer); else plan();
+        }, { threshold: 0.4 }).observe(fig);
+        go(0); drawn.push(state);
+      }
+
+      // Figure two: the path one request takes.
+      var PATHS = {
+        claude: { t: "Someone asks the team's Claude a question.", e: ["pd", "bd", "dc"], n: ["pg", "bq", "dl", "claude"], b: "Claude calls a tool on the app's own connector. The token is looked up on that call, the person is loaded from Postgres, and the tool runs through the same data layer as the app: their clients only, from the cache when it can. Claude writes the sentences. It never does the sums." },
+        app: { t: "An account lead opens a client page.", e: ["pd", "bd", "da"], n: ["pg", "bq", "dl", "app"], b: "The server knows who they are from sign-in and looks up their clients in Postgres. Only then does it ask the data layer for numbers. On a cache miss it runs one named query against the tested tables, with a cost cap." },
+        deck: { t: "A monthly report builds.", e: ["bk"], n: ["bq", "deck"], b: "Code works out every number the report may quote from the tested tables. The model only writes around them, and a checker flags any slide that looks off. The result is a draft. A person approves it before anything reaches a client." }
+      };
+      function paths(fig) {
+        var svg = fig.querySelector("svg"), box = fig.querySelector(".flow-stage"), state = { live: [], tok: null }, pick = "claude", tabs = fig.querySelector(".flow-tabs");
+        function draw() {
+          var W = box.clientWidth, H = Math.max(250, Math.min(W < 560 ? 300 : 330, window.innerHeight - 220)), m = 14; box.style.height = H + "px";
+          var colW = (W - 2 * m) / 3, bw = Math.min(200, colW - 30), short = bw < 132;
+          var cx = function (i) { return m + colW * (i + 0.5); }, L = function (i) { return cx(i) - bw / 2; }, R = function (i) { return cx(i) + bw / 2; };
+          var gap = 18, hn = Math.min(60, (H - 2 * m - 3 * gap) / 4), y = function (i) { return m + i * (hn + gap) + hn / 2; };
+          var r = PATHS[pick], lanes = [], nodes = [];
+          var c = function (k) { return r.n.indexOf(k) >= 0 ? "on" : "off"; };
+          var lane = function (k, d) { lanes.push('<path class="lane' + (r.e.indexOf(k) >= 0 ? " live" : "") + '" d="' + d + '"/>'); };
+          var boxAt = function (k, i, row, label, sub) { nodes.push(rect(c(k), L(i), y(row) - hn / 2, bw, hn, sub ? txt("l", cx(i), y(row) - 9, label) + txt("sub", cx(i), y(row) + 11, sub) : txt("l", cx(i), y(row), label))); };
+          var dlTop = y(1) - hn / 2, dlH = y(2) - y(1) + hn, mid = (R(1) + L(2)) / 2, midL = (R(0) + L(1)) / 2;
+          lane("pd", "M" + R(0) + " " + y(0) + "C" + midL + " " + y(0) + " " + midL + " " + (dlTop + 18) + " " + L(1) + " " + (dlTop + 18));
+          lane("bd", "M" + R(0) + " " + y(3) + "C" + midL + " " + y(3) + " " + midL + " " + (dlTop + dlH - 18) + " " + L(1) + " " + (dlTop + dlH - 18));
+          lane("dc", "M" + R(1) + " " + (dlTop + 18) + "C" + mid + " " + (dlTop + 18) + " " + mid + " " + y(0) + " " + L(2) + " " + y(0));
+          lane("da", "M" + R(1) + " " + (dlTop + dlH / 2) + "C" + mid + " " + (dlTop + dlH / 2) + " " + mid + " " + y(1.5) + " " + L(2) + " " + y(1.5));
+          lane("bk", "M" + R(0) + " " + (y(3) + 12) + "H" + L(2));
+          boxAt("pg", 0, 0, "Postgres", short ? "Who you are" : "People and their clients");
+          boxAt("bq", 0, 3, short ? "Warehouse" : "Tested tables", short ? "Numbers" : "Every number");
+          boxAt("claude", 2, 0, short ? "Claude" : "The team's Claude", short ? "" : "Through the connector");
+          boxAt("app", 2, 1.5, short ? "App" : "Web app", short ? "" : "Client pages");
+          boxAt("deck", 2, 3, short ? "Decks" : "Report decks", short ? "" : "A draft for review");
+          var subs = short ? ["Your clients", "Cache"] : ["Who is asking?", "Your clients only", "Cache, cost cap"];
+          nodes.push(rect(c("dl"), L(1), dlTop, bw, dlH, txt("h", cx(1), dlTop + 24, "Data layer") + subs.map(function (s, n) { return txt("sub", cx(1), dlTop + 50 + n * 19, s); }).join("")));
+          finish(state, svg, W, H, lanes, nodes);
+          fig.querySelector(".flow-t").textContent = r.t; fig.querySelector(".flow-b").textContent = r.b;
+          Array.prototype.forEach.call(tabs.children, function (b) { b.setAttribute("aria-pressed", String(b.dataset.r === pick)); });
+        }
+        tabs.addEventListener("click", function (e) { var b = e.target.closest("button"); if (b) { pick = b.dataset.r; draw(); } });
+        if (window.ResizeObserver) new ResizeObserver(draw).observe(box); else window.addEventListener("resize", draw);
+        draw(); drawn.push(state);
+      }
+
+      // Figure three: a short line of steps, or a loop, with the data running along it.
+      function chain(fig) {
+        var svg = fig.querySelector("svg"), box = fig.querySelector(".flow-stage"), state = { live: [], tok: null }, steps = fig.dataset.steps.split("|"), loop = fig.dataset.loop;
+        function draw() {
+          var W = box.clientWidth, n = steps.length, m = 14, lanes = [], nodes = [], i, H;
+          if (W >= 720) {
+            H = loop ? 190 : 116; var gap = 22, bw = (W - 2 * m - (n - 1) * gap) / n, hn = 56, y = loop ? 34 : (H - hn) / 2;
+            for (i = 0; i < n; i++) {
+              var x = m + i * (bw + gap);
+              if (i < n - 1) lanes.push('<path class="lane live" d="M' + (x + bw) + " " + (y + hn / 2) + "H" + (x + bw + gap) + '"/>');
+              nodes.push(rect("on", x, y, bw, hn, txt("l", x + bw / 2, y + hn / 2, steps[i])));
+            }
+            if (loop) {
+              var x0 = m + bw / 2, x1 = m + (n - 1) * (bw + gap) + bw / 2, yb = y + hn;
+              lanes.push('<path class="lane live dash" d="M' + x1 + " " + yb + "C" + x1 + " " + (yb + 76) + " " + x0 + " " + (yb + 76) + " " + x0 + " " + yb + '"/>');
+              nodes.push(txt("sub", (x0 + x1) / 2, yb + 38, loop));
+            }
+          } else {
+            var hn2 = 44, g2 = 16, side = loop ? 44 : 0, bw2 = Math.min(W - 2 * m - side, 340); H = 2 * m + n * hn2 + (n - 1) * g2;
+            for (i = 0; i < n; i++) {
+              var yy = m + i * (hn2 + g2);
+              if (i < n - 1) lanes.push('<path class="lane live" d="M' + (m + bw2 / 2) + " " + (yy + hn2) + "V" + (yy + hn2 + g2) + '"/>');
+              nodes.push(rect("on", m, yy, bw2, hn2, txt("l", m + bw2 / 2, yy + hn2 / 2, steps[i])));
+            }
+            if (loop) { var xr = m + bw2, ya = m + (n - 1) * (hn2 + g2) + hn2 / 2, yt = m + hn2 / 2; lanes.push('<path class="lane live dash" d="M' + xr + " " + ya + "C" + (xr + 38) + " " + ya + " " + (xr + 38) + " " + yt + " " + xr + " " + yt + '"/>'); }
+          }
+          box.style.height = H + "px";
+          finish(state, svg, W, H, lanes, nodes);
+        }
+        if (window.ResizeObserver) new ResizeObserver(draw).observe(box); else window.addEventListener("resize", draw);
+        draw(); drawn.push(state);
+      }
+
+      figs.forEach(function (fig) { (fig.dataset.flow === "paths" ? paths : fig.dataset.flow === "chain" ? chain : route)(fig); });
+      function loop(t) { drawn.forEach(function (s) { place(s, t); }); requestAnimationFrame(loop); }
+      if (!still) requestAnimationFrame(loop);
+    })();
+
+
+    // Charts draw themselves once, when they come on screen. With scripts off or "reduce motion" on they are simply there.
+    (function () {
+      var figs = Array.prototype.slice.call(document.querySelectorAll("[data-reveal]"));
+      if (!figs.length || !window.IntersectionObserver || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+      figs.forEach(function (fig) { fig.classList.add("armed"); });
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (en) { if (en.isIntersecting) { en.target.classList.add("seen"); io.unobserve(en.target); } });
+      }, { threshold: 0.35 });
+      figs.forEach(function (fig) { io.observe(fig); });
+      // A client work card plays its picture again when the pointer comes back to it.
+      Array.prototype.slice.call(document.querySelectorAll(".case-card")).forEach(function (card) {
+        var pic = card.querySelector("[data-reveal]");
+        if (!pic) return;
+        card.addEventListener("pointerenter", function () {
+          if (!pic.classList.contains("seen")) return;
+          pic.classList.remove("seen"); void pic.offsetWidth; pic.classList.add("seen");
+        });
+      });
+    })();
+
+    // Projects carousel. With one project showing, or scripts off, it is simply the project.
+    (function () {
+      var car = document.getElementById("pcar");
+      if (!car) return;
+      var track = car.querySelector(".pcar-track"), nav = car.querySelector(".pcar-nav");
+      var slides = Array.prototype.filter.call(track.children, function (el) { return !el.hidden; });
+      var tabs = Array.prototype.filter.call(car.querySelectorAll(".pcar-tabs button"), function (el) { return !el.hidden; });
+      var arrows = car.querySelectorAll(".pcar-arrows button"), at = 0;
+      if (slides.length < 2) return;
+      nav.hidden = false;
+      var calm = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      function mark(i) {
+        at = i;
+        tabs.forEach(function (tab, n) { tab.setAttribute("aria-pressed", n === i ? "true" : "false"); });
+        arrows[0].disabled = i === 0; arrows[1].disabled = i === slides.length - 1;
+      }
+      function go(i) {
+        i = Math.max(0, Math.min(slides.length - 1, i));
+        track.scrollTo({ left: slides[i].offsetLeft - slides[0].offsetLeft, behavior: calm ? "auto" : "smooth" });
+        mark(i);
+      }
+      tabs.forEach(function (tab, n) { tab.addEventListener("click", function () { go(n); }); });
+      Array.prototype.forEach.call(arrows, function (b) { b.addEventListener("click", function () { go(at + Number(b.getAttribute("data-dir"))); }); });
+      var tick = null;
+      track.addEventListener("scroll", function () {
+        clearTimeout(tick);
+        tick = setTimeout(function () {
+          var best = 0, gap = Infinity;
+          slides.forEach(function (el, n) { var d = Math.abs(el.offsetLeft - slides[0].offsetLeft - track.scrollLeft); if (d < gap) { gap = d; best = n; } });
+          mark(best);
+        }, 90);
+      }, { passive: true });
+      mark(0);
     })();
   </script>
 </body>

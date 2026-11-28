@@ -6,13 +6,30 @@
     "linkedin": "https://www.linkedin.com/in/maxwellapickard/"
   },
   "project": {
-    "title": "A full revenue stack for a made‑up B2B software company",
-    "sentence": "One lead followed the whole way: ad click, consent, form, CRM, routing, conversions sent back to the ad platform, and the report at the end. Built in six parts on a made-up company, Roadwren, so all of it can be public.",
-    "built_with": "Next.js, Tag Manager, GA4, HubSpot, Salesforce Flow, Python, SQL, dbt",
+    "hidden": false,
+    "title": "GTM system: from a target account to a revenue report",
+    "sentence": "One go-to-market system, outbound and inbound: find and score the accounts, reach out on a signal, then follow the lead through the form, the CRM, routing, scoring and the report. Eight parts, on a made-up company, Roadwren.",
+    "built_with": "Clay, n8n, Next.js, Tag Manager, GA4, HubSpot, Salesforce Flow, Claude, Python, SQL, dbt",
     "headline": null,
     "recording": null,
-    "own": "I designed the whole system and I am building every part of it myself: the tracked site, the lead routing, the scoring, the cleanup and the reporting. The company, Roadwren, is made up, so every file is public.",
+    "own": "I designed the whole system and I am building every part of it myself: the account list, the outbound, the tracked site, the lead routing, the scoring, the cleanup and the reporting. The company, Roadwren, is made up, so every file is public.",
     "journey": [
+      {
+        "slug": "account-list",
+        "short": "Account list",
+        "name": "The right accounts get found",
+        "gets": "A written definition of who Roadwren sells to",
+        "hands_on": "A scored list of accounts and the people to reach",
+        "why": "Outbound is only as good as the list. A wrong list wastes every step after it, however good the email is."
+      },
+      {
+        "slug": "signal-outbound",
+        "short": "Outbound",
+        "name": "A signal starts a conversation",
+        "gets": "A top-tier account with a new hiring signal",
+        "hands_on": "An approved email, sent and logged in the CRM",
+        "why": "A reason to write beats a bigger list. Nothing is sent until every claim in the draft checks out and a person approves it."
+      },
       {
         "slug": "campaign-qa-agent",
         "short": "Launch check",
@@ -80,8 +97,8 @@
       ]
     ],
     "tldr": [
-      "Most tracking setups lose the lead somewhere between the ad click and the report.",
-      "One lead followed the whole way, on a made-up company, in six parts.",
+      "Leads get lost between the tools. The list, the outreach, the form, the CRM and the report rarely line up.",
+      "One system that finds the accounts, reaches out and follows the lead to the report, on a made-up company, in eight parts.",
       null
     ]
   },
@@ -287,6 +304,48 @@
       ],
       "card_title": "Duplicate records merged and checked against an answer key",
       "tools": "Salesforce"
+    },
+    {
+      "slug": "account-list",
+      "tile": "Account list in Clay",
+      "readme": "outbound/accounts/README.md",
+      "sentence": "Real companies that fit, found and enriched in Clay, scored into tiers and loaded into Salesforce by an n8n workflow.",
+      "graded_on": "The score's tier against 30 hand labels, fill rate by source, and a second load that adds nothing.",
+      "headline": null,
+      "recording": null,
+      "links": [
+        {
+          "label": "Build folder",
+          "path": "outbound/accounts"
+        },
+        {
+          "label": "Decisions",
+          "path": "docs/decisions.md"
+        }
+      ],
+      "card_title": "A target account list, enriched and scored in Clay",
+      "tools": "Clay, n8n, Salesforce"
+    },
+    {
+      "slug": "signal-outbound",
+      "tile": "Signal-based outbound",
+      "readme": "outbound/signals/README.md",
+      "sentence": "A hiring signal starts a three-email sequence that Claude drafts, code checks, a person approves and Salesforce logs.",
+      "graded_on": "20 planted signals against an answer key, and 10 drafts with a planted false claim that must all be rejected.",
+      "headline": null,
+      "recording": null,
+      "links": [
+        {
+          "label": "Build folder",
+          "path": "outbound/signals"
+        },
+        {
+          "label": "Decisions",
+          "path": "docs/decisions.md"
+        }
+      ],
+      "card_title": "A signal starts an email sequence that is checked before it is sent",
+      "tools": "n8n, Claude, Salesforce"
     }
   ],
   "platform": {
@@ -340,28 +399,37 @@
         "name": "The web app",
         "line": "Each person sees only their own clients",
         "tools": "Postgres, Cloud Run",
-        "file": "platform-web-app.html"
+        "file": "platform-web-app.html",
+        "screen": "02-clients-owner",
+        "screen_alt": "The client list in the app, with made-up clients"
       },
       {
         "slug": "reports",
         "name": "Reports and notes",
         "line": "Reports that check their own numbers",
         "tools": "Claude API",
-        "file": "platform-reports.html"
+        "file": "platform-reports.html",
+        "screen": "07-report-review-numbers-look-off",
+        "screen_alt": "Report review, with one slide flagged before anyone approves"
       },
       {
         "slug": "audit",
         "name": "Tracking audit",
         "line": "Found consent was blocking every tag",
         "tools": "Tag Manager",
-        "file": "platform-audit.html"
+        "file": "platform-audit.html",
+        "screen": "09-audit-is-it-working-menu",
+        "screen_alt": "The tracking audit for one made-up client"
       },
       {
         "slug": "spend",
         "name": "Search terms and budgets",
         "line": "Nothing is spent without a person's yes",
         "tools": "Google Ads",
-        "file": "platform-spend.html"
+        "file": "platform-spend.html",
+        "screen": "06-client-pacing-edit-over-parent",
+        "screen_alt": "Budget pacing, mid-edit, with made-up numbers",
+        "clip": "pacing-edit.mp4"
       }
     ],
     "description": "The operations platform I built for a paid media team: a tested warehouse, a web app and the workflows on top."
@@ -382,8 +450,37 @@
   "cases": [
     {
       "file": "case-form-swap.html",
+      "kind": "Diagnosis",
+      "card": "A form swap cut paid leads in half. Finding the cause.",
       "title": "A form swap cut paid leads in half",
       "description": "A form swap cut a client's paid leads by about 60% overnight. How I found the one cause."
+    },
+    {
+      "file": "case-eventmobi.html",
+      "kind": "Paid search",
+      "card": "EventMobi: paid search revenue up 80% in a year.",
+      "title": "EventMobi: paid search revenue up 80% in a year",
+      "description": "My part in a paid search program Upgrow has published: keyword research, ad copy, budget pacing, data and experiments.",
+      "client": "EventMobi",
+      "published": "https://www.upgrow.io/case-study/eventmobi-paid-media/"
+    },
+    {
+      "file": "case-huddle.html",
+      "kind": "SEO",
+      "card": "Huddle Men's Health: 20x the organic traffic in a year.",
+      "title": "Huddle Men's Health: 20x the organic traffic in a year",
+      "description": "My part in an SEO program Upgrow has published: keyword research, briefs, writing, building the pages and conversion testing.",
+      "client": "Huddle Men's Health",
+      "published": "https://www.upgrow.io/case-study/huddle-mens-health-seo/"
+    },
+    {
+      "file": "case-revver.html",
+      "kind": "Paid search",
+      "card": "Revver: more qualified leads at a lower cost each.",
+      "title": "Revver: 5x the qualified leads at 73% lower cost",
+      "client": "Revver",
+      "description": "My part in a paid search program for Revver: lead analysis, tracking, landing pages and experiments.",
+      "pending": true
     }
   ]
 }

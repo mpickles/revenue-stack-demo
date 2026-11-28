@@ -93,6 +93,23 @@ def render_readme(readme_text, readme_path, repo):
     return title, md.renderer.render(kept, md.options, {})
 
 
+def case_cards_html(cases):
+    """The client work cards on the home page. Each shows, small, the picture its page opens on."""
+    order = sorted(cases, key=lambda c: 0 if c.get("published") else 1 if c.get("pending") else 2)
+    out = ['<div class="case-cards" data-stagger>']
+    for case in order:
+        body = (GENERATOR / "templates" / "cases" / case["file"]).read_text(encoding="utf-8")
+        start = body.index("<svg", body.index('<figure class="cs-hero"'))
+        svg = body[start:body.index("</svg>", start) + 6]
+        svg = re.sub(r' role="img" aria-label="[^"]*"', ' aria-hidden="true"', svg, count=1)
+        note = "Published" if case.get("published") else "Coming soon" if case.get("pending") else "Not named"
+        out.append(f'  <a class="cover-card case-card" href="{case["file"]}"><span class="cs-hero thumb" data-reveal>{svg}</span>'
+                   f'<span class="body"><b>{html.escape(case["card"], quote=False)}</b>'
+                   f'<span class="meta"><span>{html.escape(case["kind"])}</span><span>{note}</span></span></span></a>')
+    out.append("</div>")
+    return "\n".join(out)
+
+
 def indent(text, spaces):
     pad = " " * spaces
     return "\n".join(pad + line if line else line for line in text.splitlines())
@@ -364,8 +381,10 @@ def build_pages():
         platform_cover=cover("platform", grows=True),
         platform_tiles=indent(platform_tiles_html(config["platform"]), 8),
         platform_count=str(len(config["platform"]["parts"])),
+        case_cards=indent(case_cards_html(config.get("cases", [])), 6),
         project_cover=cover("project", grows=True),
         project_cover_plain=cover("project"),
+        project_hidden=" hidden" if project.get("hidden") else "",
         contact=contact,
         portrait=portrait_html(),
         notes=notes_html(config.get("notes", [])),
@@ -488,14 +507,17 @@ def build_pages():
         )
 
     stops, journey = journey_html(project, builds, status_of)
-    part_links = "\n".join(
-        f'        <li><a href="builds/{e(step["slug"])}.html"><i>{n}</i>{e(step["short"])}</a><span class="status {STATUSES[status_of[step["slug"]]][1]}">{STATUSES[status_of[step["slug"]]][0]}</span></li>'
+    by_slug = {b["slug"]: b for b in builds}
+    tiles = "\n".join(
+        f'<a class="cover-card{" off" if status_of[step["slug"]] == "planned" else ""}" href="builds/{e(step["slug"])}.html">{cover(step["slug"])}'
+        f'<span class="body"><b><i>{n}</i>{e(step["short"])}</b><span class="line">{e(step["name"])}</span>'
+        f'<span class="meta"><span class="status {STATUSES[status_of[step["slug"]]][1]}">{STATUSES[status_of[step["slug"]]][0]}</span><span>{e(by_slug[step["slug"]]["tools"])}</span></span></span></a>'
         for n, step in enumerate(project["journey"], 1)
     )
     first = project["journey"][0]
     first_text, first_class = STATUSES[status_of[first["slug"]]]
     pages["project.html"] = template("project.html").substitute(
-        part_links=part_links,
+        tiles=indent(tiles, 8),
         contact=inner_contact,
         contact_nav=inner_nav,
         style=style,
@@ -521,6 +543,7 @@ def build_pages():
         first_name=e(first["name"]),
         first_why=e(first["why"]),
         first_slug=first["slug"],
+        first_tile=e(builds[0]["tile"]),
         first_gets=e(first["gets"]),
         first_out=e(first["hands_on"]),
         choices=indent("\n".join(

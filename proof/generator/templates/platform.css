@@ -656,3 +656,172 @@ details.whole dd b{font-size:.9375rem}
 /* The screenshots sit in the same dark band as the home page's projects. The shadow paints it edge to edge without widening the page. */
 .cs-block.bleed{padding:clamp(56px,7vw,96px) 0;box-shadow:0 0 0 100vmax var(--bg);clip-path:inset(0 -100vmax)}
 .cs-block.bleed + .cs-block{margin-top:clamp(56px,7vw,96px)}
+
+/* The form swap demo: a form inside a block of fixed height, and a button that falls out of it. */
+.fs{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:24px 40px;align-items:start}
+.fs .site{min-height:0}
+.fs-block{height:10.25rem;overflow:hidden;border:1px dashed var(--muted);border-bottom-style:solid;border-bottom-color:var(--ink);border-radius:8px 8px 0 0;background:var(--bg);padding:14px;display:flex;flex-direction:column;gap:10px;transition:height .5s var(--ease)}
+.fs-block.fix{height:10.25rem;border-bottom-style:dashed;border-bottom-color:var(--muted);border-radius:8px}
+.fs-block.fix.open{height:22rem}
+.fs-block>*{flex:none}
+.fs-f{display:grid;gap:5px;font-size:.8125rem;color:var(--muted)}
+.fs-f input,.fs-f i{display:block;width:100%;height:36px;border:1px solid var(--line);border-radius:6px;background:var(--bg);font:inherit;font-size:.9375rem;color:var(--ink);padding:0 10px}
+.fs .fs-f i{width:100%;height:36px;border-radius:6px;background:var(--bg)}
+.fs-f input:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+.fs-more{display:grid;gap:10px;max-height:0;overflow:hidden;opacity:0;transition:max-height .5s var(--ease),opacity .35s var(--ease)}
+.fs-block.open .fs-more{max-height:13rem;opacity:1}
+.fs-go{flex:none;height:40px;border:0;border-radius:6px;background:var(--accent);color:var(--on-accent);font-size:.9375rem}
+.fs-edge{display:block;margin-top:-4px;font-size:.75rem;color:var(--muted)}
+.fs-block.fix+.fs-edge{visibility:hidden}
+.fs-acts{display:flex;flex-wrap:wrap;gap:8px;margin:0}
+.fs-acts button{border:1px solid var(--line);background:var(--bg);border-radius:8px;padding:8px 14px 9px;font-size:.875rem}
+.fs-acts button:first-child{border-color:var(--ink)}
+.fs-bars{margin-top:24px;font-size:.875rem;font-variant-numeric:tabular-nums}
+.fs-bars p{margin:0 0 10px;color:var(--muted)}
+.fs-bars div{display:grid;grid-template-columns:7.5rem 1fr 4.5rem;gap:12px;align-items:center;padding:5px 0}
+.fs-bars b{display:block;height:12px;width:var(--w);border-radius:3px;background:var(--muted)}
+.fs-bars b.low{background:var(--accent)}
+.fs-bars em{font-style:normal;color:var(--muted)}
+@media (max-width:760px){.fs{grid-template-columns:minmax(0,1fr)}}
+
+/* While the six screens are pinned, the screenshot is capped so the whole block fits on the screen. */
+
+/* A long list shows its first rows and opens on request. */
+.shows.fold:not(.open)>div:nth-child(n+3){display:none}
+.fold-more{margin:0}
+.fold-more button{border:0;background:none;padding:16px 0;font-size:.875rem;color:var(--muted)}
+.fold-more button::before{content:"+";color:var(--accent);margin-right:10px}
+.fold-more button:hover{color:var(--ink)}
+
+/* The three lessons line up row by row: title with title, summary with summary, each point with its neighbours. */
+@supports (grid-template-rows:subgrid){
+  @media (min-width:861px){
+    .themes{grid-template-rows:repeat(6,auto);row-gap:0}
+    .themes article{display:grid;grid-row:span 6;grid-template-rows:subgrid}
+    .themes ul{display:grid;grid-row:span 3;grid-template-rows:subgrid}
+    .themes li:last-child{padding-bottom:0}
+  }
+}
+/* Screenshots sit at a reading size, not the full width of the page. */
+/* The detailed diagram is drawn on white. On a dark page it is flipped so it does not glare. */
+:root[data-theme="dark"] #arch img{filter:invert(1) hue-rotate(180deg)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) #arch img{filter:invert(1) hue-rotate(180deg)}}
+
+/* A screenshot never stands taller than the screen. Press it to see it large. */
+/* The frame is narrowed until a 16 by 10 screenshot fits, so the space is held before the picture loads. */
+.rshot-frame{max-width:min(58rem,calc(min(68svh,42rem,100svh - 290px)*1.6))}
+.rshot-pane,figure.rshot-frame{position:relative}
+.zoomable{cursor:zoom-in}
+.zoom-open{position:absolute;top:10px;right:10px;z-index:2;border:1px solid var(--line);border-radius:8px;background:color-mix(in srgb,var(--bg) 90%,transparent);backdrop-filter:blur(6px);color:var(--ink);padding:6px 12px 7px;font-size:.8125rem}
+.zoom-open:hover{border-color:var(--ink)}
+dialog.zoom{border:0;padding:0;margin:0;width:100vw;max-width:100vw;height:100dvh;max-height:100dvh;background:rgb(10 12 14/.94);color:#ECEDEE;overflow:auto;overscroll-behavior:contain}
+dialog.zoom::backdrop{background:rgb(10 12 14/.94)}
+dialog.zoom .zoom-box{min-height:100%;display:grid;place-items:center;padding:56px 12px 16px}
+dialog.zoom img{display:block;max-width:100%;max-height:calc(100dvh - 72px);width:auto;height:auto;border-radius:8px;cursor:zoom-in}
+dialog.zoom.full .zoom-box{place-items:start;width:max-content;min-width:100%}
+dialog.zoom.full img{max-width:none;max-height:none;cursor:zoom-out}
+dialog.zoom .zoom-bar{position:fixed;top:10px;right:12px;display:flex;gap:8px;z-index:1}
+dialog.zoom .zoom-bar button{border:1px solid rgb(236 237 238/.3);border-radius:8px;background:rgb(10 12 14/.8);color:#ECEDEE;padding:7px 14px 8px;font-size:.875rem}
+dialog.zoom .zoom-bar button:hover{border-color:#ECEDEE}
+
+/* Animated diagrams: boxes, lanes, and dots riding the lanes that are live. */
+.flowfig{margin-top:32px}
+.flow-stage{position:relative;height:420px;border:1px solid var(--line);border-radius:12px;background:var(--panel)}
+.flow-stage>svg{position:absolute;inset:0;width:100%;height:100%}
+.flowfig .n rect{fill:var(--bg);stroke:var(--line);stroke-width:1.5;transition:stroke .35s var(--ease)}
+.flowfig .n.on rect{stroke:var(--accent);stroke-width:2.5}
+.flowfig .n{transition:opacity .35s var(--ease)}
+.flowfig .n.off{opacity:.45}
+.flowfig .n .l{fill:var(--ink);font:500 14px var(--sans)}
+.flowfig .n .h{fill:var(--ink);font:500 17px var(--sans);letter-spacing:-.02em}
+.flowfig .n .sub{fill:var(--muted);font:13px var(--sans)}
+.flowfig .lane{fill:none;stroke:var(--line);stroke-width:2}
+.flowfig .lane.live{stroke:var(--accent);stroke-width:2.5}
+.flowfig .lane.dash{stroke-dasharray:5 5}
+.flowfig .tok circle{fill:var(--accent);stroke:var(--bg);stroke-width:2}
+.flow-panel{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:16px 40px;align-items:start;margin-top:22px}
+.flow-n{margin:0 0 6px;font-size:.875rem;color:var(--muted)}
+.flow-t{margin:0;font-weight:500;font-size:clamp(1.25rem,1.05rem + .9vw,1.625rem);letter-spacing:-.025em;line-height:1.15}
+.flow-b{margin:10px 0 0;max-width:40rem;color:var(--muted);min-height:4.5em}
+.flow-ctl{display:flex;flex-wrap:wrap;gap:8px}
+.flow-ctl button,.flow-dots button,.flow-tabs button{border:1px solid var(--line);background:var(--bg);border-radius:8px;min-height:40px;padding:0 14px;font-size:.875rem;color:var(--ink)}
+.flow-ctl .flow-play{background:var(--ink);border-color:var(--ink);color:var(--bg);min-width:5rem}
+.flow-dots{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+.flow-dots button{padding:0;width:40px;color:var(--muted)}
+.flow-dots button[aria-current="step"]{border-color:var(--ink);color:var(--ink);box-shadow:0 0 0 1px var(--ink)}
+.flow-tabs{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
+.flow-tabs button{color:var(--muted)}
+.flow-tabs button[aria-pressed="true"]{border-color:var(--ink);color:var(--ink);box-shadow:0 0 0 1px var(--ink)}
+.flowfig[data-flow="paths"] .flow-t{margin-top:18px;font-size:1.125rem}
+@media (max-width:760px){.flow-panel{grid-template-columns:minmax(0,1fr)}}
+
+/* A diagram and everything that goes with it fit on one screen: on a wide screen the words and the
+   controls sit beside the picture, and the picture is never taller than the room under the nav. */
+@media (min-width:900px){
+  .flowfig{display:grid;grid-template-columns:minmax(0,1fr) 19rem;gap:0 32px;align-items:start}
+  .flowfig .flow-panel{grid-template-columns:minmax(0,1fr);margin-top:0;gap:18px}
+  .flowfig .flow-panel>div:last-child{order:-1}
+  .flowfig .flow-b{min-height:0;font-size:.9375rem;line-height:1.45}
+  .flowfig .flow-t{font-size:1.25rem}
+  .flowfig .flow-dots button{width:34px;min-height:34px}
+  .flowfig[data-flow="paths"]{grid-template-rows:auto 1fr}
+  .flowfig[data-flow="paths"] .flow-stage{grid-row:1 / span 2}
+  .flowfig[data-flow="paths"] .flow-tabs{margin-top:0;flex-direction:column;align-items:stretch}
+  .flowfig[data-flow="paths"] .flow-tabs button{text-align:left}
+  .flowfig[data-flow="paths"] .flow-t{margin-top:16px}
+}
+
+/* Short screens: the build-run demo tightens its rows, and a phone gets a shorter diagram panel. */
+@media (max-height:760px){#dag.rows2 li{padding:8px 0}.app-main.solo{padding-top:18px;padding-bottom:18px}.pick{margin-bottom:12px}}
+@media (max-width:899px){.flowfig .flow-b{min-height:0;font-size:.9375rem}.flowfig .flow-panel{margin-top:14px;gap:10px}.flow-dots{margin-top:8px}.flow-dots button{width:36px;min-height:36px}}
+
+/* The three reasons line up: every "Because" is the same height, so every "So" starts on one line. */
+@supports (grid-template-rows:subgrid){
+  @media (min-width:861px){
+    .why{grid-template-rows:auto auto;row-gap:0}
+    .why article{display:grid;grid-row:span 2;grid-template-rows:subgrid}
+  }
+}
+
+/* The one link out on a published case study. */
+.writeup p.acts a.see{display:inline-block;background:var(--ink);color:var(--bg);border-radius:8px;padding:10px 18px 11px;text-decoration:none;font-size:1rem}
+.writeup p.acts a.see:hover{background:var(--accent);color:var(--on-accent)}
+
+/* Case study visuals: a line of steps, result bars, a line chart, and the link to the published source. */
+.flowfig[data-flow="chain"]{display:block}
+.flowfig[data-flow="chain"] .flow-stage{height:116px}
+.src-link{margin:14px 0 0;font-size:1rem}
+.resbars{margin:28px 0 0;max-width:46rem}
+.resbars figcaption{color:var(--muted);font-size:.875rem;margin-bottom:14px}
+.resbars>div{display:grid;grid-template-columns:11rem minmax(0,1fr) 4rem;gap:14px;align-items:center;padding:12px 0;border-top:1px solid var(--line)}
+.resbars>div>span{font-weight:500}
+.resbars p{margin:0;display:grid;gap:5px}
+.resbars p i,.resbars p b{display:block;height:10px;border-radius:3px;width:var(--w);transform-origin:left}
+.resbars p i{background:var(--muted);opacity:.45}
+.resbars p b{background:var(--accent);height:16px}
+.resbars em{font-style:normal;font-weight:500;font-size:1.25rem;letter-spacing:-.02em;text-align:right;font-variant-numeric:tabular-nums}
+.resbars small{display:flex;gap:8px;align-items:center;margin-top:12px;color:var(--muted);font-size:.8125rem}
+.resbars small i,.resbars small b{display:inline-block;width:14px;height:8px;border-radius:2px;background:var(--muted);opacity:.45}
+.resbars small b{background:var(--accent);opacity:1;margin-left:12px}
+.resbars.armed p i,.resbars.armed p b{transform:scaleX(0)}
+.resbars.seen p i{transform:scaleX(1);transition:transform .5s var(--ease)}
+.resbars.seen p b{transform:scaleX(1);transition:transform .9s var(--ease) .25s}
+.linefig{margin:28px 0 0;max-width:46rem;border:1px solid var(--line);border-radius:12px;background:var(--panel);padding:18px 18px 12px}
+.linefig svg{display:block;width:100%;height:auto;max-height:min(46svh,20rem)}
+.linefig figcaption{margin-top:8px;color:var(--muted);font-size:.8125rem}
+.linefig .ax{stroke:var(--line);stroke-width:1.5}
+.linefig .mk{stroke:var(--muted);stroke-width:1;stroke-dasharray:4 4;opacity:.7}
+.linefig .mt,.linefig .lt{fill:var(--muted);font:13px var(--sans)}
+.linefig .lt.strong{fill:var(--ink);font-weight:500}
+.linefig .ln{fill:none;stroke-width:2.5;stroke-linejoin:round;stroke-linecap:round}
+.linefig .clicks{stroke:var(--muted)}
+.linefig .leads{stroke:var(--accent);stroke-width:3}
+.linefig .open{stroke:var(--accent);stroke-dasharray:3 6;opacity:.7}
+.linefig.armed .draw{stroke-dasharray:1;stroke-dashoffset:1}
+.linefig.armed .open,.linefig.armed .lt,.linefig.armed .mt,.linefig.armed .mk{opacity:0}
+.linefig.seen .draw{stroke-dashoffset:0;transition:stroke-dashoffset 1.6s var(--ease)}
+.linefig.seen .open{opacity:.7;transition:opacity .4s var(--ease) 1.5s}
+.linefig.seen .lt,.linefig.seen .mt{opacity:1;transition:opacity .4s var(--ease) .9s}
+.linefig.seen .mk{opacity:.7;transition:opacity .4s var(--ease) .5s}
+@media (max-width:600px){.resbars>div{grid-template-columns:minmax(0,1fr) 3.5rem}.resbars>div>span{grid-column:1 / -1}}
+.flowfig svg>g>text.sub{fill:var(--muted);font:13px var(--sans)}

@@ -125,7 +125,7 @@
     .status.is-active,.rows .status.is-active{color:var(--accent)}
 
     /* The scene: one system, drawn as you scroll */
-    .pin{min-height:100svh;display:flex;flex-direction:column;justify-content:center;padding:96px 0 40px}
+    .pin{padding:24px 0 40px}
     .writeup .scene{margin-top:24px}
     .writeup .scene h2{font-size:clamp(1.5rem,1.3rem + .9vw,2rem)}
     .scene svg{display:block;width:100%;height:auto;overflow:visible;margin:40px 0 0}
@@ -152,6 +152,13 @@
     .xp b{display:block;font-weight:500;font-size:clamp(1.25rem,1.1rem + .8vw,1.75rem);letter-spacing:-.03em;line-height:1.1}
     .xp .where{display:block;margin-top:6px;color:var(--muted)}
     .xp p{margin:16px 0 0;max-width:40rem}
+    .xp .did{list-style:none;margin:22px 0 0;padding:0;display:grid;gap:18px clamp(24px,3vw,40px)}
+    @media (min-width:640px){.xp .did{grid-template-columns:repeat(2,minmax(0,1fr))}}
+    .xp .did li{display:grid;grid-template-columns:36px minmax(0,1fr);gap:0 14px;align-items:start}
+    .xp .did svg{width:36px;height:36px;padding:7px;border:1px solid var(--line);border-radius:10px;background:var(--panel);fill:none;stroke:var(--accent);stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+    .xp .did strong{display:block;font-weight:500;line-height:1.3}
+    .xp .did span{display:block;margin-top:3px;color:var(--muted);font-size:.9375rem;line-height:1.5}
+    .xp .did + .tags{margin-top:22px}
     .tags{list-style:none;margin:18px 0 0;padding:0;display:flex;flex-wrap:wrap;gap:6px}
     .tags li{font-family:var(--mono);font-size:.75rem;border:1px solid var(--line);border-radius:4px;padding:3px 8px;color:var(--muted)}
 
@@ -242,6 +249,8 @@
     .cover-card .body{display:block;padding:20px 22px 22px}
     .cover-card b{display:block;font-weight:500;font-size:1.125rem;line-height:1.3;letter-spacing:-.02em;text-wrap:balance}
     .cover-card .meta{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px 16px;margin-top:16px;font-family:var(--mono);font-size:.75rem;color:var(--muted)}
+    .cover-card b i{font-style:normal;font-weight:400;color:var(--muted);margin-right:10px}
+    .cover-card .line{display:block;margin-top:6px;color:var(--muted);font-size:.9375rem;line-height:1.4}
     .cover-card.off .art{opacity:.55}
     .cover-card.off b{color:var(--muted)}
     .sys-cover{margin:56px 0 0;border:1px solid var(--line);border-radius:10px;overflow:hidden}
@@ -325,7 +334,8 @@
     .plat dd{margin:4px 0 0;color:var(--muted);font-size:.9375rem;line-height:1.45}
     .ctl{margin-top:32px}
     .ctl button{border:1px solid var(--ink);background:var(--ink);color:var(--bg);border-radius:8px;padding:9px 16px 10px;font-size:.9375rem}
-    .map{position:relative;display:grid;grid-template-columns:minmax(0,1fr) 30px minmax(0,1fr) 30px minmax(0,1fr) 30px minmax(0,1fr) 30px minmax(0,1fr) 30px minmax(0,1fr);margin:32px 0 0}
+    .map{position:relative;display:grid;grid-template-columns:repeat(7,minmax(0,1fr) 20px) minmax(0,1fr);margin:32px 0 0}
+    .map .stop-cap{padding:10px 10px 12px}.map .stop-cap b{font-size:.875rem}
     .stop{position:relative;border:1px solid var(--line);border-radius:10px;background:var(--bg);padding:0;text-align:left;display:flex;flex-direction:column;transition:border-color .3s,box-shadow .3s,transform .3s var(--ease)}
     .stop:hover{transform:translateY(-2px)}
     .stop:active{transform:scale(.98)}
@@ -362,6 +372,7 @@
     .why .c b{font-weight:500;line-height:1.35;display:block}
     .why .d b{font-weight:500;font-size:1.125rem;letter-spacing:-.02em;line-height:1.3;display:block}
     .why .d p{margin:10px 0 0;font-size:.9375rem;line-height:1.5;color:var(--muted)}
+    @supports (grid-template-rows:subgrid){@media (min-width:861px){.why{grid-template-rows:auto auto;row-gap:0}.why article{display:grid;grid-row:span 2;grid-template-rows:subgrid}}}
     .cs-slot{margin:32px 0 0}
     .shows{margin:32px 0 0;border-top:2px solid var(--accent)}
     .shows div{display:grid;gap:6px 40px;padding:18px 0;border-bottom:1px solid var(--line)}
@@ -434,6 +445,7 @@
     .who{margin:0 0 18px;font-size:1.0625rem;font-weight:500;letter-spacing:-.01em}
     .who span{margin-left:12px;font-weight:400;color:var(--muted)}
     .hero.v2 h1.role{font-size:clamp(2.75rem,1rem + 6.4vw,6rem);line-height:.95;max-width:none}
+    .pitch2{margin:14px 0 0;max-width:34rem;color:var(--muted);font-size:1.0625rem;line-height:1.5}
     .pitch{margin:22px 0 0;max-width:34rem;font-size:clamp(1.1875rem,1rem + .8vw,1.5rem);line-height:1.3;letter-spacing:-.015em}
     .hero-acts{display:flex;flex-wrap:wrap;align-items:center;gap:10px 22px;margin:28px 0 0;font-size:1rem}
     .hero-acts .see{background:var(--ink);color:var(--bg);border-radius:8px;padding:10px 18px 11px;text-decoration:none}
@@ -449,11 +461,13 @@
     :root[data-theme="dark"] .proj-cover.shot .l{display:none}:root[data-theme="dark"] .proj-cover.shot .d{display:block}
     @media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .proj-cover.shot .l{display:none}:root:not([data-theme="light"]) .proj-cover.shot .d{display:block}}
     .proj-cover.shot small{display:block;padding:10px 14px;border-top:1px solid var(--line);background:var(--bg);color:var(--muted);font-size:.8125rem}
-    .case-row{display:grid;gap:6px 32px;align-items:baseline;margin-top:32px;padding:26px 0;border-top:2px solid var(--accent);border-bottom:1px solid var(--line);background:none;text-decoration:none}
-    @media (min-width:760px){.case-row{grid-template-columns:9rem 1fr auto}}
-    .case-row small{font-family:var(--mono);font-size:.75rem;color:var(--muted)}
-    .case-row b{font-weight:500;font-size:clamp(1.25rem,1rem + 1vw,1.75rem);letter-spacing:-.025em;line-height:1.2}
-    .case-row span{color:var(--muted);text-decoration:underline;text-underline-offset:3px}
+    .case-cards{display:grid;gap:24px;margin-top:36px}
+    @media (min-width:600px){.case-cards{grid-template-columns:repeat(2,minmax(0,1fr))}}
+    @media (min-width:1100px){.case-cards{grid-template-columns:repeat(4,minmax(0,1fr));gap:20px}.case-card .body{padding:18px 18px 20px}}
+    .case-card{display:flex;flex-direction:column}
+    .case-card .body{flex:1;display:flex;flex-direction:column}
+    .case-card .meta{margin-top:auto;padding-top:16px}
+    .case-card .cs-hero.thumb{display:block;margin:0;max-width:none;border:0;border-bottom:1px solid var(--line);border-radius:0;padding:14px}
     .parts-h a{margin-left:10px;color:var(--ink);text-decoration:underline;text-decoration-color:var(--line);text-underline-offset:3px;background:none}
     /* Every part, as plain links under the map. Works with no script. */
     .part-links{list-style:none;margin:28px 0 0;padding:0;display:grid;gap:0 32px;border-top:1px solid var(--line)}
@@ -488,9 +502,9 @@
     @media (max-width:520px){.hw-row{grid-template-columns:1fr auto}.hw-row small{grid-column:1 / -1}}
     .hero.v2 h1.role{font-size:clamp(2.75rem,1rem + 5.2vw,5.25rem)}
     .hero.v2 h1.name{font-size:clamp(3.25rem,1rem + 7.6vw,7.25rem);line-height:.88;letter-spacing:-.055em;max-width:none;white-space:nowrap}
-    .role-line{margin:26px 0 0;font-size:clamp(1.375rem,1rem + 1.2vw,1.875rem);font-weight:500;letter-spacing:-.025em;line-height:1.15}
-    .role-line span{margin-left:14px;font-weight:400;color:var(--muted);font-size:.7em;letter-spacing:-.01em}
-    .hero.v2 .role-line + .pitch{margin-top:10px;color:var(--muted)}
+    .role-line{margin:26px 0 0;font-size:1rem;font-weight:500;color:var(--muted);line-height:1.3}
+    .role-line span{margin-left:12px;font-weight:400}
+    .hero.v2 .role-line + .pitch{margin-top:10px;color:var(--ink);font-size:clamp(1.5rem,1.1rem + 1.5vw,2.125rem);font-weight:500;letter-spacing:-.025em;line-height:1.18;max-width:32rem;text-wrap:balance}
     /* Colour is the lead: a card on the first screen is grey until the pointer (or the keyboard) reaches it. */
     @media (hover:hover) and (pointer:fine){
       .hw .hw-pic > *{filter:grayscale(1) contrast(.94);opacity:.82;transition:filter var(--t-med) var(--ease),opacity var(--t-med) var(--ease)}
@@ -532,12 +546,16 @@
     .band + .sec{padding-top:clamp(72px,8vw,112px)}
 
     /* Skills as four plain lines. */
-    .skills{margin:40px 0 0;border-top:2px solid var(--accent)}
-    .skills div{display:grid;gap:6px 40px;padding:20px 0;border-bottom:1px solid var(--line)}
-    @media (min-width:760px){.skills div{grid-template-columns:14rem 1fr}}
-    .skills dt{font-weight:500;font-size:1.0625rem;letter-spacing:-.015em}
-    .skills dd{margin:0;line-height:1.45}
-    .skills small{display:block;margin-top:6px;color:var(--muted);font-size:.875rem}
+    .skills{margin:40px 0 0;display:grid;gap:0 clamp(20px,2.4vw,32px)}
+    @media (min-width:640px){.skills{grid-template-columns:repeat(2,minmax(0,1fr))}}
+    @media (min-width:980px){.skills{grid-template-columns:repeat(3,minmax(0,1fr))}}
+    .skills>div{display:grid;grid-template-rows:subgrid;grid-row:span 2;gap:0;padding:22px 0 26px;border-top:2px solid var(--accent)}
+    .skills dt{display:flex;align-items:center;gap:12px;font-weight:500;font-size:1.125rem;letter-spacing:-.015em}
+    .skills dt svg{flex:none;width:36px;height:36px;padding:7px;border:1px solid var(--line);border-radius:10px;background:var(--panel);fill:none;stroke:var(--accent);stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+    .skills dd{margin:16px 0 0;display:flex;flex-direction:column;justify-content:space-between;gap:12px}
+    .skills .tags{margin:0}
+    .skills small{display:block;color:var(--muted);font-size:.875rem}
+    .skills small:empty{display:none}
 
     /* About: the line people remember, large, with the rest beside it. */
     .about.two{max-width:none;display:grid;gap:32px 72px;align-items:start}
@@ -559,6 +577,93 @@
       h2,h3{break-after:avoid}
       a{text-decoration:none;color:inherit}
     }
+    /* A part of the page switched off in builds.json stays off, whatever its own display rule says. */
+    .hw[hidden],.sys[hidden],.parts-h[hidden]{display:none!important}
+    .hw[hidden] + .hw.note{grid-column:1 / -1}
+
+    /* Smooth scrolling (Lenis). These four rules are the library's own stylesheet. */
+    html.lenis,html.lenis body{height:auto}
+    .lenis:not(.lenis-autoToggle).lenis-stopped{overflow:clip}
+    .lenis [data-lenis-prevent]{overscroll-behavior:contain}
+    .lenis.lenis-smooth iframe{pointer-events:none}
+
+    /* Headings arrive a letter at a time, each word behind its own mask. */
+    h2 .w-mask{padding-bottom:.14em;margin-bottom:-.14em}
+
+    /* A dark band always shows the dark screenshot, whatever the page's own theme. */
+    .band .rshot-frame .l,.band .proj-cover.shot .l,.band .shot-frame .l{display:none}
+    .band .rshot-frame .d,.band .proj-cover.shot .d,.band .shot-frame .d{display:block}
+
+    /* The client work note on the first screen lists each story as its own link. */
+    div.hw.note{gap:0}
+    div.hw.note a{display:block;padding:9px 0;border-top:1px solid var(--line);background:none;font-weight:500;font-size:1rem;letter-spacing:-.015em;line-height:1.25}
+    div.hw.note small+a{margin-top:10px}
+    div.hw.note a:hover{color:var(--accent)}
+    .hw[hidden] + div.hw.note{grid-column:1 / -1}
+
+    /* The picture at the top of a client work page. Always drawn: a client page carries no screenshots. */
+    .cs-hero{margin:28px 0 36px;max-width:58rem;border:1px solid var(--line);border-radius:14px;background:var(--panel);padding:clamp(10px,2vw,20px) clamp(10px,2vw,20px) 12px}
+    .cs-hero svg{display:block;width:100%;height:auto;max-height:min(46svh,19rem)}
+    .cs-hero .h-b{fill:var(--bg);stroke:var(--line);stroke-width:1.5}
+    .cs-hero .h-f{fill:var(--bg);stroke:var(--line);stroke-width:1.5}
+    .cs-hero .h-s{fill:color-mix(in srgb,var(--ink) 22%,transparent)}
+    .cs-hero .h-s2{fill:color-mix(in srgb,var(--ink) 11%,transparent)}
+    .cs-hero .h-k{fill:var(--ink)}
+    .cs-hero .h-on{fill:var(--accent)}
+    .cs-hero .h-onbar{fill:var(--on-accent)}
+    .cs-hero .h-hot{fill:color-mix(in srgb,var(--accent) 9%,var(--bg));stroke:var(--accent);stroke-width:1.5}
+    .cs-hero .h-mg,.cs-hero .h-ar{fill:none;stroke:var(--muted);stroke-width:1.75;stroke-linecap:round;stroke-linejoin:round}
+    .cs-hero .h-tag{fill:var(--on-accent);font:600 11px var(--sans)}
+    .cs-hero .h-tag.big{font-size:15px}
+    .cs-hero .h-ax{stroke:var(--line);stroke-width:1.5;fill:none}
+    .cs-hero .h-area{fill:color-mix(in srgb,var(--accent) 12%,transparent)}
+    .cs-hero .h-ln{fill:none;stroke:var(--accent);stroke-width:3;stroke-linecap:round;stroke-linejoin:round}
+    .cs-hero .h-d0{fill:var(--bg);stroke:var(--muted);stroke-width:2}
+    .cs-hero .h-d1{fill:var(--accent)}
+    .cs-hero .h-n0{fill:var(--muted);font:500 18px var(--sans)}
+    .cs-hero .h-n1{fill:var(--ink);font:500 30px var(--sans);letter-spacing:-.02em}
+    .cs-hero .h-n1.sm{font-size:22px}
+    .cs-hero .h-ghost{fill:none;stroke:var(--accent);stroke-width:1.5;stroke-dasharray:5 5;opacity:.75}
+    .cs-hero .h-ghostbar{fill:var(--accent);opacity:.45}
+    .cs-hero .h-cut{stroke:var(--coral);stroke-width:3;stroke-linecap:round}
+    .cs-hero .h-drop,.cs-hero .h-drop5{transform-box:fill-box;transform-origin:bottom}
+    .cs-hero.armed .draw{stroke-dasharray:1;stroke-dashoffset:1}
+    .cs-hero.armed .h-area,.cs-hero.armed .h-d1,.cs-hero.armed .h-n1,.cs-hero.armed .h-more,.cs-hero.armed .h-cut{opacity:0}
+    .cs-hero.armed .h-btn{transform:translateY(-88px)}
+    .cs-hero.armed .h-drop{transform:scaleY(2.5)}
+    .cs-hero.armed .h-drop5{transform:scaleY(.2)}
+    .cs-hero.seen .draw{stroke-dashoffset:0;transition:stroke-dashoffset 1.4s var(--ease) .2s}
+    .cs-hero.seen .h-area{opacity:1;transition:opacity .6s var(--ease) 1s}
+    .cs-hero.seen .h-d1,.cs-hero.seen .h-n1{opacity:1;transition:opacity .4s var(--ease) 1.2s}
+    .cs-hero.seen .h-more{opacity:1;transition:opacity .4s var(--ease) .5s}
+    .cs-hero.seen .h-btn{transform:none;transition:transform .7s var(--ease) .5s}
+    .cs-hero.seen .h-cut{opacity:1;transition:opacity .3s var(--ease) 1.1s}
+    .cs-hero.seen .h-drop{transform:none;transition:transform .8s var(--ease) 1.2s}
+    .cs-hero.seen .h-drop5{transform:none;transition:transform 1s var(--ease) .4s}
+    /* Projects: one at a time, side by side. Named tabs and arrows move between them; a swipe works too. */
+    .pcar{margin-top:8px}
+    .pcar-nav{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px 24px;margin-top:20px}
+    .pcar-nav[hidden]{display:none}
+    .pcar-tabs{display:flex;flex-wrap:wrap;gap:8px}
+    .pcar-tabs button{font:inherit;font-size:.9375rem;color:var(--muted);background:none;border:1px solid var(--line);border-radius:999px;padding:8px 16px 9px;cursor:pointer;transition:color var(--t-fast) var(--ease),border-color var(--t-fast) var(--ease),background var(--t-fast) var(--ease)}
+    .pcar-tabs button[hidden]{display:none}
+    .pcar-tabs button[aria-pressed="true"]{color:var(--bg);background:var(--ink);border-color:var(--ink)}
+    .pcar-arrows{display:flex;gap:8px}
+    .pcar-arrows button{width:40px;height:40px;display:grid;place-items:center;color:var(--ink);background:none;border:1px solid var(--line);border-radius:50%;cursor:pointer;transition:border-color var(--t-fast) var(--ease),opacity var(--t-fast) var(--ease)}
+    .pcar-arrows button:hover{border-color:var(--muted)}
+    .pcar-arrows button:disabled{opacity:.35;cursor:default}
+    .pcar-arrows svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.75;stroke-linecap:round;stroke-linejoin:round}
+    .pcar-track{display:flex;gap:64px;overflow-x:auto;overscroll-behavior-x:contain;scroll-snap-type:x mandatory;scrollbar-width:none}
+    .pcar-track::-webkit-scrollbar{display:none}
+    .pcar-track>.sys{flex:0 0 100%;min-width:0;scroll-snap-align:start}
+    .pcar .sys,.band .pcar .sys.second{margin-top:0;padding:20px 0 0;border-top:0}
+    @media (min-width:900px){.band .pcar .sys.second{grid-template-columns:minmax(0,1.3fr) minmax(0,1fr)}.band .pcar .sys.second .proj-cover{order:0}}
+    .pcar .sys .parts-h{margin:20px 0 0}
+    /* A short, wide window: the name gives up height so the pitch and the buttons stay on the first screen. */
+    @media (min-width:900px) and (max-height:760px){.hero.v2{padding-top:104px}.hero.v2 h1.name{font-size:clamp(3rem,13svh,5.5rem)}.role-line{margin-top:16px}.hero.v2 .role-line + .pitch{font-size:clamp(1.375rem,4.4svh,1.875rem)}.pitch2{margin-top:10px;font-size:1rem}}
+    /* Part tiles: on a short window the picture gives up height so both rows of tiles fit one screen. */
+    @media (min-width:1080px) and (max-height:820px){.ptiles{gap:16px}.ptiles .cover-card .art{aspect-ratio:auto;width:100%;height:clamp(96px,19svh,200px)}.ptiles .cover-card .body{padding:14px 18px 16px}.ptiles .cover-card .meta{margin-top:10px}}
+    @media (min-width:1080px){.covers.n4{grid-template-columns:repeat(4,minmax(0,1fr));gap:18px}.covers.n4 .cover-card .body{padding:16px 16px 18px}.covers.n4 .cover-card b{font-size:1rem}.covers.n4 .cover-card .line{font-size:.875rem}}
     /* Styles for the platform pages only. Loaded after style.css. */
     "
 
@@ -1217,6 +1322,175 @@
     /* The screenshots sit in the same dark band as the home page's projects. The shadow paints it edge to edge without widening the page. */
     .cs-block.bleed{padding:clamp(56px,7vw,96px) 0;box-shadow:0 0 0 100vmax var(--bg);clip-path:inset(0 -100vmax)}
     .cs-block.bleed + .cs-block{margin-top:clamp(56px,7vw,96px)}
+
+    /* The form swap demo: a form inside a block of fixed height, and a button that falls out of it. */
+    .fs{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:24px 40px;align-items:start}
+    .fs .site{min-height:0}
+    .fs-block{height:10.25rem;overflow:hidden;border:1px dashed var(--muted);border-bottom-style:solid;border-bottom-color:var(--ink);border-radius:8px 8px 0 0;background:var(--bg);padding:14px;display:flex;flex-direction:column;gap:10px;transition:height .5s var(--ease)}
+    .fs-block.fix{height:10.25rem;border-bottom-style:dashed;border-bottom-color:var(--muted);border-radius:8px}
+    .fs-block.fix.open{height:22rem}
+    .fs-block>*{flex:none}
+    .fs-f{display:grid;gap:5px;font-size:.8125rem;color:var(--muted)}
+    .fs-f input,.fs-f i{display:block;width:100%;height:36px;border:1px solid var(--line);border-radius:6px;background:var(--bg);font:inherit;font-size:.9375rem;color:var(--ink);padding:0 10px}
+    .fs .fs-f i{width:100%;height:36px;border-radius:6px;background:var(--bg)}
+    .fs-f input:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+    .fs-more{display:grid;gap:10px;max-height:0;overflow:hidden;opacity:0;transition:max-height .5s var(--ease),opacity .35s var(--ease)}
+    .fs-block.open .fs-more{max-height:13rem;opacity:1}
+    .fs-go{flex:none;height:40px;border:0;border-radius:6px;background:var(--accent);color:var(--on-accent);font-size:.9375rem}
+    .fs-edge{display:block;margin-top:-4px;font-size:.75rem;color:var(--muted)}
+    .fs-block.fix+.fs-edge{visibility:hidden}
+    .fs-acts{display:flex;flex-wrap:wrap;gap:8px;margin:0}
+    .fs-acts button{border:1px solid var(--line);background:var(--bg);border-radius:8px;padding:8px 14px 9px;font-size:.875rem}
+    .fs-acts button:first-child{border-color:var(--ink)}
+    .fs-bars{margin-top:24px;font-size:.875rem;font-variant-numeric:tabular-nums}
+    .fs-bars p{margin:0 0 10px;color:var(--muted)}
+    .fs-bars div{display:grid;grid-template-columns:7.5rem 1fr 4.5rem;gap:12px;align-items:center;padding:5px 0}
+    .fs-bars b{display:block;height:12px;width:var(--w);border-radius:3px;background:var(--muted)}
+    .fs-bars b.low{background:var(--accent)}
+    .fs-bars em{font-style:normal;color:var(--muted)}
+    @media (max-width:760px){.fs{grid-template-columns:minmax(0,1fr)}}
+
+    /* While the six screens are pinned, the screenshot is capped so the whole block fits on the screen. */
+
+    /* A long list shows its first rows and opens on request. */
+    .shows.fold:not(.open)>div:nth-child(n+3){display:none}
+    .fold-more{margin:0}
+    .fold-more button{border:0;background:none;padding:16px 0;font-size:.875rem;color:var(--muted)}
+    .fold-more button::before{content:"+";color:var(--accent);margin-right:10px}
+    .fold-more button:hover{color:var(--ink)}
+
+    /* The three lessons line up row by row: title with title, summary with summary, each point with its neighbours. */
+    @supports (grid-template-rows:subgrid){
+      @media (min-width:861px){
+        .themes{grid-template-rows:repeat(6,auto);row-gap:0}
+        .themes article{display:grid;grid-row:span 6;grid-template-rows:subgrid}
+        .themes ul{display:grid;grid-row:span 3;grid-template-rows:subgrid}
+        .themes li:last-child{padding-bottom:0}
+      }
+    }
+    /* Screenshots sit at a reading size, not the full width of the page. */
+    /* The detailed diagram is drawn on white. On a dark page it is flipped so it does not glare. */
+    :root[data-theme="dark"] #arch img{filter:invert(1) hue-rotate(180deg)}
+    @media (prefers-color-scheme:dark){:root:not([data-theme="light"]) #arch img{filter:invert(1) hue-rotate(180deg)}}
+
+    /* A screenshot never stands taller than the screen. Press it to see it large. */
+    /* The frame is narrowed until a 16 by 10 screenshot fits, so the space is held before the picture loads. */
+    .rshot-frame{max-width:min(58rem,calc(min(68svh,42rem,100svh - 290px)*1.6))}
+    .rshot-pane,figure.rshot-frame{position:relative}
+    .zoomable{cursor:zoom-in}
+    .zoom-open{position:absolute;top:10px;right:10px;z-index:2;border:1px solid var(--line);border-radius:8px;background:color-mix(in srgb,var(--bg) 90%,transparent);backdrop-filter:blur(6px);color:var(--ink);padding:6px 12px 7px;font-size:.8125rem}
+    .zoom-open:hover{border-color:var(--ink)}
+    dialog.zoom{border:0;padding:0;margin:0;width:100vw;max-width:100vw;height:100dvh;max-height:100dvh;background:rgb(10 12 14/.94);color:#ECEDEE;overflow:auto;overscroll-behavior:contain}
+    dialog.zoom::backdrop{background:rgb(10 12 14/.94)}
+    dialog.zoom .zoom-box{min-height:100%;display:grid;place-items:center;padding:56px 12px 16px}
+    dialog.zoom img{display:block;max-width:100%;max-height:calc(100dvh - 72px);width:auto;height:auto;border-radius:8px;cursor:zoom-in}
+    dialog.zoom.full .zoom-box{place-items:start;width:max-content;min-width:100%}
+    dialog.zoom.full img{max-width:none;max-height:none;cursor:zoom-out}
+    dialog.zoom .zoom-bar{position:fixed;top:10px;right:12px;display:flex;gap:8px;z-index:1}
+    dialog.zoom .zoom-bar button{border:1px solid rgb(236 237 238/.3);border-radius:8px;background:rgb(10 12 14/.8);color:#ECEDEE;padding:7px 14px 8px;font-size:.875rem}
+    dialog.zoom .zoom-bar button:hover{border-color:#ECEDEE}
+
+    /* Animated diagrams: boxes, lanes, and dots riding the lanes that are live. */
+    .flowfig{margin-top:32px}
+    .flow-stage{position:relative;height:420px;border:1px solid var(--line);border-radius:12px;background:var(--panel)}
+    .flow-stage>svg{position:absolute;inset:0;width:100%;height:100%}
+    .flowfig .n rect{fill:var(--bg);stroke:var(--line);stroke-width:1.5;transition:stroke .35s var(--ease)}
+    .flowfig .n.on rect{stroke:var(--accent);stroke-width:2.5}
+    .flowfig .n{transition:opacity .35s var(--ease)}
+    .flowfig .n.off{opacity:.45}
+    .flowfig .n .l{fill:var(--ink);font:500 14px var(--sans)}
+    .flowfig .n .h{fill:var(--ink);font:500 17px var(--sans);letter-spacing:-.02em}
+    .flowfig .n .sub{fill:var(--muted);font:13px var(--sans)}
+    .flowfig .lane{fill:none;stroke:var(--line);stroke-width:2}
+    .flowfig .lane.live{stroke:var(--accent);stroke-width:2.5}
+    .flowfig .lane.dash{stroke-dasharray:5 5}
+    .flowfig .tok circle{fill:var(--accent);stroke:var(--bg);stroke-width:2}
+    .flow-panel{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:16px 40px;align-items:start;margin-top:22px}
+    .flow-n{margin:0 0 6px;font-size:.875rem;color:var(--muted)}
+    .flow-t{margin:0;font-weight:500;font-size:clamp(1.25rem,1.05rem + .9vw,1.625rem);letter-spacing:-.025em;line-height:1.15}
+    .flow-b{margin:10px 0 0;max-width:40rem;color:var(--muted);min-height:4.5em}
+    .flow-ctl{display:flex;flex-wrap:wrap;gap:8px}
+    .flow-ctl button,.flow-dots button,.flow-tabs button{border:1px solid var(--line);background:var(--bg);border-radius:8px;min-height:40px;padding:0 14px;font-size:.875rem;color:var(--ink)}
+    .flow-ctl .flow-play{background:var(--ink);border-color:var(--ink);color:var(--bg);min-width:5rem}
+    .flow-dots{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+    .flow-dots button{padding:0;width:40px;color:var(--muted)}
+    .flow-dots button[aria-current="step"]{border-color:var(--ink);color:var(--ink);box-shadow:0 0 0 1px var(--ink)}
+    .flow-tabs{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
+    .flow-tabs button{color:var(--muted)}
+    .flow-tabs button[aria-pressed="true"]{border-color:var(--ink);color:var(--ink);box-shadow:0 0 0 1px var(--ink)}
+    .flowfig[data-flow="paths"] .flow-t{margin-top:18px;font-size:1.125rem}
+    @media (max-width:760px){.flow-panel{grid-template-columns:minmax(0,1fr)}}
+
+    /* A diagram and everything that goes with it fit on one screen: on a wide screen the words and the
+       controls sit beside the picture, and the picture is never taller than the room under the nav. */
+    @media (min-width:900px){
+      .flowfig{display:grid;grid-template-columns:minmax(0,1fr) 19rem;gap:0 32px;align-items:start}
+      .flowfig .flow-panel{grid-template-columns:minmax(0,1fr);margin-top:0;gap:18px}
+      .flowfig .flow-panel>div:last-child{order:-1}
+      .flowfig .flow-b{min-height:0;font-size:.9375rem;line-height:1.45}
+      .flowfig .flow-t{font-size:1.25rem}
+      .flowfig .flow-dots button{width:34px;min-height:34px}
+      .flowfig[data-flow="paths"]{grid-template-rows:auto 1fr}
+      .flowfig[data-flow="paths"] .flow-stage{grid-row:1 / span 2}
+      .flowfig[data-flow="paths"] .flow-tabs{margin-top:0;flex-direction:column;align-items:stretch}
+      .flowfig[data-flow="paths"] .flow-tabs button{text-align:left}
+      .flowfig[data-flow="paths"] .flow-t{margin-top:16px}
+    }
+
+    /* Short screens: the build-run demo tightens its rows, and a phone gets a shorter diagram panel. */
+    @media (max-height:760px){#dag.rows2 li{padding:8px 0}.app-main.solo{padding-top:18px;padding-bottom:18px}.pick{margin-bottom:12px}}
+    @media (max-width:899px){.flowfig .flow-b{min-height:0;font-size:.9375rem}.flowfig .flow-panel{margin-top:14px;gap:10px}.flow-dots{margin-top:8px}.flow-dots button{width:36px;min-height:36px}}
+
+    /* The three reasons line up: every "Because" is the same height, so every "So" starts on one line. */
+    @supports (grid-template-rows:subgrid){
+      @media (min-width:861px){
+        .why{grid-template-rows:auto auto;row-gap:0}
+        .why article{display:grid;grid-row:span 2;grid-template-rows:subgrid}
+      }
+    }
+
+    /* The one link out on a published case study. */
+    .writeup p.acts a.see{display:inline-block;background:var(--ink);color:var(--bg);border-radius:8px;padding:10px 18px 11px;text-decoration:none;font-size:1rem}
+    .writeup p.acts a.see:hover{background:var(--accent);color:var(--on-accent)}
+
+    /* Case study visuals: a line of steps, result bars, a line chart, and the link to the published source. */
+    .flowfig[data-flow="chain"]{display:block}
+    .flowfig[data-flow="chain"] .flow-stage{height:116px}
+    .src-link{margin:14px 0 0;font-size:1rem}
+    .resbars{margin:28px 0 0;max-width:46rem}
+    .resbars figcaption{color:var(--muted);font-size:.875rem;margin-bottom:14px}
+    .resbars>div{display:grid;grid-template-columns:11rem minmax(0,1fr) 4rem;gap:14px;align-items:center;padding:12px 0;border-top:1px solid var(--line)}
+    .resbars>div>span{font-weight:500}
+    .resbars p{margin:0;display:grid;gap:5px}
+    .resbars p i,.resbars p b{display:block;height:10px;border-radius:3px;width:var(--w);transform-origin:left}
+    .resbars p i{background:var(--muted);opacity:.45}
+    .resbars p b{background:var(--accent);height:16px}
+    .resbars em{font-style:normal;font-weight:500;font-size:1.25rem;letter-spacing:-.02em;text-align:right;font-variant-numeric:tabular-nums}
+    .resbars small{display:flex;gap:8px;align-items:center;margin-top:12px;color:var(--muted);font-size:.8125rem}
+    .resbars small i,.resbars small b{display:inline-block;width:14px;height:8px;border-radius:2px;background:var(--muted);opacity:.45}
+    .resbars small b{background:var(--accent);opacity:1;margin-left:12px}
+    .resbars.armed p i,.resbars.armed p b{transform:scaleX(0)}
+    .resbars.seen p i{transform:scaleX(1);transition:transform .5s var(--ease)}
+    .resbars.seen p b{transform:scaleX(1);transition:transform .9s var(--ease) .25s}
+    .linefig{margin:28px 0 0;max-width:46rem;border:1px solid var(--line);border-radius:12px;background:var(--panel);padding:18px 18px 12px}
+    .linefig svg{display:block;width:100%;height:auto;max-height:min(46svh,20rem)}
+    .linefig figcaption{margin-top:8px;color:var(--muted);font-size:.8125rem}
+    .linefig .ax{stroke:var(--line);stroke-width:1.5}
+    .linefig .mk{stroke:var(--muted);stroke-width:1;stroke-dasharray:4 4;opacity:.7}
+    .linefig .mt,.linefig .lt{fill:var(--muted);font:13px var(--sans)}
+    .linefig .lt.strong{fill:var(--ink);font-weight:500}
+    .linefig .ln{fill:none;stroke-width:2.5;stroke-linejoin:round;stroke-linecap:round}
+    .linefig .clicks{stroke:var(--muted)}
+    .linefig .leads{stroke:var(--accent);stroke-width:3}
+    .linefig .open{stroke:var(--accent);stroke-dasharray:3 6;opacity:.7}
+    .linefig.armed .draw{stroke-dasharray:1;stroke-dashoffset:1}
+    .linefig.armed .open,.linefig.armed .lt,.linefig.armed .mt,.linefig.armed .mk{opacity:0}
+    .linefig.seen .draw{stroke-dashoffset:0;transition:stroke-dashoffset 1.6s var(--ease)}
+    .linefig.seen .open{opacity:.7;transition:opacity .4s var(--ease) 1.5s}
+    .linefig.seen .lt,.linefig.seen .mt{opacity:1;transition:opacity .4s var(--ease) .9s}
+    .linefig.seen .mk{opacity:.7;transition:opacity .4s var(--ease) .5s}
+    @media (max-width:600px){.resbars>div{grid-template-columns:minmax(0,1fr) 3.5rem}.resbars>div>span{grid-column:1 / -1}}
+    .flowfig svg>g>text.sub{fill:var(--muted);font:13px var(--sans)}
   </style>
 </head>
 <body>
@@ -1231,7 +1505,7 @@
       <h1 style="view-transition-name:title-platform">I built the operations platform a paid media team works in</h1>
       <p class="status is-live">Live at Upgrow</p>
     </header>
-    <dl class="tldr"><div><dt>Problem</dt><dd>A paid media team rebuilt the same reports, budgets and checks by hand, for every client, every month.</dd></div><div><dt>What I built</dt><dd>One platform: a tested warehouse, a web app and the workflows on top. A person approves everything.</dd></div><div><dt>Result</dt><dd>On report day, 8 client reports were drafted and with their account leads by 9:50 am. It costs $0 a month to host.</dd></div></dl>
+    <dl class="tldr"><div><dt>Problem</dt><dd>A paid media team rebuilt the same reports, budgets and checks by hand, for every client, every month.</dd></div><div><dt>What I built</dt><dd>One internal web app on a tested warehouse, with the workflows, alerts and a timeline for every client on top. A person approves everything.</dd></div><div><dt>Result</dt><dd>On report day, 8 client reports were drafted and with their account leads by 9:50 am. It costs $0 a month to host.</dd></div></dl>
     <p class="own">I designed it and built <b>every part of it myself</b>: the warehouse, the web app, the workflows and the connections to Claude.</p>
     <p class="own2">Claude wrote the code. I wrote the specs, made every design decision and ran it in production.</p>
 
@@ -1258,9 +1532,34 @@
       </div>
     </div>
 
+    <div class="cs-block">
+      <h2 class="cs-h">Follow one night of data</h2>
+      <div class="flowfig" data-flow="route">
+        <div class="flow-stage"><svg role="img" aria-label="A diagram of the data moving from four sources, through raw, staging and marts, to the web app, the team's Claude, the report decks and the alerts"></svg></div>
+        <div class="flow-panel">
+          <div aria-live="polite"><p class="flow-n"></p><p class="flow-t"></p><p class="flow-b"></p></div>
+          <div><div class="flow-ctl"><button type="button" class="flow-prev" aria-label="Previous step">Back</button><button type="button" class="flow-play" aria-pressed="false">Play</button><button type="button" class="flow-next" aria-label="Next step">Next</button></div><div class="flow-dots"></div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="cs-block">
+      <h2 class="cs-h">The whole system on one page</h2>
+      <div class="rshot"><figure class="rshot-frame" id="arch"><img src="img/platform/00-architecture.webp" alt="The whole platform in five columns: data sources, the BigQuery warehouse built by dbt, the web app, the workflows and the Claude connector. Live sources are marked green and paused ones grey." width="1600" height="960" loading="lazy"><figcaption>Green sources load every day. Grey ones are built and paused.</figcaption></figure></div>
+    </div>
+
+    <div class="cs-block">
+      <h2 class="cs-h">Running the accounts, and the team</h2>
+      <p class="sub">Every client has an account lead and a specialist, and each person sees only their own clients.</p>
+      <div class="rshot" id="shots2">
+        <div class="ops-ctl" role="group" aria-label="Screenshot"><button type="button" data-shot="0" aria-pressed="true">Portfolio</button><button type="button" data-shot="1" aria-pressed="false">Timeline</button><button type="button" data-shot="2" aria-pressed="false">Alerts</button><button type="button" data-shot="3" aria-pressed="false">Workflows</button></div>
+        <figure class="rshot-frame"><div class="rshot-pane" data-pane="0"><img src="img/platform/11-portfolio-health-light.webp" class="l" alt="The portfolio screen. Two rings show how many of ten clients are rated Good, Meh or Bad this week for performance and for the relationship, with twelve weeks of history under each." width="1440" height="900" loading="lazy"><img src="img/platform/11-portfolio-health-dark.webp" class="d" alt="The portfolio screen. Two rings show how many of ten clients are rated Good, Meh or Bad this week for performance and for the relationship, with twelve weeks of history under each. Dark mode." width="1440" height="900" loading="lazy"><figcaption>The portfolio view (demo data). Every Monday each client is rated Good, Meh or Bad, once for performance and once for the relationship.</figcaption></div><div class="rshot-pane" data-pane="1" hidden><img src="img/platform/12-client-timeline-light.webp" class="l" alt="One client's timeline. Calls, alerts, finished tasks, milestones and bidding changes sit in one list, newest first, with filters for each kind." width="1440" height="900" loading="lazy"><img src="img/platform/12-client-timeline-dark.webp" class="d" alt="One client's timeline. Calls, alerts, finished tasks, milestones and bidding changes sit in one list, newest first, with filters for each kind. Dark mode." width="1440" height="900" loading="lazy"><figcaption>One timeline per client (demo data). Calls, tasks, account changes, alerts and milestones in one list, so a change in the numbers can be read against what the team did.</figcaption></div><div class="rshot-pane" data-pane="2" hidden><img src="img/platform/13-client-alerts-light.webp" class="l" alt="One client's open alerts. Two critical alerts say lead tracking looks broken, with the usual rate beside the current one, and one trend alert says non-brand search is losing share." width="1440" height="484" loading="lazy"><img src="img/platform/13-client-alerts-dark.webp" class="d" alt="One client's open alerts. Two critical alerts say lead tracking looks broken, with the usual rate beside the current one, and one trend alert says non-brand search is losing share. Dark mode." width="1440" height="484" loading="lazy"><figcaption>Alerts (demo data). Watchers compare each account with its own normal. Here leads have stopped for nine days on an account that usually gets one a day.</figcaption></div><div class="rshot-pane" data-pane="3" hidden><img src="img/platform/14-workflows-light.webp" class="l" alt="The Run screen. Seven jobs a person can start, each with what it produces, its last run and its next one, above a table of recent runs." width="1440" height="900" loading="lazy"><img src="img/platform/14-workflows-dark.webp" class="d" alt="The Run screen. Seven jobs a person can start, each with what it produces, its last run and its next one, above a table of recent runs. Dark mode." width="1440" height="900" loading="lazy"><figcaption>Workflows (demo data). The jobs a lead can start, what each one hands back, and every run with who started it.</figcaption></div></figure>
+        <p class="ops-note">Real screenshots of the app in demo mode. The clients, people and numbers are made up.</p>
+      </div>
+    </div>
+
     <div class="cs-block band bleed">
       <h2 class="cs-h">What it looks like</h2>
-      <p class="sub">The real app, in six screens.</p>
       <div class="rshot" id="shots">
         <div class="ops-ctl" role="group" aria-label="Screenshot"><button type="button" data-shot="0" aria-pressed="false">Clients</button><button type="button" data-shot="1" aria-pressed="false">One client</button><button type="button" data-shot="2" aria-pressed="true">Budget pacing</button><button type="button" data-shot="3" aria-pressed="false">Report review</button><button type="button" data-shot="4" aria-pressed="false">Audit</button><button type="button" data-shot="5" aria-pressed="false">Tracking QA</button></div>
         <figure class="rshot-frame"><div class="rshot-pane" data-pane="0" hidden><img src="img/platform/02-clients-owner-light.webp" class="l" alt="The client list, signed in as an owner. Six clients with their status, lead, pacing, issues, budget and last report." width="1440" height="900" loading="lazy"><img src="img/platform/02-clients-owner-dark.webp" class="d" alt="The client list, signed in as an owner. Six clients with their status, lead, pacing, issues, budget and last report. Dark mode." width="1440" height="900" loading="lazy"><figcaption>The client list. Every lead sees only their own clients.</figcaption></div><div class="rshot-pane" data-pane="1" hidden><img src="img/platform/04-client-overview-light.webp" class="l" alt="One client page: pacing by platform, results by platform against the period before, and the client details." width="1440" height="900" loading="lazy"><img src="img/platform/04-client-overview-dark.webp" class="d" alt="One client page: pacing by platform, results by platform against the period before, and the client details. Dark mode." width="1440" height="900" loading="lazy"><figcaption>One client. Pacing, results by platform and everything about the account in one place.</figcaption></div><div class="rshot-pane" data-pane="2"><img src="img/platform/06-client-pacing-edit-over-parent-light.webp" class="l" alt="The pacing sheet mid-edit. One group is six thousand dollars over its parent, the check is red and Save is locked." width="1440" height="900" loading="lazy"><img src="img/platform/06-client-pacing-edit-over-parent-dark.webp" class="d" alt="The pacing sheet mid-edit. One group is six thousand dollars over its parent, the check is red and Save is locked. Dark mode." width="1440" height="900" loading="lazy"><figcaption>Budget pacing, mid-edit. Google is over its parent, so the check is red and Save is locked.</figcaption></div><div class="rshot-pane" data-pane="3" hidden><img src="img/platform/07-report-review-numbers-look-off-light.webp" class="l" alt="The report review screen. A slide-by-slide outline, with one slide flagged because its numbers look off." width="1440" height="900" loading="lazy"><img src="img/platform/07-report-review-numbers-look-off-dark.webp" class="d" alt="The report review screen. A slide-by-slide outline, with one slide flagged because its numbers look off. Dark mode." width="1440" height="900" loading="lazy"><figcaption>Report review. One slide is flagged "Numbers look off" before anyone approves.</figcaption></div><div class="rshot-pane" data-pane="4" hidden><img src="img/platform/09-audit-is-it-working-menu-light.webp" class="l" alt="The audit screen. Each conversion action has a status, and the row menu offers Not Relevant or Checked, It Works." width="1440" height="900" loading="lazy"><img src="img/platform/09-audit-is-it-working-menu-dark.webp" class="d" alt="The audit screen. Each conversion action has a status, and the row menu offers Not Relevant or Checked, It Works. Dark mode." width="1440" height="900" loading="lazy"><figcaption>The audit. Each conversion action gets a status, and a person marks what it means.</figcaption></div><div class="rshot-pane" data-pane="5" hidden><img src="img/platform/10-audit-tracking-qa-mid-run-light.webp" class="l" alt="A tracking QA run part of the way through: eleven of forty items done and three failing." width="1440" height="900" loading="lazy"><img src="img/platform/10-audit-tracking-qa-mid-run-dark.webp" class="d" alt="A tracking QA run part of the way through: eleven of forty items done and three failing. Dark mode." width="1440" height="900" loading="lazy"><figcaption>Tracking QA, mid-run. Nothing goes live until every item is green, ticked or excused with a reason.</figcaption></div></figure>
@@ -1278,19 +1577,7 @@
     </div>
 
     <div class="cs-block"><h2 class="cs-h">What I learned</h2><p class="sub">In July I had never shipped a production app. In October I ran the go-live. Three things I had to learn to get there.</p><div class="themes"><article><small>1</small><h3>Moving data cheaply</h3><p>Every query costs money, so the design has to read less.</p><ul><li>Rebuild only what changed. The morning build went from about 30 GB a day to about 7.5.</li><li>A quota refuses a query. An alert only tells you after.</li><li>Measure before cutting. My one guess missed.</li></ul></article><article><small>2</small><h3>Designing for the person using it</h3><p>I had to think like a product manager: what will they really do, and what happens at the edges.</p><ul><li>119 pages became 46 after the first pilot on real data.</li><li>A form for rerun requests was too technical. It became one button with plain names.</li><li>I assumed sane inputs. A budget was saved at 403% of its parent. Now it cannot be.</li></ul></article><article><small>3</small><h3>Directing an AI, strictly</h3><p>Claude wrote the code. My job was the specs, the rules and the checks it could not skip.</p><ul><li>Plan first, then build. A test for every behaviour.</li><li>Hooks, reviewers and branch rules, each added after something went wrong.</li><li>Never guess at a cause. Read the logs first.</li></ul></article></div><div class="how-w"><p class="how-l">How the way I work with Claude Code got stricter</p><ol class="flow n5 dated"><li><svg viewBox="0 0 48 48" aria-hidden="true"><rect class="i-b" x="16" y="8" width="22" height="26" rx="3"/><rect class="i-b" x="10" y="14" width="22" height="26" rx="3"/><path class="i-k" d="M15 22h12"/><path class="i-l" d="M15 28h12M15 34h7"/></svg><small>Aug to Sept</small><b>Chat and file drops</b><p>One file overwrote another. Rule: a patch must match the old text exactly once.</p></li><li><svg viewBox="0 0 48 48" aria-hidden="true"><path class="i-k" d="M10 14l3 3 5-6"/><path class="i-l" d="M24 14h14M10 25l3 3 5-6M24 25h14M12 36h4M24 36h14"/></svg><small>Early Oct</small><b>Specs before code</b><p>A plan I approve, a test for every behaviour. An outside reviewer found 12 issues in one phase.</p></li><li><svg viewBox="0 0 48 48" aria-hidden="true"><rect class="i-b" x="13" y="22" width="22" height="16" rx="3"/><path class="i-l" d="M18 22v-5a6 6 0 0 1 12 0v5"/><circle class="i-on" cx="24" cy="30" r="2.5"/></svg><small>Mid Oct</small><b>Hooks and guardrails</b><p>Hooks block destructive commands and secret reads. No session ends on a failing check.</p></li><li><svg viewBox="0 0 48 48" aria-hidden="true"><path class="i-l" d="M10 12h8l8 12M10 36h8l8-12M10 24h16"/><path class="i-k" d="M26 24h12"/><circle class="i-on" cx="38" cy="24" r="3"/></svg><small>Mid Oct</small><b>Parallel sessions</b><p>Branches collided. Rule: nothing merges without my go. A test fixer may never weaken a test.</p></li><li><svg viewBox="0 0 48 48" aria-hidden="true"><circle class="i-b" cx="24" cy="24" r="14"/><path class="i-k" d="M17 24l5 5 9-10"/></svg><small>Nov</small><b>Release branches</b><p>Main only moves forward. I found the checks had been stopping before the real tests ran.</p></li></ol></div></div>
-
-    <div class="cs-block"><h2 class="cs-h">What went wrong, and what I do now</h2><dl class="shows learn"><div><dt><b>I promised time savings and timed nothing first.</b>Two reporting cycles went by and that baseline is gone.</dt><dd><i>Next time</i>Time the old way before writing any code. Every deck now logs the minutes spent editing it.</dd></div><div><dt><b>Three checks failed open or never ran.</b>The number checker, the automated tests and the backups. Each one said it was fine.</dt><dd><i>Fix</i>Prove a check can fail before trusting it. Plant an error. Restore a backup.</dd></div><div><dt><b>On the first full live day, fewer than half the decks built first time.</b>A missing file permission, a time limit that was too short, and a test run that had marked work as done.</dt><dd><i>Fix</i>Each cause fixed that day. Every deck rebuilt and checked by hand the next.</dd></div><div><dt><b>On launch day nobody could sign in.</b>The new sign-in stored each person's ID in a different form from the one the app looked up.</dt><dd><i>Fix</i>Both sides now use the same form. Patched the same day.</dd></div><div><dt><b>Production ran on old settings for a month.</b>A manual step nobody could see. I forgot one redeploy.</dt><dd><i>Fix</i>No step that lives in my head. Settings sit where the team can edit them.</dd></div></dl></div>
-
-    <div class="cs-block">
-      <h2 class="cs-h">What is next</h2>
-      <dl class="shows">
-        <div><dt>Reports built by the platform</dt><dd>Report building is moving from a spreadsheet-driven process to the platform. The first automated monthly cycle runs in December</dd></div>
-        <div><dt>An apply step for search terms</dt><dd>Adding approved negatives to a shared list, behind its own write test and a person's yes</dd></div>
-        <div><dt>Tag fixes as a draft</dt><dd>Proposed fixes land in a new workspace for a person to review. Never a publish</dd></div>
-        <div><dt>A second ad platform for search terms</dt><dd>Version one covers one platform only</dd></div>
-        <div><dt>Hours saved, measured</dt><dd>The before figure exists. The after is being logged</dd></div>
-      </dl>
-    </div>
+    <nav class="pager" aria-label="Where next"><a class="prev" href="index.html#work"><span>Back</span>All work</a><a class="all" href="case-form-swap.html"><span>Client story</span>A form swap cut paid leads in half</a><a class="next" href="platform-data-in.html"><span>Start the six parts</span>1. Getting the data in</a></nav>
   </div></main>
 
     <section class="contact slim" id="contact"><div class="wrap">
@@ -1303,15 +1590,17 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/ScrollTrigger.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/SplitText.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/Flip.min.js"></script>
+  <script src="https://unpkg.com/lenis@1.3.29/dist/lenis.min.js"></script>
   <script>
     // The app replica on the platform pages. Made-up clients; the layout and labels follow the real app.
     (function () {
       // The screenshot switcher on the platform page.
-      var shots = document.getElementById("shots");
-      if (shots) shots.querySelectorAll("[data-shot]").forEach(function (b) {
-        b.addEventListener("click", function () {
-          shots.querySelectorAll("[data-shot]").forEach(function (x) { x.setAttribute("aria-pressed", x === b); });
-          shots.querySelectorAll("[data-pane]").forEach(function (p) { p.hidden = p.dataset.pane !== b.dataset.shot; });
+      [document.getElementById("shots"), document.getElementById("shots2")].forEach(function (shots) {
+        if (shots) shots.querySelectorAll("[data-shot]").forEach(function (b) {
+          b.addEventListener("click", function () {
+            shots.querySelectorAll("[data-shot]").forEach(function (x) { x.setAttribute("aria-pressed", x === b); });
+            shots.querySelectorAll("[data-pane]").forEach(function (p) { p.hidden = p.dataset.pane !== b.dataset.shot; });
+          });
         });
       });
       var app = document.getElementById("app"); if (!app) return;
@@ -1462,6 +1751,52 @@
       function say(i) { if (says && i !== shown) { shown = i; says.textContent = steps[i].dataset.step; } }
       if (steps.length) say(steps.length - 1);
 
+      // A long list shows its first rows and opens on request. Without this script every row shows.
+      $$("[data-fold]").forEach(function (list) {
+        var keep = Number(list.dataset.fold), more = list.children.length - keep;
+        if (more < 1) return;
+        list.classList.add("fold");
+        var p = document.createElement("p"), b = document.createElement("button");
+        p.className = "fold-more"; b.type = "button"; b.textContent = "Show " + more + " more"; b.setAttribute("aria-expanded", "false");
+        b.addEventListener("click", function () { list.classList.add("open"); p.remove(); if (window.ScrollTrigger) ScrollTrigger.refresh(); });
+        p.appendChild(b); list.parentNode.insertBefore(p, list.nextSibling);
+      });
+      var lenis = null;  // set further down, when smooth scrolling starts
+      // Screenshots: press one to see it large, press again for full size. Works with or without motion.
+      (function () {
+        var shots = $$(".rshot-frame img");
+        if (!shots.length || !window.HTMLDialogElement) return;
+        var box = document.createElement("dialog"); box.className = "zoom"; box.setAttribute("data-lenis-prevent", ""); box.setAttribute("aria-label", "Screenshot, enlarged");
+        box.innerHTML = '<div class="zoom-bar"><button type="button" data-size>Full size</button><button type="button" data-close>Close</button></div><div class="zoom-box"></div>';
+        document.body.appendChild(box);
+        var big = document.createElement("img"), size = box.querySelector("[data-size]");
+        box.querySelector(".zoom-box").appendChild(big);
+        function fit(full) { box.classList.toggle("full", full); size.textContent = full ? "Fit to screen" : "Full size"; if (!full) box.scrollTo(0, 0); }
+        function open(img) {
+          big.src = img.currentSrc || img.src; big.alt = img.alt; fit(false);
+          big.style.filter = getComputedStyle(img).filter === "none" ? "" : getComputedStyle(img).filter;  // the diagram is flipped on a dark page
+          box.showModal(); if (lenis) lenis.stop();
+        }
+        box.addEventListener("close", function () { if (lenis) lenis.start(); });
+        box.querySelector("[data-close]").addEventListener("click", function () { box.close(); });
+        size.addEventListener("click", function () { fit(!box.classList.contains("full")); });
+        big.addEventListener("click", function () { fit(!box.classList.contains("full")); });
+        box.addEventListener("click", function (e) { if (e.target === box || e.target.classList.contains("zoom-box")) box.close(); });
+        shots.forEach(function (img) {
+          img.classList.add("zoomable");
+          img.addEventListener("click", function () { open(img); });
+        });
+        // One "Expand" button per frame, for touch and keyboard. It opens whichever screenshot is showing.
+        $$(".rshot-frame").forEach(function (frame) {
+          var b = document.createElement("button"); b.type = "button"; b.className = "zoom-open"; b.textContent = "Expand";
+          b.addEventListener("click", function () {
+            var showing = $$("img", frame).filter(function (img) { return getComputedStyle(img).display !== "none" && img.getClientRects().length > 0; })[0];
+            if (showing) open(showing);
+          });
+          frame.appendChild(b);
+        });
+      })();
+
       var motion = window.gsap && window.ScrollTrigger && !still;
       if (motion) gsap.registerPlugin.apply(gsap, [ScrollTrigger].concat(window.SplitText ? [SplitText] : [], window.Flip ? [Flip] : []));
 
@@ -1472,7 +1807,7 @@
           chips.forEach(function (c) { c.setAttribute("aria-pressed", String(c === chip)); });
           var state = motion && window.Flip ? Flip.getState(rows) : null;
           rows.forEach(function (row) { row.hidden = !(chip.dataset.f === "all" || row.classList.contains(chip.dataset.f)); });
-          if (state) Flip.from(state, { duration: 0.5, ease: "power2.inOut", absolute: true,
+          if (state) Flip.from(state, { duration: 0.5, ease: "power3.out", absolute: true,
             onEnter: function (els) { return gsap.fromTo(els, { opacity: 0 }, { opacity: 1, duration: 0.3 }); },
             onLeave: function (els) { return gsap.to(els, { opacity: 0, duration: 0.2 }); } });
           if (motion) ScrollTrigger.refresh();
@@ -1533,6 +1868,14 @@
       var morphedIn = false;
       try { morphedIn = "onpagereveal" in window && !!document.referrer && new URL(document.referrer).origin === location.origin; } catch (err) {}
 
+      // Smooth scrolling. One clock drives the scroll and every animation tied to it.
+      if (window.Lenis) {
+        lenis = new Lenis({ anchors: true, allowNestedScroll: true });
+        lenis.on("scroll", ScrollTrigger.update);
+        gsap.ticker.add(function (time) { lenis.raf(time * 1000); });
+        gsap.ticker.lagSmoothing(0);
+      }
+
       function start() {
         // The page title rises line by line, once.
         var title = document.querySelector("[data-rise]");
@@ -1585,6 +1928,11 @@
         // Section headings rise out of a mask as they arrive.
         $$("main h2").forEach(function (h) {
           if (h.closest(".prose")) return;
+          if (window.SplitText) {
+            var cut = SplitText.create(h, { type: "words,chars", mask: "words", wordsClass: "w", charsClass: "c", aria: "auto" });
+            gsap.from(cut.chars, { yPercent: 112, duration: SLOW, stagger: 0.014, ease: EASE, scrollTrigger: { trigger: h, start: "top 96%" } });
+            return;
+          }
           var text = h.textContent; h.setAttribute("aria-label", text); h.textContent = "";
           var mask = document.createElement("span"); mask.className = "mask"; mask.setAttribute("aria-hidden", "true");
           var inner = document.createElement("span"); inner.textContent = text; mask.appendChild(inner); h.appendChild(mask);
@@ -1592,11 +1940,24 @@
         });
 
         // Lists and cards arrive one after another.
-        [".sys", ".proof li", "[data-stagger] > *"].forEach(function (group) {
+        [".sys", ".proof li", "[data-stagger] > *", ".tldr > div", ".nums > div", ".flow > li", ".chose > div", ".shows > div", ".more-rows > div"].forEach(function (group) {
           if (!document.querySelector(group)) return;
           ScrollTrigger.batch(group, { start: "top 98%", once: true, onEnter: function (batch) {
             gsap.from(batch, { opacity: 0, y: 10, duration: FAST, stagger: 0.02, ease: EASE, clearProps: "opacity,transform" });
           } });
+        });
+
+        // A plain number counts up to its value as it arrives. Ranges, ratios and money are left alone.
+        $$(".nums b").forEach(function (b) {
+          var text = b.textContent.trim();
+          if (!/^[0-9][0-9,]*%?$/.test(text) || b.children.length) return;
+          var end = parseInt(text.replace(/[^0-9]/g, ""), 10), unit = text.slice(-1) === "%" ? "%" : "", box = { n: 0 };
+          if (end < 10) return;
+          b.setAttribute("aria-label", text);
+          b.style.fontVariantNumeric = "tabular-nums";
+          gsap.to(box, { n: end, duration: SLOW * 2, ease: EASE, scrollTrigger: { trigger: b, start: "top 92%", once: true },
+            onUpdate: function () { b.textContent = Math.round(box.n).toLocaleString("en-US") + unit; },
+            onComplete: function () { b.textContent = text; } });
         });
 
         // Table rows wipe in from the left.
@@ -1604,14 +1965,14 @@
           gsap.from(table.querySelectorAll("tr"), { clipPath: "inset(0 100% 0 0)", duration: FAST, stagger: 0.02, ease: EASE, scrollTrigger: { trigger: table, start: "top 98%" } });
         });
 
-        // The routing scene: the page holds while the diagram draws itself.
+        // The routing scene: the diagram draws itself once, when it comes on screen. The page keeps scrolling.
         if (steps.length) {
-          var draw = gsap.timeline({ scrollTrigger: { trigger: ".scene .pin", start: "top top", end: "+=2000", pin: true, scrub: 0.4,
-            onUpdate: function (self) { say(Math.min(steps.length - 1, Math.floor(self.progress * steps.length))); } } });
+          var draw = gsap.timeline({ scrollTrigger: { trigger: ".scene .pin", start: "top 65%", once: true },
+            onUpdate: function () { say(Math.min(steps.length - 1, Math.floor(draw.progress() * steps.length))); } });
           steps.forEach(function (step) {
             var wire = step.querySelector(".wire");
-            if (wire) { var len = wire.getTotalLength(); gsap.set(wire, { strokeDasharray: len, strokeDashoffset: len }); draw.to(wire, { strokeDashoffset: 0, duration: 0.5, ease: "none" }); }
-            draw.from(step.querySelectorAll("rect, text"), { opacity: 0, duration: 0.5, ease: "none" }, wire ? ">-0.1" : 0);
+            if (wire) { var len = wire.getTotalLength(); gsap.set(wire, { strokeDasharray: len, strokeDashoffset: len }); draw.to(wire, { strokeDashoffset: 0, duration: 0.7, ease: "none" }); }
+            draw.from(step.querySelectorAll("rect, text"), { opacity: 0, duration: 0.7, ease: "none" }, wire ? ">-0.1" : 0);
           });
           say(0);
         }
@@ -1627,7 +1988,7 @@
         });
 
         // The big email draws in at the end.
-        if (document.querySelector(".mail")) gsap.from(".mail", { yPercent: 60, opacity: 0, duration: 0.9, ease: "expo.out", scrollTrigger: { trigger: ".mail", start: "top 94%" } });
+        if (document.querySelector(".mail")) gsap.from(".mail", { yPercent: 60, opacity: 0, duration: SLOW, ease: EASE, scrollTrigger: { trigger: ".mail", start: "top 94%" } });
 
         // Cursor: a coral dot trails the normal pointer and grows over anything clickable.
         if (window.matchMedia("(pointer: fine)").matches) {
@@ -1643,6 +2004,11 @@
           window.addEventListener("pointerdown", function () { gsap.to(dot, { scale: 0.7, duration: 0.12 }); });
           window.addEventListener("pointerup", function (e) { gsap.to(dot, { scale: e.target.closest && e.target.closest("a, button") ? 3.4 : 1, duration: 0.25 }); });
         }
+        // A picture that loads late can move everything under it. Measure again when one does.
+        var again = null;
+        $$("img[loading=lazy]").forEach(function (img) {
+          if (!img.complete) img.addEventListener("load", function () { clearTimeout(again); again = setTimeout(function () { ScrollTrigger.refresh(); }, 120); });
+        });
         ScrollTrigger.refresh();
       }
       // Cover drawings play once when they first come into view, so phones see the motion too.
@@ -1716,6 +2082,256 @@
       })();
 
       if (document.fonts && document.fonts.ready) document.fonts.ready.then(start); else start();
+    })();
+
+    // Animated diagrams: data riding the lanes that are live for the step or the request picked.
+    // One drawing routine for both figures. With "reduce motion" on, the dots sit still on their lanes.
+    (function () {
+      var figs = Array.prototype.slice.call(document.querySelectorAll(".flowfig"));
+      if (!figs.length) return;
+      var still = window.matchMedia("(prefers-reduced-motion: reduce)").matches, drawn = [];
+      function esc(s) { return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;"); }
+      function rect(cls, x, y, w, h, inner) { return '<g class="n ' + cls + '"><rect x="' + x + '" y="' + y + '" width="' + w + '" height="' + h + '" rx="10"/>' + inner + "</g>"; }
+      function txt(cls, x, y, s, anchor) { return '<text class="' + cls + '" x="' + x + '" y="' + y + '" text-anchor="' + (anchor || "middle") + '" dominant-baseline="central">' + esc(s) + "</text>"; }
+      function finish(state, svg, W, H, lanes, nodes) {
+        svg.setAttribute("viewBox", "0 0 " + W + " " + H);
+        svg.innerHTML = "<g>" + lanes.join("") + "</g><g>" + nodes.join("") + '</g><g class="tok"></g>';
+        state.live = Array.prototype.slice.call(svg.querySelectorAll("path.live")).map(function (p) { return { p: p, len: p.getTotalLength() }; });
+        state.tok = svg.querySelector(".tok");
+        state.tok.innerHTML = state.live.map(function () { return '<circle r="4.5"/><circle r="4.5"/><circle r="4.5"/>'; }).join("");
+        place(state, performance.now());
+      }
+      function place(state, t) {
+        if (!state.tok) return;
+        state.live.forEach(function (o, i) {
+          for (var k = 0; k < 3; k++) {
+            var c = state.tok.children[i * 3 + k]; if (!c) return;
+            var f = still ? (k + 1) / 4 : ((t / 2400) + k / 3) % 1, pt = o.p.getPointAtLength(f * o.len);
+            c.setAttribute("cx", pt.x); c.setAttribute("cy", pt.y);
+          }
+        });
+      }
+
+      // Figure one: a night of data, from the sources to the people who read it.
+      var SRC = [["Ad platforms", "Ads"], ["CRM leads", "CRM"], ["Tasks and calls", "Tasks"], ["Tag containers", "Tags"]];
+      var CON = [["Web app", "App"], ["The team's Claude", "Claude"], ["Report decks", "Decks"], ["Alerts", "Alerts"]];
+      var BLK = { raw: ["Raw", ["As delivered", "Never edited"], "As delivered"], stg: ["Staging", ["Cleaned", "One shape", "5 am build"], "Cleaned, one shape"], mart: ["Marts", ["Daily facts", "Rollups", "Tested"], "Tested tables"] };
+      var STEPS = [
+        { t: "Every source lands overnight", on: ["src", "raw"], flow: ["s"], b: "Google Ads arrives through the platform's own free transfer and a daily script. Microsoft Ads posts from a script inside each account. Tasks, call summaries and tag containers load every night. Nothing is changed on the way in." },
+        { t: "Raw is the untouched copy", on: ["raw"], flow: [], b: "Each source keeps its own dataset, exactly as delivered. When a number looks wrong later, it can be traced all the way back to here." },
+        { t: "5 am: dbt cleans and joins", on: ["raw", "stg"], flow: ["rs"], b: "A scheduled job runs dbt. Staging models fix names and types, remove duplicates and map every ad account to its client, so each platform ends up in one shape." },
+        { t: "Marts are what people read", on: ["stg", "mart"], flow: ["sm"], b: "Daily facts, monthly and quarterly rollups, and leads matched to campaigns. 808 tests guard 215 models. A failed test stops the build, so a bad number is never published." },
+        { t: "Changes are tested before they ship", on: ["ci", "stg", "mart"], flow: ["ci"], b: "Every push builds the changed models, and the ones that depend on them, in a throwaway dataset and runs their tests. It deploys only if they pass." },
+        { t: "Everything reads the same tables", on: ["mart", "con"], flow: ["c"], b: "The web app, the team's Claude, the report decks and the alerts all read the same tested tables. The app and a deck cannot disagree." },
+        { t: "Built to cost nothing to host", on: ["src", "raw", "stg", "mart", "ci", "con"], flow: ["s", "rs", "sm", "c"], b: "Cost comes from how often tables are re-read, not from their size. The build re-processes recent days only, and the app keeps each answer until the next load." }
+      ];
+      function route(fig) {
+        var svg = fig.querySelector("svg"), box = fig.querySelector(".flow-stage"), state = { live: [], tok: null }, cur = 0, playing = false, timer = null, seen = false;
+        var q = function (s) { return fig.querySelector(s); };
+        var dots = q(".flow-dots"); dots.innerHTML = STEPS.map(function (s, i) { return '<button type="button" data-i="' + i + '" aria-label="Step ' + (i + 1) + ": " + esc(s.t) + '">' + (i + 1) + "</button>"; }).join("");
+        function draw() {
+          var W = box.clientWidth, v = W < 560, H = v ? Math.max(360, Math.min(640, window.innerHeight - 400)) : Math.max(280, Math.min(420, window.innerHeight - 200)); box.style.height = H + "px";
+          var st = STEPS[cur], on = st.on, fl = st.flow, lanes = [], nodes = [], m = 14;
+          var cls = function (k) { return on.indexOf(k) >= 0 ? "on" : "off"; };
+          var lane = function (k, d, dash) { lanes.push('<path class="lane' + (fl.indexOf(k) >= 0 ? " live" : "") + (dash ? " dash" : "") + '" d="' + d + '"/>'); };
+          var i;
+          if (!v) {
+            var top = 70, colW = (W - 2 * m) / 5, bw = Math.min(160, colW - 26), short = bw < 134;
+            var cx = function (n) { return m + colW * (n + 0.5); }, gap = 14, avail = H - top - 14, hn = Math.min(56, (avail - 3 * gap) / 4);
+            var total = 4 * hn + 3 * gap, y0 = top + (avail - total) / 2, yc = function (n) { return y0 + n * (hn + gap) + hn / 2; };
+            var L = function (n) { return cx(n) - bw / 2; }, R = function (n) { return cx(n) + bw / 2; };
+            for (i = 0; i < 4; i++) {
+              lane("s", "M" + R(0) + " " + yc(i) + "H" + L(1)); lane("rs", "M" + R(1) + " " + yc(i) + "H" + L(2));
+              lane("sm", "M" + R(2) + " " + yc(i) + "H" + L(3)); lane("c", "M" + R(3) + " " + yc(i) + "H" + L(4));
+              nodes.push(rect(cls("src"), L(0), yc(i) - hn / 2, bw, hn, txt("l", cx(0), yc(i), short ? SRC[i][1] : SRC[i][0])));
+              nodes.push(rect(cls("con"), L(4), yc(i) - hn / 2, bw, hn, txt("l", cx(4), yc(i), short ? CON[i][1] : CON[i][0])));
+            }
+            ["raw", "stg", "mart"].forEach(function (k, j) {
+              var b = BLK[k], x = cx(j + 1);
+              nodes.push(rect(cls(k), L(j + 1), y0, bw, total, txt("h", x, y0 + 26, b[0]) + b[1].map(function (s, n) { return txt("sub", x, y0 + 54 + n * 20, s); }).join("")));
+            });
+            var cw = Math.min(230, bw * 1.7), cxm = (cx(2) + cx(3)) / 2, ct = 12, ch = 42;
+            lane("ci", "M" + (cxm - cw * 0.25) + " " + (ct + ch) + "C" + (cxm - cw * 0.25) + " " + (ct + ch + 16) + " " + cx(2) + " " + (y0 - 16) + " " + cx(2) + " " + y0, true);
+            lane("ci", "M" + (cxm + cw * 0.25) + " " + (ct + ch) + "C" + (cxm + cw * 0.25) + " " + (ct + ch + 16) + " " + cx(3) + " " + (y0 - 16) + " " + cx(3) + " " + y0, true);
+            nodes.push(rect(cls("ci"), cxm - cw / 2, ct, cw, ch, txt("l", cxm, ct + ch / 2, cw < 170 ? "Checks" : "A check on every push")));
+          } else {
+            var ciw = Math.min(92, W * 0.24), laneR = W - m - ciw - 12, laneW = laneR - m, cW = laneW / 4, bw2 = cW - 8, bx = function (n) { return m + cW * (n + 0.5); };
+            var hs = 46, hb = 60, g2 = (H - 2 * m - 2 * hs - 3 * hb) / 4, y = [m];
+            y[1] = y[0] + hs + g2; y[2] = y[1] + hb + g2; y[3] = y[2] + hb + g2; y[4] = y[3] + hb + g2;
+            for (i = 0; i < 4; i++) {
+              var x2 = bx(i);
+              lane("s", "M" + x2 + " " + (y[0] + hs) + "V" + y[1]); lane("rs", "M" + x2 + " " + (y[1] + hb) + "V" + y[2]);
+              lane("sm", "M" + x2 + " " + (y[2] + hb) + "V" + y[3]); lane("c", "M" + x2 + " " + (y[3] + hb) + "V" + y[4]);
+              nodes.push(rect(cls("src"), x2 - bw2 / 2, y[0], bw2, hs, txt("l", x2, y[0] + hs / 2, SRC[i][1])));
+              nodes.push(rect(cls("con"), x2 - bw2 / 2, y[4], bw2, hs, txt("l", x2, y[4] + hs / 2, CON[i][1])));
+            }
+            ["raw", "stg", "mart"].forEach(function (k, j) {
+              var b = BLK[k], yy = y[j + 1];
+              nodes.push(rect(cls(k), m, yy, laneW, hb, txt("h", m + 14, yy + 21, b[0], "start") + txt("sub", m + 14, yy + 42, b[2], "start")));
+            });
+            var cxl = W - m - ciw, cy = (y[2] + y[3] + hb) / 2, t1 = y[2] + hb / 2, t2 = y[3] + hb / 2;
+            lane("ci", "M" + cxl + " " + (cy - 12) + "C" + (cxl - 14) + " " + (cy - 12) + " " + (laneR + 14) + " " + t1 + " " + laneR + " " + t1, true);
+            lane("ci", "M" + cxl + " " + (cy + 12) + "C" + (cxl - 14) + " " + (cy + 12) + " " + (laneR + 14) + " " + t2 + " " + laneR + " " + t2, true);
+            nodes.push(rect(cls("ci"), cxl, cy - 28, ciw, 56, txt("l", cxl + ciw / 2, cy, "Checks")));
+          }
+          finish(state, svg, W, H, lanes, nodes);
+        }
+        function plan() {
+          clearTimeout(timer);
+          if (playing) timer = setTimeout(function () { go(cur + 1); }, 7000);
+          q(".flow-play").textContent = playing ? "Pause" : "Play"; q(".flow-play").setAttribute("aria-pressed", String(playing));
+        }
+        function go(i) {
+          cur = (i + STEPS.length) % STEPS.length;
+          q(".flow-n").textContent = "Step " + (cur + 1) + " of " + STEPS.length; q(".flow-t").textContent = STEPS[cur].t; q(".flow-b").textContent = STEPS[cur].b;
+          Array.prototype.forEach.call(dots.children, function (b, n) { if (n === cur) b.setAttribute("aria-current", "step"); else b.removeAttribute("aria-current"); });
+          draw(); plan();
+        }
+        q(".flow-prev").addEventListener("click", function () { playing = false; go(cur - 1); });
+        q(".flow-next").addEventListener("click", function () { playing = false; go(cur + 1); });
+        q(".flow-play").addEventListener("click", function () { playing = !playing; plan(); });
+        dots.addEventListener("click", function (e) { var b = e.target.closest("button"); if (b) { playing = false; go(Number(b.dataset.i)); } });
+        if (window.ResizeObserver) new ResizeObserver(draw).observe(box); else window.addEventListener("resize", draw);
+        // It plays by itself only while it is on screen, and only once you have reached it.
+        if (window.IntersectionObserver && !still) new IntersectionObserver(function (es) {
+          var inView = es[0].isIntersecting;
+          if (inView && !seen) { seen = true; playing = true; }
+          if (!inView) clearTimeout(timer); else plan();
+        }, { threshold: 0.4 }).observe(fig);
+        go(0); drawn.push(state);
+      }
+
+      // Figure two: the path one request takes.
+      var PATHS = {
+        claude: { t: "Someone asks the team's Claude a question.", e: ["pd", "bd", "dc"], n: ["pg", "bq", "dl", "claude"], b: "Claude calls a tool on the app's own connector. The token is looked up on that call, the person is loaded from Postgres, and the tool runs through the same data layer as the app: their clients only, from the cache when it can. Claude writes the sentences. It never does the sums." },
+        app: { t: "An account lead opens a client page.", e: ["pd", "bd", "da"], n: ["pg", "bq", "dl", "app"], b: "The server knows who they are from sign-in and looks up their clients in Postgres. Only then does it ask the data layer for numbers. On a cache miss it runs one named query against the tested tables, with a cost cap." },
+        deck: { t: "A monthly report builds.", e: ["bk"], n: ["bq", "deck"], b: "Code works out every number the report may quote from the tested tables. The model only writes around them, and a checker flags any slide that looks off. The result is a draft. A person approves it before anything reaches a client." }
+      };
+      function paths(fig) {
+        var svg = fig.querySelector("svg"), box = fig.querySelector(".flow-stage"), state = { live: [], tok: null }, pick = "claude", tabs = fig.querySelector(".flow-tabs");
+        function draw() {
+          var W = box.clientWidth, H = Math.max(250, Math.min(W < 560 ? 300 : 330, window.innerHeight - 220)), m = 14; box.style.height = H + "px";
+          var colW = (W - 2 * m) / 3, bw = Math.min(200, colW - 30), short = bw < 132;
+          var cx = function (i) { return m + colW * (i + 0.5); }, L = function (i) { return cx(i) - bw / 2; }, R = function (i) { return cx(i) + bw / 2; };
+          var gap = 18, hn = Math.min(60, (H - 2 * m - 3 * gap) / 4), y = function (i) { return m + i * (hn + gap) + hn / 2; };
+          var r = PATHS[pick], lanes = [], nodes = [];
+          var c = function (k) { return r.n.indexOf(k) >= 0 ? "on" : "off"; };
+          var lane = function (k, d) { lanes.push('<path class="lane' + (r.e.indexOf(k) >= 0 ? " live" : "") + '" d="' + d + '"/>'); };
+          var boxAt = function (k, i, row, label, sub) { nodes.push(rect(c(k), L(i), y(row) - hn / 2, bw, hn, sub ? txt("l", cx(i), y(row) - 9, label) + txt("sub", cx(i), y(row) + 11, sub) : txt("l", cx(i), y(row), label))); };
+          var dlTop = y(1) - hn / 2, dlH = y(2) - y(1) + hn, mid = (R(1) + L(2)) / 2, midL = (R(0) + L(1)) / 2;
+          lane("pd", "M" + R(0) + " " + y(0) + "C" + midL + " " + y(0) + " " + midL + " " + (dlTop + 18) + " " + L(1) + " " + (dlTop + 18));
+          lane("bd", "M" + R(0) + " " + y(3) + "C" + midL + " " + y(3) + " " + midL + " " + (dlTop + dlH - 18) + " " + L(1) + " " + (dlTop + dlH - 18));
+          lane("dc", "M" + R(1) + " " + (dlTop + 18) + "C" + mid + " " + (dlTop + 18) + " " + mid + " " + y(0) + " " + L(2) + " " + y(0));
+          lane("da", "M" + R(1) + " " + (dlTop + dlH / 2) + "C" + mid + " " + (dlTop + dlH / 2) + " " + mid + " " + y(1.5) + " " + L(2) + " " + y(1.5));
+          lane("bk", "M" + R(0) + " " + (y(3) + 12) + "H" + L(2));
+          boxAt("pg", 0, 0, "Postgres", short ? "Who you are" : "People and their clients");
+          boxAt("bq", 0, 3, short ? "Warehouse" : "Tested tables", short ? "Numbers" : "Every number");
+          boxAt("claude", 2, 0, short ? "Claude" : "The team's Claude", short ? "" : "Through the connector");
+          boxAt("app", 2, 1.5, short ? "App" : "Web app", short ? "" : "Client pages");
+          boxAt("deck", 2, 3, short ? "Decks" : "Report decks", short ? "" : "A draft for review");
+          var subs = short ? ["Your clients", "Cache"] : ["Who is asking?", "Your clients only", "Cache, cost cap"];
+          nodes.push(rect(c("dl"), L(1), dlTop, bw, dlH, txt("h", cx(1), dlTop + 24, "Data layer") + subs.map(function (s, n) { return txt("sub", cx(1), dlTop + 50 + n * 19, s); }).join("")));
+          finish(state, svg, W, H, lanes, nodes);
+          fig.querySelector(".flow-t").textContent = r.t; fig.querySelector(".flow-b").textContent = r.b;
+          Array.prototype.forEach.call(tabs.children, function (b) { b.setAttribute("aria-pressed", String(b.dataset.r === pick)); });
+        }
+        tabs.addEventListener("click", function (e) { var b = e.target.closest("button"); if (b) { pick = b.dataset.r; draw(); } });
+        if (window.ResizeObserver) new ResizeObserver(draw).observe(box); else window.addEventListener("resize", draw);
+        draw(); drawn.push(state);
+      }
+
+      // Figure three: a short line of steps, or a loop, with the data running along it.
+      function chain(fig) {
+        var svg = fig.querySelector("svg"), box = fig.querySelector(".flow-stage"), state = { live: [], tok: null }, steps = fig.dataset.steps.split("|"), loop = fig.dataset.loop;
+        function draw() {
+          var W = box.clientWidth, n = steps.length, m = 14, lanes = [], nodes = [], i, H;
+          if (W >= 720) {
+            H = loop ? 190 : 116; var gap = 22, bw = (W - 2 * m - (n - 1) * gap) / n, hn = 56, y = loop ? 34 : (H - hn) / 2;
+            for (i = 0; i < n; i++) {
+              var x = m + i * (bw + gap);
+              if (i < n - 1) lanes.push('<path class="lane live" d="M' + (x + bw) + " " + (y + hn / 2) + "H" + (x + bw + gap) + '"/>');
+              nodes.push(rect("on", x, y, bw, hn, txt("l", x + bw / 2, y + hn / 2, steps[i])));
+            }
+            if (loop) {
+              var x0 = m + bw / 2, x1 = m + (n - 1) * (bw + gap) + bw / 2, yb = y + hn;
+              lanes.push('<path class="lane live dash" d="M' + x1 + " " + yb + "C" + x1 + " " + (yb + 76) + " " + x0 + " " + (yb + 76) + " " + x0 + " " + yb + '"/>');
+              nodes.push(txt("sub", (x0 + x1) / 2, yb + 38, loop));
+            }
+          } else {
+            var hn2 = 44, g2 = 16, side = loop ? 44 : 0, bw2 = Math.min(W - 2 * m - side, 340); H = 2 * m + n * hn2 + (n - 1) * g2;
+            for (i = 0; i < n; i++) {
+              var yy = m + i * (hn2 + g2);
+              if (i < n - 1) lanes.push('<path class="lane live" d="M' + (m + bw2 / 2) + " " + (yy + hn2) + "V" + (yy + hn2 + g2) + '"/>');
+              nodes.push(rect("on", m, yy, bw2, hn2, txt("l", m + bw2 / 2, yy + hn2 / 2, steps[i])));
+            }
+            if (loop) { var xr = m + bw2, ya = m + (n - 1) * (hn2 + g2) + hn2 / 2, yt = m + hn2 / 2; lanes.push('<path class="lane live dash" d="M' + xr + " " + ya + "C" + (xr + 38) + " " + ya + " " + (xr + 38) + " " + yt + " " + xr + " " + yt + '"/>'); }
+          }
+          box.style.height = H + "px";
+          finish(state, svg, W, H, lanes, nodes);
+        }
+        if (window.ResizeObserver) new ResizeObserver(draw).observe(box); else window.addEventListener("resize", draw);
+        draw(); drawn.push(state);
+      }
+
+      figs.forEach(function (fig) { (fig.dataset.flow === "paths" ? paths : fig.dataset.flow === "chain" ? chain : route)(fig); });
+      function loop(t) { drawn.forEach(function (s) { place(s, t); }); requestAnimationFrame(loop); }
+      if (!still) requestAnimationFrame(loop);
+    })();
+
+
+    // Charts draw themselves once, when they come on screen. With scripts off or "reduce motion" on they are simply there.
+    (function () {
+      var figs = Array.prototype.slice.call(document.querySelectorAll("[data-reveal]"));
+      if (!figs.length || !window.IntersectionObserver || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+      figs.forEach(function (fig) { fig.classList.add("armed"); });
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (en) { if (en.isIntersecting) { en.target.classList.add("seen"); io.unobserve(en.target); } });
+      }, { threshold: 0.35 });
+      figs.forEach(function (fig) { io.observe(fig); });
+      // A client work card plays its picture again when the pointer comes back to it.
+      Array.prototype.slice.call(document.querySelectorAll(".case-card")).forEach(function (card) {
+        var pic = card.querySelector("[data-reveal]");
+        if (!pic) return;
+        card.addEventListener("pointerenter", function () {
+          if (!pic.classList.contains("seen")) return;
+          pic.classList.remove("seen"); void pic.offsetWidth; pic.classList.add("seen");
+        });
+      });
+    })();
+
+    // Projects carousel. With one project showing, or scripts off, it is simply the project.
+    (function () {
+      var car = document.getElementById("pcar");
+      if (!car) return;
+      var track = car.querySelector(".pcar-track"), nav = car.querySelector(".pcar-nav");
+      var slides = Array.prototype.filter.call(track.children, function (el) { return !el.hidden; });
+      var tabs = Array.prototype.filter.call(car.querySelectorAll(".pcar-tabs button"), function (el) { return !el.hidden; });
+      var arrows = car.querySelectorAll(".pcar-arrows button"), at = 0;
+      if (slides.length < 2) return;
+      nav.hidden = false;
+      var calm = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      function mark(i) {
+        at = i;
+        tabs.forEach(function (tab, n) { tab.setAttribute("aria-pressed", n === i ? "true" : "false"); });
+        arrows[0].disabled = i === 0; arrows[1].disabled = i === slides.length - 1;
+      }
+      function go(i) {
+        i = Math.max(0, Math.min(slides.length - 1, i));
+        track.scrollTo({ left: slides[i].offsetLeft - slides[0].offsetLeft, behavior: calm ? "auto" : "smooth" });
+        mark(i);
+      }
+      tabs.forEach(function (tab, n) { tab.addEventListener("click", function () { go(n); }); });
+      Array.prototype.forEach.call(arrows, function (b) { b.addEventListener("click", function () { go(at + Number(b.getAttribute("data-dir"))); }); });
+      var tick = null;
+      track.addEventListener("scroll", function () {
+        clearTimeout(tick);
+        tick = setTimeout(function () {
+          var best = 0, gap = Infinity;
+          slides.forEach(function (el, n) { var d = Math.abs(el.offsetLeft - slides[0].offsetLeft - track.scrollLeft); if (d < gap) { gap = d; best = n; } });
+          mark(best);
+        }, 90);
+      }, { passive: true });
+      mark(0);
     })();
   </script>
 </body>
