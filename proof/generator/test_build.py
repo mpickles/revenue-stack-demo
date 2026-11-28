@@ -346,7 +346,14 @@ class CommittedPages(unittest.TestCase):
         home = self.pages["index.html"]
         hero = home[home.index('<header class="hero'):home.index("</header>")]
         self.assertIn('aria-label="Max Pickard"', hero[hero.index("<h1"):hero.index("</h1>")])
-        self.assertIn('<p class="role-line">Marketing operations', hero)
+        # Owner's wording, Nov 27: his title, then what he builds in the words job posts use, then his three years.
+        self.assertIn('<p class="role-line">Marketing Operations Specialist<span>Chicago</span></p>', hero)
+        self.assertIn('<p class="pitch">I build AI workflows, automations and internal tools for marketing and GTM teams.</p>', hero)
+        self.assertIn("Three years across SEO, paid search, conversion tracking, dashboards and reporting.", hero)
+        self.assertLess(hero.index('<p class="pitch">'), hero.index('<p class="pitch2">'))
+        self.assertIn('<meta name="description" content="Marketing Operations Specialist in Chicago. I build AI workflows, automations and internal tools for marketing and GTM teams.">', home)
+        self.assertNotIn("Analytics developer", home)
+        self.assertNotIn("in public", home[: home.index("</head>")])
         self.assertLess(hero.index("</h1>"), hero.index('<p class="role-line">'))
         self.assertIn("<dt>Learning now</dt>", hero)
         self.assertNotIn('class="stats"', hero)
