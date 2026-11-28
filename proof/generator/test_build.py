@@ -493,14 +493,35 @@ class CommittedPages(unittest.TestCase):
         home = self.pages["index.html"]
         hero = home[home.index('<header class="hero'):home.index("</header>")]
         split = hero[hero.index('<div class="hero-split">'):hero.index('<div class="hero-work"')]
-        self.assertEqual(split.count('<figure class="hero-me"><img class="me" src="img/self-portrait.webp" alt="A sketch of Max, drawn by Max"'), 1)
-        self.assertEqual(split.count('<img class="me-s" src="img/self-portrait.webp"'), 1, "on a phone the sketch sits beside the name")
+        self.assertEqual(split.count('<figure class="hero-me"><svg class="me" viewBox="0 0 883 1000" role="img" aria-label="A sketch of Max, drawn by Max">'), 1)
         self.assertNotIn('class="hw', split, "the work cards are under the first screen, not in it")
         self.assertTrue((build.PROOF / "img" / "self-portrait.webp").is_file())
         self.assertLess((build.PROOF / "img" / "self-portrait.webp").stat().st_size, 200_000)
         # Black lines on a clear background, so the drawing turns white on the dark theme.
-        self.assertIn(':root[data-theme="dark"] .hero-me img,:root[data-theme="dark"] .me-s{filter:invert(1)}', home)
-        self.assertRegex(home, r"@media \(min-width:1000px\)\{\s*\.me-s\{display:none\}")
+        self.assertIn(':root[data-theme="dark"] .hero-me .me{filter:invert(1)}', home)
+        # One drawing for every screen: small beside the name on a phone, large on the right when there is room.
+        self.assertEqual(home.count('<image href="img/self-portrait.webp"'), 1)
+        self.assertRegex(home, r"\.hero-me\{position:absolute;top:-10px;right:0;[^}]*\}")
+        self.assertRegex(home, r"@media \(min-width:1000px\)\{\s*\.hero-me\{position:static;")
+
+    def test_the_sketch_draws_itself_bold_lines_first_then_the_detail(self):
+        # Owner's call, Nov 27: it is his drawing, shown through pen strokes that follow its lines.
+        home = self.pages["index.html"]
+        rows = [r.split(" ", 3) for r in (build.GENERATOR / "self-portrait-pen.txt").read_text().splitlines()]
+        self.assertGreater(len(rows), 100, "the structure is drawn one stroke at a time")
+        starts = [float(r[0]) for r in rows]
+        self.assertEqual(starts, sorted(starts), "strokes are listed in the order they are drawn")
+        widths = [int(r[2]) for r in rows]
+        self.assertGreater(sum(widths[:40]) / 40, sum(widths[-2:]) / 2, "bold strokes come before light ones")
+        self.assertLess(starts[-1] + float(rows[-1][1]), 8, "all of it within eight seconds")
+        self.assertEqual(home.count('<path class="pen" style="--t:'), len(rows))
+        self.assertEqual(home.count('<mask id="pen"'), 1)
+        self.assertEqual(home.count('mask="url(#pen)"'), 1)
+        self.assertEqual(home.count('class="pen-done"'), 1, "whatever the pen misses still shows at the end")
+        # Nothing moves for someone who asked for less motion: the drawing is simply there.
+        self.assertRegex(home, r"\.pen\{stroke-dasharray:1;stroke-dashoffset:0\}\s*@media \(prefers-reduced-motion:no-preference\)\{\s*\.pen\{animation:pen ")
+        self.assertEqual(home.count("animation:pen "), 1)
+        self.assertEqual(home.count("filter:url(#boil)"), 1)
 
     def test_the_hero_shows_the_work_as_links(self):
         home = self.pages["index.html"]

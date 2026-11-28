@@ -199,7 +199,6 @@
         }, null, 0.4 * k);
         intro.call(function () { gsap.set(stop, { opacity: 1 }); }, null, 0.4 * k + 1.2);  // whatever happens, the dot ends up visible
       }
-      intro.from(".hero-me img, .me-s", { opacity: 0, duration: SLOW * k, ease: EASE, clearProps: "opacity" }, 0.15 * k);
       intro.from(".role-line, .hero.v2 .pitch, .hero-acts", { opacity: 0, y: 12, duration: MED * k, stagger: 0.05, ease: EASE, clearProps: "opacity,transform" }, 0.2 * k);
       intro.from(".hero-work > *", { opacity: 0, y: 24, duration: MED * k, stagger: 0.07, ease: EASE, clearProps: "opacity,transform" }, 0.3 * k);
     }

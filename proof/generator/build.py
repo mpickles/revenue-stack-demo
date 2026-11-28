@@ -127,6 +127,26 @@ def link_url(link, repo):
     return link["url"] if "url" in link else github_url(repo, link["path"])
 
 
+def self_portrait():
+    """Max's sketch of himself, drawn in stroke by stroke. The picture is the real drawing; the strokes
+    are only a mask that follows its lines (self-portrait-pen.txt: start, seconds, width, path), bold
+    structure first and light detail last, so the page shows it the way a hand would draw it."""
+    strokes = []
+    for row in (GENERATOR / "self-portrait-pen.txt").read_text().splitlines():
+        start, seconds, width, path = row.split(" ", 3)
+        strokes.append(f'<path class="pen" style="--t:{start}s;--d:{seconds}s" stroke-width="{width}" pathLength="1" d="{path}"/>')
+    return (
+        '<svg class="me" viewBox="0 0 883 1000" role="img" aria-label="A sketch of Max, drawn by Max">'
+        '<filter id="boil" x="-3%" y="-3%" width="106%" height="106%"><feTurbulence type="fractalNoise" baseFrequency=".018" numOctaves="1" seed="1">'
+        '<animate attributeName="seed" values="1;5;9;13" dur="1s" calcMode="discrete" repeatCount="indefinite"/></feTurbulence>'
+        '<feDisplacementMap in="SourceGraphic" scale="2.6"/></filter>'
+        '<mask id="pen" maskUnits="userSpaceOnUse" x="0" y="0" width="883" height="1000">'
+        '<g fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round">' + "".join(strokes) + "</g>"
+        '<rect class="pen-done" width="883" height="1000" fill="#fff"/></mask>'
+        '<g class="boil"><image href="img/self-portrait.webp" width="883" height="1000" mask="url(#pen)"/></g></svg>'
+    )
+
+
 def cover(name, grows=False):
     """A drawn cover, kept as an SVG file in covers/. With grows, it carries a name the browser uses to
     grow it from a card into the top of the page it opens (same name on both pages)."""
@@ -384,6 +404,7 @@ def build_pages():
         case_cards=indent(case_cards_html(config.get("cases", [])), 6),
         project_cover=cover("project", grows=True),
         project_cover_plain=cover("project"),
+        me=self_portrait(),
         project_hidden=" hidden" if project.get("hidden") else "",
         contact=contact,
         portrait=portrait_html(),
