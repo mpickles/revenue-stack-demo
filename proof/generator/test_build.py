@@ -487,7 +487,22 @@ class CommittedPages(unittest.TestCase):
         self.assertIn("@media (min-width:1100px){.case-cards{grid-template-columns:repeat(4,minmax(0,1fr))", home, "four across on a wide screen, the same card as the platform parts")
         self.assertIn('card.addEventListener("pointerenter"', home, "the picture plays again on hover")
 
-    def test_the_first_screen_shows_the_work_as_links(self):
+    def test_the_first_screen_is_the_name_the_pitch_and_the_self_portrait(self):
+        # Owner's call, Nov 27: his own sketch of himself takes the right side of the first screen
+        # and the work cards move to a row under it.
+        home = self.pages["index.html"]
+        hero = home[home.index('<header class="hero'):home.index("</header>")]
+        split = hero[hero.index('<div class="hero-split">'):hero.index('<div class="hero-work"')]
+        self.assertEqual(split.count('<figure class="hero-me"><img class="me" src="img/self-portrait.webp" alt="A sketch of Max, drawn by Max"'), 1)
+        self.assertEqual(split.count('<img class="me-s" src="img/self-portrait.webp"'), 1, "on a phone the sketch sits beside the name")
+        self.assertNotIn('class="hw', split, "the work cards are under the first screen, not in it")
+        self.assertTrue((build.PROOF / "img" / "self-portrait.webp").is_file())
+        self.assertLess((build.PROOF / "img" / "self-portrait.webp").stat().st_size, 200_000)
+        # Black lines on a clear background, so the drawing turns white on the dark theme.
+        self.assertIn(':root[data-theme="dark"] .hero-me img,:root[data-theme="dark"] .me-s{filter:invert(1)}', home)
+        self.assertRegex(home, r"@media \(min-width:1000px\)\{\s*\.me-s\{display:none\}")
+
+    def test_the_hero_shows_the_work_as_links(self):
         home = self.pages["index.html"]
         hero = home[home.index('<header class="hero'):home.index("</header>")]
         work = hero[hero.index('<div class="hero-work"'):]
